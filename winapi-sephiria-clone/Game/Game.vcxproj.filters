@@ -13,6 +13,57 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="00. MainGame">
+      <UniqueIdentifier>{2619d353-d966-4f95-a11e-88182b7a0dff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj">
+      <UniqueIdentifier>{60ec1b66-d70e-48b2-ac3a-8d8f72ea2ab6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Scene">
+      <UniqueIdentifier>{b8ee814c-7d36-4d1f-a40e-c46b14b554bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Manager">
+      <UniqueIdentifier>{e19c9417-3987-4ed0-89a9-8e03cefb310b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Manager\00. AbstractFactory">
+      <UniqueIdentifier>{7cc650e0-73c5-431b-a48b-53381c507f39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Manager\01. CollisionMgr">
+      <UniqueIdentifier>{e12c3a30-cdee-4fe8-b452-9973e264a9a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Manager\02. ObjMgr">
+      <UniqueIdentifier>{d3e8b006-557b-4337-8bf4-b56fc81653ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Manager\03. LineMgr">
+      <UniqueIdentifier>{ced22420-8a0b-417f-aaf7-35c7d9e173eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Manager\04. KeyMgr">
+      <UniqueIdentifier>{b4f734d2-c40a-488a-b859-753153e4d0f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Manager\05. CameraMgr">
+      <UniqueIdentifier>{8e206dc1-ba11-498a-bd72-81681f1d484e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Manager\06. SpriteMgr">
+      <UniqueIdentifier>{9cc2d10b-d465-41ea-a18c-37f81bd6c20a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Manager\07. SceneMgr">
+      <UniqueIdentifier>{70c17e59-b88d-4966-9aa1-1ac7c3b803fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Manager\08. TileMgr">
+      <UniqueIdentifier>{b2d7866e-ba71-4ed3-ad6f-f861225f733c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\00. Player">
+      <UniqueIdentifier>{690c488f-c7d2-4683-af87-44e31290119c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\01. Mouse">
+      <UniqueIdentifier>{487958d9-62b2-4f04-9662-dc0bf146e5ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster">
+      <UniqueIdentifier>{c40e4d5a-848c-4b9b-9fff-744b77f2e737}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Manager\09. TimeMgr">
+      <UniqueIdentifier>{3af0db6c-5252-4999-808f-2ee9b5df1c6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -30,6 +81,15 @@
     <ClInclude Include="pch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CTimeMgr.h">
+      <Filter>02. Manager\09. TimeMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CMainGame.h">
+      <Filter>00. MainGame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -37,6 +97,12 @@
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimeMgr.cpp">
+      <Filter>02. Manager\09. TimeMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CMainGame.cpp">
+      <Filter>00. MainGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
