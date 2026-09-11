@@ -11,15 +11,6 @@ private:
 	~CObjMgr();
 
 public:
-	void AddObject(OBJID eID, CObj* pObj);
-	int  Update();
-	void LateUpdate();
-	void Render(HDC hDC);
-	void Release();
-
-	void	DeleteID(OBJID eID);
-
-public:
 	static CObjMgr* GetInstance()
 	{
 		if (!m_pInstance)
@@ -36,6 +27,15 @@ public:
 			m_pInstance = nullptr;
 		}
 	}
+
+public:
+	void AddObject(OBJID eID, CObj* pObj);
+	int  Update();
+	void LateUpdate();
+	void Render(Graphics* pGraphics);
+	void Release();
+
+	void	DeleteID(OBJID eID);
 
 private:
 	static CObjMgr* m_pInstance;

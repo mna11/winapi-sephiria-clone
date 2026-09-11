@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "CObj.h"
 
+#include "CTimeMgr.h"
+
 CObj::CObj()
 	: 
 	m_fSpeed(0.f), 
@@ -19,6 +21,12 @@ CObj::~CObj()
 {
 }
 
+void CObj::SetFrame(int iStart, int iEnd, int iMotion, double dFrameSpeed)
+{
+	m_tFrame = { iStart, iEnd, iMotion, dFrameSpeed, 0UL};
+	QueryPerformanceCounter(&m_tFrame.iFrameTime);
+}
+
 void CObj::UpdateRect()
 {
 	m_tRect.left =		LONG(m_tInfo.fX - (m_tInfo.fCX / 2.f));
@@ -29,7 +37,7 @@ void CObj::UpdateRect()
 
 void CObj::MoveFrame()
 {
-	if (m_tFrame.dFrameSpeed <= GET_TIME(m_tFrame.iFrameTime))
+	if (m_tFrame.dFrameSpeed <= CTimeMgr::GetInstance()->GetTime(m_tFrame.iFrameTime))
 	{
 		++m_tFrame.iStart;
 

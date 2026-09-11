@@ -63,7 +63,7 @@ void CObjMgr::LateUpdate()
 	//CCollisionMgr::CollisionCircle(m_ObjList[BULLET], m_ObjList[MONSTER]);
 }
 
-void CObjMgr::Render(HDC hDC)
+void CObjMgr::Render(Graphics* pGraphics)
 {
 
 	for (size_t i = 0; i < EnumToInt(RENDERID::END); ++i)
@@ -75,7 +75,7 @@ void CObjMgr::Render(HDC hDC)
 
 		for (auto& pObj : m_RenderList[i])
 		{
-			pObj->Render(hDC);
+			pObj->Render(pGraphics);
 		}
 
 		m_RenderList[i].clear();

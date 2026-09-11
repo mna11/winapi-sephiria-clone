@@ -30,20 +30,23 @@ public:
 public:
 	void Initialize();
 	void Update();
-	void LateUpdate() {}  // 현재 사용할 이유 없음 
-	void Render() {}      // 현재 사용할 이유 없음
 	void Release();
 
 public:
-	double GetDeltaTime() { return m_dDT; }
-	double GetDuration(LARGE_INTEGER llStartTick) 
+	double GetDeltaTime() const { return m_dDT; }
+	double GetTime(LARGE_INTEGER llStartTick) const
 	{ 
 		return static_cast<double>(m_llCurCount.QuadPart - llStartTick.QuadPart) / static_cast<double>(m_llFrequncyCount.QuadPart); 
+	}
+	double GetTime() const
+	{
+		return GetTime(m_llStartCount);
 	}
 
 private:
 	static CTimeMgr* m_pInstance;
 
+	LARGE_INTEGER m_llStartCount;    // 프로그램 시작 시 카운트
 	LARGE_INTEGER m_llCurCount;      // 지금 프레임 카운트
 	LARGE_INTEGER m_llPrevCount;     // 이전 프레임 카운트
 	LARGE_INTEGER m_llFrequncyCount; // 1초 카운트 빈도

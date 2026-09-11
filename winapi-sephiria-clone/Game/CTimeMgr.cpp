@@ -8,10 +8,11 @@ CTimeMgr* CTimeMgr::m_pInstance = nullptr;
 CTimeMgr::CTimeMgr()
 	: m_iFPS(0), m_dDT(0.), m_dAcc(0.), m_iCallCount(0)
 {
+	ZeroMemory(&m_llStartCount, sizeof(LARGE_INTEGER));
 	ZeroMemory(&m_llCurCount, sizeof(LARGE_INTEGER));
 	ZeroMemory(&m_llPrevCount, sizeof(LARGE_INTEGER));
 	ZeroMemory(&m_llFrequncyCount, sizeof(LARGE_INTEGER));
-	ZeroMemory(m_szFPS, sizeof(LARGE_INTEGER));
+	ZeroMemory(m_szFPS, sizeof(m_szFPS));
 }
 
 CTimeMgr::~CTimeMgr()
@@ -22,7 +23,8 @@ CTimeMgr::~CTimeMgr()
 void CTimeMgr::Initialize()
 {
 	QueryPerformanceFrequency(&m_llFrequncyCount);
-	QueryPerformanceCounter(&m_llPrevCount);
+	QueryPerformanceCounter(&m_llStartCount);
+	m_llPrevCount = m_llStartCount;
 }
 
 void CTimeMgr::Update()

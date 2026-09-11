@@ -2,7 +2,6 @@
 //
 
 #include "pch.h"
-#include "framework.h"
 #include "Game.h"
 #include "CMainGame.h"
 
@@ -14,6 +13,7 @@ WCHAR       szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스
 WCHAR       szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
 HWND        g_hWnd; 
+ULONG_PTR   g_gdiplusToken;  // GDI Plus를 사용하기 위함
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -22,10 +22,12 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ LPWSTR    lpCmdLine,
+    _In_ int       nCmdShow)
 {
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -37,7 +39,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MyRegisterClass(hInstance);
 
     // 애플리케이션 초기화를 수행합니다:
-    if (!InitInstance (hInstance, nCmdShow))
+    if (!InitInstance(hInstance, nCmdShow))
     {
         return FALSE;
     }
@@ -47,33 +49,42 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg;
     msg.message = WM_NULL;
 
-    CMainGame MainGame;
-    MainGame.Initialize();
+    // gdiplus 토큰 초기화
 
-    // 게임 루프
-    while (true)
+    GdiplusStartupInput gdiplusStartUpInput;
+    GdiplusStartup(&g_gdiplusToken, &gdiplusStartUpInput, NULL);
+
     {
-        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-        {
-            if (msg.message == WM_QUIT)
-            {
-                DestroyWindow(g_hWnd);
-                break;
-            }
+        CMainGame MainGame;
+        MainGame.Initialize();
 
-            if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-            {
-                TranslateMessage(&msg);
-                DispatchMessage(&msg);
-            }
-        }
-        else
+        // 게임 루프
+        while (true)
         {
-            MainGame.Update();
-            MainGame.LateUpdate();
-            MainGame.Render();
+            if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+            {
+                if (msg.message == WM_QUIT)
+                {
+                    DestroyWindow(g_hWnd);
+                    break;
+                }
+
+                if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+                {
+                    TranslateMessage(&msg);
+                    DispatchMessage(&msg);
+                }
+            }
+            else
+            {
+                MainGame.Update();
+                MainGame.LateUpdate();
+                MainGame.Render();
+            }
         }
     }
+
+    GdiplusShutdown(g_gdiplusToken); // 토큰 끝
 
     return (int) msg.wParam;
 }
@@ -99,7 +110,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_GAME));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_GAME);
+    wcex.lpszMenuName   = NULL;
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
@@ -120,13 +131,29 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   RECT rc{ 0, 0, WINCX, WINCY };
+
+   // rc = rc의 크기 + 기본 창 스타일 + 메뉴 바의 크기 고려 여부 
+   AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+
+   // 등록한 정보를 토대로 윈도우를 만드는 작업을 진행
+   HWND hWnd = CreateWindowW(szWindowClass,     // 앞서 정의한 윈도우 클래스에 전달할 클래스 이름
+       szTitle,     // 윈도우 상단에 출력할 문자열
+       WS_OVERLAPPEDWINDOW, // 만들고자 하는 윈도우 형태(스타일) 지정
+       CW_USEDEFAULT, 0,    // 생성할 창의 LEFT, TOP 좌표
+       rc.right - rc.left,
+       rc.bottom - rc.top,    // 생성할 창의 가로, 세로 사이즈
+       nullptr,     // 부모 윈도우가 있다면 부모 윈도우의 핸들을 지정 
+       nullptr,     // 윈도우에서 사용할 메뉴의 핸들 지정
+       hInstance,   // 윈도우를 만드는 주체
+       nullptr);       // 운영체제가 특수한 목적으로 사용(건드릴 일 없음)
 
    if (!hWnd)
    {
       return FALSE;
    }
+
+   g_hWnd = hWnd;
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
