@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 class CTimeMgr
 {
 private:
@@ -29,12 +30,16 @@ public:
 public:
 	void Initialize();
 	void Update();
-	void LateUpdate() {} // 현재 사용할 이유 없음 
+	void LateUpdate() {}  // 현재 사용할 이유 없음 
 	void Render() {}      // 현재 사용할 이유 없음
 	void Release();
 
 public:
 	double GetDeltaTime() { return m_dDT; }
+	double GetDuration(LARGE_INTEGER llStartTick) 
+	{ 
+		return static_cast<double>(m_llCurCount.QuadPart - llStartTick.QuadPart) / static_cast<double>(m_llFrequncyCount.QuadPart); 
+	}
 
 private:
 	static CTimeMgr* m_pInstance;

@@ -90,6 +90,9 @@
     <ClInclude Include="CMainGame.h">
       <Filter>00. MainGame</Filter>
     </ClInclude>
+    <ClInclude Include="CObj.h">
+      <Filter>01. Obj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -103,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="CMainGame.cpp">
       <Filter>00. MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CObj.cpp">
+      <Filter>01. Obj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

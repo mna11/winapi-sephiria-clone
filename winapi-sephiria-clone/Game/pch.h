@@ -9,6 +9,14 @@
 
 // 여기에 미리 컴파일하려는 헤더 추가
 #include "framework.h"
+
+#include <vector>
+#include <map>
+#include <list>
+#include <algorithm>
+
 #include "Define.h"
+
+using namespace std;
 
 #endif //PCH_H

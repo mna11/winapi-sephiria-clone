@@ -1,0 +1,41 @@
+﻿#include "pch.h"
+#include "CObj.h"
+
+CObj::CObj()
+	: 
+	m_fSpeed(0.f), 
+	m_fAngle(0.f), 
+	m_bDead(false),
+	m_pTarget(nullptr),
+	m_pFrameKey(L""),
+	m_eRender(RENDERID::END)
+{
+	ZeroMemory(&m_tInfo, sizeof(INFO));
+	ZeroMemory(&m_tRect, sizeof(RECT));
+	ZeroMemory(&m_tFrame, sizeof(FRAME));
+}
+
+CObj::~CObj()
+{
+}
+
+void CObj::UpdateRect()
+{
+	m_tRect.left =		LONG(m_tInfo.fX - (m_tInfo.fCX / 2.f));
+	m_tRect.top =		LONG(m_tInfo.fY - (m_tInfo.fCY / 2.f));
+	m_tRect.right =		LONG(m_tInfo.fX + (m_tInfo.fCX / 2.f));
+	m_tRect.bottom =	LONG(m_tInfo.fY + (m_tInfo.fCY / 2.f));
+}
+
+void CObj::MoveFrame()
+{
+	if (m_tFrame.dFrameSpeed <= GET_TIME(m_tFrame.iFrameTime))
+	{
+		++m_tFrame.iStart;
+
+		QueryPerformanceCounter(&m_tFrame.iFrameTime);
+
+		if (m_tFrame.iStart > m_tFrame.iEnd)
+			m_tFrame.iStart = 0;
+	}
+}

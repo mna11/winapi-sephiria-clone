@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CMainGame.h" />
+    <ClInclude Include="CObj.h" />
     <ClInclude Include="CTimeMgr.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="framework.h" />
@@ -142,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CMainGame.cpp" />
+    <ClCompile Include="CObj.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="pch.cpp">
