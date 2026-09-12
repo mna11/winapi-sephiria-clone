@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "CObjMgr.h"
+#include "CCameraMgr.h"
 
 CObjMgr* CObjMgr::m_pInstance = nullptr;
 
@@ -55,8 +56,12 @@ void CObjMgr::LateUpdate()
 			if (m_ObjList[i].empty())
 				break;
 
-			RENDERID  eID = pObj->GetRenderID();
-			m_RenderList[EnumToInt(eID)].push_back(pObj);
+			// 현재 카메라 영역에 보이는 것만 
+			if (CCameraMgr::GetInstance()->Culling(pObj))
+			{
+				RENDERID  eID = pObj->GetRenderID();
+				m_RenderList[EnumToInt(eID)].push_back(pObj);
+			}
 		}
 	}
 	//CCollisionMgr::CollisionRectEx(m_ObjList[PLAYER], m_ObjList[MONSTER]);

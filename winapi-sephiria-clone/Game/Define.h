@@ -17,6 +17,8 @@
 
 #define		VK_MAX	0xff
 
+#define		PI		3.14f
+
 /////////////////////////////////////////
 // 매니저 싱글톤 단축
 // - TimeMgr
@@ -32,8 +34,8 @@
 /////////////////////////////////////////
 // 열거체
 
-enum class OBJID	{ PLAYER, OBJID_MONSTER, END };
-enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, END };
+enum class OBJID	{ PLAYER, MONSTER, CAMERA, CAMERA_TARGET, END };
+enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, END };
 enum class SCENEID	{ STAGE, END };
 
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };

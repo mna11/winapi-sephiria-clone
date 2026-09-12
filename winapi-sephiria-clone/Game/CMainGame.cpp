@@ -37,6 +37,9 @@ void CMainGame::Initialize()
 #pragma pop_macro("new")
 
 	CSceneMgr::GetInstance()->RequestChange(SCENEID::STAGE);
+
+	CObjMgr::GetInstance()->Initialize();
+	CCameraMgr::GetInstance()->Initialize();
 }
 
 void CMainGame::Update()

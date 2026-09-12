@@ -20,6 +20,7 @@
 #include <gdiplus.h>
 #pragma comment(lib, "Gdiplus.lib")
 
+#include "CVector.h"
 #include "Define.h"
 
 using namespace std;

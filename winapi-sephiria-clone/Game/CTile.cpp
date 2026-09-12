@@ -38,7 +38,6 @@ void CTile::Render(Graphics* pGraphics)
 
     int iScrollX = (int)CCameraMgr::GetInstance()->GetScrollX();
     int iScrollY = (int)CCameraMgr::GetInstance()->GetScrollY();
-
     pGraphics->DrawImage(
         pImg, 
         m_tRect.left + iScrollX,

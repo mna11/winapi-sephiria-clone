@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-#include "Define.h"
+class CCamera;
+class CObj;
 
 class CCameraMgr
 {
@@ -13,8 +14,9 @@ private:
 public:
 	static CCameraMgr* GetInstance()
 	{
-		if (!m_pInstance)
+		if (!m_pInstance) {
 			m_pInstance = new CCameraMgr;
+		}
 
 		return m_pInstance;
 	}
@@ -29,18 +31,29 @@ public:
 	}
 
 public:
-	float	GetScrollX() { return m_fScrollX; }
-	float	GetScrollY() { return m_fScrollY; }
-public:
-	void	AddScrollX(float fX) { m_fScrollX += fX; }
-	void	AddScrollY(float fY) { m_fScrollY += fY; }
+	void Initialize();
+	/*void Update();
+	void LateUpdate();
+	void Render();*/
+	void Release(); 
 
 public:
-	void		Scroll_Lock();
+	int GetScrollX() const { return m_iScrollX; }
+	int GetScrollY() const { return m_iScrollY; }
+
+public:
+	void SetCameraPos(float fX, float fY);
+	void SetCameraTarget(CObj* pObj);
+	void MoveCamera(const CVector& rhs, float fSpeed);
+
+public:
+	bool Culling(CObj* pObj); // 카메라 화면 안에 들어오지 않는 Obj는 false를 리턴한다. 
 
 private:
 	static CCameraMgr* m_pInstance;
 
-	float			m_fScrollX;
-	float			m_fScrollY;
+	CCamera*		m_pCamera;
+
+	int			m_iScrollX;
+	int			m_iScrollY;
 };

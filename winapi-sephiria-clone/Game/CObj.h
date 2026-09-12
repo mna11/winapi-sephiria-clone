@@ -21,6 +21,7 @@ public:
 	void			SetDead(bool bDead) { m_bDead = bDead; }
 	void			SetFrame(int iStart, int iEnd, int iMotion, double dFrameSpeed);
 	void			SetAngle(float _fAngle) { m_fAngle = _fAngle; }
+	virtual void	SetTarget(CObj* pObj) { if(nullptr != pObj) m_pTarget = pObj; }
 
 protected:
 	virtual void UpdateRect();

@@ -29,13 +29,24 @@ public:
 	}
 
 public:
-	void AddObject(OBJID eID, CObj* pObj);
+	void Initialize() {}
 	int  Update();
 	void LateUpdate();
 	void Render(Graphics* pGraphics);
 	void Release();
 
+public:
+	void AddObject(OBJID eID, CObj* pObj);
+	CObj* GetPlayer() { 
+		if (m_ObjList[EnumToInt(OBJID::PLAYER)].empty())
+			return nullptr;
+
+		return m_ObjList[EnumToInt(OBJID::PLAYER)].front(); 
+	}
+
+public:
 	void	DeleteID(OBJID eID);
+
 
 private:
 	static CObjMgr* m_pInstance;

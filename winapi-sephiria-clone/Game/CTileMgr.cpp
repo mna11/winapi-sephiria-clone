@@ -46,9 +46,6 @@ void CTileMgr::LateUpdate()
 
 void CTileMgr::Render(Graphics* pGraphics)
 {
-	//for (auto& pTile : m_vecTile)
-	//	pTile->Render(hDC);		// 310
-
 	int iCullX = abs((int)CCameraMgr::GetInstance()->GetScrollX() / TILECX);
 	int iCullY = abs((int)CCameraMgr::GetInstance()->GetScrollY() / TILECY);
 

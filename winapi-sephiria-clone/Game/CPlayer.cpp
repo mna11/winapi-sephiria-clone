@@ -3,6 +3,7 @@
 
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
+#include "CCameraMgr.h"
 
 CPlayer::CPlayer()
 {
@@ -42,7 +43,9 @@ void CPlayer::Render(Graphics* pGraphics)
 #pragma push_macro("new")
 #undef new
 	Pen* pen = new Pen(Color(255, 0, 0, 0), 3);
-	pGraphics->DrawRectangle(pen, (int)m_tRect.left, (int)m_tRect.top, (int)m_tInfo.fCX, (int)m_tInfo.fCY);
+	int iScrollX = CCameraMgr::GetInstance()->GetScrollX();
+	int iScrollY = CCameraMgr::GetInstance()->GetScrollY();
+	pGraphics->DrawRectangle(pen, (int)m_tRect.left + iScrollX, (int)m_tRect.top + iScrollY, (int)m_tInfo.fCX, (int)m_tInfo.fCY);
 	delete pen;
 #pragma pop_macro("new")
 
