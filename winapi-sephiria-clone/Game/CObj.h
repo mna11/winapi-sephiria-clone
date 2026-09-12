@@ -17,7 +17,8 @@ public:
 	const RECT&		GetRect() const { return m_tRect; }
 	RENDERID		GetRenderID() const { return m_eRender; }
 public:
-	void			SetPos(float _fX, float _fY) { m_tInfo.fX = _fX; m_tInfo.fY = _fY; }
+	void			SetPos(float _fX, float _fY) { m_tInfo.vPoint.fX = _fX; m_tInfo.vPoint.fY = _fY; }
+	void			SetPos(VEC vec)				 { m_tInfo.vPoint = { vec }; }
 	void			SetDead(bool bDead) { m_bDead = bDead; }
 	void			SetFrame(int iStart, int iEnd, int iMotion, double dFrameSpeed);
 	void			SetAngle(float _fAngle) { m_fAngle = _fAngle; }

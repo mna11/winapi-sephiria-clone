@@ -45,7 +45,7 @@ void CPlayer::Render(Graphics* pGraphics)
 	Pen* pen = new Pen(Color(255, 0, 0, 0), 3);
 	int iScrollX = CCameraMgr::GetInstance()->GetScrollX();
 	int iScrollY = CCameraMgr::GetInstance()->GetScrollY();
-	pGraphics->DrawRectangle(pen, (int)m_tRect.left + iScrollX, (int)m_tRect.top + iScrollY, (int)m_tInfo.fCX, (int)m_tInfo.fCY);
+	pGraphics->DrawRectangle(pen, (int)m_tRect.left + iScrollX, (int)m_tRect.top + iScrollY, (int)m_tInfo.vSize.fX, (int)m_tInfo.vSize.fY);
 	delete pen;
 #pragma pop_macro("new")
 
@@ -59,18 +59,18 @@ void CPlayer::KeyInput()
 {
 	if (KEY_PRESS(VK_RIGHT))
 	{
-		m_tInfo.fX += m_fSpeed * DT;
+		m_tInfo.vPoint.fX += m_fSpeed * DT;
 	}
 	if (KEY_PRESS(VK_LEFT))
 	{
-		m_tInfo.fX -= m_fSpeed * DT;
+		m_tInfo.vPoint.fX -= m_fSpeed * DT;
 	}
 	if (KEY_PRESS(VK_UP))
 	{
-		m_tInfo.fY -= m_fSpeed * DT;
+		m_tInfo.vPoint.fY -= m_fSpeed * DT;
 	}
 	if (KEY_PRESS(VK_DOWN))
 	{
-		m_tInfo.fY += m_fSpeed * DT;
+		m_tInfo.vPoint.fY += m_fSpeed * DT;
 	}
 }

@@ -29,10 +29,10 @@ void CObj::SetFrame(int iStart, int iEnd, int iMotion, double dFrameSpeed)
 
 void CObj::UpdateRect()
 {
-	m_tRect.left =		LONG(m_tInfo.fX - (m_tInfo.fCX / 2.f));
-	m_tRect.top =		LONG(m_tInfo.fY - (m_tInfo.fCY / 2.f));
-	m_tRect.right =		LONG(m_tInfo.fX + (m_tInfo.fCX / 2.f));
-	m_tRect.bottom =	LONG(m_tInfo.fY + (m_tInfo.fCY / 2.f));
+	m_tRect.left =		LONG(m_tInfo.vPoint.fX - (m_tInfo.vSize.fX / 2.f));
+	m_tRect.top =		LONG(m_tInfo.vPoint.fY - (m_tInfo.vSize.fY / 2.f));
+	m_tRect.right =		LONG(m_tInfo.vPoint.fX + (m_tInfo.vSize.fX / 2.f));
+	m_tRect.bottom =	LONG(m_tInfo.vPoint.fY + (m_tInfo.vSize.fY / 2.f));
 }
 
 void CObj::MoveFrame()

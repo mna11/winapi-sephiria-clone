@@ -154,7 +154,7 @@ void CTileMgr::LoadTile()
 		if (0 == dwbyte)
 			break;
 
-		CObj* pTile = CAbstractFactory<CTile>::CreateObj(tTile.fX, tTile.fY);
+		CObj* pTile = CAbstractFactory<CTile>::CreateObj(tTile.vPoint.fX, tTile.vPoint.fY);
 		dynamic_cast<CTile*>(pTile)->SetDrawID(iDrawID);
 		dynamic_cast<CTile*>(pTile)->SetOption(iOption);
 

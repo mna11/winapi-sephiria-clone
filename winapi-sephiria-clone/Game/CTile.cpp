@@ -14,8 +14,8 @@ CTile::~CTile()
 
 void CTile::Initialize()
 {
-    m_tInfo.fCX = TILECX;
-    m_tInfo.fCY = TILECY;
+    m_tInfo.vSize.fX = TILECX;
+    m_tInfo.vSize.fY = TILECY;
 }
 
 int CTile::Update()

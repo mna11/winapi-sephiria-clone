@@ -75,7 +75,7 @@ void CObjMgr::Render(Graphics* pGraphics)
 	{
 		m_RenderList[i].sort([](CObj* pDst, CObj* pSrc)->bool
 			{
-				return pDst->GetInfo().fY > pSrc->GetInfo().fY;
+				return pDst->GetInfo().vPoint.fY > pSrc->GetInfo().vPoint.fY;
 			});
 
 		for (auto& pObj : m_RenderList[i])
