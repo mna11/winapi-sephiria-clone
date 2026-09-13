@@ -15,6 +15,9 @@ WCHAR       szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 �
 HWND        g_hWnd; 
 ULONG_PTR   g_gdiplusToken;  // GDI Plus를 사용하기 위함
 
+// 난수 엔진
+mt19937     g_engine((unsigned int)time(NULL));
+
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -53,6 +56,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     GdiplusStartupInput gdiplusStartUpInput;
     GdiplusStartup(&g_gdiplusToken, &gdiplusStartUpInput, NULL);
+
+    // 난수 엔진 초기화
 
     {
         CMainGame MainGame;

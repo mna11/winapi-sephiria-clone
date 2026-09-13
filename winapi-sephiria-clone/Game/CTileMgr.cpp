@@ -46,11 +46,10 @@ void CTileMgr::LateUpdate()
 
 void CTileMgr::Render(Graphics* pGraphics)
 {
-	//for (auto& pTile : m_vecTile)
-	//	pTile->Render(hDC);		// 310
+	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
-	int iCullX = abs((int)CCameraMgr::GetInstance()->GetScrollX() / TILECX);
-	int iCullY = abs((int)CCameraMgr::GetInstance()->GetScrollY() / TILECY);
+	int iCullX = abs(vScroll.fX / TILECX);
+	int iCullY = abs(vScroll.fY / TILECY);
 
 	int iMaxX = iCullX + (WINCX / TILECX) + 2;
 	int iMaxY = iCullY + (WINCY / TILECY) + 2;
@@ -157,7 +156,7 @@ void CTileMgr::LoadTile()
 		if (0 == dwbyte)
 			break;
 
-		CObj* pTile = CAbstractFactory<CTile>::CreateObj(tTile.fX, tTile.fY);
+		CObj* pTile = CAbstractFactory<CTile>::CreateObj(tTile.vPoint.fX, tTile.vPoint.fY);
 		dynamic_cast<CTile*>(pTile)->SetDrawID(iDrawID);
 		dynamic_cast<CTile*>(pTile)->SetOption(iOption);
 

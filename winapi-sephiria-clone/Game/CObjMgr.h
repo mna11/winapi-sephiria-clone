@@ -35,7 +35,17 @@ public:
 	void Render(Graphics* pGraphics);
 	void Release();
 
+public:
+	CObj* GetPlayer() { 
+		if (m_ObjList[EnumToInt(OBJID::PLAYER)].empty())
+			return nullptr;
+
+		return m_ObjList[EnumToInt(OBJID::PLAYER)].front(); 
+	}
+
+public:
 	void	DeleteID(OBJID eID);
+
 
 private:
 	static CObjMgr* m_pInstance;

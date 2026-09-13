@@ -3,6 +3,7 @@
 
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
+#include "CCameraMgr.h"
 
 CPlayer::CPlayer()
 {
@@ -38,14 +39,12 @@ void CPlayer::LateUpdate()
 
 void CPlayer::Render(Graphics* pGraphics)
 {
-
-#pragma push_macro("new")
-#undef new
-	Pen* pen = new Pen(Color(255, 0, 0, 0), 3);
-	pGraphics->DrawRectangle(pen, (int)m_tRect.left, (int)m_tRect.top, (int)m_tInfo.fCX, (int)m_tInfo.fCY);
-	delete pen;
-#pragma pop_macro("new")
-
+	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
+	SolidBrush blackBrush(Color(255, 255, 255, 255));
+	pGraphics->FillRectangle(&blackBrush, (int)(m_tRect.left + vScroll.fX),
+								  (int)(m_tRect.top + vScroll.fY), 
+								  (int)m_tInfo.vSize.fX, 
+								  (int)m_tInfo.vSize.fY);
 }
 
 void CPlayer::Release()
@@ -56,18 +55,18 @@ void CPlayer::KeyInput()
 {
 	if (KEY_PRESS(VK_RIGHT))
 	{
-		m_tInfo.fX += m_fSpeed * DT;
+		m_tInfo.vPoint.fX += m_fSpeed * DT;
 	}
 	if (KEY_PRESS(VK_LEFT))
 	{
-		m_tInfo.fX -= m_fSpeed * DT;
+		m_tInfo.vPoint.fX -= m_fSpeed * DT;
 	}
 	if (KEY_PRESS(VK_UP))
 	{
-		m_tInfo.fY -= m_fSpeed * DT;
+		m_tInfo.vPoint.fY -= m_fSpeed * DT;
 	}
 	if (KEY_PRESS(VK_DOWN))
 	{
-		m_tInfo.fY += m_fSpeed * DT;
+		m_tInfo.vPoint.fY += m_fSpeed * DT;
 	}
 }

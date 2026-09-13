@@ -140,6 +140,7 @@
     <ClInclude Include="CLine.h" />
     <ClInclude Include="CLineMgr.h" />
     <ClInclude Include="CMainGame.h" />
+    <ClInclude Include="CMonster.h" />
     <ClInclude Include="CObj.h" />
     <ClInclude Include="CObjMgr.h" />
     <ClInclude Include="CPlayer.h" />
@@ -165,6 +166,7 @@
     <ClCompile Include="CLine.cpp" />
     <ClCompile Include="CLineMgr.cpp" />
     <ClCompile Include="CMainGame.cpp" />
+    <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CObj.cpp" />
     <ClCompile Include="CObjMgr.cpp" />
     <ClCompile Include="CPlayer.cpp" />

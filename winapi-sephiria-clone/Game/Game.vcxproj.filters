@@ -64,9 +64,6 @@
     <Filter Include="02. Manager\03. LineMgr\00. Line">
       <UniqueIdentifier>{f520e4f6-2655-4173-aed7-b8f8c36e7a6c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Manager\05. CameraMgr\00. Camera">
-      <UniqueIdentifier>{f1dcc1dc-5309-4c63-8b30-9416739325fa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Manager\08. TileMgr\00. Tile">
       <UniqueIdentifier>{2812b0d8-a1b7-40ed-981b-429b03079651}</UniqueIdentifier>
     </Filter>
@@ -75,6 +72,9 @@
     </Filter>
     <Filter Include="03. Scene\00. Stage">
       <UniqueIdentifier>{e00739a8-abf4-4dbc-8042-e0a59b299a12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Manager\05. CameraMgr\00. Camera">
+      <UniqueIdentifier>{cd5475f6-a7bd-484f-90cd-229f76d6f6a2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -126,9 +126,6 @@
     <ClInclude Include="CCameraMgr.h">
       <Filter>02. Manager\05. CameraMgr</Filter>
     </ClInclude>
-    <ClInclude Include="CCamera.h">
-      <Filter>02. Manager\05. CameraMgr\00. Camera</Filter>
-    </ClInclude>
     <ClInclude Include="CTileMgr.h">
       <Filter>02. Manager\08. TileMgr</Filter>
     </ClInclude>
@@ -149,6 +146,12 @@
     </ClInclude>
     <ClInclude Include="CStage.h">
       <Filter>03. Scene\00. Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="CCamera.h">
+      <Filter>02. Manager\05. CameraMgr\00. Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonster.h">
+      <Filter>01. Obj\02. Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -185,9 +188,6 @@
     <ClCompile Include="CCameraMgr.cpp">
       <Filter>02. Manager\05. CameraMgr</Filter>
     </ClCompile>
-    <ClCompile Include="CCamera.cpp">
-      <Filter>02. Manager\05. CameraMgr\00. Camera</Filter>
-    </ClCompile>
     <ClCompile Include="CTileMgr.cpp">
       <Filter>02. Manager\08. TileMgr</Filter>
     </ClCompile>
@@ -208,6 +208,12 @@
     </ClCompile>
     <ClCompile Include="CStage.cpp">
       <Filter>03. Scene\00. Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="CCamera.cpp">
+      <Filter>02. Manager\05. CameraMgr\00. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonster.cpp">
+      <Filter>01. Obj\02. Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

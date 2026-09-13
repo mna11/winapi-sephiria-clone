@@ -15,6 +15,7 @@
 #include <array>
 #include <map>
 #include <algorithm>
+#include <random>
 
 #include <ole2.h>
 #include <gdiplus.h>

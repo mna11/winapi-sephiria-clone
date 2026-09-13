@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "CObjMgr.h"
+#include "CCameraMgr.h"
 
 CObjMgr* CObjMgr::m_pInstance = nullptr;
 
@@ -39,8 +40,6 @@ int CObjMgr::Update()
 		}
 	}
 
-
-
 	return 0;
 }
 
@@ -70,7 +69,7 @@ void CObjMgr::Render(Graphics* pGraphics)
 	{
 		m_RenderList[i].sort([](CObj* pDst, CObj* pSrc)->bool
 			{
-				return pDst->GetInfo().fY > pSrc->GetInfo().fY;
+				return pDst->GetInfo().vPoint.fY > pSrc->GetInfo().vPoint.fY;
 			});
 
 		for (auto& pObj : m_RenderList[i])

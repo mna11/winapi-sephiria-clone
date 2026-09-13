@@ -14,8 +14,8 @@ CTile::~CTile()
 
 void CTile::Initialize()
 {
-    m_tInfo.fCX = TILECX;
-    m_tInfo.fCY = TILECY;
+    m_tInfo.vSize.fX = TILECX;
+    m_tInfo.vSize.fY = TILECY;
 }
 
 int CTile::Update()
@@ -36,13 +36,12 @@ void CTile::Render(Graphics* pGraphics)
     if (nullptr == pImg)
         return;
 
-    int iScrollX = (int)CCameraMgr::GetInstance()->GetScrollX();
-    int iScrollY = (int)CCameraMgr::GetInstance()->GetScrollY();
+    VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
     pGraphics->DrawImage(
         pImg, 
-        m_tRect.left + iScrollX,
-        m_tRect.top + iScrollY,
+        int(m_tRect.left + vScroll.fX),
+        int(m_tRect.top + vScroll.fY),
         TILECX * m_iDrawID, 0, TILECX, TILECY,
         UnitPixel
         );

@@ -43,6 +43,7 @@ void CMainGame::Update()
 {
 	CTimeMgr::GetInstance()->Update();
 	CKeyMgr::GetInstance()->Update();
+	CCameraMgr::GetInstance()->Update();
 
 	CSceneMgr::GetInstance()->Update();
 }
@@ -50,13 +51,15 @@ void CMainGame::Update()
 void CMainGame::LateUpdate()
 {
 	CSceneMgr::GetInstance()->LateUpdate();
+
+	CCameraMgr::GetInstance()->LateUpdate();
 }
 
 void CMainGame::Render()
 {
 	m_pBackGraphics->Clear(Color(255, 255, 255, 255));
 	CSceneMgr::GetInstance()->Render(m_pBackGraphics);
-	m_pBackGraphics->Flush(FlushIntentionSync);
+	//m_pBackGraphics->Flush(FlushIntentionSync); // 대충 다 그릴 때까지 대기라는데
 
 	BitBlt(m_hDC, 0, 0, WINCX, WINCY, m_hBackDC, 0, 0, SRCCOPY);
 }
