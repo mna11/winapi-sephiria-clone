@@ -40,8 +40,6 @@ int CObjMgr::Update()
 		}
 	}
 
-
-
 	return 0;
 }
 
@@ -56,12 +54,8 @@ void CObjMgr::LateUpdate()
 			if (m_ObjList[i].empty())
 				break;
 
-			// 현재 카메라 영역에 보이는 것만 
-			if (CCameraMgr::GetInstance()->Culling(pObj))
-			{
-				RENDERID  eID = pObj->GetRenderID();
-				m_RenderList[EnumToInt(eID)].push_back(pObj);
-			}
+			RENDERID  eID = pObj->GetRenderID();
+			m_RenderList[EnumToInt(eID)].push_back(pObj);
 		}
 	}
 	//CCollisionMgr::CollisionRectEx(m_ObjList[PLAYER], m_ObjList[MONSTER]);

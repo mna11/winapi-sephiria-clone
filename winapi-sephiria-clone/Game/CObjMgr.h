@@ -29,14 +29,13 @@ public:
 	}
 
 public:
-	void Initialize() {}
+	void AddObject(OBJID eID, CObj* pObj);
 	int  Update();
 	void LateUpdate();
 	void Render(Graphics* pGraphics);
 	void Release();
 
 public:
-	void AddObject(OBJID eID, CObj* pObj);
 	CObj* GetPlayer() { 
 		if (m_ObjList[EnumToInt(OBJID::PLAYER)].empty())
 			return nullptr;

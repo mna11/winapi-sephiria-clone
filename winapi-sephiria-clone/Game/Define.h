@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <random>
+
 /////////////////////////////////////////
 
 #define		PURE =0
@@ -34,7 +36,7 @@
 /////////////////////////////////////////
 // 열거체
 
-enum class OBJID	{ PLAYER, MONSTER, CAMERA, CAMERA_TARGET, END };
+enum class OBJID	{ PLAYER, MONSTER, EFFECT, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, END };
 enum class SCENEID	{ STAGE, END };
 
@@ -58,9 +60,27 @@ typedef struct tagVector
 	tagVector	operator-(const tagVector& rhs) const	{ return tagVector{ fX - rhs.fX, fY - rhs.fY }; }
 	tagVector	operator*(float fScalar) const			{ return tagVector{ fScalar * fX, fScalar * fY }; }
 	bool	    operator==(const tagVector& rhs) const  { return (fX == rhs.fX && fY == rhs.fY); }
+	tagVector& operator+=(const tagVector& rhs) {
+		fX += rhs.fX;
+		fY += rhs.fY;
+		return *this;
+	}
+	tagVector& operator-=(const tagVector& rhs) {
+		fX -= rhs.fX;
+		fY -= rhs.fY;
+		return *this;
+	}
+	tagVector& operator=(const tagVector& rhs) {
+		fX = rhs.fX;
+		fY = rhs.fY;
+		return *this;
+	}
+
 
 	// 벡터 내적
 	float		Dot(const tagVector& rhs) const			{ return fX * rhs.fY + fY * rhs.fX; }
+	// 벡터 크기
+	float		Norm() const							{ return sqrtf(fX * fX + fY * fY); }
 	// 벡터 정규화
 	tagVector	Normalize() const 
 	{ 
@@ -130,3 +150,4 @@ constexpr int EnumToInt(T e)
 }
 
 extern HWND g_hWnd;
+extern std::mt19937 g_engine;

@@ -39,16 +39,12 @@ void CPlayer::LateUpdate()
 
 void CPlayer::Render(Graphics* pGraphics)
 {
-
-#pragma push_macro("new")
-#undef new
-	Pen* pen = new Pen(Color(255, 0, 0, 0), 3);
-	int iScrollX = CCameraMgr::GetInstance()->GetScrollX();
-	int iScrollY = CCameraMgr::GetInstance()->GetScrollY();
-	pGraphics->DrawRectangle(pen, (int)m_tRect.left + iScrollX, (int)m_tRect.top + iScrollY, (int)m_tInfo.vSize.fX, (int)m_tInfo.vSize.fY);
-	delete pen;
-#pragma pop_macro("new")
-
+	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
+	SolidBrush blackBrush(Color(255, 255, 255, 255));
+	pGraphics->FillRectangle(&blackBrush, (int)(m_tRect.left + vScroll.fX),
+								  (int)(m_tRect.top + vScroll.fY), 
+								  (int)m_tInfo.vSize.fX, 
+								  (int)m_tInfo.vSize.fY);
 }
 
 void CPlayer::Release()

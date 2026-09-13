@@ -17,9 +17,8 @@ CLine::~CLine()
 
 void CLine::Render(HDC hDC)
 {
-	int iScrollX = (int)CCameraMgr::GetInstance()->GetScrollX();
-	int iScrollY = (int)CCameraMgr::GetInstance()->GetScrollY();
+	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
-	MoveToEx(hDC, (int)m_tLine.tLPoint.vPoint.fX + iScrollX, (int)m_tLine.tLPoint.vPoint.fY, nullptr);
-	LineTo(hDC, (int)m_tLine.tRPoint.vPoint.fX + iScrollX, (int)m_tLine.tRPoint.vPoint.fY);
+	MoveToEx(hDC, (int)(m_tLine.tLPoint.vPoint.fX + vScroll.fX), (int)(m_tLine.tLPoint.vPoint.fY + vScroll.fY), nullptr);
+	LineTo(hDC, (int)(m_tLine.tRPoint.vPoint.fX + vScroll.fX), (int)(m_tLine.tRPoint.vPoint.fY + vScroll.fY));
 }

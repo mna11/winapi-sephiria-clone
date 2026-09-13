@@ -46,8 +46,10 @@ void CTileMgr::LateUpdate()
 
 void CTileMgr::Render(Graphics* pGraphics)
 {
-	int iCullX = abs((int)CCameraMgr::GetInstance()->GetScrollX() / TILECX);
-	int iCullY = abs((int)CCameraMgr::GetInstance()->GetScrollY() / TILECY);
+	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
+
+	int iCullX = abs(vScroll.fX / TILECX);
+	int iCullY = abs(vScroll.fY / TILECY);
 
 	int iMaxX = iCullX + (WINCX / TILECX) + 2;
 	int iMaxY = iCullY + (WINCY / TILECY) + 2;

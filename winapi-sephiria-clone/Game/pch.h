@@ -15,12 +15,12 @@
 #include <array>
 #include <map>
 #include <algorithm>
+#include <random>
 
 #include <ole2.h>
 #include <gdiplus.h>
 #pragma comment(lib, "Gdiplus.lib")
 
-#include "CVector.h"
 #include "Define.h"
 
 using namespace std;
