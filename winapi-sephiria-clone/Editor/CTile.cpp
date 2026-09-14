@@ -22,83 +22,61 @@ void CTile::Initialize()
 
 int CTile::Update()
 {
-    if (!m_tTile.bDraw)
-        return NOEVENT;
-
-    __super::UpdateRect();
-
     return NOEVENT;
 }
 
 void CTile::LateUpdate()
 {
-    if (!m_tTile.bDraw)
-        return;
+    
 }
 
 void CTile::Render(Graphics* pGraphics)
 {
-    if (!m_tTile.bDraw)
-        return;
-
     Image* pTile = CImgMgr::GetInstance()->FindImg(L"LIB_TILE_BG");
     if (nullptr == pTile)
         return;
 
     VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
+    Render(pGraphics, pTile, vScroll);
+}
+
+// 최적화를 위해, TileMgr에서 이미지 객체를 한번만 불러오게 함 - 하는 김에 스크롤도
+void CTile::Render(Graphics* pGraphics, Image* pTileImg, VEC& vScroll)
+{
     RectF destRect = { m_tRect.left + vScroll.fX, m_tRect.top + vScroll.fY, 
                       TILECX, TILECY };
 
     int iCellSize = 16;
-    if (CTileMgr::GetInstance()->GetPreview())
-    {
-        ColorMatrix colorMatrix = { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-                                    0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-                                    0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-                                    0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-                                    0.0f, 0.0f, 0.0f, 0.0f, 1.0f };
+    pGraphics->DrawImage(
+        pTileImg, destRect,
+        iCellSize * m_tTile.iTileNumber,
+        iCellSize * EnumToInt(m_tTile.eTileType),
+        iCellSize,
+        iCellSize,
+        UnitPixel
+    );
+}
 
-        switch (m_tTile.eTileOption)
-        {
-        case TILE_OPTION::WALL:
-            colorMatrix.m[4][2] = 0.5f;
-            break;
-        case TILE_OPTION::INTERACTION:
-            colorMatrix.m[4][1] = 0.5f;
-            break;
-        case TILE_OPTION::AIR:
-            colorMatrix.m[4][0] = 0.5f;
-            break;
-        case TILE_OPTION::FLOOR:
-        default:
-            break;
-        }
-        ImageAttributes imageAtt;
-        imageAtt.SetColorMatrix(&colorMatrix, ColorMatrixFlagsDefault, ColorAdjustTypeBitmap);
-        pGraphics->DrawImage(
-            pTile, destRect,
-            iCellSize * m_tTile.iTileNumber,
-            iCellSize * EnumToInt(m_tTile.eTileType),
-            iCellSize,
-            iCellSize,
-            UnitPixel,
-            &imageAtt
-        );
-    }
-    else
-    {
-        pGraphics->DrawImage(
-            pTile, destRect,
-            iCellSize * m_tTile.iTileNumber,
-            iCellSize * EnumToInt(m_tTile.eTileType),
-            iCellSize,
-            iCellSize,
-            UnitPixel
-        );
-    }
+void CTile::Render(Graphics* pGraphics, Image* pTileImg, VEC& vScroll, ImageAttributes& ImgAttr)
+{
+    RectF destRect = { m_tRect.left + vScroll.fX, m_tRect.top + vScroll.fY,
+                     TILECX, TILECY };
+
+    int iCellSize = 16;
+
+    pGraphics->DrawImage(
+        pTileImg, destRect,
+        iCellSize * m_tTile.iTileNumber,
+        iCellSize * EnumToInt(m_tTile.eTileType),
+        iCellSize,
+        iCellSize,
+        UnitPixel,
+        &ImgAttr
+    );
 }
 
 void CTile::Release()
 {
 }
+

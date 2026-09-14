@@ -52,5 +52,7 @@ private:
 
 	vector<CObj*>		m_vecTile[EnumToInt(TILE_LAYER::END)];
 	bool				m_bPreview;
+
+	ImageAttributes		m_tImgAttr[EnumToInt(TILE_OPTION::END)];
 };
 

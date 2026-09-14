@@ -40,24 +40,64 @@ void CTileMgr::Initialize()
 	}
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Tile/Library/Library_BG.png", L"LIB_TILE_BG");
+
+	for (int i = 0; i < EnumToInt(TILE_OPTION::END); ++i)
+	{
+		ColorMatrix colorMat = {
+			1.f, 0.f, 0.f, 0.f, 0.f,
+			0.f, 1.f, 0.f, 0.f, 0.f,
+			0.f, 0.f, 1.f, 0.f, 0.f,
+			0.f, 0.f, 0.f, 1.f, 0.f,
+			0.f, 0.f, 0.f, 0.f, 1.f
+		};
+
+		switch ((TILE_OPTION)i)
+		{
+		case TILE_OPTION::WALL:
+			colorMat.m[4][2] = 0.5f;
+			break;
+		case TILE_OPTION::AIR:
+			colorMat.m[4][0] = 0.5f;
+			break;
+		case TILE_OPTION::INTERACTION:
+			colorMat.m[4][1] = 0.5f;
+			break;
+		case TILE_OPTION::FLOOR:
+			break;
+		}
+
+		m_tImgAttr[i].SetColorMatrix(
+			&colorMat,
+			ColorMatrixFlagsDefault,
+			ColorAdjustTypeBitmap
+		);
+	}
 }
 
 void CTileMgr::Update()
 {
-	for (int l = 0; l < EnumToInt(TILE_LAYER::END); ++l)
+	// 현재 타일 Update에서 하는 일이 없음 
+	/*for (int l = 0; l < EnumToInt(TILE_LAYER::END); ++l)
 	{
 		for (auto& pTile : m_vecTile[l])
-			pTile->Update();
-	}
+		{
+			if(static_cast<CTile*>(pTile)->GetTile().bDraw)
+				pTile->Update();
+		}
+	}*/
 }
 
 void CTileMgr::LateUpdate()
 {
-	for (int l = 0; l < EnumToInt(TILE_LAYER::END); ++l)
+	// 현재 타일 LateUpdate에서 하는 일이 없음 
+	/*for (int l = 0; l < EnumToInt(TILE_LAYER::END); ++l)
 	{
 		for (auto& pTile : m_vecTile[l])
-			pTile->LateUpdate();
-	}
+		{
+			if (static_cast<CTile*>(pTile)->GetTile().bDraw)
+				pTile->LateUpdate();
+		}
+	}*/
 }
 
 void CTileMgr::Render(Graphics* pGraphics)
@@ -78,6 +118,11 @@ void CTileMgr::Render(Graphics* pGraphics)
 	int iEndX   = std::clamp((int)vEnd.fX, 0, TILEX);
 	int iEndY   = std::clamp((int)vEnd.fY, 0, TILEY);
 
+	// 최적화를 위해 타일 각각이 아닌, 매니저에서 일괄적으로 호출하게 변경
+	Image* pTile = CImgMgr::GetInstance()->FindImg(L"LIB_TILE_BG");
+	if (nullptr == pTile)
+		return;
+
 	for (int i = iStartY; i < iEndY; ++i)
 	{
 		for (int j = iStartX; j < iEndX; ++j)
@@ -89,7 +134,18 @@ void CTileMgr::Render(Graphics* pGraphics)
 				if (0 > iIndex || m_vecTile[l].size() <= (size_t)iIndex)
 					continue;
 
-				m_vecTile[l][iIndex]->Render(pGraphics);
+				if (static_cast<CTile*>(m_vecTile[l][iIndex])->GetTile().bDraw)
+				{
+					if (m_bPreview)
+					{
+						TILE_OPTION tmp = static_cast<CTile*>(m_vecTile[l][iIndex])->GetTile().eTileOption;
+						m_vecTile[l][iIndex]->Render(pGraphics, pTile, vScroll, m_tImgAttr[EnumToInt(tmp)]);
+					}
+					else
+					{
+						m_vecTile[l][iIndex]->Render(pGraphics, pTile, vScroll);
+					}
+				}
 			}
 		}
 	}

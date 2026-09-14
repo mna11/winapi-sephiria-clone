@@ -10,6 +10,8 @@ public:
 	virtual int  Update()	     PURE;
 	virtual void LateUpdate()	 PURE;
 	virtual void Render(Graphics*) PURE;
+	virtual void Render(Graphics* pGraphics, Image* pTileImg, VEC& vScroll) {};							  // CTile처럼 Image객체와 스크롤 적용 최적화용
+	virtual void Render(Graphics* pGraphics, Image* pTileImg, VEC& vScroll, ImageAttributes& ImgAttr) {}; // + ImgAttr 적용
 	virtual void Release()       PURE;
 
 public:
