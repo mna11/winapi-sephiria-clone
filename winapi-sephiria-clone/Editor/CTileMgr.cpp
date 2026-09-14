@@ -3,12 +3,17 @@
 #include "CTile.h"
 #include "CAbstractFactory.h"
 #include "CCameraMgr.h"
+#include "CImgMgr.h"
 
 CTileMgr* CTileMgr::m_pInstance = nullptr;
 
 CTileMgr::CTileMgr()
+	: m_bPreview(false)
 {
-	m_vecTile.reserve(TILEX * TILEY);
+	for (int l = 0; l < EnumToInt(TILE_LAYER::END); ++l)
+	{
+		m_vecTile[l].reserve(TILEX * TILEY);
+	}
 }
 
 CTileMgr::~CTileMgr()
@@ -18,30 +23,47 @@ CTileMgr::~CTileMgr()
 
 void CTileMgr::Initialize()
 {
-	for (int i = 0; i < TILEY; ++i)
+	for (int l = 0; l < EnumToInt(TILE_LAYER::END); ++l)
 	{
-		for (int j = 0; j < TILEX; ++j)
+		for (int i = 0; i < TILEY; ++i)
 		{
-			float fX = float((TILECX >> 1) + (TILECX * j));
-			float fY = float((TILECY >> 1) + (TILECY * i));
+			for (int j = 0; j < TILEX; ++j)
+			{
+				float fX = float((TILECX >> 1) + (TILECX * j));
+				float fY = float((TILECY >> 1) + (TILECY * i));
 
-			CObj* pTile = CAbstractFactory<CTile>::CreateObj(fX, fY);
-			m_vecTile.push_back(pTile);
+				CObj* pTile = CAbstractFactory<CTile>::CreateObj(fX, fY);
+
+				/*if ((TILE_LAYER)l == TILE_LAYER::LAYER0)
+				{
+					static_cast<CTile*>(pTile)->SetTile({ TILE_TYPE::LIB_WALL, 8, TILE_OPTION::FLOOR, TILE_LAYER::LAYER0});
+					static_cast<CTile*>(pTile)->SetIsDraw(true);
+				}*/
+
+				m_vecTile[l].push_back(pTile);
+			}
 		}
 	}
 
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Tile/Library/Library_BG.png", L"LIB_TILE_BG");
 }
 
 void CTileMgr::Update()
 {
-	for (auto& pTile : m_vecTile)
-		pTile->Update();
+	for (int l = 0; l < EnumToInt(TILE_LAYER::END); ++l)
+	{
+		for (auto& pTile : m_vecTile[l])
+			pTile->Update();
+	}
 }
 
 void CTileMgr::LateUpdate()
 {
-	for (auto& pTile : m_vecTile)
-		pTile->LateUpdate();
+	for (int l = 0; l < EnumToInt(TILE_LAYER::END); ++l)
+	{
+		for (auto& pTile : m_vecTile[l])
+			pTile->LateUpdate();
+	}
 }
 
 void CTileMgr::Render(Graphics* pGraphics)
@@ -59,33 +81,39 @@ void CTileMgr::Render(Graphics* pGraphics)
 		for (int j = iCullX; j < iMaxX; ++j)
 		{
 			int iIndex = i * TILEX + j;
+			
+			for (int l = 0; l < EnumToInt(TILE_LAYER::END); ++l)
+			{
+				if (0 > iIndex || m_vecTile[l].size() <= (size_t)iIndex)
+					continue;
 
-			if (0 > iIndex || m_vecTile.size() <= (size_t)iIndex)
-				continue;
-
-			m_vecTile[iIndex]->Render(pGraphics);
+				m_vecTile[l][iIndex]->Render(pGraphics);
+			}
 		}
 	}
 }
 
 void CTileMgr::Release()
 {
-	for_each(m_vecTile.begin(), m_vecTile.end(), SafeDelete<CObj*>);
-	m_vecTile.clear();
+	for (int l = 0; l < EnumToInt(TILE_LAYER::END); ++l)
+	{
+		for_each(m_vecTile[l].begin(), m_vecTile[l].end(), SafeDelete<CObj*>);
+		m_vecTile[l].clear();
+	}
 }
 
-void CTileMgr::PickingTile(POINT pt, int iDrawID, int iOption)
+void CTileMgr::PickingTile(POINT pt, TILE tTile)
 {
 	int x = pt.x / TILECX;
 	int y = pt.y / TILECY;
 
 	int		iIndex = y * TILEX + x;
 
-	if (0 > iIndex || m_vecTile.size() <= (size_t)iIndex)
+	if (0 > iIndex || m_vecTile[EnumToInt(tTile.eTileLayer)].size() <= (size_t)iIndex)
 		return;
-
-	dynamic_cast<CTile*>(m_vecTile[iIndex])->SetDrawID(iDrawID);
-	dynamic_cast<CTile*>(m_vecTile[iIndex])->SetOption(iOption);
+	
+	static_cast<CTile*>(m_vecTile[EnumToInt(tTile.eTileLayer)][iIndex])->SetTile(tTile);
+	static_cast<CTile*>(m_vecTile[EnumToInt(tTile.eTileLayer)][iIndex])->SetIsDraw(true);
 }
 
 void CTileMgr::SaveTile()
@@ -105,17 +133,21 @@ void CTileMgr::SaveTile()
 		return;
 	}
 
-	DWORD dwbyte(0);
-	int iDrawID(0), iOption(0);
+	DWORD		dwbyte(0);
+	TILE		tTile{};
+	bool		bIsDraw(false);
 
-	for (auto& pTile : m_vecTile)
+	for (int l = 0; l < EnumToInt(TILE_LAYER::END); ++l)
 	{
-		iDrawID = dynamic_cast<CTile*>(pTile)->GetDrawID();
-		iOption = dynamic_cast<CTile*>(pTile)->GetOption();
+		for (auto& pTile : m_vecTile[l])
+		{
+			tTile = static_cast<CTile*>(pTile)->GetTile();
+			bIsDraw = static_cast<CTile*>(pTile)->GetIsDraw();
 
-		WriteFile(hFile, &iDrawID, sizeof(int), &dwbyte, nullptr);
-		WriteFile(hFile, &iOption, sizeof(int), &dwbyte, nullptr);
-		WriteFile(hFile, &pTile->GetInfo(), sizeof(INFO), &dwbyte, nullptr);
+			WriteFile(hFile, &tTile, sizeof(TILE), &dwbyte, nullptr);
+			WriteFile(hFile, &bIsDraw, sizeof(bool), &dwbyte, nullptr);
+			WriteFile(hFile, &pTile->GetInfo(), sizeof(INFO), &dwbyte, nullptr);
+		}
 	}
 
 	CloseHandle(hFile);
@@ -142,25 +174,30 @@ void CTileMgr::LoadTile()
 	}
 
 	Release();
+	
+	DWORD		dwbyte(0);
+	TILE		tTile{};
+	bool		bIsDraw(false);
+	INFO		tTileInfo{};
 
-	DWORD dwbyte(0);
-	int		iDrawID(0), iOption(0);
-	INFO	tTile{};
+	int			l(0);
 
 	while (true)
 	{
-		ReadFile(hFile, &iDrawID, sizeof(int), &dwbyte, nullptr);
-		ReadFile(hFile, &iOption, sizeof(int), &dwbyte, nullptr);
+		ReadFile(hFile, &tTile, sizeof(TILE), &dwbyte, nullptr);
+		ReadFile(hFile, &bIsDraw, sizeof(bool), &dwbyte, nullptr);
 		ReadFile(hFile, &tTile, sizeof(INFO), &dwbyte, nullptr);
 
 		if (0 == dwbyte)
 			break;
 
-		CObj* pTile = CAbstractFactory<CTile>::CreateObj(tTile.vPoint.fX, tTile.vPoint.fY);
-		dynamic_cast<CTile*>(pTile)->SetDrawID(iDrawID);
-		dynamic_cast<CTile*>(pTile)->SetOption(iOption);
+		CObj* pTile = CAbstractFactory<CTile>::CreateObj(tTileInfo.vPoint.fX, tTileInfo.vPoint.fY);
+		static_cast<CTile*>(pTile)->SetTile(tTile);
+		static_cast<CTile*>(pTile)->SetIsDraw(bIsDraw);
 
-		m_vecTile.push_back(pTile);
+		m_vecTile[l].push_back(pTile);
+		if (m_vecTile[l].size() == TILEX * TILEY)
+			++l;
 	}
 
 	CloseHandle(hFile);

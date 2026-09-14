@@ -45,6 +45,7 @@ public:
 	void SetCameraPos(VEC vPoint);
 	void SetCameraTarget(CObj* pObj);
 	void MoveCamera(VEC vPoint);
+	void AddCameraPos(VEC vPoint);
 	void CameraShaking(int iStrength, double dDuration);
 
 public:

@@ -1,6 +1,9 @@
 ﻿#pragma once
 
 #include "CObj.h"
+#include "CPlayer.h"
+#include "CMouse.h"
+
 
 class CObjMgr
 {
@@ -36,11 +39,18 @@ public:
 	void Release();
 
 public:
-	CObj* GetPlayer() { 
+	CPlayer* GetPlayer() const { 
 		if (m_ObjList[EnumToInt(OBJID::PLAYER)].empty())
 			return nullptr;
 
-		return m_ObjList[EnumToInt(OBJID::PLAYER)].front(); 
+		return static_cast<CPlayer*>(m_ObjList[EnumToInt(OBJID::PLAYER)].front()); 
+	}
+
+	CMouse* GetMouse() const {
+		if (m_ObjList[EnumToInt(OBJID::MOUSE)].empty())
+			return nullptr;
+
+		return static_cast<CMouse*>(m_ObjList[EnumToInt(OBJID::MOUSE)].front());
 	}
 
 public:

@@ -55,6 +55,9 @@ void CObjMgr::LateUpdate()
 				break;
 
 			RENDERID  eID = pObj->GetRenderID();
+			if (eID < RENDERID(0) || eID >= RENDERID::END)
+				continue;
+
 			m_RenderList[EnumToInt(eID)].push_back(pObj);
 		}
 	}

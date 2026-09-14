@@ -70,11 +70,11 @@
     <Filter Include="02. Manager\06. ImgMgr">
       <UniqueIdentifier>{9cc2d10b-d465-41ea-a18c-37f81bd6c20a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Scene\00. Stage">
-      <UniqueIdentifier>{e00739a8-abf4-4dbc-8042-e0a59b299a12}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Manager\05. CameraMgr\00. Camera">
       <UniqueIdentifier>{cd5475f6-a7bd-484f-90cd-229f76d6f6a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Scene\00. Editor">
+      <UniqueIdentifier>{e00739a8-abf4-4dbc-8042-e0a59b299a12}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -144,14 +144,17 @@
     <ClInclude Include="CScene.h">
       <Filter>03. Scene</Filter>
     </ClInclude>
-    <ClInclude Include="CStage.h">
-      <Filter>03. Scene\00. Stage</Filter>
+    <ClInclude Include="CEditor.h">
+      <Filter>03. Scene\00. Editor</Filter>
     </ClInclude>
     <ClInclude Include="Define.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CObj.h">
       <Filter>01. Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="CMouse.h">
+      <Filter>01. Obj\01. Mouse</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -209,11 +212,14 @@
     <ClCompile Include="CScene.cpp">
       <Filter>03. Scene</Filter>
     </ClCompile>
-    <ClCompile Include="CStage.cpp">
-      <Filter>03. Scene\00. Stage</Filter>
+    <ClCompile Include="CEditor.cpp">
+      <Filter>03. Scene\00. Editor</Filter>
     </ClCompile>
     <ClCompile Include="CObj.cpp">
       <Filter>01. Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="CMouse.cpp">
+      <Filter>01. Obj\01. Mouse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

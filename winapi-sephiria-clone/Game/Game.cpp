@@ -57,8 +57,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     GdiplusStartupInput gdiplusStartUpInput;
     GdiplusStartup(&g_gdiplusToken, &gdiplusStartUpInput, NULL);
 
-    // 난수 엔진 초기화
-
     {
         CMainGame MainGame;
         MainGame.Initialize();

@@ -2,13 +2,13 @@
 #include "CSceneMgr.h"
 #include "CScene.h"
 
-#include "CStage.h"
+#include "CEditor.h"
 
 CSceneMgr* CSceneMgr::m_pInstance = nullptr;
 
 CSceneMgr::CSceneMgr() 
 	: 
-	m_eCurScene(SCENEID::STAGE), 
+	m_eCurScene(SCENEID::EDITOR), 
 	m_ePreScene(SCENEID::END),
 	m_pScene(nullptr)
 {
@@ -49,8 +49,8 @@ void CSceneMgr::ApplyChange()
 
 		switch (m_eCurScene)
 		{
-		case SCENEID::STAGE:
-			m_pScene = new CStage;
+		case SCENEID::EDITOR:
+			m_pScene = new CEditor;
 			break;
 
 		default:
