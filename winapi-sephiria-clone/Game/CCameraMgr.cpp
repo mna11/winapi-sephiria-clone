@@ -1,7 +1,6 @@
 ﻿#include "pch.h"
 #include "CCameraMgr.h"
 #include "CCamera.h"
-#include "CCameraTarget.h"
 
 #include "CObjMgr.h"
 #include "CAbstractFactory.h"
