@@ -33,6 +33,7 @@ void CMainGame::Initialize()
 #undef new
 
 	m_pBackGraphics = new Gdiplus::Graphics(m_hBackDC);
+	m_pBackGraphics->SetInterpolationMode(InterpolationModeNearestNeighbor);
 
 #pragma pop_macro("new")
 
@@ -57,7 +58,7 @@ void CMainGame::LateUpdate()
 
 void CMainGame::Render()
 {
-	m_pBackGraphics->Clear(Color(255, 255, 255, 255));
+	m_pBackGraphics->Clear(Color(255, 43, 44, 64));
 	CSceneMgr::GetInstance()->Render(m_pBackGraphics);
 	//m_pBackGraphics->Flush(FlushIntentionSync); // 대충 다 그릴 때까지 대기라는데
 
