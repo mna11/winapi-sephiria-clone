@@ -156,6 +156,7 @@ typedef struct tagTileInfo
 	int			iTileNumber;
 	TILE_OPTION	eTileOption;
 	TILE_LAYER	eTileLayer;
+	bool		bDraw;
 } TILE;
 
 /////////////////////////////////////////

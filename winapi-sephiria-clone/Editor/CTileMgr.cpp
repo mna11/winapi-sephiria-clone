@@ -34,12 +34,6 @@ void CTileMgr::Initialize()
 
 				CObj* pTile = CAbstractFactory<CTile>::CreateObj(fX, fY);
 
-				/*if ((TILE_LAYER)l == TILE_LAYER::LAYER0)
-				{
-					static_cast<CTile*>(pTile)->SetTile({ TILE_TYPE::LIB_WALL, 8, TILE_OPTION::FLOOR, TILE_LAYER::LAYER0});
-					static_cast<CTile*>(pTile)->SetIsDraw(true);
-				}*/
-
 				m_vecTile[l].push_back(pTile);
 			}
 		}
@@ -70,15 +64,23 @@ void CTileMgr::Render(Graphics* pGraphics)
 {
 	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
-	int iCullX = abs(vScroll.fX / TILECX);
-	int iCullY = abs(vScroll.fY / TILECY);
+	VEC vStart{ 0.f, 0.f };
+	VEC vEnd{ WINCX / TILECX + 2.f, WINCY / TILECY + 2.f };
+	VEC vAdd{ -vScroll.fX / TILECX, -vScroll.fY / TILECY };
 
-	int iMaxX = iCullX + (WINCX / TILECX) + 2;
-	int iMaxY = iCullY + (WINCY / TILECY) + 2;
+	vStart	+= vAdd;
+	vEnd	+= vAdd;
+	
+	// 빌드는 문제 없는데, 인텔리전스가 모호하다고 해서 std 붙여줌
+	// iIndex 검사를 하긴 하지만, i가 -1이고 j가 abs(-TILEX) 보다 크면 문제가 생기므로 clamp해줌 
+	int iStartX = std::clamp((int)vStart.fX, 0, TILEX);
+	int iStartY = std::clamp((int)vStart.fY, 0, TILEY);
+	int iEndX   = std::clamp((int)vEnd.fX, 0, TILEX);
+	int iEndY   = std::clamp((int)vEnd.fY, 0, TILEY);
 
-	for (int i = iCullY; i < iMaxY; ++i)
+	for (int i = iStartY; i < iEndY; ++i)
 	{
-		for (int j = iCullX; j < iMaxX; ++j)
+		for (int j = iStartX; j < iEndX; ++j)
 		{
 			int iIndex = i * TILEX + j;
 			
@@ -113,7 +115,6 @@ void CTileMgr::PickingTile(POINT pt, TILE tTile)
 		return;
 	
 	static_cast<CTile*>(m_vecTile[EnumToInt(tTile.eTileLayer)][iIndex])->SetTile(tTile);
-	static_cast<CTile*>(m_vecTile[EnumToInt(tTile.eTileLayer)][iIndex])->SetIsDraw(true);
 }
 
 void CTileMgr::SaveTile()
@@ -135,17 +136,14 @@ void CTileMgr::SaveTile()
 
 	DWORD		dwbyte(0);
 	TILE		tTile{};
-	bool		bIsDraw(false);
 
 	for (int l = 0; l < EnumToInt(TILE_LAYER::END); ++l)
 	{
 		for (auto& pTile : m_vecTile[l])
 		{
 			tTile = static_cast<CTile*>(pTile)->GetTile();
-			bIsDraw = static_cast<CTile*>(pTile)->GetIsDraw();
 
 			WriteFile(hFile, &tTile, sizeof(TILE), &dwbyte, nullptr);
-			WriteFile(hFile, &bIsDraw, sizeof(bool), &dwbyte, nullptr);
 			WriteFile(hFile, &pTile->GetInfo(), sizeof(INFO), &dwbyte, nullptr);
 		}
 	}
@@ -177,7 +175,6 @@ void CTileMgr::LoadTile()
 	
 	DWORD		dwbyte(0);
 	TILE		tTile{};
-	bool		bIsDraw(false);
 	INFO		tTileInfo{};
 
 	int			l(0);
@@ -185,15 +182,13 @@ void CTileMgr::LoadTile()
 	while (true)
 	{
 		ReadFile(hFile, &tTile, sizeof(TILE), &dwbyte, nullptr);
-		ReadFile(hFile, &bIsDraw, sizeof(bool), &dwbyte, nullptr);
-		ReadFile(hFile, &tTile, sizeof(INFO), &dwbyte, nullptr);
+		ReadFile(hFile, &tTileInfo, sizeof(INFO), &dwbyte, nullptr);
 
 		if (0 == dwbyte)
 			break;
 
 		CObj* pTile = CAbstractFactory<CTile>::CreateObj(tTileInfo.vPoint.fX, tTileInfo.vPoint.fY);
 		static_cast<CTile*>(pTile)->SetTile(tTile);
-		static_cast<CTile*>(pTile)->SetIsDraw(bIsDraw);
 
 		m_vecTile[l].push_back(pTile);
 		if (m_vecTile[l].size() == TILEX * TILEY)

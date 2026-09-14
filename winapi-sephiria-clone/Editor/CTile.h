@@ -17,13 +17,11 @@ public:
     void Release() override;
 
 public:
-    const TILE& GetTile() const     { return m_tTile; }
-    const bool& GetIsDraw() const { return m_bIsDraw; }
+    const TILE& GetTile() const { return m_tTile; }
 public:
-    void SetTile(TILE tTile)        { m_tTile = tTile; }
-    void SetIsDraw(bool bIsDraw)    { m_bIsDraw = bIsDraw; }
+    void SetTile(TILE tTile) { m_tTile = tTile; }
 
 private:
     TILE            m_tTile;
-    bool            m_bIsDraw;
+    ColorMatrix     m_tColorMatrix[EnumToInt(TILE_OPTION::END)];
 };

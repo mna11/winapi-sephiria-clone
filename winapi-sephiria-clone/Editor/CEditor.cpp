@@ -38,11 +38,13 @@ void CEditor::Initialize()
 	m_mapTileMax.insert({ TILE_TYPE::LIB_CLIFF, 48 });
 	m_mapTileMax.insert({ TILE_TYPE::WOOD_FLOOR, 47 });
 
-
+	// 마우스 초기화
 	CObj* pMouse = CAbstractFactory<CMouse>::CreateObj();
 	static_cast<CMouse*>(pMouse)->SetTile(&m_tTile);
 	static_cast<CMouse*>(pMouse)->SetEditState(EDIT_STATE::TILE);
 	CObjMgr::GetInstance()->AddObject(OBJID::MOUSE, pMouse);
+
+	m_tTile.bDraw = true;
 }
 
 void CEditor::Update()
@@ -76,6 +78,7 @@ void CEditor::Render(Graphics* pGraphics)
 
 	CTileMgr::GetInstance()->Render(pGraphics);
 	CObjMgr::GetInstance()->Render(pGraphics);
+	GirdRender(pGraphics);
 }
 
 void CEditor::Release()
@@ -240,13 +243,48 @@ void CEditor::HandleTileInput()
 		return;
 	}
 
+	// 프리뷰
 	if (KEY_DOWN('P'))
 	{
 		CTileMgr::GetInstance()->SetPreview();
+	}
+
+	// 지우기
+	if (KEY_DOWN('E'))
+	{
+		m_tTile.bDraw = !m_tTile.bDraw;
 	}
 }
 
 void CEditor::HandleLineInput()
 {
+}
+
+
+void CEditor::GirdRender(Graphics* pGraphics)
+{
+	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
+	Pen gridPen(Color(100, 0, 0, 0), 1.f);
+
+	// 세로 줄
+	for (int x = 0; x <= TILEX; ++x)
+	{
+		// (x1, y1)부터 (x2, y2)까지 선 긋기
+		pGraphics->DrawLine(
+			&gridPen,
+			x * TILECX + (int)vScroll.fX, (int)vScroll.fY,
+			x * TILECX + (int)vScroll.fX, (TILEY * TILECY + (int)vScroll.fY)
+		);
+	}
+
+	// 가로 줄
+	for (int y = 0; y <= TILEY; ++y)
+	{
+		pGraphics->DrawLine(
+			&gridPen,
+			(int)vScroll.fX, y * TILECY + (int)vScroll.fY,
+			(TILEX * TILECX) + (int)vScroll.fX, y * TILECY + +(int)vScroll.fY
+		);
+	}
 }
 

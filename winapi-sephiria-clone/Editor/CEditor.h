@@ -20,6 +20,9 @@ public:
     void HandleTileInput();
     void HandleLineInput();
     
+public:
+    void GirdRender(Graphics* pGraphics);
+
 private:
     EDIT_STATE m_eState;
 

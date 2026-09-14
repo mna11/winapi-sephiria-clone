@@ -58,25 +58,25 @@ void CMouse::Release()
 void CMouse::HandleEditTileRender(Graphics* pGraphics)
 {
 	Image* pTileImg = CImgMgr::GetInstance()->FindImg(L"LIB_TILE_BG");
-	if (nullptr == pTileImg || nullptr == m_pTile)
+	if (nullptr == pTileImg || nullptr == m_pTile || !m_pTile->bDraw)
 		return;
 
 	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
 
-	Rect destRect = { int(m_tInfo.vPoint.fX - TILECX * 0.5f + vScroll.fX), 
-					  int(m_tInfo.vPoint.fY - TILECY * 0.5f + vScroll.fY),
+	Rect destRect = { int(m_tInfo.vPoint.fX - TILECX * 0.5f), 
+					  int(m_tInfo.vPoint.fY - TILECY * 0.5f),
 					  TILECX, TILECY };
 
     int iCellSize = 16;
+    ColorMatrix colorMatrix = { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+                                0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+                                0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                                0.0f, 0.0f, 0.0f, 0.5f, 0.0f,
+                                0.0f, 0.0f, 0.0f, 0.0f, 1.0f };
+
     if (CTileMgr::GetInstance()->GetPreview())
     {
-        ColorMatrix colorMatrix = { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-                                    0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-                                    0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-                                    0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-                                    0.0f, 0.0f, 0.0f, 0.0f, 1.0f };
-
         switch (m_pTile->eTileOption)
         {
         case TILE_OPTION::WALL:
@@ -92,27 +92,18 @@ void CMouse::HandleEditTileRender(Graphics* pGraphics)
         default:
             break;
         }
-        ImageAttributes imageAtt;
-        imageAtt.SetColorMatrix(&colorMatrix, ColorMatrixFlagsDefault, ColorAdjustTypeBitmap);
-        pGraphics->DrawImage(
-            pTileImg, destRect,
-            iCellSize * m_pTile->iTileNumber,
-            iCellSize * EnumToInt(m_pTile->eTileType),
-            iCellSize,
-            iCellSize,
-            UnitPixel,
-            &imageAtt
-        );
     }
-    else
-    {
-        pGraphics->DrawImage(
-            pTileImg, destRect,
-            iCellSize * m_pTile->iTileNumber,
-            iCellSize * EnumToInt(m_pTile->eTileType),
-            iCellSize,
-            iCellSize,
-            UnitPixel
-        );
-    }
+
+    ImageAttributes imageAtt;
+    imageAtt.SetColorMatrix(&colorMatrix, ColorMatrixFlagsDefault, ColorAdjustTypeBitmap);
+
+    pGraphics->DrawImage(
+        pTileImg, destRect,
+        iCellSize * m_pTile->iTileNumber,
+        iCellSize * EnumToInt(m_pTile->eTileType),
+        iCellSize,
+        iCellSize,
+        UnitPixel,
+        &imageAtt
+    );
 }

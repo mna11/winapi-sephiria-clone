@@ -4,8 +4,7 @@
 #include "CCameraMgr.h"
 #include "CTileMgr.h"
 
-CTile::CTile() :
-    m_bIsDraw(false)
+CTile::CTile()
 {
     ZeroMemory(&m_tTile, sizeof(TILE));
 }
@@ -23,7 +22,7 @@ void CTile::Initialize()
 
 int CTile::Update()
 {
-    if (!m_bIsDraw)
+    if (!m_tTile.bDraw)
         return NOEVENT;
 
     __super::UpdateRect();
@@ -33,11 +32,13 @@ int CTile::Update()
 
 void CTile::LateUpdate()
 {
+    if (!m_tTile.bDraw)
+        return;
 }
 
 void CTile::Render(Graphics* pGraphics)
 {
-    if (!m_bIsDraw)
+    if (!m_tTile.bDraw)
         return;
 
     Image* pTile = CImgMgr::GetInstance()->FindImg(L"LIB_TILE_BG");
@@ -46,7 +47,7 @@ void CTile::Render(Graphics* pGraphics)
 
     VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
-    Rect destRect = { int(m_tRect.left + vScroll.fX), int(m_tRect.top + vScroll.fY), 
+    RectF destRect = { m_tRect.left + vScroll.fX, m_tRect.top + vScroll.fY, 
                       TILECX, TILECY };
 
     int iCellSize = 16;

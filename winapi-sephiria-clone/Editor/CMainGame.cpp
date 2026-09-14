@@ -58,7 +58,7 @@ void CMainGame::LateUpdate()
 
 void CMainGame::Render()
 {
-	m_pBackGraphics->Clear(Color(255, 255, 255, 255));
+	m_pBackGraphics->Clear(Color(255, 44, 43, 64));
 	CSceneMgr::GetInstance()->Render(m_pBackGraphics);
 	//m_pBackGraphics->Flush(FlushIntentionSync); // 대충 다 그릴 때까지 대기라는데
 
