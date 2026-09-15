@@ -1,11 +1,11 @@
 #pragma once
 #include "CObj.h"
-class CCameraTarget :
+class CMonster :
     public CObj
 {
 public:
-    CCameraTarget();
-    ~CCameraTarget();
+    CMonster();
+    ~CMonster();
 public:
     void Initialize() override;
     int Update() override;

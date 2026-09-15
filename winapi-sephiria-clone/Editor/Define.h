@@ -6,19 +6,19 @@
 
 #define		PURE =0
 
-#define		WINCX 1280
-#define		WINCY 720
+#define		WINCX 960
+#define		WINCY 540
 
 #define		DEAD    1
 #define     NOEVENT 0
 
 #define     TILEX   100
-#define     TILEY   100 
+#define     TILEY   100
 
-#define		PIXEL_SCALE 4 // 도트 픽셀 배율
+#define		PIXEL_SCALE 3 // 도트 픽셀 배율
 
-#define     TILECX  16
-#define     TILECY  16
+#define     TILECX  (16 * PIXEL_SCALE)
+#define     TILECY  (16 * PIXEL_SCALE)
 
 #define		VK_MAX	0xff
 
@@ -39,11 +39,27 @@
 /////////////////////////////////////////
 // 열거체
 
-enum class OBJID	{ PLAYER, MONSTER, EFFECT, CAMERA, END };
+enum class OBJID	{ PLAYER, MOUSE, MONSTER, EFFECT, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, END };
-enum class SCENEID	{ STAGE, END };
+enum class SCENEID	{ EDITOR, END };
 
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };
+
+enum class EDIT_STATE { RECT, LINE, TILE, END };
+
+enum class TILE_OPTION { FLOOR, WALL, AIR, INTERACTION, END };
+enum class TILE_TYPE
+{
+	LIB_DUST,
+	LIB_WALL,
+	LIB_CRACK_WALL,
+	LIB_FLOOR0,
+	LIB_FLOOR1,
+	LIB_CLIFF,
+	WOOD_FLOOR,
+	END
+};
+enum class TILE_LAYER { LAYER0, LAYER1, END };
 
 /////////////////////////////////////////
 // 구조체
@@ -132,6 +148,16 @@ typedef struct tagLine
 		: tLPoint(LPoint), tRPoint(RPoint) {
 	}
 }LINE;
+
+// 타일 정보
+typedef struct tagTileInfo
+{
+	TILE_TYPE	eTileType;
+	int			iTileNumber;
+	TILE_OPTION	eTileOption;
+	TILE_LAYER	eTileLayer;
+	bool		bDraw;
+} TILE;
 
 /////////////////////////////////////////
 // 함수

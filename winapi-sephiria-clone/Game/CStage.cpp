@@ -25,7 +25,7 @@ void CStage::Initialize()
 	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(WINCX >> 1, WINCY >> 1));
 	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CMonster>::CreateObj((WINCX >> 1) + 200.f, (WINCY >> 1) + 200.f));
 
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Background/Map.png", L"Ground");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Map/LibraryRoom_Combat_10.png", L"Ground");
 }
 
 void CStage::Update()
@@ -53,12 +53,11 @@ void CStage::Render(Graphics* pGraphics)
 		return;
 	
 	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
-
+	Rect destRect = { int(0.f + vScroll.fX), int(0.f + vScroll.fY), int(320.f * PIXEL_SCALE), int(320.f * PIXEL_SCALE) };
+	RECT srcRect = { 0.f, 0.f, 320.f, 320.f };
 	pGraphics->DrawImage(
-		pGround,
-		(int)vScroll.fX,
-		(int)vScroll.fY,
-		0, 0, 1254, 1254,
+		pGround, destRect,
+		srcRect.left, srcRect.top, srcRect.right, srcRect.bottom,
 		UnitPixel
 	);
 

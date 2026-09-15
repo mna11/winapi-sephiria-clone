@@ -65,6 +65,11 @@ void CCameraMgr::MoveCamera(VEC vPoint)
 	m_pCamera->SetTargetPoint(vPoint);
 }
 
+void CCameraMgr::AddCameraPos(VEC vPoint)
+{
+	m_pCamera->AddPos(vPoint);
+}
+
 void CCameraMgr::CameraShaking(int iStrength, double dDuration)
 {
 	m_pCamera->Shaking(iStrength, dDuration);
