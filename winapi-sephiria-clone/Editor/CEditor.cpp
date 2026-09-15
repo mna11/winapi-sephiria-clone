@@ -207,10 +207,6 @@ void CEditor::HandleTileInput()
 	{
 		m_tTile.eTileLayer = TILE_LAYER::LAYER1;
 	}
-	if (KEY_DOWN('3'))
-	{
-		m_tTile.eTileLayer = TILE_LAYER::LAYER2;
-	}
 
 	// 타일 옵션
 	if (KEY_DOWN('F')) {

@@ -59,7 +59,7 @@ enum class TILE_TYPE
 	WOOD_FLOOR,
 	END
 };
-enum class TILE_LAYER { LAYER0, LAYER1, LAYER2, END };
+enum class TILE_LAYER { LAYER0, LAYER1, END };
 
 /////////////////////////////////////////
 // 구조체
