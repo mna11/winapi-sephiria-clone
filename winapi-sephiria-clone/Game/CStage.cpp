@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "CStage.h"
+
 #include "CPlayer.h"
 #include "CMonster.h"
 
@@ -20,23 +21,19 @@ CStage::~CStage()
 
 void CStage::Initialize()
 {
-	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(WINCX >> 1, WINCY >> 1));
-	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
-	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(WINCX >> 1, WINCY >> 1));
-	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CMonster>::CreateObj((WINCX >> 1) + 200.f, (WINCY >> 1) + 200.f));
-
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Map/LibraryRoom_Combat_10.png", L"Ground");
+	Init_CreateObj();
+	Init_InsertImg();
 }
 
 void CStage::Update()
 {
 	// 테스트용
-	if (CKeyMgr::GetInstance()->KeyDown('M'))
+	/*if (CKeyMgr::GetInstance()->KeyDown('M'))
 		CCameraMgr::GetInstance()->MoveCamera(VEC{ 1000.f, 1000.f });
 	if (CKeyMgr::GetInstance()->KeyDown('A'))
 		CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
 	if (CKeyMgr::GetInstance()->KeyDown('S'))
-		CCameraMgr::GetInstance()->CameraShaking(5, 2);
+		CCameraMgr::GetInstance()->CameraShaking(5, 2);*/
 
 	CObjMgr::GetInstance()->Update();
 }
@@ -53,11 +50,11 @@ void CStage::Render(Graphics* pGraphics)
 		return;
 	
 	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
-	Rect destRect = { int(0.f + vScroll.fX), int(0.f + vScroll.fY), int(320.f * PIXEL_SCALE), int(320.f * PIXEL_SCALE) };
-	RECT srcRect = { 0.f, 0.f, 320.f, 320.f };
+	RectF destRect = { 0.f + vScroll.fX, 0.f + vScroll.fY, 320.f * PIXEL_SCALE, 320.f * PIXEL_SCALE };
+	
 	pGraphics->DrawImage(
 		pGround, destRect,
-		srcRect.left, srcRect.top, srcRect.right, srcRect.bottom,
+		0.f, 0.f, 320.f, 320.f,
 		UnitPixel
 	);
 
@@ -66,4 +63,16 @@ void CStage::Render(Graphics* pGraphics)
 
 void CStage::Release()
 {
+}
+
+void CStage::Init_CreateObj()
+{
+	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(WINCX >> 1, WINCY >> 1));
+	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
+	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CMonster>::CreateObj((WINCX >> 1) + 200.f, (WINCY >> 1) + 200.f));
+}
+
+void CStage::Init_InsertImg()
+{
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Map/LibraryRoom_Combat_10.png", L"Ground");
 }
