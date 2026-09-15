@@ -148,10 +148,16 @@
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneMgr.h" />
+    <ClInclude Include="CShield.h" />
     <ClInclude Include="CStage.h" />
+    <ClInclude Include="CState.h" />
+    <ClInclude Include="CSword.h" />
+    <ClInclude Include="CSwordAndShield.h" />
     <ClInclude Include="CTile.h" />
     <ClInclude Include="CTileMgr.h" />
     <ClInclude Include="CTimeMgr.h" />
+    <ClInclude Include="CWeapon.h" />
+    <ClInclude Include="CWeaponController.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
@@ -174,10 +180,16 @@
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneMgr.cpp" />
+    <ClCompile Include="CShield.cpp" />
     <ClCompile Include="CStage.cpp" />
+    <ClCompile Include="CState.cpp" />
+    <ClCompile Include="CSword.cpp" />
+    <ClCompile Include="CSwordAndShield.cpp" />
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTileMgr.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
+    <ClCompile Include="CWeapon.cpp" />
+    <ClCompile Include="CWeaponController.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

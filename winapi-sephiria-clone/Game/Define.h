@@ -17,8 +17,8 @@
 
 #define		PIXEL_SCALE 4 // 도트 픽셀 배율
 
-#define     TILECX  16
-#define     TILECY  16
+#define     TILECX  (16 * PIXEL_SCALE)
+#define     TILECY  (16 * PIXEL_SCALE)
 
 #define		VK_MAX	0xff
 
@@ -39,11 +39,14 @@
 /////////////////////////////////////////
 // 열거체
 
-enum class OBJID	{ PLAYER, MONSTER, EFFECT, CAMERA, END };
+enum class OBJID	{ PLAYER, MONSTER, WEAPON, EFFECT, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, END };
 enum class SCENEID	{ STAGE, END };
 
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };
+
+enum class TILE_OPTION { FLOOR, WALL, AIR, INTERACTION, END };
+enum class TILE_LAYER { LAYER0, LAYER1, END };
 
 /////////////////////////////////////////
 // 구조체
@@ -63,6 +66,7 @@ typedef struct tagVector
 	tagVector	operator-(const tagVector& rhs) const	{ return tagVector{ fX - rhs.fX, fY - rhs.fY }; }
 	tagVector	operator*(float fScalar) const			{ return tagVector{ fScalar * fX, fScalar * fY }; }
 	bool	    operator==(const tagVector& rhs) const  { return (fX == rhs.fX && fY == rhs.fY); }
+	bool	    operator!=(const tagVector& rhs) const  { return (fX != rhs.fX || fY != rhs.fY); }
 	tagVector& operator+=(const tagVector& rhs) {
 		fX += rhs.fX;
 		fY += rhs.fY;
@@ -81,7 +85,7 @@ typedef struct tagVector
 
 
 	// 벡터 내적
-	float		Dot(const tagVector& rhs) const			{ return fX * rhs.fY + fY * rhs.fX; }
+	float		Dot(const tagVector& rhs) const			{ return fX * rhs.fX + fY * rhs.fY; }
 	// 벡터 크기
 	float		Norm() const							{ return sqrtf(fX * fX + fY * fY); }
 	// 벡터 정규화
@@ -146,10 +150,12 @@ void SafeDelete(T& p)
 	}
 }
 
-template<typename T>
-constexpr int EnumToInt(T e)
+// C++14부터 추가된, enum class에서 값 뽑는 법
+template<typename E> 
+constexpr auto
+toUType(E enumerator) noexcept
 {
-	return static_cast<int>(e);
+	return static_cast<std::underlying_type_t<E>>(enumerator);
 }
 
 extern HWND g_hWnd;

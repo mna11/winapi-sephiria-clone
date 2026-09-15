@@ -37,10 +37,10 @@ public:
 
 public:
 	CObj* GetPlayer() { 
-		if (m_ObjList[EnumToInt(OBJID::PLAYER)].empty())
+		if (m_ObjList[toUType(OBJID::PLAYER)].empty())
 			return nullptr;
 
-		return m_ObjList[EnumToInt(OBJID::PLAYER)].front(); 
+		return m_ObjList[toUType(OBJID::PLAYER)].front(); 
 	}
 
 public:
@@ -50,6 +50,6 @@ public:
 private:
 	static CObjMgr* m_pInstance;
 
-	list<CObj*>		m_ObjList[EnumToInt(OBJID::END)];
-	list<CObj*>		m_RenderList[EnumToInt(RENDERID::END)];
+	list<CObj*>		m_ObjList[toUType(OBJID::END)];
+	list<CObj*>		m_RenderList[toUType(RENDERID::END)];
 };
