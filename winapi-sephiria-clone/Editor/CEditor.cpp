@@ -41,6 +41,7 @@ void CEditor::Initialize()
 	m_mapTileMax.insert({ TILE_TYPE::LIB_BOOKSHELF, 87 });
 	m_mapTileMax.insert({ TILE_TYPE::LIB_FURNITURE, 20 });
 	m_mapTileMax.insert({ TILE_TYPE::LIB_STONE_WALL, 19 });
+	m_mapTileMax.insert({ TILE_TYPE::LIB_CARPET, 47 });
 
 	// 마우스 초기화
 	CObj* pMouse = CAbstractFactory<CMouse>::CreateObj();
@@ -230,6 +231,14 @@ void CEditor::HandleTileInput()
 	if (KEY_DOWN('2'))
 	{
 		m_tTile.eTileLayer = TILE_LAYER::LAYER1;
+	}
+	if (KEY_DOWN('3'))
+	{
+		m_tTile.eTileLayer = TILE_LAYER::LAYER2;
+	}
+	if (KEY_DOWN('4'))
+	{
+		m_tTile.eTileLayer = TILE_LAYER::LAYER2;
 	}
 
 	// 타일 옵션
