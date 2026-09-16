@@ -17,8 +17,8 @@
 
 #define		PIXEL_SCALE 4 // 도트 픽셀 배율
 
-#define     TILECX  16
-#define     TILECY  16
+#define     TILECX  (16 * PIXEL_SCALE)
+#define     TILECY  (16 * PIXEL_SCALE)
 
 #define		VK_MAX	0xff
 
@@ -39,11 +39,14 @@
 /////////////////////////////////////////
 // 열거체
 
-enum class OBJID	{ PLAYER, MONSTER, EFFECT, CAMERA, END };
+enum class OBJID	{ PLAYER, MONSTER, WEAPON, EFFECT, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, END };
 enum class SCENEID	{ STAGE, END };
 
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };
+
+enum class TILE_OPTION { FLOOR, WALL, AIR, INTERACTION, END };
+enum class TILE_LAYER { LAYER0, LAYER1, END };
 
 /////////////////////////////////////////
 // 구조체
@@ -63,6 +66,7 @@ typedef struct tagVector
 	tagVector	operator-(const tagVector& rhs) const	{ return tagVector{ fX - rhs.fX, fY - rhs.fY }; }
 	tagVector	operator*(float fScalar) const			{ return tagVector{ fScalar * fX, fScalar * fY }; }
 	bool	    operator==(const tagVector& rhs) const  { return (fX == rhs.fX && fY == rhs.fY); }
+	bool	    operator!=(const tagVector& rhs) const  { return (fX != rhs.fX || fY != rhs.fY); }
 	tagVector& operator+=(const tagVector& rhs) {
 		fX += rhs.fX;
 		fY += rhs.fY;
@@ -81,7 +85,7 @@ typedef struct tagVector
 
 
 	// 벡터 내적
-	float		Dot(const tagVector& rhs) const			{ return fX * rhs.fY + fY * rhs.fX; }
+	float		Dot(const tagVector& rhs) const			{ return fX * rhs.fX + fY * rhs.fY; }
 	// 벡터 크기
 	float		Norm() const							{ return sqrtf(fX * fX + fY * fY); }
 	// 벡터 정규화
@@ -92,7 +96,7 @@ typedef struct tagVector
 	}
 } VEC;
 
-// OBJ Info
+// OBJ 정보
 typedef struct tagInfo
 {
 	VEC vPoint;
@@ -101,6 +105,21 @@ typedef struct tagInfo
 	tagInfo() { ZeroMemory(this, sizeof(tagInfo)); }
 	tagInfo(float fX, float fY, float fCX, float fCY) : vPoint{ fX, fY }, vSize{ fCX, fCY } {}
 } INFO;
+
+// 무기공격 정보
+typedef struct tagAttackInfo
+{
+	int		iLevel;				// 공격 레벨
+	int		iMaxLevel;			// 최대 연격 횟수
+	bool	bNextAtk;			// 다음 연격 가능 플래그
+	double	dElapseTime;		// 무기 공격 시작 후 지나간 시간
+	double  dMaxTime;			// 무기별 공격 시간
+								// 이게 끝날 때까지는 새로 공격 못함
+								// 다만 끝나기 전에 공격 클릭할 시, 연격이 있다면 연격을 함
+								// 끝나고 클릭, 끝나고 클릭 -> Attack1 - Attack1 ....
+								// 끝나기 전 클릭, 끝나기 전 클릭 -> Attack1 - Attack2 - Attack3
+} ATK_INFO;
+
 
 // 스프라이트 애니메이션용
 // QueryPerfomanceCount 사용으로 변경
@@ -146,10 +165,12 @@ void SafeDelete(T& p)
 	}
 }
 
-template<typename T>
-constexpr int EnumToInt(T e)
+// C++14부터 추가된, enum class에서 값 뽑는 법
+template<typename E> 
+constexpr auto
+toUType(E enumerator) noexcept
 {
-	return static_cast<int>(e);
+	return static_cast<std::underlying_type_t<E>>(enumerator);
 }
 
 extern HWND g_hWnd;

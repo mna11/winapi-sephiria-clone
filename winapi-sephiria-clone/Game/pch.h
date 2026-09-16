@@ -17,6 +17,8 @@
 #include <algorithm>
 #include <random>
 
+#include <iostream>
+
 #include <ole2.h>
 #include <gdiplus.h>
 #pragma comment(lib, "Gdiplus.lib")

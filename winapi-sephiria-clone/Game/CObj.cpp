@@ -4,13 +4,14 @@
 #include "CTimeMgr.h"
 
 CObj::CObj()
-	: 
-	m_fSpeed(0.f), 
-	m_fAngle(0.f), 
+	:
+	m_fSpeed(0.f),
+	m_fAngle(0.f),
 	m_bDead(false),
 	m_pTarget(nullptr),
 	m_pFrameKey(L""),
-	m_eRender(RENDERID::END)
+	m_eRender(RENDERID::END),
+	m_iRenderLayer(0)
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	ZeroMemory(&m_tRect, sizeof(RECT));
@@ -35,7 +36,7 @@ void CObj::UpdateRect()
 	m_tRect.bottom =	LONG(m_tInfo.vPoint.fY + (m_tInfo.vSize.fY / 2.f));
 }
 
-void CObj::MoveFrame()
+void CObj::UpdateFrame()
 {
 	if (m_tFrame.dFrameSpeed <= CTimeMgr::GetInstance()->GetTime(m_tFrame.iFrameTime))
 	{

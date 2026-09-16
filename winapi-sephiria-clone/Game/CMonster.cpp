@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CMonster.h"
 
 #include "CCameraMgr.h"
@@ -16,6 +16,7 @@ void CMonster::Initialize()
 {
 	m_tInfo = { 0.f, 0.f, 100.f, 100.f };
 	m_eRender = RENDERID::GAMEOBJECT;
+	m_iRenderLayer = 5;
 }
 
 int CMonster::Update()
