@@ -30,13 +30,17 @@ void CEditor::Initialize()
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Map/LibraryRoom_Combat_10.png", L"Ground");
 	
-	m_mapTileMax.insert({ TILE_TYPE::LIB_CLIFF, 58 });
+	m_mapTileMax.insert({ TILE_TYPE::LIB_DUST, 58 });
 	m_mapTileMax.insert({ TILE_TYPE::LIB_WALL, 55 });
 	m_mapTileMax.insert({ TILE_TYPE::LIB_CRACK_WALL, 55 });
 	m_mapTileMax.insert({ TILE_TYPE::LIB_FLOOR0, 36 });
 	m_mapTileMax.insert({ TILE_TYPE::LIB_FLOOR1, 48 });
 	m_mapTileMax.insert({ TILE_TYPE::LIB_CLIFF, 48 });
-	m_mapTileMax.insert({ TILE_TYPE::WOOD_FLOOR, 47 });
+	m_mapTileMax.insert({ TILE_TYPE::WOOD_FLOOR, 47 }); 
+	m_mapTileMax.insert({ TILE_TYPE::LIB_GRASS, 9 });
+	m_mapTileMax.insert({ TILE_TYPE::LIB_BOOKSHELF, 87 });
+	m_mapTileMax.insert({ TILE_TYPE::LIB_FURNITURE, 20 });
+	m_mapTileMax.insert({ TILE_TYPE::LIB_STONE_WALL, 19 });
 
 	// 마우스 초기화
 	CObj* pMouse = CAbstractFactory<CMouse>::CreateObj();
@@ -182,6 +186,26 @@ void CEditor::HandleTileInput()
 	if (KEY_DOWN(VK_F7))
 	{
 		m_tTile.eTileType = TILE_TYPE::WOOD_FLOOR;
+		m_tTile.iTileNumber = 0;
+	}
+	if (KEY_DOWN(VK_F8))
+	{
+		m_tTile.eTileType = TILE_TYPE::LIB_GRASS;
+		m_tTile.iTileNumber = 0;
+	}
+	if (KEY_DOWN(VK_F9))
+	{
+		m_tTile.eTileType = TILE_TYPE::LIB_BOOKSHELF;
+		m_tTile.iTileNumber = 0;
+	}
+	if (KEY_DOWN(VK_F10))
+	{
+		m_tTile.eTileType = TILE_TYPE::LIB_FURNITURE;
+		m_tTile.iTileNumber = 0;
+	}
+	if (KEY_DOWN(VK_F11))
+	{
+		m_tTile.eTileType = TILE_TYPE::LIB_STONE_WALL;
 		m_tTile.iTileNumber = 0;
 	}
 

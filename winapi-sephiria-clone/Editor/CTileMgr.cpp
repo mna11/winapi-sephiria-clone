@@ -206,8 +206,89 @@ void CTileMgr::SaveTile()
 
 	CloseHandle(hFile);
 
+	ExtractPNG(); // 이미지 출력
+
 	MessageBox(g_hWnd, _T("Tile Save 완료"), L"Success", MB_OK);
 
+}
+
+void CTileMgr::ExtractPNG()
+{
+	Bitmap bitmap(TILEX * TILECX, TILEY * TILECY, PixelFormat32bppARGB);
+	Graphics graphics(&bitmap);
+	
+	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
+	// 모드 설정
+	graphics.SetInterpolationMode(InterpolationModeNearestNeighbor);
+	graphics.SetPixelOffsetMode(PixelOffsetModeHalf);
+
+	// 배경은 투명색으로 칠함
+	graphics.Clear(Color(0, 0, 0, 0));
+
+	// 이미지 불러오기
+	Image* pTile = CImgMgr::GetInstance()->FindImg(L"LIB_TILE_BG");
+	if (nullptr == pTile)
+		return;
+
+	// 그리기 
+	for (int i = 0; i < TILEY; ++i)
+	{
+		for (int j = 0; j < TILEX; ++j)
+		{
+			int iIndex = i * TILEX + j;
+
+			for (int l = 0; l < EnumToInt(TILE_LAYER::END); ++l)
+			{
+				if (0 > iIndex || m_vecTile[l].size() <= (size_t)iIndex)
+					continue;
+
+				if (static_cast<CTile*>(m_vecTile[l][iIndex])->GetTile().bDraw)
+				{
+					m_vecTile[l][iIndex]->Render(&graphics, pTile, vScroll);
+				}
+			}
+		}
+	}
+
+	CLSID pngClsid;
+	int result = GetEncoderClsid(L"image/png", &pngClsid);
+	if (result == -1)
+	{
+		MessageBox(g_hWnd, L"PNG EXTRACTOR ERR", L"추출 실패", MB_OK);
+	}
+	bitmap.Save(L"../Resource/Image/Stage/Map.png", &pngClsid, NULL);
+}
+
+// MSDN 코드
+int CTileMgr::GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
+{
+	UINT  num = 0;          // number of image encoders
+	UINT  size = 0;         // size of the image encoder array in bytes
+
+	ImageCodecInfo* pImageCodecInfo = NULL;
+
+	GetImageEncodersSize(&num, &size);
+	if (size == 0)
+		return -1;  // Failure
+
+	pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
+	if (pImageCodecInfo == NULL)
+		return -1;  // Failure
+
+	GetImageEncoders(num, size, pImageCodecInfo);
+
+	for (UINT j = 0; j < num; ++j)
+	{
+		if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0)
+		{
+			*pClsid = pImageCodecInfo[j].Clsid;
+			free(pImageCodecInfo);
+			return j;  // Success
+		}
+	}
+
+	free(pImageCodecInfo);
+	return -1;  // Failure
 }
 
 void CTileMgr::LoadTile()
