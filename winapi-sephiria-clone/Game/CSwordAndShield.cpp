@@ -10,7 +10,8 @@
 #include "CAbstractFactory.h"
 
 CSwordAndShield::CSwordAndShield()
-	: CState(SWORD_AND_SHIELD_STATE::IDLE, SWORD_AND_SHIELD_STATE::END)
+	: CState(SWORD_AND_SHIELD_STATE::END, SWORD_AND_SHIELD_STATE::IDLE),
+	m_pSword(nullptr), m_pShield(nullptr)
 {
 	ZeroMemory(m_tBarriorRect, sizeof(PointF) * 4); 
 	ZeroMemory(&m_tSwordRect, sizeof(RECT));
@@ -105,15 +106,15 @@ void CSwordAndShield::SpecialAttack()
 
 void CSwordAndShield::ApplyChange()
 {
-	if (m_eCurState != m_ePreState)
+	if (m_eCurState != m_eNextState)
 	{
-		switch (m_eCurState)
+		switch (m_eNextState)
 		{
 		default:
 			break;
 		}
 
-		m_ePreState = m_eCurState;
+		m_eCurState = m_eNextState;
 	}
 }
 

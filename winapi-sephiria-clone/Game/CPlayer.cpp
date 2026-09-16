@@ -11,7 +11,7 @@
 #include "CImgMgr.h"
 
 CPlayer::CPlayer()
-	: CState(PLAYER_STATE::IDLE, PLAYER_STATE::END), m_pWeaponController(nullptr)
+	: CState(PLAYER_STATE::END, PLAYER_STATE::IDLE), m_pWeaponController(nullptr)
 {
 }
 
@@ -134,11 +134,11 @@ void CPlayer::Move()
 	if (vDir != VEC{ 0.f, 0.f })
 	{
 		m_tInfo.vPoint += vDir.Normalize() * m_fSpeed * DT;
-		m_eCurState = PLAYER_STATE::WALK;
+		m_eNextState = PLAYER_STATE::WALK;
 	}
 	else
 	{
-		m_eCurState = PLAYER_STATE::IDLE;
+		m_eNextState = PLAYER_STATE::IDLE;
 	}
 }
 
@@ -186,9 +186,9 @@ void CPlayer::Attack()
 
 void CPlayer::ApplyChange()
 {
-	if (m_eCurState != m_ePreState)
+	if (m_eCurState != m_eNextState)
 	{
-		switch (m_eCurState)
+		switch (m_eNextState)
 		{
 		case PLAYER_STATE::IDLE:
 			SetFrame(0, 5, 0, 0.1);
@@ -218,7 +218,7 @@ void CPlayer::ApplyChange()
 			break;
 		}
 
-		m_ePreState = m_eCurState;
+		m_eCurState = m_eNextState;
 	}
 }
 

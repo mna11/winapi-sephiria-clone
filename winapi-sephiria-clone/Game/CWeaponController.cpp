@@ -65,7 +65,7 @@ void CWeaponController::SpecialAttack()
 
 void CWeaponController::ApplyChange()
 {
-	if (m_eCurState != m_ePreState)
+	if (m_eCurState != m_eNextState)
 	{
 		SafeDelete<CWeapon*>(m_pWeapon);
 
@@ -100,6 +100,6 @@ void CWeaponController::ApplyChange()
 			break;
 		}
 		
-		m_ePreState = m_eCurState;
+		m_eCurState = m_eNextState;
 	}
 }
