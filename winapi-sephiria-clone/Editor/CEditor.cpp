@@ -209,6 +209,11 @@ void CEditor::HandleTileInput()
 		m_tTile.eTileType = TILE_TYPE::LIB_STONE_WALL;
 		m_tTile.iTileNumber = 0;
 	}
+	if (KEY_DOWN(VK_F12))
+	{
+		m_tTile.eTileType = TILE_TYPE::LIB_CARPET;
+		m_tTile.iTileNumber = 0;
+	}
 
 	// 타일 번호
 	if (KEY_DOWN(VK_OEM_MINUS))
