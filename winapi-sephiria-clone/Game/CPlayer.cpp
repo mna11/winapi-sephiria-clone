@@ -9,9 +9,11 @@
 #include "CTimeMgr.h"
 #include "CCameraMgr.h"
 #include "CImgMgr.h"
+#include "CEffectMgr.h"
 
 CPlayer::CPlayer()
-	: CState(PLAYER_STATE::END, PLAYER_STATE::IDLE), m_pWeaponController(nullptr)
+	: CState(PLAYER_STATE::END, PLAYER_STATE::IDLE), m_pWeaponController(nullptr),
+	m_dDustInterval(0.5), m_dDustElapseTime(0.), m_fNormalSpeed(200.f), m_fRunSpeed(400.f)
 {
 }
 
@@ -25,7 +27,7 @@ void CPlayer::Initialize()
 	// 기초 정보 초기화
 	m_tInfo = { WINCX >> 1, WINCY >> 1, 30.f, 40.f };
 	m_eRender = RENDERID::GAMEOBJECT;
-	m_fSpeed = 200.f;
+	m_fSpeed = m_fNormalSpeed;
 
 	// 스프라이트 시트 Insert 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Player/Player_LEFTDOWN.png", L"Player_LD");
@@ -42,6 +44,8 @@ void CPlayer::Initialize()
 
 	// 렌더 레이어 - 0 ~ 5 사이 플레이어는 중간인 3
 	m_iRenderLayer = 3;
+
+	m_iDash = m_iMaxDash = 100;
 }
 
 int CPlayer::Update()
@@ -49,11 +53,19 @@ int CPlayer::Update()
 	if (m_bDead)
 		return DEAD;
 
+	// Elapse 변수들 업데이트
+	UpdateTime();
+
 	// 이번 프레임 상태 결정
 	ApplyChange();
 	// 무기 컨트롤러 업데이트
 	m_pWeaponController->Update();
 
+	// 이번 프레임 이동 전 위치 기억
+	m_vPrePoint = m_tInfo.vPoint;
+
+	// 플레이어 대쉬
+	Dash();
 	// 플레이어 이동
 	Move(); 
 	// 플레이어 회전 
@@ -75,6 +87,9 @@ int CPlayer::Update()
 void CPlayer::LateUpdate()
 {
 	m_pWeaponController->LateUpdate();
+	
+	// 이펙트 생성
+	CreateEffect();
 }
 
 void CPlayer::Render(Graphics* pGraphics)
@@ -117,6 +132,13 @@ void CPlayer::Release()
 	SafeDelete<CWeaponController*>(m_pWeaponController);
 }
 
+void CPlayer::UpdateTime()
+{
+	m_dDustElapseTime += DT;
+	if (m_iDash < m_iMaxDash)
+		m_dDashCountRecoveryElapseTime += DT;
+}
+
 void CPlayer::Move()
 {
 	// 플레이어 이동
@@ -139,6 +161,31 @@ void CPlayer::Move()
 	else
 	{
 		m_eNextState = PLAYER_STATE::IDLE;
+	}
+}
+
+void CPlayer::Dash()
+{
+	if (KEY_DOWN(VK_SPACE))
+	{
+		if (m_iDash > 0)
+		{
+			--m_iDash;
+			m_fSpeed = m_fRunSpeed * 100.f;
+		}
+	}
+	else if (KEY_HOLD(VK_SPACE))
+	{
+		m_fSpeed = m_fRunSpeed;
+	}
+	else if (KEY_UP(VK_SPACE))
+	{
+		m_fSpeed = m_fNormalSpeed;
+	}
+
+	if (m_dDashCountRecorveyInterval <= m_dDashCountRecoveryElapseTime)
+	{
+		m_iDash = (m_iDash + 1 >= m_iMaxDash) ? m_iMaxDash : m_iDash + 1;
 	}
 }
 
@@ -178,10 +225,43 @@ void CPlayer::Rotate()
 
 void CPlayer::Attack()
 {
-	if (KEY_PRESS(VK_LBUTTON))
+	if (KEY_DOWN(VK_LBUTTON))
 		m_pWeaponController->Attack();
 	else if (KEY_PRESS(VK_RBUTTON))
 		m_pWeaponController->SpecialAttack();
+}
+
+void CPlayer::CreateEffect()
+{
+	// 먼지 이펙트 생성
+	if (m_vPrePoint != m_tInfo.vPoint && m_dDustInterval <= m_dDustElapseTime)
+	{
+		// 일반 걷기
+		if (m_fSpeed == m_fNormalSpeed)
+		{
+			CEffectMgr::GetInstance()->CreateEffect(L"RunDust", m_tInfo.vPoint, 0.f);
+		}
+		// 대쉬 - 와다다
+		else if (m_fSpeed == m_fRunSpeed)
+		{
+			VEC vDir = m_tInfo.vPoint - m_vPrePoint;
+			CEffectMgr::GetInstance()->CreateEffect(L"DashDust", m_tInfo.vPoint, atan2f(vDir.fY, vDir.fX));
+		}
+		m_dDustElapseTime = 0.;
+	}
+
+	// 대쉬 잔상 표현
+	// KEYDOWN은 딱 해당 프레임에만 true이므로 이렇게 처리함
+	if (m_fSpeed > m_fRunSpeed)
+	{
+		VEC vDir = m_tInfo.vPoint - m_vPrePoint;
+		// 이전 위치에서 현재 위치까지 0 ~ 5 내분이라고 생각했을 때, 1 2 3 4 포인트에만 그리겠다는 뜻
+		for (float i = 0.25f; i <= 1.f; i+=0.25f)
+		{
+			VEC vTrail = vDir * i + m_vPrePoint;
+			CEffectMgr::GetInstance()->CreateEffect(L"DashTrail", vTrail, i);
+		}
+	}
 }
 
 void CPlayer::ApplyChange()

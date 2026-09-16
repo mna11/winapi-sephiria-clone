@@ -94,6 +94,12 @@
     <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\01. Shield">
       <UniqueIdentifier>{c16a84dc-93ae-44f1-b27c-7be096224c08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Manager\10. EffectMgr">
+      <UniqueIdentifier>{af869e37-16df-435b-823e-b383d743334c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\04. Effect">
+      <UniqueIdentifier>{a87a83a9-bd56-4a17-9549-ad7a29e76cc6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -189,6 +195,12 @@
     <ClInclude Include="CSword.h">
       <Filter>01. Obj\03. Weapon\01. SwordAndShield\00. Sword</Filter>
     </ClInclude>
+    <ClInclude Include="CEffectMgr.h">
+      <Filter>03. Manager\10. EffectMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CEffect.h">
+      <Filter>01. Obj\04. Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -268,6 +280,12 @@
     </ClCompile>
     <ClCompile Include="CSword.cpp">
       <Filter>01. Obj\03. Weapon\01. SwordAndShield\00. Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="CEffectMgr.cpp">
+      <Filter>03. Manager\10. EffectMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CEffect.cpp">
+      <Filter>01. Obj\04. Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

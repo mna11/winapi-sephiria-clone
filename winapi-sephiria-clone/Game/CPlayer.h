@@ -37,12 +37,36 @@ public:
     void ApplyChange() override;
 
 public:
+    void UpdateTime();
     void Move();
+    void Dash();
     void Rotate();
     void Attack();
 
 public:
-    CWeaponController* m_pWeaponController;
+    void CreateEffect();
+
+private:
+    CWeaponController*  m_pWeaponController;
+
+    // 이전 위치
+    VEC                 m_vPrePoint;
+
+
+    // 대시 가능 횟수
+    int                 m_iDash;
+    int                 m_iMaxDash;
+    double              m_dDashCountRecorveyInterval;
+    double              m_dDashCountRecoveryElapseTime;
+
+
+    // 달리기 속도
+    float               m_fNormalSpeed;
+    float               m_fRunSpeed;
+
+    // 먼지 이펙트 발생 간격
+    double              m_dDustInterval;
+    double              m_dDustElapseTime;
 
 #ifdef _DEBUG
 private:

@@ -3,6 +3,7 @@
 
 CWeapon::CWeapon()
 {
+	ZeroMemory(&m_tAtk, sizeof(ATK_INFO));
 }
 
 CWeapon::~CWeapon()

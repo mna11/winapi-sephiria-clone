@@ -6,9 +6,7 @@
 enum class SWORD_AND_SHIELD_STATE
 {
     IDLE,
-    ATTACK_1,
-    ATTACK_2,
-    ATTACK_3,
+    ATTACK,
     SHIELD,
     CLEAVE,
     END
@@ -39,20 +37,22 @@ public:
 public:
     void ApplyChange() override;
 
-private: // 각 상태별 업데이트 
-    void HandleIdleUpdate();
-    void HandleAttack1Update();
-    void HandleAttack2Update();
-    void HandleAttack3Update();
-    void HandleShieldUpdate();
-    void HandleCleaveUpdate();
+private:
+    void AttackUpdate();
 
 private:
     CObj*   m_pSword;
     CObj*   m_pShield;
 
+  
     // 임시 - 테스트 중
     RECT    m_tSwordRect;
     PointF  m_tBarriorRect[4];
+
+#ifdef _DEBUG
+private:
+    void    PrintInfo();
+    double  m_dPrintInterval = 1.;
+#endif // DEBUG 
 };
 

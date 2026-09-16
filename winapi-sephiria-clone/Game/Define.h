@@ -96,7 +96,7 @@ typedef struct tagVector
 	}
 } VEC;
 
-// OBJ Info
+// OBJ 정보
 typedef struct tagInfo
 {
 	VEC vPoint;
@@ -105,6 +105,21 @@ typedef struct tagInfo
 	tagInfo() { ZeroMemory(this, sizeof(tagInfo)); }
 	tagInfo(float fX, float fY, float fCX, float fCY) : vPoint{ fX, fY }, vSize{ fCX, fCY } {}
 } INFO;
+
+// 무기공격 정보
+typedef struct tagAttackInfo
+{
+	int		iLevel;				// 공격 레벨
+	int		iMaxLevel;			// 최대 연격 횟수
+	bool	bNextAtk;			// 다음 연격 가능 플래그
+	double	dElapseTime;		// 무기 공격 시작 후 지나간 시간
+	double  dMaxTime;			// 무기별 공격 시간
+								// 이게 끝날 때까지는 새로 공격 못함
+								// 다만 끝나기 전에 공격 클릭할 시, 연격이 있다면 연격을 함
+								// 끝나고 클릭, 끝나고 클릭 -> Attack1 - Attack1 ....
+								// 끝나기 전 클릭, 끝나기 전 클릭 -> Attack1 - Attack2 - Attack3
+} ATK_INFO;
+
 
 // 스프라이트 애니메이션용
 // QueryPerfomanceCount 사용으로 변경

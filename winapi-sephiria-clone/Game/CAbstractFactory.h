@@ -3,6 +3,9 @@
 #include "CObj.h"
 #include "CWeapon.h"
 #include "CWeaponController.h"
+#include "CSwordAndShield.h"
+#include "CSword.h"
+#include "CShield.h"
 
 template<typename T>
 class CAbstractFactory
@@ -48,6 +51,14 @@ public:
 	static CWeaponController* CreateWeaponController(CObj* pTarget)
 	{
 		return static_cast<CWeaponController*>(CAbstractFactory<T>::CreateObj(pTarget));
+	}
+
+	static CObj* CreateSwordAndShield(SWORD_AND_SHIELD_STATE* pState, ATK_INFO* pAtk)
+	{
+		T* pSwordOrShield = static_cast<T*>(CAbstractFactory<T>::CreateObj());
+		pSwordOrShield->SetState(pState);
+		pSwordOrShield->SetAtkInfo(pAtk);
+		return static_cast<CObj*>(pSwordOrShield);
 	}
 };
 

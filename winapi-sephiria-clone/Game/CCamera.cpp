@@ -22,7 +22,6 @@ CCamera::~CCamera()
 void CCamera::Initialize()
 {
 	m_tInfo = { WINCX >> 1, WINCY >> 1, WINCX, WINCY };
-	m_fSpeed = 200.f;
 	m_eRender = RENDERID::CAMERA;
 }
 
@@ -88,21 +87,23 @@ void CCamera::HandleNormal()
 	if (nullptr == m_pTarget)
 		return;
 
-	VEC vMove = m_pTarget->GetInfo().vPoint - m_tInfo.vPoint;
+	m_tInfo.vPoint = m_pTarget->GetInfo().vPoint;
 
-	// 실제 거리와 이번 프레임에 이동 거리를 구해 비교
-	float fDistance = vMove.Norm();
-	float fCurFrameMove = m_fSpeed * DT;
+	//VEC vMove = m_pTarget->GetInfo().vPoint - m_tInfo.vPoint;
 
-	// 더 멀리가면 Target에 맞게 처리
-	if (fDistance <= fCurFrameMove)
-	{
-		m_tInfo.vPoint = m_pTarget->GetInfo().vPoint;
-		return; 
-	}
+	//// 실제 거리와 이번 프레임에 이동 거리를 구해 비교
+	//float fDistance = vMove.Norm();
+	//float fCurFrameMove = m_fSpeed * DT;
 
-	// 아직 그정도 아니면 더해주기
-	m_tInfo.vPoint += vMove.Normalize() * fCurFrameMove;
+	//// 더 멀리가면 Target에 맞게 처리
+	//if (fDistance <= fCurFrameMove)
+	//{
+	//	m_tInfo.vPoint = m_pTarget->GetInfo().vPoint;
+	//	return; 
+	//}
+
+	//// 아직 그정도 아니면 더해주기
+	//m_tInfo.vPoint += vMove.Normalize() * fCurFrameMove;
 }
 
 void CCamera::HandleFixed()

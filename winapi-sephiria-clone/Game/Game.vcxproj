@@ -137,6 +137,8 @@
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCameraMgr.h" />
     <ClInclude Include="CCollisionMgr.h" />
+    <ClInclude Include="CEffect.h" />
+    <ClInclude Include="CEffectMgr.h" />
     <ClInclude Include="CImgMgr.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CLine.h" />
@@ -169,6 +171,8 @@
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCameraMgr.cpp" />
     <ClCompile Include="CCollisionMgr.cpp" />
+    <ClCompile Include="CEffect.cpp" />
+    <ClCompile Include="CEffectMgr.cpp" />
     <ClCompile Include="CImgMgr.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLine.cpp" />
