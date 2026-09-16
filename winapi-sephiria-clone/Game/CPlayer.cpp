@@ -171,7 +171,7 @@ void CPlayer::Dash()
 		if (m_iDash > 0)
 		{
 			--m_iDash;
-			m_fSpeed = m_fRunSpeed * 100.f;
+			m_fSpeed = m_fRunSpeed * 50.f;
 		}
 	}
 	else if (KEY_HOLD(VK_SPACE))

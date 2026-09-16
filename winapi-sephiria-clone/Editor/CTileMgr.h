@@ -45,6 +45,7 @@ public:
 public:
 	void	PickingTile(POINT pt, TILE tTile);
 	void	SaveTile();		
+	void	SaveTileToClient();
 	void	ExtractPNG();
 	int		GetEncoderClsid(const WCHAR* format, CLSID* pClsid);
 

@@ -3,8 +3,9 @@
 #include "CImgMgr.h"
 #include "CCameraMgr.h"
 
-CTile::CTile() : m_iDrawID(0), m_iOption(0)
+CTile::CTile()
 {
+    ZeroMemory(&m_tTile, sizeof(TILE));
 }
 
 CTile::~CTile()
@@ -32,19 +33,42 @@ void CTile::LateUpdate()
 
 void CTile::Render(Graphics* pGraphics)
 {
-    Image* pImg = CImgMgr::GetInstance()->FindImg(L"Tile");
-    if (nullptr == pImg)
-        return;
-
     VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
-    pGraphics->DrawImage(
-        pImg, 
-        int(m_tRect.left + vScroll.fX),
-        int(m_tRect.top + vScroll.fY),
-        TILECX * m_iDrawID, 0, TILECX, TILECY,
-        UnitPixel
-        );
+    Color color(0, 0, 0, 0);
+
+    switch (m_tTile.eTileOption)
+    {
+    case TILE_OPTION::FLOOR:
+        break;
+
+    case TILE_OPTION::WALL:
+        color = Color(100, 0, 100, 255);   // 파랑
+        break;
+
+    case TILE_OPTION::AIR:
+        color = Color(100, 255, 0, 0);     // 빨강
+        break;
+
+    case TILE_OPTION::INTERACTION:
+        color = Color(100, 0, 0, 255);   // 노랑
+        break;
+
+    default:
+        return;
+    }
+
+    SolidBrush brush(color);
+
+    pGraphics->FillRectangle(
+        &brush,
+        RectF(
+            m_tRect.left + vScroll.fX,
+            m_tRect.top + vScroll.fY,
+            m_tInfo.vSize.fX,
+            m_tInfo.vSize.fY
+        )
+    );
 }
 
 void CTile::Release()

@@ -46,7 +46,7 @@ enum class SCENEID	{ STAGE, END };
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };
 
 enum class TILE_OPTION { FLOOR, WALL, AIR, INTERACTION, END };
-enum class TILE_LAYER { LAYER0, LAYER1, END };
+enum class TILE_LAYER { LAYER0, LAYER1, LAYER2, LAYER3, END };
 
 /////////////////////////////////////////
 // 구조체
@@ -151,6 +151,12 @@ typedef struct tagLine
 		: tLPoint(LPoint), tRPoint(RPoint) {
 	}
 }LINE;
+
+typedef struct tagTileInfo
+{
+	TILE_OPTION	eTileOption;
+	TILE_LAYER	eTileLayer;
+} TILE;
 
 /////////////////////////////////////////
 // 함수
