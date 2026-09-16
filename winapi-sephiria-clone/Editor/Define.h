@@ -57,9 +57,14 @@ enum class TILE_TYPE
 	LIB_FLOOR1,
 	LIB_CLIFF,
 	WOOD_FLOOR,
+	LIB_GRASS,
+	LIB_BOOKSHELF,
+	LIB_FURNITURE,
+	LIB_STONE_WALL,
+	LIB_CARPET
 	END
 };
-enum class TILE_LAYER { LAYER0, LAYER1, END };
+enum class TILE_LAYER { LAYER0, LAYER1, LAYER2, LAYER3, END };
 
 /////////////////////////////////////////
 // 구조체
