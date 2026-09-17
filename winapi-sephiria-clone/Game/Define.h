@@ -46,7 +46,7 @@ enum class SCENEID	{ STAGE, END };
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };
 
 enum class TILE_OPTION { FLOOR, WALL, AIR, INTERACTION, END };
-enum class TILE_LAYER { LAYER0, LAYER1, END };
+enum class TILE_LAYER { LAYER0, LAYER1, LAYER2, LAYER3, END };
 
 /////////////////////////////////////////
 // 구조체
@@ -65,6 +65,7 @@ typedef struct tagVector
 	tagVector	operator+(const tagVector& rhs) const	{ return tagVector{ fX + rhs.fX, fY + rhs.fY }; }
 	tagVector	operator-(const tagVector& rhs) const	{ return tagVector{ fX - rhs.fX, fY - rhs.fY }; }
 	tagVector	operator*(float fScalar) const			{ return tagVector{ fScalar * fX, fScalar * fY }; }
+	tagVector	operator*(const tagVector& rhs) const	{ return tagVector{ fX * rhs.fX, fY * rhs.fY }; }
 	bool	    operator==(const tagVector& rhs) const  { return (fX == rhs.fX && fY == rhs.fY); }
 	bool	    operator!=(const tagVector& rhs) const  { return (fX != rhs.fX || fY != rhs.fY); }
 	tagVector& operator+=(const tagVector& rhs) {
@@ -114,8 +115,7 @@ typedef struct tagAttackInfo
 	bool	bNextAtk;			// 다음 연격 가능 플래그
 	double	dElapseTime;		// 무기 공격 시작 후 지나간 시간
 	double  dMaxTime;			// 무기별 공격 시간
-								// 이게 끝날 때까지는 새로 공격 못함
-								// 다만 끝나기 전에 공격 클릭할 시, 연격이 있다면 연격을 함
+	double  dComboTime;			// 끝나기 전에 공격 클릭할 시, 연격이 있다면 연격을 함
 								// 끝나고 클릭, 끝나고 클릭 -> Attack1 - Attack1 ....
 								// 끝나기 전 클릭, 끝나기 전 클릭 -> Attack1 - Attack2 - Attack3
 } ATK_INFO;
@@ -151,6 +151,12 @@ typedef struct tagLine
 		: tLPoint(LPoint), tRPoint(RPoint) {
 	}
 }LINE;
+
+typedef struct tagTileInfo
+{
+	TILE_OPTION	eTileOption;
+	TILE_LAYER	eTileLayer;
+} TILE;
 
 /////////////////////////////////////////
 // 함수

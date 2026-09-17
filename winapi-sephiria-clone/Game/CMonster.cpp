@@ -2,43 +2,27 @@
 #include "CMonster.h"
 
 #include "CCameraMgr.h"
+#include "CObjMgr.h"
+#include "CEffectMgr.h"
 
 CMonster::CMonster()
 {
+	// 몬스터의 타겟은 항상 플레이어
+	// 근데 나중에 동료 구현할 때는 이거 없애야 한다. 
+	m_pTarget = CObjMgr::GetInstance()->GetPlayer();
 }
 
 CMonster::~CMonster()
 {
-	Release();
 }
 
-void CMonster::Initialize()
+void CMonster::SetDamage(int iDamage, CObj* pObj)
 {
-	m_tInfo = { 0.f, 0.f, 100.f, 100.f };
-	m_eRender = RENDERID::GAMEOBJECT;
-	m_iRenderLayer = 5;
-}
+	m_iHp -= iDamage;
 
-int CMonster::Update()
-{
-	__super::UpdateRect();
-	return NOEVENT;
-}
+	if (m_iHp <= 0)
+		m_bDead = true;
 
-void CMonster::LateUpdate()
-{
-}
-
-void CMonster::Render(Graphics* pGraphics)
-{
-	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
-	SolidBrush blackBrush(Color(255, 133, 0, 0));
-	pGraphics->FillRectangle(&blackBrush, (int)(m_tRect.left + vScroll.fX),
-		(int)(m_tRect.top + vScroll.fY),
-		(int)m_tInfo.vSize.fX,
-		(int)m_tInfo.vSize.fY);
-}
-
-void CMonster::Release()
-{
+	// 나중에 피해량 이펙트로 띄우기
+	// 경험치 pObj에게 넘기기 등을 하면 된다.
 }

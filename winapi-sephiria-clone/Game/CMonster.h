@@ -1,16 +1,12 @@
-#pragma once
+﻿#pragma once
 #include "CObj.h"
-class CMonster :
+class CMonster abstract :
     public CObj
 {
 public:
     CMonster();
-    ~CMonster();
+    virtual ~CMonster();
 public:
-    void Initialize() override;
-    int Update() override;
-    void LateUpdate() override;
-    void Render(Graphics*) override;
-    void Release() override;
+    void SetDamage(int iDamage, CObj* pObj) override;
 };
 

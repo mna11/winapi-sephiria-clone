@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "CObjMgr.h"
+
 #include "CCameraMgr.h"
+#include "CCollisionMgr.h"
 
 CObjMgr* CObjMgr::m_pInstance = nullptr;
 
@@ -45,6 +47,11 @@ int CObjMgr::Update()
 
 void CObjMgr::LateUpdate()
 {
+
+	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::PLAYER)], TILE_LAYER::LAYER0);
+	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::PLAYER)], TILE_LAYER::LAYER1);
+	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::PLAYER)], TILE_LAYER::LAYER2);
+
 	for (size_t i = 0; i < toUType(OBJID::END); ++i)
 	{
 		for (auto& pObj : m_ObjList[i])
@@ -58,7 +65,7 @@ void CObjMgr::LateUpdate()
 			m_RenderList[toUType(eID)].push_back(pObj);
 		}
 	}
-	//CCollisionMgr::CollisionRectEx(m_ObjList[PLAYER], m_ObjList[MONSTER]);
+
 	//CCollisionMgr::CollisionCircle(m_ObjList[BULLET], m_ObjList[MONSTER]);
 }
 

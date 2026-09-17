@@ -36,12 +36,14 @@ public:
 	void	Release();
 
 public:
-	void	PickingTile(POINT pt, int iDrawID, int iOption);
-	void	SaveTile();
+	const vector<CObj*>& GetTile(TILE_LAYER eLayer) const { return m_vecTile[toUType(eLayer)]; }
+
+public:
 	void	LoadTile();
 
 private:
 	static CTileMgr* m_pInstance;
-	vector<CObj*>	m_vecTile;
+
+	vector<CObj*>		m_vecTile[toUType(TILE_LAYER::END)];
 };
 

@@ -11,11 +11,13 @@ CObj::CObj()
 	m_pTarget(nullptr),
 	m_pFrameKey(L""),
 	m_eRender(RENDERID::END),
-	m_iRenderLayer(0)
+	m_iRenderLayer(0),
+	m_iHp(0)
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	ZeroMemory(&m_tRect, sizeof(RECT));
 	ZeroMemory(&m_tFrame, sizeof(FRAME));
+	ZeroMemory(&m_vPrePoint, sizeof(VEC));
 }
 
 CObj::~CObj()

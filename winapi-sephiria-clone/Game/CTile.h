@@ -1,5 +1,7 @@
 ﻿#pragma once
+
 #include "CObj.h"
+
 class CTile :
     public CObj
 {
@@ -11,17 +13,14 @@ public:
     void Initialize() override;
     int  Update() override;
     void LateUpdate() override;
-    void Render(Graphics* pGraphics) override;
+    void Render(Graphics*) override;
     void Release() override;
 
 public:
-    int GetDrawID() const { return m_iDrawID; }
-    int GetOption() const { return m_iOption; }
+    const TILE& GetTile() const { return m_tTile; }
 public:
-    void SetDrawID(int iDrawID) { m_iDrawID = iDrawID; }
-    void SetOption(int iOption) { m_iOption = iOption; }
+    void SetTile(TILE tTile) { m_tTile = tTile; __super::UpdateRect(); }
 
 private:
-    int     m_iDrawID;
-    int     m_iOption;
+    TILE            m_tTile;
 };

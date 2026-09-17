@@ -3,6 +3,9 @@
 
 #include "CSwordAndShield.h"
 
+// 한손검 렌더 레이어가 검/방패 달라서 따로 만든 렌더용 클래스
+// 충돌 등은 CSwordAndShield에서 담당한다.
+
 class CShield :
     public CObj
 {
@@ -19,15 +22,6 @@ public:
 public:
     void SetState(SWORD_AND_SHIELD_STATE* pWeaponState) { m_pWeaponState = pWeaponState; }
     void SetAtkInfo(ATK_INFO* pAtk)                     { m_pAtk = pAtk; }
-
-private:
-    void HandleIdleUpdate   ();
-    void HandleAttackUpdate ();
-    void HandleAttack1Update();
-    void HandleAttack2Update();
-    void HandleAttack3Update();
-    void HandleShieldUpdate ();
-    void HandleCleaveUpdate ();
 
 private:
     void HandleIdleRender   (Graphics* pGraphics, Image* pImg, VEC& vScroll);

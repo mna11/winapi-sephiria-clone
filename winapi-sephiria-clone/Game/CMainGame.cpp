@@ -10,6 +10,7 @@
 #include "CSceneMgr.h"
 #include "CTileMgr.h"
 #include "CTimeMgr.h"
+#include "CEffectMgr.h"
 #include "CAbstractFactory.h"
 
 CMainGame::CMainGame()
@@ -80,6 +81,7 @@ void CMainGame::Render()
 
 void CMainGame::Release()
 {
+	CEffectMgr::DestroyInstance();
 	CTileMgr::DestroyInstance();
 	CSceneMgr::DestroyInstance();
 	CImgMgr::DestroyInstance();

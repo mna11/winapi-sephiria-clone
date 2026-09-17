@@ -1,4 +1,7 @@
 ﻿#pragma once
+
+class CObj;
+
 class CEffectMgr
 {
 private:
@@ -32,7 +35,7 @@ public:
 	void	Initialize();
 
 public:
-	void	CreateEffect(const TCHAR*, VEC vPoint, float fFactor);
+	CObj*	CreateEffect(const TCHAR*, VEC vPoint, float fFactor);
 
 private:
 	static CEffectMgr* m_pInstance;

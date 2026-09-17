@@ -44,6 +44,11 @@ void CWeaponController::LateUpdate()
 void CWeaponController::Render(Graphics* pGraphics)
 {
 	// 렌더는 CObjMgr 담당 -> 렌더 ID에 따른 렌더 계층화를 위해
+
+#ifdef _DEBUG
+	if (nullptr != m_pWeapon)
+		m_pWeapon->Render(pGraphics);
+#endif _DEBUG
 }
 
 void CWeaponController::Release()

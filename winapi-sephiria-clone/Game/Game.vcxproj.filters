@@ -100,6 +100,9 @@
     <Filter Include="01. Obj\04. Effect">
       <UniqueIdentifier>{a87a83a9-bd56-4a17-9549-ad7a29e76cc6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\02. Monster\00. Erma">
+      <UniqueIdentifier>{5ca27ce4-69f4-4b21-bf02-ad52c945ef86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -183,9 +186,6 @@
     <ClInclude Include="CWeapon.h">
       <Filter>01. Obj\03. Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="CSwordAndShield.h">
-      <Filter>01. Obj\03. Weapon\01. SwordAndShield</Filter>
-    </ClInclude>
     <ClInclude Include="CWeaponController.h">
       <Filter>01. Obj\03. Weapon\00. WeaponController</Filter>
     </ClInclude>
@@ -200,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="CEffect.h">
       <Filter>01. Obj\04. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="CSwordAndShield.h">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,19 +3,22 @@
 
 #include "CSword.h"
 #include "CShield.h"
+#include "CPlayer.h"
 
 #include "CCameraMgr.h"
 #include "CImgMgr.h"
 #include "CTimeMgr.h"
 #include "CObjMgr.h"
+#include "CKeyMgr.h"
 #include "CAbstractFactory.h"
+#include "CEffectMgr.h"
 
 CSwordAndShield::CSwordAndShield()
 	: CState(SWORD_AND_SHIELD_STATE::END, SWORD_AND_SHIELD_STATE::IDLE),
 	m_pSword(nullptr), m_pShield(nullptr)
 {
-	ZeroMemory(m_tBarriorRect, sizeof(PointF) * 4); 
-	ZeroMemory(&m_tSwordRect, sizeof(RECT));
+	ZeroMemory(&m_tAtkRect, sizeof(RECT));
+	ZeroMemory(&m_tDefRect, sizeof(RECT));
 }
 
 CSwordAndShield::~CSwordAndShield()
@@ -40,7 +43,7 @@ void CSwordAndShield::Initialize()
 	// 공격 정보 초기화
 	// 최대 3연격 가능, 공격 걸리는 시간 1초
 	// 공격 상태 처음 진입 시 초기화하긴 하지만, 방어적으로 코드 작성
-	SetAtk(0, 3, 0., 0.3);
+	SetAtk(0, 3, 0., 0.2, 1.0);
 }
 
 int CSwordAndShield::Update()
@@ -49,7 +52,9 @@ int CSwordAndShield::Update()
 
 	ApplyChange();
 	AttackUpdate();
-
+	CleaveUpdate();
+	DefenseUpdate();
+	
 #ifdef _DEBUG
 	PrintInfo();
 #endif // _DEBUG
@@ -59,11 +64,35 @@ int CSwordAndShield::Update()
 
 void CSwordAndShield::LateUpdate()
 {
+	CreateEffect();
 }
 
 void CSwordAndShield::Render(Graphics* pGraphics)
 {
 	// 소드, 실드에서 각자 렌더링함
+	
+#ifdef _DEBUG
+	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
+	SolidBrush blackBrush(Color(255, 0, 0, 0));
+
+	// 공격 충돌 RECT
+	pGraphics->FillRectangle(&blackBrush, (int)(m_tAtkRect.left + vScroll.fX),
+		(int)(m_tAtkRect.top + vScroll.fY),
+		(int)m_tAtkRect.right - m_tAtkRect.left,
+		(int)m_tAtkRect.bottom - m_tAtkRect.top);
+
+	// 방어 충돌 RECT
+	pGraphics->FillRectangle(&blackBrush, (int)(m_tDefRect.left + vScroll.fX),
+		(int)(m_tDefRect.top + vScroll.fY),
+		(int)m_tDefRect.right - m_tDefRect.left,
+		(int)m_tDefRect.bottom - m_tDefRect.top);
+
+	// 회전 충돌 RECT
+	pGraphics->FillRectangle(&blackBrush, (int)(m_tClvRect.left + vScroll.fX),
+		(int)(m_tClvRect.top + vScroll.fY),
+		(int)m_tClvRect.right - m_tClvRect.left,
+		(int)m_tClvRect.bottom - m_tClvRect.top);
+#endif // _DEBUG
 }
 
 void CSwordAndShield::Release()
@@ -82,18 +111,21 @@ void CSwordAndShield::SetTarget(CObj* pObj)
 
 void CSwordAndShield::Attack()
 {
-	if (m_eCurState == SWORD_AND_SHIELD_STATE::SHIELD)
-		m_eNextState = SWORD_AND_SHIELD_STATE::CLEAVE; // 한손검 특수 기능 회전베기
+	if (m_eCurState == SWORD_AND_SHIELD_STATE::DEFENSE)
+	{
+		m_eNextState = SWORD_AND_SHIELD_STATE::CLEAVE_READY; // 한손검 특수 기능 회전베기
+		m_fAngle = m_pTarget->GetAngle();
+		static_cast<CPlayer*>(m_pTarget)->RequestChange(PLAYER_STATE::HEAVY_ATTACK);
+	}
 	else
 	{
-		// 공격 중이었음
-		if (m_tAtk.iLevel != 0 && m_tAtk.dElapseTime <= m_tAtk.dMaxTime)
-		{
-			m_tAtk.bNextAtk = true;
-		}
-	
 		m_eNextState = SWORD_AND_SHIELD_STATE::ATTACK; 
-		m_pSword->SetAngle(m_pTarget->GetAngle());
+		m_pSword->SetAngle(m_pTarget->GetAngle()); // 공격 키를 눌렀을 때의 마우스 방향 Angle을 기억시킴
+		// 플레이어를 공격 상태로 만들어 줌
+		static_cast<CPlayer*>(m_pTarget)->RequestChange(PLAYER_STATE::ATTACK);
+
+		if (m_tAtk.iLevel != 0) // 첫 공격 입력이 아닐 경우에는 다음 연격 플래그를 true로 해줌
+			m_tAtk.bNextAtk = true;
 	}
 }
 
@@ -103,40 +135,167 @@ void CSwordAndShield::SpecialAttack()
 	if (m_eCurState == SWORD_AND_SHIELD_STATE::ATTACK)
 		return;
 
-	m_eNextState = SWORD_AND_SHIELD_STATE::SHIELD;
+	m_eNextState = SWORD_AND_SHIELD_STATE::DEFENSE;
 }
+
+
+void CSwordAndShield::CreateEffect()
+{
+	VEC vRenderPoint{}; 
+	VEC vRectSize{};
+
+	float fTargetAngle = m_pTarget->GetAngle();
+	float fDistance = 50.f;
+	VEC vOffset{ fDistance * cosf(fTargetAngle), fDistance * sinf(fTargetAngle) };
+
+	// 공격
+	if (KEY_DOWN(VK_LBUTTON))
+	{
+		float fTargetAngle = m_pTarget->GetAngle();
+		float fDistance = 50.f;
+		VEC vOffset{ fDistance * cosf(fTargetAngle), fDistance * sinf(fTargetAngle) };
+
+		vRenderPoint = m_tInfo.vPoint + vOffset;
+
+		switch (m_tAtk.iLevel)
+		{
+		case 0:
+			CEffectMgr::GetInstance()->CreateEffect(L"SwordSwing1", vRenderPoint, m_pTarget->GetAngle());
+			vRectSize = { 50.f, 50.f };
+			break;
+		case 1:
+			CEffectMgr::GetInstance()->CreateEffect(L"SwordSwing2", vRenderPoint, m_pTarget->GetAngle());
+			vRectSize = { 60.f, 60.f };
+			break;
+		case 2:
+			CEffectMgr::GetInstance()->CreateEffect(L"SwordSwing3", vRenderPoint, m_pTarget->GetAngle());
+			vRectSize = { 80.f, 80.f };
+			break;
+		}
+	}
+	SetRect(&m_tAtkRect, vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
+	
+	// 방어
+	vRenderPoint = { 0.f, 0.f };
+	vRectSize	 = { 0.f, 0.f };
+	if (m_eCurState == SWORD_AND_SHIELD_STATE::DEFENSE && KEY_HOLD(VK_RBUTTON))
+	{
+		float fTargetAngle = m_pTarget->GetAngle();
+		float fDistance = 40.f;
+		VEC vOffset{ fDistance * cosf(fTargetAngle), fDistance * sinf(fTargetAngle) };
+
+		vRenderPoint = m_tInfo.vPoint + vOffset;
+		float fSizeFactor = 27.f;
+		vRectSize = { fSizeFactor + fSizeFactor * fabsf(sinf(fTargetAngle)), fSizeFactor + fSizeFactor * fabsf(cosf(fTargetAngle))};
+
+		CEffectMgr::GetInstance()->CreateEffect(L"Shield", vRenderPoint, m_pTarget->GetAngle());
+		
+		vRenderPoint -= vOffset * 0.2f;
+		SetRect(&m_tDefRect, vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
+	}
+	SetRect(&m_tDefRect, vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
+
+	// 회전 베기
+	vRenderPoint = { 0.f, 0.f };
+	vRectSize	 = { 0.f, 0.f };
+	if (m_eCurState == SWORD_AND_SHIELD_STATE::CLEAVE)
+	{
+		float fTargetAngle = m_pTarget->GetAngle();
+		float fDistance = 60.f;
+		VEC vOffset{ fDistance * cosf(fTargetAngle), fDistance * sinf(fTargetAngle) };
+
+		vRenderPoint = m_tInfo.vPoint;
+		float fSizeFactor = 130.f;
+		vRectSize = { fSizeFactor + fSizeFactor * fabsf(cosf(m_fAngle)), fSizeFactor + fSizeFactor * fabsf(sinf(m_fAngle)) };
+
+		CEffectMgr::GetInstance()->CreateEffect(L"Cleave", vRenderPoint, m_pTarget->GetAngle());
+		SetRect(&m_tClvRect, vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
+	}
+	SetRect(&m_tClvRect, vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
+}
+
 
 void CSwordAndShield::AttackUpdate()
 {
-	if (m_eCurState != SWORD_AND_SHIELD_STATE::ATTACK
-		&& m_eCurState != SWORD_AND_SHIELD_STATE::CLEAVE)
+	if (m_eCurState != SWORD_AND_SHIELD_STATE::ATTACK)
 		return;
 
 	m_tAtk.dElapseTime += DT; // 시간 누적
 
-	// 공격 시간이 끝남
-	if (m_tAtk.dElapseTime >= m_tAtk.dMaxTime)
+	// 현재 공격 시간이 콤보 유지 시간보다 커짐
+	if (m_tAtk.dElapseTime >= m_tAtk.dComboTime)
 	{
-		// 다음 연격 키를 눌렀음
-		if (m_tAtk.bNextAtk)
-		{
-			// 레벨 증가 및 플래그 초기화
-			++m_tAtk.iLevel;
-			m_tAtk.bNextAtk = false;
-			m_tAtk.dElapseTime = 0.;
-			m_pSword->SetAngle(m_pTarget->GetAngle());
-			// 최대 레벨을 넘지 않았으면 킵 고잉
-			if (m_tAtk.iLevel <= m_tAtk.iMaxLevel)
-				return;
-		}
-
-		// 다음 연격 키를 누르지 않았음 || 최대 연격 횟수를 넘어감
-		// Attack에서 다른 상태로 빠져나가는 것은 이때만 가능함
-
-		// 다시 IDLE 상태로 복귀하고 공격 경과시간과 현재 레벨 초기화
+		// IDLE 상태, ElapseTime은 0 초기화, 레벨도 0 초기화
 		m_eNextState = SWORD_AND_SHIELD_STATE::IDLE;
 		m_tAtk.dElapseTime = 0.;
-		m_tAtk.iLevel = 0.;
+		m_tAtk.iLevel = 0;
+
+		// 플레이어를 IDLE 상태로 만들어 줌
+		static_cast<CPlayer*>(m_pTarget)->RequestChange(PLAYER_STATE::IDLE);
+	}
+	// 아직 콤보 유지 시간 내임
+	else
+	{
+		// 일단 공격은 끝남
+		if (m_tAtk.dElapseTime > m_tAtk.dMaxTime)
+		{
+			// 연격키를 눌렀었음
+			if (m_tAtk.bNextAtk)
+			{
+				++m_tAtk.iLevel;		 // 레벨 증가
+				if (m_tAtk.iLevel > m_tAtk.iMaxLevel)
+					return;
+
+				m_tAtk.dElapseTime = 0.; // 공격 경과 시간 초기화
+				m_tAtk.bNextAtk = false; // 연격 키 플래그 초기화
+			}
+		}
+	}
+}
+
+void CSwordAndShield::DefenseUpdate()
+{
+	if (m_eCurState != SWORD_AND_SHIELD_STATE::DEFENSE)
+		return;
+
+	if (KEY_UP(VK_RBUTTON))
+	{
+		m_eNextState = SWORD_AND_SHIELD_STATE::IDLE;
+		SetRect(&m_tDefRect, 0, 0, 0, 0);
+		return;
+	}
+}
+
+void CSwordAndShield::CleaveUpdate()
+{
+	if (m_eCurState != SWORD_AND_SHIELD_STATE::CLEAVE_READY
+		&& m_eCurState != SWORD_AND_SHIELD_STATE::CLEAVE)
+		return;
+
+	m_tAtk.dElapseTime += DT;
+
+	if (m_eCurState == SWORD_AND_SHIELD_STATE::CLEAVE_READY)
+	{
+		if (m_tAtk.dElapseTime <= m_tAtk.dMaxTime)
+		{
+			float fSpeed = 1000.f; 
+			VEC vOffset = { fSpeed * cosf(m_fAngle) * (float)DT, fSpeed * sinf(m_fAngle) * (float)DT};
+			m_pTarget->AddPos(vOffset);
+		}
+		else
+		{
+			m_tAtk.dElapseTime = 0;
+			m_eNextState = SWORD_AND_SHIELD_STATE::CLEAVE;
+		}
+	}
+	else
+	{
+		if (m_tAtk.dElapseTime > m_tAtk.dMaxTime)
+		{
+			m_tAtk.dElapseTime = 0;
+			m_eNextState = SWORD_AND_SHIELD_STATE::IDLE;
+			static_cast<CPlayer*>(m_pTarget)->RequestChange(PLAYER_STATE::IDLE);
+		}
 	}
 }
 
@@ -148,12 +307,18 @@ void CSwordAndShield::ApplyChange()
 		switch (m_eNextState)
 		{
 		case SWORD_AND_SHIELD_STATE::IDLE:
+			SetAtk(0, 0, 0., 0., 0.);
 			break;
 		case SWORD_AND_SHIELD_STATE::ATTACK:
-			SetAtk(1, 3, 0., 0.5); // 공격 처음 진입 시 초기화
+			SetAtk(1, 3, 0., 0.2, 0.5); // 공격 처음 진입 시 초기화
+			break;
+		case SWORD_AND_SHIELD_STATE::DEFENSE:
+			break;
+		case SWORD_AND_SHIELD_STATE::CLEAVE_READY:
+			SetAtk(0, 0, 0., 0.2, 0.5);
 			break;
 		case SWORD_AND_SHIELD_STATE::CLEAVE:
-			SetAtk(0, 3, 0., 1.); // 나중에 CLEAVE 구현할 때 여기 변경할 것
+			SetAtk(0, 0, 0., 0.01, 0.01); // 나중에 CLEAVE 구현할 때 여기 변경할 것
 			break;
 		default:
 			break;
@@ -170,7 +335,7 @@ void CSwordAndShield::PrintInfo()
 	m_dPrintInterval -= DT;
 	if (m_dPrintInterval <= 0)
 	{
-		cout << "공격 상태 : " << m_tAtk.bNextAtk << "," << m_tAtk.dElapseTime << ", " << m_tAtk.dMaxTime << ", " << m_tAtk.iLevel << ", " << m_tAtk.iMaxLevel << endl;
+		cout << "공격 상태 : " << m_tAtk.iLevel << ", " << m_tAtk.bNextAtk << ", " << m_tAtk.dElapseTime << ", " << m_tAtk.dMaxTime << ", " << m_tAtk.iLevel << ", " << m_tAtk.iMaxLevel << endl;
 		cout << "현재 상태 : " << toUType(m_eCurState) << endl;
 		cout << "검 위치 : " << m_pSword->GetInfo().vPoint.fX << " " << m_pSword->GetInfo().vPoint.fY << endl;
 		m_dPrintInterval = 0.2;

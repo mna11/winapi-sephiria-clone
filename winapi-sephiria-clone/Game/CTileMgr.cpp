@@ -8,7 +8,10 @@ CTileMgr* CTileMgr::m_pInstance = nullptr;
 
 CTileMgr::CTileMgr()
 {
-	m_vecTile.reserve(TILEX * TILEY);
+	for (int l = 0; l < toUType(TILE_LAYER::END); ++l)
+	{
+		m_vecTile[l].reserve(TILEX * TILEY);
+	}
 }
 
 CTileMgr::~CTileMgr()
@@ -18,115 +21,66 @@ CTileMgr::~CTileMgr()
 
 void CTileMgr::Initialize()
 {
-	for (int i = 0; i < TILEY; ++i)
-	{
-		for (int j = 0; j < TILEX; ++j)
-		{
-			float fX = float((TILECX >> 1) + (TILECX * j));
-			float fY = float((TILECY >> 1) + (TILECY * i));
-
-			CObj* pTile = CAbstractFactory<CTile>::CreateObj(fX, fY);
-			m_vecTile.push_back(pTile);
-		}
-	}
-
+	LoadTile();
 }
 
 void CTileMgr::Update()
 {
-	for (auto& pTile : m_vecTile)
-		pTile->Update();
 }
 
 void CTileMgr::LateUpdate()
 {
-	for (auto& pTile : m_vecTile)
-		pTile->LateUpdate();
 }
 
 void CTileMgr::Render(Graphics* pGraphics)
 {
+#ifdef _DEBUG
 	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
-	int iCullX = abs(vScroll.fX / TILECX);
-	int iCullY = abs(vScroll.fY / TILECY);
+	VEC vStart{ 0.f, 0.f };
+	VEC vEnd{ WINCX / TILECX + 2.f, WINCY / TILECY + 2.f };
+	VEC vAdd{ -vScroll.fX / TILECX, -vScroll.fY / TILECY };
 
-	int iMaxX = iCullX + (WINCX / TILECX) + 2;
-	int iMaxY = iCullY + (WINCY / TILECY) + 2;
+	vStart += vAdd;
+	vEnd += vAdd;
 
-	for (int i = iCullY; i < iMaxY; ++i)
+	// 빌드는 문제 없는데, 인텔리전스가 모호하다고 해서 std 붙여줌
+	// iIndex 검사를 하긴 하지만, i가 -1이고 j가 abs(-TILEX) 보다 크면 문제가 생기므로 clamp해줌 
+	int iStartX = std::clamp((int)vStart.fX, 0, TILEX);
+	int iStartY = std::clamp((int)vStart.fY, 0, TILEY);
+	int iEndX = std::clamp((int)vEnd.fX, 0, TILEX);
+	int iEndY = std::clamp((int)vEnd.fY, 0, TILEY);
+
+	for (int i = iStartY; i < iEndY; ++i)
 	{
-		for (int j = iCullX; j < iMaxX; ++j)
+		for (int j = iStartX; j < iEndX; ++j)
 		{
 			int iIndex = i * TILEX + j;
 
-			if (0 > iIndex || m_vecTile.size() <= (size_t)iIndex)
-				continue;
+			for (int l = 0; l < toUType(TILE_LAYER::END); ++l)
+			{
+				if (0 > iIndex || m_vecTile[l].size() <= (size_t)iIndex)
+					continue;
 
-			m_vecTile[iIndex]->Render(pGraphics);
+				m_vecTile[l][iIndex]->Render(pGraphics);
+			}
 		}
 	}
+#endif
 }
 
 void CTileMgr::Release()
 {
-	for_each(m_vecTile.begin(), m_vecTile.end(), SafeDelete<CObj*>);
-	m_vecTile.clear();
-}
-
-void CTileMgr::PickingTile(POINT pt, int iDrawID, int iOption)
-{
-	int x = pt.x / TILECX;
-	int y = pt.y / TILECY;
-
-	int		iIndex = y * TILEX + x;
-
-	if (0 > iIndex || m_vecTile.size() <= (size_t)iIndex)
-		return;
-
-	dynamic_cast<CTile*>(m_vecTile[iIndex])->SetDrawID(iDrawID);
-	dynamic_cast<CTile*>(m_vecTile[iIndex])->SetOption(iOption);
-}
-
-void CTileMgr::SaveTile()
-{
-	HANDLE	hFile = CreateFile(L"../Data/Tile.dat", // 이름을 포함한 파일 경로
-		GENERIC_WRITE,		// 파일 접근 모드
-		NULL,				// 공유 방식, NULL로 지정하면 공유하지 않음
-		NULL,				// 보안 속성, NULL인 기본 값 설정
-		CREATE_ALWAYS,		// 생성 방식, 쓰기(CREATE_ALWAYS), 읽기(OPEN_EXISTING)
-		FILE_ATTRIBUTE_NORMAL, // 파일 속성, 아무런 속성이 없는 일반 파일
-		NULL);	// 생성될 파일의 속성을 제공할 템플릿(사용 안하기 때문에 NULL)
-
-	if (INVALID_HANDLE_VALUE == hFile)
+	for (int l = 0; l < toUType(TILE_LAYER::END); ++l)
 	{
-		// _T : 아스키 코드를 유니코드로 변환시켜주는 매크로
-		MessageBox(g_hWnd, _T("Tile Save File"), L"Fail", MB_OK);
-		return;
+		for_each(m_vecTile[l].begin(), m_vecTile[l].end(), SafeDelete<CObj*>);
+		m_vecTile[l].clear();
 	}
-
-	DWORD dwbyte(0);
-	int iDrawID(0), iOption(0);
-
-	for (auto& pTile : m_vecTile)
-	{
-		iDrawID = dynamic_cast<CTile*>(pTile)->GetDrawID();
-		iOption = dynamic_cast<CTile*>(pTile)->GetOption();
-
-		WriteFile(hFile, &iDrawID, sizeof(int), &dwbyte, nullptr);
-		WriteFile(hFile, &iOption, sizeof(int), &dwbyte, nullptr);
-		WriteFile(hFile, &pTile->GetInfo(), sizeof(INFO), &dwbyte, nullptr);
-	}
-
-	CloseHandle(hFile);
-
-	MessageBox(g_hWnd, _T("Tile Save 완료"), L"Success", MB_OK);
-
 }
 
 void CTileMgr::LoadTile()
 {
-	HANDLE	hFile = CreateFile(L"../Data/Tile.dat", // 이름을 포함한 파일 경로
+	HANDLE	hFile = CreateFile(L"../Data/Tile_Client.dat", // 이름을 포함한 파일 경로
 		GENERIC_READ,		// 파일 접근 모드
 		NULL,				// 공유 방식, NULL로 지정하면 공유하지 않음
 		NULL,				// 보안 속성, NULL인 기본 값 설정
@@ -144,23 +98,35 @@ void CTileMgr::LoadTile()
 	Release();
 
 	DWORD dwbyte(0);
-	int		iDrawID(0), iOption(0);
-	INFO	tTile{};
+	int		iTemp(0);
+
+	TILE		tTile{};
+	bool		bDraw(false);
+	INFO		tTileInfo{};
+	int			iCnt(0);
 
 	while (true)
 	{
-		ReadFile(hFile, &iDrawID, sizeof(int), &dwbyte, nullptr);
-		ReadFile(hFile, &iOption, sizeof(int), &dwbyte, nullptr);
-		ReadFile(hFile, &tTile, sizeof(INFO), &dwbyte, nullptr);
+		ReadFile(hFile, &tTile, sizeof(TILE), &dwbyte, nullptr);
+		ReadFile(hFile, &bDraw, sizeof(bool), &dwbyte, nullptr);
+		ReadFile(hFile, &tTileInfo, sizeof(INFO), &dwbyte, nullptr);
 
-		if (0 == dwbyte)
+		if (dwbyte == 0)
 			break;
 
-		CObj* pTile = CAbstractFactory<CTile>::CreateObj(tTile.vPoint.fX, tTile.vPoint.fY);
-		dynamic_cast<CTile*>(pTile)->SetDrawID(iDrawID);
-		dynamic_cast<CTile*>(pTile)->SetOption(iOption);
+		int iLayer = iCnt / (TILEX * TILEY);
 
-		m_vecTile.push_back(pTile);
+		CObj* pTile = CAbstractFactory<CTile>::CreateObj(
+			tTileInfo.vPoint.fX,
+			tTileInfo.vPoint.fY
+		);
+
+		tTile.eTileLayer = static_cast<TILE_LAYER>(iLayer);
+		static_cast<CTile*>(pTile)->SetTile(tTile);
+
+		m_vecTile[iLayer].push_back(pTile);
+
+		++iCnt;
 	}
 
 	CloseHandle(hFile);

@@ -209,7 +209,7 @@ void CEditor::HandleTileInput()
 		m_tTile.eTileType = TILE_TYPE::LIB_STONE_WALL;
 		m_tTile.iTileNumber = 0;
 	}
-	if (KEY_DOWN(VK_F12))
+	if (KEY_DOWN('0'))
 	{
 		m_tTile.eTileType = TILE_TYPE::LIB_CARPET;
 		m_tTile.iTileNumber = 0;
@@ -266,7 +266,10 @@ void CEditor::HandleTileInput()
 	// 저장
 	if (KEY_DOWN('S'))
 	{
-		CTileMgr::GetInstance()->SaveTile();
+		if (KEY_PRESS(VK_LSHIFT))
+			CTileMgr::GetInstance()->SaveTileToClient();
+		else
+			CTileMgr::GetInstance()->SaveTile();
 		return;
 	}
 

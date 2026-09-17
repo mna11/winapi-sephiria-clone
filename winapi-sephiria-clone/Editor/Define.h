@@ -15,7 +15,7 @@
 #define     TILEX   100
 #define     TILEY   100
 
-#define		PIXEL_SCALE 3 // 도트 픽셀 배율
+#define		PIXEL_SCALE 4 // 도트 픽셀 배율
 
 #define     TILECX  (16 * PIXEL_SCALE)
 #define     TILECY  (16 * PIXEL_SCALE)
@@ -61,7 +61,7 @@ enum class TILE_TYPE
 	LIB_BOOKSHELF,
 	LIB_FURNITURE,
 	LIB_STONE_WALL,
-	LIB_CARPET
+	LIB_CARPET,
 	END
 };
 enum class TILE_LAYER { LAYER0, LAYER1, LAYER2, LAYER3, END };
