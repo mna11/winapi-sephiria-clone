@@ -14,7 +14,6 @@ CMonster::CMonster()
 
 CMonster::~CMonster()
 {
-	Release();
 }
 
 void CMonster::SetDamage(int iDamage, CObj* pObj)
