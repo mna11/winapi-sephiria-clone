@@ -13,7 +13,8 @@
 
 CPlayer::CPlayer()
 	: CState(PLAYER_STATE::END, PLAYER_STATE::IDLE), m_pWeaponController(nullptr),
-	m_dDustInterval(0.5), m_dDustElapseTime(0.), m_fNormalSpeed(200.f), m_fRunSpeed(400.f)
+	m_dDustInterval(0.5), m_dDustElapseTime(0.), m_fNormalSpeed(200.f), m_fRunSpeed(400.f),
+	m_dDashCountRecorveyInterval(10.), m_dDashCountRecoveryElapseTime(0.), m_iMaxDash(0.), m_iDash(0.)
 {
 }
 

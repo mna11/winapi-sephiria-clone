@@ -26,11 +26,13 @@ public:
 	void			SetPos(VEC vec)					{ m_tInfo.vPoint = { vec }; }
 	void			SetDead(bool bDead)				{ m_bDead = bDead; }
 	void			SetAngle(float _fAngle)			{ m_fAngle = _fAngle; }
-	virtual void	SetTarget(CObj* pObj)			{ if(nullptr != pObj) m_pTarget = pObj; }
 	void			SetFrameKey(const TCHAR* pFrameKey) { m_pFrameKey = pFrameKey; }
 	void			SetFrame(int iStart, int iEnd, int iMotion, double dFrameSpeed);
 	void			SetSpeed(float fSpeed)			{ m_fSpeed = fSpeed; }
 	void			SetSize(VEC vec)				{ m_tInfo.vSize = vec; }
+	virtual void	SetTarget(CObj* pObj) { if (nullptr != pObj) m_pTarget = pObj; }
+	virtual	void	SetDamage(int iDamage, CObj* pObj = nullptr) { m_iHp -= iDamage; if (m_iHp <= 0) m_bDead = true; }
+
 public:
 	void			AddPos(float fDx, float fDy)	{ m_tInfo.vPoint.fX += fDx; m_tInfo.vPoint.fY += fDy; }
 	void			AddPos(VEC vec) { m_tInfo.vPoint += vec; }
@@ -48,12 +50,13 @@ protected:
 	FRAME			m_tFrame;
 	RENDERID		m_eRender;
 	
-	VEC				m_vPrePoint;
+	VEC				m_vPrePoint;		// 이번 프레임 이동 전 위치
 
-	int				m_iRenderLayer;
-	float			m_fSpeed;
+	int				m_iRenderLayer;		// RENDERID 내에서 레이어 위치 (0이 가장 낮은 것)
+	float			m_fSpeed;	
 	float			m_fAngle;
 	bool			m_bDead;
+	int				m_iHp;				// 체력
 
 	CObj*			m_pTarget;
 
