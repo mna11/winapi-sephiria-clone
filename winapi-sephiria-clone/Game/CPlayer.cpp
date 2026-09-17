@@ -160,9 +160,12 @@ void CPlayer::Move()
 		m_tInfo.vPoint += vDir.Normalize() * m_fSpeed * DT;
 		m_eNextState = PLAYER_STATE::WALK;
 	}
-	else
+	else 
 	{
-		m_eNextState = PLAYER_STATE::IDLE;
+		// 공격 상태는 무기에서 풀어주게 설계함
+		if (m_eCurState != PLAYER_STATE::ATTACK
+			&& m_eCurState != PLAYER_STATE::HEAVY_ATTACK)
+			m_eNextState = PLAYER_STATE::IDLE;
 	}
 }
 
@@ -173,7 +176,7 @@ void CPlayer::Dash()
 		if (m_iDash > 0)
 		{
 			--m_iDash;
-			m_fSpeed = m_fRunSpeed * 50.f;
+			m_fSpeed = m_fRunSpeed * 20.f;
 		}
 	}
 	else if (KEY_HOLD(VK_SPACE))
@@ -229,10 +232,15 @@ void CPlayer::Rotate()
 
 void CPlayer::Attack()
 {
+	// 공격 상태 돌입 등과 같은건 무기에서 설정함
 	if (KEY_DOWN(VK_LBUTTON))
+	{
 		m_pWeaponController->Attack();
+	}
 	else if (KEY_DOWN(VK_RBUTTON))
+	{
 		m_pWeaponController->SpecialAttack();
+	}
 }
 
 void CPlayer::CreateEffect()
@@ -284,7 +292,7 @@ void CPlayer::ApplyChange()
 			SetFrame(0, 2, 2, 0.2);
 			break;
 		case PLAYER_STATE::HEAVY_ATTACK:
-			SetFrame(0, 9, 3, 0.2);
+			SetFrame(0, 9, 3, 0.02);
 			break;
 		case PLAYER_STATE::WHIRLWIND_READY:
 			SetFrame(0, 3, 4, 0.2);

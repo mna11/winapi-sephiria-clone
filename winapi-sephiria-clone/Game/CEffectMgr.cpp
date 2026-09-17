@@ -29,6 +29,8 @@ void CEffectMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/Sword0_TurnSwing.png", L"SwordTurnSwing");
 	// 한손검 방어
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/Shield.png", L"Shield");
+	// 한손검 회전베기
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/Sword_TurnSwin.png", L"Cleave");
 }
 
 CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, float fFactor)
@@ -79,6 +81,12 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, float fFactor
 		// 이거 나중에 꼭 고쳐야함
 		pObj->SetFrame(0, 1, 0, 0.001);
 		pObj->SetSize({ 16, 32 });
+		pObj->SetAngle(fFactor);
+	}
+	else if (pFrameKey == L"Cleave")
+	{
+		pObj->SetFrame(0, 7, 0, 0.1);
+		pObj->SetSize({ 142, 105 });
 		pObj->SetAngle(fFactor);
 	}
 

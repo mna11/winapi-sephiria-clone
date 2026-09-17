@@ -8,6 +8,7 @@ enum class SWORD_AND_SHIELD_STATE
     IDLE,
     ATTACK,
     DEFENSE,
+    CLEAVE_READY,
     CLEAVE,
     END
 };
@@ -47,6 +48,7 @@ public:
 private:
     void AttackUpdate();
     void DefenseUpdate();
+    void CleaveUpdate();
 
 private:
     CObj*   m_pSword;
@@ -54,8 +56,7 @@ private:
 
     RECT    m_tAtkRect;     // 공격 시 발생하는 충돌 렉트
     RECT    m_tDefRect;     // 방어 시 발생하는 충돌 렉트
-    CObj*   m_pDefenceEffect; // 누를 때는 살려뒀다가, 땔 때, 죽여야하므로 기억해둠
-                              // 공격은 기억 안하고, 방어만 기억하는 이유는 방어도 공격처럼하면 이펙트가 매 프레임 생성 소멸 해야하기 때문 
+    RECT    m_tClvRect;     // 회전 시 발생하는 충돌 렉트
 #ifdef _DEBUG
 private:
     void    PrintInfo();

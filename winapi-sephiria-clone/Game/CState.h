@@ -11,7 +11,10 @@ public:
 public:
 	virtual void ApplyChange() PURE;
 public:
-	void RequestChange(T eState) { m_eCurState = eState; }
+	void RequestChange(T eState) { m_eNextState = eState; }
+
+public:
+	const T& GetState() const { return m_eCurState; }
 
 protected:
 	T m_eCurState;
