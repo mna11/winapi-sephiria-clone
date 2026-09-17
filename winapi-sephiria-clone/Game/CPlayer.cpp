@@ -103,6 +103,8 @@ void CPlayer::Render(Graphics* pGraphics)
 								  (int)(m_tRect.top + vScroll.fY), 
 								  (int)m_tInfo.vSize.fX, 
 								  (int)m_tInfo.vSize.fY);
+
+	m_pWeaponController->Render(pGraphics);
 #endif // _DEBUG
 
 	Image* pImg = CImgMgr::GetInstance()->FindImg(m_pFrameKey);
@@ -177,10 +179,12 @@ void CPlayer::Dash()
 	else if (KEY_HOLD(VK_SPACE))
 	{
 		m_fSpeed = m_fRunSpeed;
+		m_tFrame.dFrameSpeed = 0.05f;
 	}
 	else if (KEY_UP(VK_SPACE))
 	{
 		m_fSpeed = m_fNormalSpeed;
+		m_tFrame.dFrameSpeed = 0.2f;
 	}
 
 	if (m_dDashCountRecorveyInterval <= m_dDashCountRecoveryElapseTime)
@@ -227,7 +231,7 @@ void CPlayer::Attack()
 {
 	if (KEY_DOWN(VK_LBUTTON))
 		m_pWeaponController->Attack();
-	else if (KEY_PRESS(VK_RBUTTON))
+	else if (KEY_DOWN(VK_RBUTTON))
 		m_pWeaponController->SpecialAttack();
 }
 

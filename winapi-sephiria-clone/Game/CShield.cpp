@@ -44,24 +44,6 @@ int CShield::Update()
 	else
 		this->SetPos(static_cast<float>(m_pTarget->GetRect().left) + vOffset.fX, vTargetPoint.fY + vOffset.fY);
 
-	switch (*m_pWeaponState)
-	{
-	case SWORD_AND_SHIELD_STATE::IDLE:
-		HandleIdleUpdate();
-		break;
-	case SWORD_AND_SHIELD_STATE::ATTACK:
-		HandleAttackUpdate();
-		break;
-	case SWORD_AND_SHIELD_STATE::SHIELD:
-		HandleShieldUpdate();
-		break;
-	case SWORD_AND_SHIELD_STATE::CLEAVE:
-		HandleCleaveUpdate();
-		break;
-	default:
-		break;
-	}
-
 	__super::UpdateRect();
     return NOEVENT;
 }
@@ -77,17 +59,14 @@ void CShield::Render(Graphics* pGraphics)
 	Image* pShieldImg = CImgMgr::GetInstance()->FindImg(L"Shield_Tier1");
 	if (nullptr == pShieldImg)
 		return;
-	HandleIdleRender(pGraphics, pShieldImg, vScroll);
-	// 임시
-	/*switch (*m_pWeaponState)
+
+	switch (*m_pWeaponState)
 	{
 	case SWORD_AND_SHIELD_STATE::IDLE:
+	case SWORD_AND_SHIELD_STATE::ATTACK:
 		HandleIdleRender(pGraphics, pShieldImg, vScroll);
 		break;
-	case SWORD_AND_SHIELD_STATE::ATTACK:
-		HandleAttackRender(pGraphics, pShieldImg, vScroll);
-		break;
-	case SWORD_AND_SHIELD_STATE::SHIELD:
+	case SWORD_AND_SHIELD_STATE::DEFENSE:
 		HandleShieldRender(pGraphics, pShieldImg, vScroll);
 		break;
 	case SWORD_AND_SHIELD_STATE::CLEAVE:
@@ -95,54 +74,12 @@ void CShield::Render(Graphics* pGraphics)
 		break;
 	default:
 		break;
-	}*/
+	}
 }
 
 void CShield::Release()
 {
 }
-
-#pragma region HandleUpdate
-void CShield::HandleIdleUpdate()
-{
-}
-
-void CShield::HandleAttackUpdate()
-{
-	switch (m_pAtk->iLevel)
-	{
-	case 1:
-		HandleAttack1Update();
-		break;
-	case 2:
-		HandleAttack2Update();
-		break;
-	case 3:
-		HandleAttack3Update();
-		break;
-	}
-}
-
-void CShield::HandleAttack1Update()
-{
-}
-
-void CShield::HandleAttack2Update()
-{
-}
-
-void CShield::HandleAttack3Update()
-{
-}
-
-void CShield::HandleShieldUpdate()
-{
-}
-
-void CShield::HandleCleaveUpdate()
-{
-}
-#pragma endregion HandleUpdate
 
 #pragma region HandleRender
 void CShield::HandleIdleRender(Graphics* pGraphics, Image* pImg, VEC& vScroll)
@@ -187,9 +124,23 @@ void CShield::HandleAttack3Render(Graphics* pGraphics, Image* pImg, VEC& vScroll
 
 void CShield::HandleShieldRender(Graphics* pGraphics, Image* pImg, VEC& vScroll)
 {
+	float fTargetAngle = m_pTarget->GetAngle();
+	float fDistance = 20.f;
+	VEC vOffset{ fDistance * cosf(fTargetAngle), fDistance * sinf(fTargetAngle) };
+	VEC vRenderPoint = m_tInfo.vPoint + vOffset;
+
+	VEC vDrawSize = m_vCellSize * PIXEL_SCALE;
+	RectF DestRect = { vRenderPoint.fX - vDrawSize.fX * 0.5f + vScroll.fX,
+					   vRenderPoint.fY - vDrawSize.fY * 0.5f + vScroll.fY,
+					   vDrawSize.fX, vDrawSize.fY };
+
+	pGraphics->DrawImage(
+		pImg, DestRect,
+		0.f, 0.f, m_vCellSize.fX, m_vCellSize.fY, UnitPixel);
 }
 
 void CShield::HandleCleaveRender(Graphics* pGraphics, Image* pImg, VEC& vScroll)
 {
 }
+
 #pragma endregion HandleRender

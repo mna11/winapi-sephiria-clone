@@ -65,6 +65,7 @@ void CObjMgr::LateUpdate()
 			m_RenderList[toUType(eID)].push_back(pObj);
 		}
 	}
+
 	//CCollisionMgr::CollisionCircle(m_ObjList[BULLET], m_ObjList[MONSTER]);
 }
 

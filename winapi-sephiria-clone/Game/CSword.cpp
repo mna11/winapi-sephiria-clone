@@ -44,26 +44,6 @@ int CSword::Update()
 	else
 		this->SetPos(static_cast<float>(m_pTarget->GetRect().right) + vOffset.fX, vTargetPoint.fY + vOffset.fY);
 
-
-	switch (*m_pWeaponState)
-	{
-	case SWORD_AND_SHIELD_STATE::IDLE:
-		HandleIdleUpdate();
-		break;
-	case SWORD_AND_SHIELD_STATE::ATTACK:
-		HandleAttackUpdate();
-		break;
-	case SWORD_AND_SHIELD_STATE::SHIELD:
-		HandleShieldUpdate();
-		break;
-	case SWORD_AND_SHIELD_STATE::CLEAVE:
-		HandleCleaveUpdate();
-		break;
-	default:
-		break;
-	}
-
-
 	__super::UpdateRect();
 	return NOEVENT;
 }
@@ -87,7 +67,7 @@ void CSword::Render(Graphics* pGraphics)
 	case SWORD_AND_SHIELD_STATE::ATTACK:
 		HandleAttackRender(pGraphics, pShieldImg, vScroll);
 		break;
-	case SWORD_AND_SHIELD_STATE::SHIELD:
+	case SWORD_AND_SHIELD_STATE::DEFENSE:
 		HandleShieldRender(pGraphics, pShieldImg, vScroll);
 		break;
 	case SWORD_AND_SHIELD_STATE::CLEAVE:
@@ -101,72 +81,6 @@ void CSword::Render(Graphics* pGraphics)
 void CSword::Release()
 {
 }
-
-#pragma region HandleUpdate
-void CSword::HandleIdleUpdate()
-{
-}
-
-void CSword::HandleAttackUpdate()
-{
-	switch (m_pAtk->iLevel)
-	{
-	case 1:
-		HandleAttack1Update();
-		break;
-	case 2:
-		HandleAttack2Update();
-		break;
-	case 3:
-		HandleAttack3Update();
-		break;
-	}
-}
-
-void CSword::HandleAttack1Update()
-{
-	/*VEC vCurPoint = m_tInfo.vPoint;
-	VEC vTargetPoint = m_pTarget->GetInfo().vPoint;
-	VEC vOriginPoint{ vCurPoint - vTargetPoint };
-	double dDR(0.);
-
-	float fTargetAngle = m_fAngle;
-	if (fabsf(fTargetAngle) > PI * 0.5f)
-	{
-		fTargetAngle = fTargetAngle - PI; 
-		vOriginPoint -= m_pTarget->GetInfo().vSize * 0.5f;
-		dDR = (m_fAngle + PI) * m_pAtk->dElapseTime / m_pAtk->dMaxTime;
-	}
-	else
-	{
-		vOriginPoint += m_pTarget->GetInfo().vSize * 0.5f;
-		dDR = (m_fAngle + PI) * m_pAtk->dElapseTime / m_pAtk->dMaxTime;
-	}
-
-
-	m_tInfo.vPoint = {
-		vOriginPoint.fX * cosf(dDR) - vOriginPoint.fX * sinf(dDR),
-		vOriginPoint.fY * sinf(dDR) + vOriginPoint.fY * cosf(dDR)
-	};
-	m_tInfo.vPoint += vTargetPoint;*/
-}
-
-void CSword::HandleAttack2Update()
-{
-}
-
-void CSword::HandleAttack3Update()
-{
-}
-
-void CSword::HandleShieldUpdate()
-{
-}
-
-void CSword::HandleCleaveUpdate()
-{
-}
-#pragma endregion HandleUpdate
 
 #pragma region HandleRender
 void CSword::HandleIdleRender(Graphics* pGraphics, Image* pImg, VEC& vScroll)
@@ -215,21 +129,60 @@ void CSword::HandleAttackRender(Graphics* pGraphics, Image* pImg, VEC& vScroll)
 		(int)m_tInfo.vSize.fY);
 #endif // _DEBUG
 
+	// 빙글빙글 안돌게!
+	if (m_pAtk->dElapseTime > m_pAtk->dMaxTime)
+	{
+		HandleIdleRender(pGraphics, pImg, vScroll);
+		return;
+	}
+
 	switch (m_pAtk->iLevel)
 	{
-	case 1:
+	case 0:
 		HandleAttack1Render(pGraphics, pImg, vScroll);
 		break;
-	case 2:
+	case 1:
 		HandleAttack2Render(pGraphics, pImg, vScroll);
 		break;
-	case 3:
+	case 2:
 		HandleAttack3Render(pGraphics, pImg, vScroll);
 		break;
 	}
 }
 
 void CSword::HandleAttack1Render(Graphics* pGraphics, Image* pImg, VEC& vScroll)
+{
+	float fTargetAngle = m_fAngle;
+	if (fabsf(fTargetAngle) > PI * 0.5f)
+	{
+		fTargetAngle = fTargetAngle - PI;
+		fTargetAngle -= PI * m_pAtk->dElapseTime / m_pAtk->dMaxTime;
+	}
+	else
+	{
+		fTargetAngle += PI * m_pAtk->dElapseTime / m_pAtk->dMaxTime;
+	}
+	fTargetAngle *= 180.f / PI;
+
+	Matrix matRot;
+	matRot.RotateAt(fTargetAngle, { m_tInfo.vPoint.fX + vScroll.fX, m_tInfo.vPoint.fY + vScroll.fY });
+	pGraphics->SetTransform(&matRot); // DC 회전
+
+	// 회전된 DC에다가 그리기
+	VEC vDrawSize = m_vCellSize * PIXEL_SCALE;
+	RectF DestRect = { m_tInfo.vPoint.fX - vDrawSize.fX * 0.5f + vScroll.fX,
+					   m_tRect.top - vDrawSize.fY * 0.5f + vScroll.fY,
+					   vDrawSize.fX, vDrawSize.fY };
+
+	pGraphics->DrawImage(
+		pImg, DestRect,
+		0.f, 0.f, m_vCellSize.fX, m_vCellSize.fY, UnitPixel);
+
+	pGraphics->ResetTransform();
+}
+
+
+void CSword::HandleAttack2Render(Graphics* pGraphics, Image* pImg, VEC& vScroll)
 {
 	float fTargetAngle = m_fAngle;
 	if (fabsf(fTargetAngle) > PI * 0.5f)
@@ -261,7 +214,7 @@ void CSword::HandleAttack1Render(Graphics* pGraphics, Image* pImg, VEC& vScroll)
 	pGraphics->ResetTransform();
 }
 
-void CSword::HandleAttack2Render(Graphics* pGraphics, Image* pImg, VEC& vScroll)
+void CSword::HandleAttack3Render(Graphics* pGraphics, Image* pImg, VEC& vScroll)
 {
 	float fTargetAngle = m_fAngle;
 	if (fabsf(fTargetAngle) > PI * 0.5f)
@@ -292,10 +245,6 @@ void CSword::HandleAttack2Render(Graphics* pGraphics, Image* pImg, VEC& vScroll)
 
 	pGraphics->ResetTransform();
 
-}
-
-void CSword::HandleAttack3Render(Graphics* pGraphics, Image* pImg, VEC& vScroll)
-{
 }
 
 void CSword::HandleShieldRender(Graphics* pGraphics, Image* pImg, VEC& vScroll)

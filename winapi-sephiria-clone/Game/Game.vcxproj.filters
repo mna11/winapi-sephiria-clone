@@ -183,9 +183,6 @@
     <ClInclude Include="CWeapon.h">
       <Filter>01. Obj\03. Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="CSwordAndShield.h">
-      <Filter>01. Obj\03. Weapon\01. SwordAndShield</Filter>
-    </ClInclude>
     <ClInclude Include="CWeaponController.h">
       <Filter>01. Obj\03. Weapon\00. WeaponController</Filter>
     </ClInclude>
@@ -200,6 +197,9 @@
     </ClInclude>
     <ClInclude Include="CEffect.h">
       <Filter>01. Obj\04. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="CSwordAndShield.h">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

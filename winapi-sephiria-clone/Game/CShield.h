@@ -21,15 +21,6 @@ public:
     void SetAtkInfo(ATK_INFO* pAtk)                     { m_pAtk = pAtk; }
 
 private:
-    void HandleIdleUpdate   ();
-    void HandleAttackUpdate ();
-    void HandleAttack1Update();
-    void HandleAttack2Update();
-    void HandleAttack3Update();
-    void HandleShieldUpdate ();
-    void HandleCleaveUpdate ();
-
-private:
     void HandleIdleRender   (Graphics* pGraphics, Image* pImg, VEC& vScroll);
     void HandleAttackRender (Graphics* pGraphics, Image* pImg, VEC& vScroll);
     void HandleAttack1Render(Graphics* pGraphics, Image* pImg, VEC& vScroll);
