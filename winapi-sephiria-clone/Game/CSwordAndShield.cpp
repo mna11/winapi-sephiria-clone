@@ -8,7 +8,9 @@
 #include "CImgMgr.h"
 #include "CTimeMgr.h"
 #include "CObjMgr.h"
+#include "CKeyMgr.h"
 #include "CAbstractFactory.h"
+#include "CEffectMgr.h"
 
 CSwordAndShield::CSwordAndShield()
 	: CState(SWORD_AND_SHIELD_STATE::END, SWORD_AND_SHIELD_STATE::IDLE),
@@ -59,6 +61,7 @@ int CSwordAndShield::Update()
 
 void CSwordAndShield::LateUpdate()
 {
+	CreateEffect();
 }
 
 void CSwordAndShield::Render(Graphics* pGraphics)
@@ -106,6 +109,26 @@ void CSwordAndShield::SpecialAttack()
 	m_eNextState = SWORD_AND_SHIELD_STATE::SHIELD;
 }
 
+void CSwordAndShield::CreateEffect()
+{
+	if (KEY_DOWN(VK_LBUTTON))
+	{
+		switch (m_tAtk.iLevel)
+		{
+		case 0:
+			CEffectMgr::GetInstance()->CreateEffect(L"SwordSwing1", m_tInfo.vPoint, 0.f);
+			break;
+		case 1:
+			CEffectMgr::GetInstance()->CreateEffect(L"SwordSwing2", m_tInfo.vPoint, 0.f);
+			break;
+		case 2:
+			CEffectMgr::GetInstance()->CreateEffect(L"SwordSwing3", m_tInfo.vPoint, 0.f);
+			break;
+		}
+	}
+}
+
+
 void CSwordAndShield::AttackUpdate()
 {
 	if (m_eCurState != SWORD_AND_SHIELD_STATE::ATTACK
@@ -150,7 +173,7 @@ void CSwordAndShield::ApplyChange()
 		case SWORD_AND_SHIELD_STATE::IDLE:
 			break;
 		case SWORD_AND_SHIELD_STATE::ATTACK:
-			SetAtk(1, 3, 0., 0.5); // 공격 처음 진입 시 초기화
+			SetAtk(1, 3, 0., 0.2); // 공격 처음 진입 시 초기화
 			break;
 		case SWORD_AND_SHIELD_STATE::CLEAVE:
 			SetAtk(0, 3, 0., 1.); // 나중에 CLEAVE 구현할 때 여기 변경할 것

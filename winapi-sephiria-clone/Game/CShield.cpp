@@ -77,8 +77,9 @@ void CShield::Render(Graphics* pGraphics)
 	Image* pShieldImg = CImgMgr::GetInstance()->FindImg(L"Shield_Tier1");
 	if (nullptr == pShieldImg)
 		return;
-	
-	switch (*m_pWeaponState)
+	HandleIdleRender(pGraphics, pShieldImg, vScroll);
+	// 임시
+	/*switch (*m_pWeaponState)
 	{
 	case SWORD_AND_SHIELD_STATE::IDLE:
 		HandleIdleRender(pGraphics, pShieldImg, vScroll);
@@ -94,7 +95,7 @@ void CShield::Render(Graphics* pGraphics)
 		break;
 	default:
 		break;
-	}
+	}*/
 }
 
 void CShield::Release()

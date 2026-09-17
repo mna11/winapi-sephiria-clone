@@ -16,6 +16,7 @@ CObj::CObj()
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	ZeroMemory(&m_tRect, sizeof(RECT));
 	ZeroMemory(&m_tFrame, sizeof(FRAME));
+	ZeroMemory(&m_vPrePoint, sizeof(VEC));
 }
 
 CObj::~CObj()

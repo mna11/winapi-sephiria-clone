@@ -49,10 +49,6 @@ public:
 private:
     CWeaponController*  m_pWeaponController;
 
-    // 이전 위치
-    VEC                 m_vPrePoint;
-
-
     // 대시 가능 횟수
     int                 m_iDash;
     int                 m_iMaxDash;

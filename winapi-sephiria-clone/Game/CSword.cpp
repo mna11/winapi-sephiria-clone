@@ -8,8 +8,6 @@ CSword::CSword()
 	: m_vCellSize{ 9.f, 16.f },
 	m_pWeaponState(nullptr), m_pAtk(nullptr), m_bAtkStart(false)
 {
-	ZeroMemory(&m_vStart, sizeof(VEC));
-	ZeroMemory(&m_vEnd, sizeof(VEC));
 }
 
 CSword::~CSword()

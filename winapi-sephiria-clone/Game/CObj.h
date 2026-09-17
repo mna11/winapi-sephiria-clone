@@ -19,6 +19,7 @@ public:
 	const float&	GetSpeed()		const			{ return m_fSpeed; }
 	const int&		GetRenderLayer()const			{ return m_iRenderLayer; }
 	const float&	GetAngle()		const			{ return m_fAngle; }
+	const VEC&		GetPrePoint()	const			{ return m_vPrePoint; }
 
 public:
 	void			SetPos(float _fX, float _fY)	{ m_tInfo.vPoint.fX = _fX; m_tInfo.vPoint.fY = _fY; }
@@ -34,6 +35,9 @@ public:
 	void			AddPos(float fDx, float fDy)	{ m_tInfo.vPoint.fX += fDx; m_tInfo.vPoint.fY += fDy; }
 	void			AddPos(VEC vec) { m_tInfo.vPoint += vec; }
 
+public:
+	void			RefreshRect()					{ UpdateRect(); }
+
 protected:
 	virtual void	UpdateRect();
 	virtual void	UpdateFrame(); 
@@ -44,6 +48,8 @@ protected:
 	FRAME			m_tFrame;
 	RENDERID		m_eRender;
 	
+	VEC				m_vPrePoint;
+
 	int				m_iRenderLayer;
 	float			m_fSpeed;
 	float			m_fAngle;

@@ -52,6 +52,21 @@ void CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, float fFactor)
 		pObj->SetSize({ 15.f, 16.f });
 		static_cast<CEffect*>(pObj)->SetAlpha(fFactor);
 	}
+	else if (pFrameKey == L"SwordSwing1")
+	{
+		pObj->SetFrame(0, 1, 0, 0.1);
+		pObj->SetSize({ 22.f, 37.f });
+	}
+	else if (pFrameKey == L"SwordSwing2")
+	{
+		pObj->SetFrame(0, 1, 0, 0.1);
+		pObj->SetSize({ 30.f, 30.f });
+	}
+	else if (pFrameKey == L"SwordSwing3")
+	{
+		pObj->SetFrame(0, 3, 0, 0.1);
+		pObj->SetSize({ 43.f, 32.f });
+	}
 
 	CObjMgr::GetInstance()->AddObject(OBJID::EFFECT, pObj);
 }

@@ -65,6 +65,7 @@ typedef struct tagVector
 	tagVector	operator+(const tagVector& rhs) const	{ return tagVector{ fX + rhs.fX, fY + rhs.fY }; }
 	tagVector	operator-(const tagVector& rhs) const	{ return tagVector{ fX - rhs.fX, fY - rhs.fY }; }
 	tagVector	operator*(float fScalar) const			{ return tagVector{ fScalar * fX, fScalar * fY }; }
+	tagVector	operator*(const tagVector& rhs) const	{ return tagVector{ fX * rhs.fX, fY * rhs.fY }; }
 	bool	    operator==(const tagVector& rhs) const  { return (fX == rhs.fX && fY == rhs.fY); }
 	bool	    operator!=(const tagVector& rhs) const  { return (fX != rhs.fX || fY != rhs.fY); }
 	tagVector& operator+=(const tagVector& rhs) {

@@ -46,7 +46,5 @@ private:
     ATK_INFO*               m_pAtk;
 
     bool                    m_bAtkStart;
-    VEC                     m_vStart;
-    VEC                     m_vEnd;
 };
 

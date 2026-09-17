@@ -36,6 +36,9 @@ public:
 	void	Release();
 
 public:
+	const vector<CObj*>& GetTile(TILE_LAYER eLayer) const { return m_vecTile[toUType(eLayer)]; }
+
+public:
 	void	LoadTile();
 
 private:

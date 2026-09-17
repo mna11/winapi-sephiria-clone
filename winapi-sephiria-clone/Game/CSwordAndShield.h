@@ -37,6 +37,9 @@ public:
 public:
     void ApplyChange() override;
 
+public:
+    void CreateEffect();
+
 private:
     void AttackUpdate();
 
