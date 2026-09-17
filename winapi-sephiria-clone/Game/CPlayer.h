@@ -34,6 +34,9 @@ public:
     void Release() override;
 
 public:
+    const CWeaponController* GetWeaponController() const { return m_pWeaponController; }
+
+public:
     void ApplyChange() override;
 
 public:

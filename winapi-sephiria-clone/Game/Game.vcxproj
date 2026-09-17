@@ -139,6 +139,7 @@
     <ClInclude Include="CCollisionMgr.h" />
     <ClInclude Include="CEffect.h" />
     <ClInclude Include="CEffectMgr.h" />
+    <ClInclude Include="CErma.h" />
     <ClInclude Include="CImgMgr.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CLine.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="CCollisionMgr.cpp" />
     <ClCompile Include="CEffect.cpp" />
     <ClCompile Include="CEffectMgr.cpp" />
+    <ClCompile Include="CErma.cpp" />
     <ClCompile Include="CImgMgr.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLine.cpp" />

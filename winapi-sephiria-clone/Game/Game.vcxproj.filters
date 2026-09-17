@@ -204,6 +204,9 @@
     <ClInclude Include="CSwordAndShield.h">
       <Filter>01. Obj\03. Weapon\01. SwordAndShield</Filter>
     </ClInclude>
+    <ClInclude Include="CErma.h">
+      <Filter>01. Obj\02. Monster\00. Erma</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -289,6 +292,9 @@
     </ClCompile>
     <ClCompile Include="CEffect.cpp">
       <Filter>01. Obj\04. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CErma.cpp">
+      <Filter>01. Obj\02. Monster\00. Erma</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

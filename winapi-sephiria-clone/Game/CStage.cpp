@@ -2,6 +2,7 @@
 #include "CStage.h"
 
 #include "CPlayer.h"
+#include "CErma.h"
 #include "CMonster.h"
 
 #include "CAbstractFactory.h"
@@ -74,6 +75,7 @@ void CStage::Init_CreateObj()
 {
 	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(280.f, 280.f));
 	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
+	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CErma>::CreateObj(1700.f, 1000.f));
 }
 
 void CStage::Init_InsertImg()

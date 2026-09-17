@@ -6,7 +6,5 @@ class CMonster abstract :
 public:
     CMonster();
     virtual ~CMonster();
-public:
-    void SetDamage(int iDamage, CObj* pObj) override;
 };
 

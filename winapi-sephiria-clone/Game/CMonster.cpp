@@ -15,14 +15,3 @@ CMonster::CMonster()
 CMonster::~CMonster()
 {
 }
-
-void CMonster::SetDamage(int iDamage, CObj* pObj)
-{
-	m_iHp -= iDamage;
-
-	if (m_iHp <= 0)
-		m_bDead = true;
-
-	// 나중에 피해량 이펙트로 띄우기
-	// 경험치 pObj에게 넘기기 등을 하면 된다.
-}

@@ -12,7 +12,10 @@ CObj::CObj()
 	m_pFrameKey(L""),
 	m_eRender(RENDERID::END),
 	m_iRenderLayer(0),
-	m_iHp(0)
+	m_iHp(0),
+	m_bHit(false),
+	m_dIframeTime(0.),
+	m_dHitElapseTime(0.)
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	ZeroMemory(&m_tRect, sizeof(RECT));
@@ -28,6 +31,18 @@ void CObj::SetFrame(int iStart, int iEnd, int iMotion, double dFrameSpeed)
 {
 	m_tFrame = { iStart, iEnd, iMotion, dFrameSpeed, 0UL};
 	QueryPerformanceCounter(&m_tFrame.iFrameTime);
+}
+
+void CObj::SetDamage(int iDamage, CObj* pObj)
+{
+	if (m_bHit)
+		return;
+
+	m_bHit = true;		// m_bHit은 final 객체의 Update에서 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
+	m_iHp -= iDamage;
+
+	if (m_iHp <= 0)
+		m_bDead = true;
 }
 
 void CObj::UpdateRect()

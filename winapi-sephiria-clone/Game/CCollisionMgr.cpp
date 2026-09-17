@@ -2,6 +2,9 @@
 #include "CCollisionMgr.h"
 
 #include "CObj.h"
+#include "CPlayer.h"
+#include "CWeaponController.h"
+#include "CWeapon.h"
 
 #include "CTileMgr.h"
 #include "CTile.h"
@@ -79,5 +82,26 @@ void CCollisionMgr::CollisionWall(list<CObj*>& DstList, TILE_LAYER eLayer)
         }
 
         pObj->RefreshRect();
+    }
+}
+
+void CCollisionMgr::CollisionPlayerAttack(list<CObj*>& DstList, list<CObj*>& SrcList)
+{
+    RECT rc{};
+
+    for (auto& Dst : DstList)
+    {
+        const vector<RECT>& vecWeaponRect = static_cast<CPlayer*>(Dst)->GetWeaponController()->GetWeapon()->GetAtkRectVec();
+       
+        for (auto& Src : SrcList)
+        {
+            for (auto& ColRect : vecWeaponRect)
+            {
+                if (IntersectRect(&rc, &ColRect, &Src->GetRect()))
+                {
+                    Src->SetDamage(100);
+                }
+            }
+        }
     }
 }

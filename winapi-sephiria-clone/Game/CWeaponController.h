@@ -18,6 +18,9 @@ public:
 	void Release() override;
 
 public:
+	const CWeapon* GetWeapon() const { return m_pWeapon; }
+
+public:
 	void Attack() override;
 	void SpecialAttack() override;
 
