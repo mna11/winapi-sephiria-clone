@@ -3,6 +3,7 @@
 
 #include "CPlayer.h"
 #include "CErma.h"
+#include "CFluffy.h"
 #include "CMonster.h"
 
 #include "CAbstractFactory.h"
@@ -45,6 +46,9 @@ void CStage::Update()
 void CStage::LateUpdate()
 {
 	CObjMgr::GetInstance()->LateUpdate();
+
+	if (CObjMgr::GetInstance()->ObjEmpty(OBJID::MONSTER))
+		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CFluffy>::CreateObj(1700.f, 1200.f));
 }
 
 void CStage::Render(Graphics* pGraphics)

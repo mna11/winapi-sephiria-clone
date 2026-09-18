@@ -1,27 +1,27 @@
 ﻿#pragma once
-
-#include "CState.h"
 #include "CMonster.h"
+#include "CState.h"
 
-enum class ERMA_STATE {
+enum class FLUFFY_STATE
+{
+    SUMMON,
     IDLE,
     WALK,
-    AIR,
-    STUN,
-    STONE, // 스톤이 되어가는 상태
-    LIGHT, // 빛나는 돌!
+    ATTACK,
+    STUN, 
+    DOWN,
     END
 };
 
-class CErma :
-    public CMonster, public CState<ERMA_STATE>
+class CFluffy :
+    public CMonster, public CState<FLUFFY_STATE>
 {
 public:
-    CErma();
-    ~CErma();
+    CFluffy();
+    ~CFluffy();
 public:
     void Initialize() override;
-    int  Update() override;
+    int Update() override;
     void LateUpdate() override;
     void Render(Graphics*) override;
     void Release() override;
@@ -33,8 +33,13 @@ public:
     void ApplyChange() override;
     void SetDamage(int iDamage, CObj* pObj) override;
 
-public:
+private:
     void UpdateTime();
     void Move();
+    void Attack();
+
+private:
+    double m_dAtkInterval;
+    double m_dAtkElapseTime;
 };
 

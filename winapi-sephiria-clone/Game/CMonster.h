@@ -6,5 +6,9 @@ class CMonster abstract :
 public:
     CMonster();
     virtual ~CMonster();
+
+
+protected:
+    ImageAttributes m_imgAttrHit;
 };
 

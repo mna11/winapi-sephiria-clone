@@ -134,12 +134,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAbstractFactory.h" />
+    <ClInclude Include="CBullet.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCameraMgr.h" />
     <ClInclude Include="CCollisionMgr.h" />
     <ClInclude Include="CEffect.h" />
     <ClInclude Include="CEffectMgr.h" />
     <ClInclude Include="CErma.h" />
+    <ClInclude Include="CFluffy.h" />
     <ClInclude Include="CImgMgr.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CLine.h" />
@@ -169,12 +171,14 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCameraMgr.cpp" />
     <ClCompile Include="CCollisionMgr.cpp" />
     <ClCompile Include="CEffect.cpp" />
     <ClCompile Include="CEffectMgr.cpp" />
     <ClCompile Include="CErma.cpp" />
+    <ClCompile Include="CFluffy.cpp" />
     <ClCompile Include="CImgMgr.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLine.cpp" />

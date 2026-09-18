@@ -42,14 +42,6 @@ void CErma::Initialize()
 	m_dHitElapseTime = 0.;
 	m_dIframeTime = 0.3;   // 피격 후 무적시간 0.3초
 	m_bHit = false;
-
-	// 피격 시 사용 할, imgAttr 초기화 하기 - 빨간색만 남긴다.
-	ColorMatrix colorMatrix = { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-								0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-								0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-								0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-								0.0f, 0.0f, 0.0f, 0.0f, 1.0f };
-	m_imgAttrHit.SetColorMatrix(&colorMatrix, ColorMatrixFlagsDefault, ColorAdjustTypeBitmap);
 }
 
 int CErma::Update()

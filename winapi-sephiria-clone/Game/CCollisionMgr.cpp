@@ -105,3 +105,24 @@ void CCollisionMgr::CollisionPlayerAttack(list<CObj*>& DstList, list<CObj*>& Src
         }
     }
 }
+
+void CCollisionMgr::CollisionPlayerDefense(list<CObj*>& DstList, list<CObj*>& SrcList)
+{
+    RECT rc{};
+
+    for (auto& Dst : DstList)
+    {
+        const vector<RECT>& vecWeaponRect = static_cast<CPlayer*>(Dst)->GetWeaponController()->GetWeapon()->GetDefRectVec();
+
+        for (auto& Src : SrcList)
+        {
+            for (auto& ColRect : vecWeaponRect)
+            {
+                if (IntersectRect(&rc, &ColRect, &Src->GetRect()))
+                {
+                    Src->SetDead(true);
+                }
+            }
+        }
+    }
+}
