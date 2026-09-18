@@ -25,8 +25,6 @@ void CFluffy::Initialize()
 	m_eRender = RENDERID::GAMEOBJECT;
 	m_iRenderLayer = 3;
 
-	m_iHp = 500; // 임시
-
 	// 기초 정보 초기화
 	m_tInfo = { WINCX >> 1, WINCY >> 1, 100.f, 100.f };
 	m_eRender = RENDERID::GAMEOBJECT;
@@ -39,7 +37,6 @@ void CFluffy::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Monster/Fluffy/Ghost_Fluffy_Summon.png", L"Fluffy_Summon");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Monster/Fluffy/Fluffy_Bullet.png", L"Fluffy_Bullet");
 
-
 	// 애니메이션 프레임 초기화
 	m_pFrameKey = L"Fluffy_Summon";
 	SetFrame(0, 13, 0, 0.2);
@@ -48,6 +45,9 @@ void CFluffy::Initialize()
 	m_dHitElapseTime = 0.;
 	m_dIframeTime = 0.3;   // 피격 후 무적시간 0.3초
 	m_bHit = false;
+
+	// HP 100, ATK 30
+	m_tStat = { 100, 100, 30 };
 }
 
 int CFluffy::Update()
@@ -225,11 +225,11 @@ void CFluffy::SetDamage(int iDamage, CObj* pObj)
 		return;
 
 	m_bHit = true;		// m_bHit은 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
-	m_iHp -= iDamage;
-
+	
+	m_tStat.iHp -= iDamage;
 	m_eNextState = FLUFFY_STATE::STUN;
 
-	if (m_iHp <= 0)
+	if (m_tStat.iHp <= 0)
 	{
 		m_pFrameKey = L"Fluffy_L";
 		m_eNextState = FLUFFY_STATE::DOWN;

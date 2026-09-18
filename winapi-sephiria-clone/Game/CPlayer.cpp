@@ -14,7 +14,7 @@
 CPlayer::CPlayer()
 	: CState(PLAYER_STATE::END, PLAYER_STATE::IDLE), m_pWeaponController(nullptr),
 	m_dDustInterval(0.5), m_dDustElapseTime(0.), m_fNormalSpeed(200.f), m_fRunSpeed(400.f),
-	m_dDashCountRecorveyInterval(10.), m_dDashCountRecoveryElapseTime(0.), m_iMaxDash(0.), m_iDash(0.)
+	m_dDashRecorveyInterval(1.), m_dDashRecoveryElapseTime(0.)
 {
 }
 
@@ -46,13 +46,39 @@ void CPlayer::Initialize()
 	// 렌더 레이어 - 0 ~ 5 사이 플레이어는 중간인 3
 	m_iRenderLayer = 3;
 
-	// 대시 개수
-	m_iDash = m_iMaxDash = 100;
-
 	// iframe 세팅 
 	m_dHitElapseTime = 0.;
 	m_dIframeTime = 0.3;   // 피격 후 무적시간 0.3초
 	m_bHit = false; 
+
+
+	// 스탯 초기화
+	m_tStat = {
+		65,				// HP
+		65,			// MAX HP
+		20,				// 공격력
+		30,				// MP
+		50,				// MAX HP
+
+		0,				// 방어력
+		0,				// 회피
+
+		3,				// 대시 횟수
+		3,				// 대시 최대 횟수
+
+		100.f,			// 치확
+		100.f,			// 치뎀
+		100.f,			// 공속
+		100.f,			// 이속
+		100.f,			// 대시 회복 속도
+				
+		0,				// 교섭력
+		0,				// 행운
+
+		100.f,			// 경험치 드랍율
+		100.f,			// 돈(리프) 드랍율
+		100.f			// 레벨업시 체력 회복률
+	};
 }
 
 int CPlayer::Update()
@@ -146,8 +172,8 @@ void CPlayer::UpdateTime()
 	m_dDustElapseTime += DT;
 
 	// 대시 회복 근거용 시간
-	if (m_iDash < m_iMaxDash)
-		m_dDashCountRecoveryElapseTime += DT;
+	if (m_tStat.iDash < m_tStat.iMaxDash)
+		m_dDashRecoveryElapseTime += DT;
 
 	// 피해 유효 근거용 시간
 	if (m_bHit)
@@ -194,9 +220,9 @@ void CPlayer::Dash()
 {
 	if (KEY_DOWN(VK_SPACE))
 	{
-		if (m_iDash > 0)
+		if (m_tStat.iDash > 0)
 		{
-			--m_iDash;
+			--m_tStat.iDash;
 			m_fSpeed = m_fRunSpeed * 20.f;
 		}
 	}
@@ -211,9 +237,10 @@ void CPlayer::Dash()
 		m_tFrame.dFrameSpeed = 0.2f;
 	}
 
-	if (m_dDashCountRecorveyInterval <= m_dDashCountRecoveryElapseTime)
+	if (m_dDashRecorveyInterval <= m_dDashRecoveryElapseTime)
 	{
-		m_iDash = (m_iDash + 1 >= m_iMaxDash) ? m_iMaxDash : m_iDash + 1;
+		m_tStat.iDash = (m_tStat.iDash + 1 >= m_tStat.iMaxDash) ? m_tStat.iMaxDash : m_tStat.iDash + 1;
+		m_dDashRecoveryElapseTime = 0.;
 	}
 }
 

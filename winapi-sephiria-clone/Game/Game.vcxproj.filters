@@ -19,15 +19,6 @@
     <Filter Include="01. Obj">
       <UniqueIdentifier>{60ec1b66-d70e-48b2-ac3a-8d8f72ea2ab6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\00. Player">
-      <UniqueIdentifier>{690c488f-c7d2-4683-af87-44e31290119c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Obj\01. Mouse">
-      <UniqueIdentifier>{487958d9-62b2-4f04-9662-dc0bf146e5ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Obj\02. Monster">
-      <UniqueIdentifier>{c40e4d5a-848c-4b9b-9fff-744b77f2e737}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Manager">
       <UniqueIdentifier>{e19c9417-3987-4ed0-89a9-8e03cefb310b}</UniqueIdentifier>
     </Filter>
@@ -79,26 +70,17 @@
     <Filter Include="02. State">
       <UniqueIdentifier>{8a089e36-8ce5-4178-badc-442b768965f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\03. Weapon">
-      <UniqueIdentifier>{e142b83a-b045-40e7-92d9-f1b9b7a3a54d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield">
-      <UniqueIdentifier>{f754f576-92ab-40ea-b9d3-cf2ebc89bdd1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Obj\03. Weapon\00. WeaponController">
-      <UniqueIdentifier>{93d0bea1-2ae2-48e6-9494-4de31152151c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\00. Sword">
-      <UniqueIdentifier>{3e3af32b-c35c-47ac-a38e-74b71e6408b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\01. Shield">
-      <UniqueIdentifier>{c16a84dc-93ae-44f1-b27c-7be096224c08}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Manager\10. EffectMgr">
       <UniqueIdentifier>{af869e37-16df-435b-823e-b383d743334c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\04. Effect">
-      <UniqueIdentifier>{a87a83a9-bd56-4a17-9549-ad7a29e76cc6}</UniqueIdentifier>
+    <Filter Include="01. Obj\00. Player">
+      <UniqueIdentifier>{690c488f-c7d2-4683-af87-44e31290119c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\01. Mouse">
+      <UniqueIdentifier>{487958d9-62b2-4f04-9662-dc0bf146e5ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster">
+      <UniqueIdentifier>{c40e4d5a-848c-4b9b-9fff-744b77f2e737}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Obj\02. Monster\00. Erma">
       <UniqueIdentifier>{5ca27ce4-69f4-4b21-bf02-ad52c945ef86}</UniqueIdentifier>
@@ -106,8 +88,35 @@
     <Filter Include="01. Obj\02. Monster\01. Fluffy">
       <UniqueIdentifier>{9e85d714-b5cd-4b72-9a14-c8f67c23e212}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\03. Weapon">
+      <UniqueIdentifier>{e142b83a-b045-40e7-92d9-f1b9b7a3a54d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield">
+      <UniqueIdentifier>{f754f576-92ab-40ea-b9d3-cf2ebc89bdd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\00. Sword">
+      <UniqueIdentifier>{3e3af32b-c35c-47ac-a38e-74b71e6408b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\01. Shield">
+      <UniqueIdentifier>{c16a84dc-93ae-44f1-b27c-7be096224c08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Weapon\00. WeaponController">
+      <UniqueIdentifier>{93d0bea1-2ae2-48e6-9494-4de31152151c}</UniqueIdentifier>
+    </Filter>
     <Filter Include="01. Obj\05. Bullet">
       <UniqueIdentifier>{262c9b9a-b25f-4ad1-8660-5443f6ec93c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\04. Effect">
+      <UniqueIdentifier>{a87a83a9-bd56-4a17-9549-ad7a29e76cc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI">
+      <UniqueIdentifier>{e0ff8b80-ff2f-456d-bb4e-7934631ad72a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\00. BasicInfo">
+      <UniqueIdentifier>{c5b36fc4-eef3-4086-bb09-cafe2fc58f74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Manager\11. UIMgr">
+      <UniqueIdentifier>{2cdb3a2a-5ec3-4250-a15b-dc96e7731538}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +228,15 @@
     <ClInclude Include="CBullet.h">
       <Filter>01. Obj\05. Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="CBasicInfo.h">
+      <Filter>01. Obj\06. UI\00. BasicInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI.h">
+      <Filter>01. Obj\06. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIMgr.h">
+      <Filter>03. Manager\11. UIMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -313,6 +331,15 @@
     </ClCompile>
     <ClCompile Include="CBullet.cpp">
       <Filter>01. Obj\05. Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CBasicInfo.cpp">
+      <Filter>01. Obj\06. UI\00. BasicInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI.cpp">
+      <Filter>01. Obj\06. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIMgr.cpp">
+      <Filter>03. Manager\11. UIMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

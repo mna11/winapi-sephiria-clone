@@ -34,8 +34,9 @@ public:
     void Release() override;
 
 public:
-    const CWeaponController* GetWeaponController() const { return m_pWeaponController; }
-
+    const CWeaponController*    GetWeaponController()       const { return m_pWeaponController; }
+    const double&               GetDashRecoveryInterval()   const { return m_dDashRecorveyInterval; }
+    const double&               GetDashRecoveryElapse()     const { return m_dDashRecoveryElapseTime; }
 public:
     void ApplyChange() override;
 
@@ -52,12 +53,9 @@ public:
 private:
     CWeaponController*  m_pWeaponController;
 
-    // 대시 가능 횟수
-    int                 m_iDash;
-    int                 m_iMaxDash;
-    double              m_dDashCountRecorveyInterval;
-    double              m_dDashCountRecoveryElapseTime;
-
+    // 대시 회복 시간
+    double              m_dDashRecorveyInterval;
+    double              m_dDashRecoveryElapseTime;
 
     // 달리기 속도
     float               m_fNormalSpeed;

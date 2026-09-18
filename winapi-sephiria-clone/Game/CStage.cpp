@@ -12,6 +12,7 @@
 #include "CImgMgr.h"
 #include "CKeyMgr.h"
 #include "CTileMgr.h"
+#include "CUIMgr.h"
 
 CStage::CStage()
 {
@@ -25,6 +26,7 @@ CStage::~CStage()
 void CStage::Initialize()
 {
 	CTileMgr::GetInstance()->Initialize();
+	CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
 
 	Init_CreateObj();
 	Init_InsertImg();
