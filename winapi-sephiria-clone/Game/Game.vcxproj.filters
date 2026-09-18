@@ -103,6 +103,12 @@
     <Filter Include="01. Obj\02. Monster\00. Erma">
       <UniqueIdentifier>{5ca27ce4-69f4-4b21-bf02-ad52c945ef86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\02. Monster\01. Fluffy">
+      <UniqueIdentifier>{9e85d714-b5cd-4b72-9a14-c8f67c23e212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\05. Bullet">
+      <UniqueIdentifier>{262c9b9a-b25f-4ad1-8660-5443f6ec93c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -204,6 +210,15 @@
     <ClInclude Include="CSwordAndShield.h">
       <Filter>01. Obj\03. Weapon\01. SwordAndShield</Filter>
     </ClInclude>
+    <ClInclude Include="CErma.h">
+      <Filter>01. Obj\02. Monster\00. Erma</Filter>
+    </ClInclude>
+    <ClInclude Include="CFluffy.h">
+      <Filter>01. Obj\02. Monster\01. Fluffy</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet.h">
+      <Filter>01. Obj\05. Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -289,6 +304,15 @@
     </ClCompile>
     <ClCompile Include="CEffect.cpp">
       <Filter>01. Obj\04. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CErma.cpp">
+      <Filter>01. Obj\02. Monster\00. Erma</Filter>
+    </ClCompile>
+    <ClCompile Include="CFluffy.cpp">
+      <Filter>01. Obj\02. Monster\01. Fluffy</Filter>
+    </ClCompile>
+    <ClCompile Include="CBullet.cpp">
+      <Filter>01. Obj\05. Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

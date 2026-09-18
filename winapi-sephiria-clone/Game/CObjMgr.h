@@ -45,7 +45,7 @@ public:
 
 public:
 	void	DeleteID(OBJID eID);
-
+	bool	ObjEmpty(OBJID eID) { return m_ObjList[toUType(eID)].empty(); }
 
 private:
 	static CObjMgr* m_pInstance;

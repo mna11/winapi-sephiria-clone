@@ -46,7 +46,13 @@ void CPlayer::Initialize()
 	// 렌더 레이어 - 0 ~ 5 사이 플레이어는 중간인 3
 	m_iRenderLayer = 3;
 
+	// 대시 개수
 	m_iDash = m_iMaxDash = 100;
+
+	// iframe 세팅 
+	m_dHitElapseTime = 0.;
+	m_dIframeTime = 0.3;   // 피격 후 무적시간 0.3초
+	m_bHit = false; 
 }
 
 int CPlayer::Update()
@@ -95,7 +101,6 @@ void CPlayer::LateUpdate()
 
 void CPlayer::Render(Graphics* pGraphics)
 {
-
 	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
 #ifdef _DEBUG
@@ -137,9 +142,24 @@ void CPlayer::Release()
 
 void CPlayer::UpdateTime()
 {
+	// 먼지 이펙트 발생 근거용 시간
 	m_dDustElapseTime += DT;
+
+	// 대시 회복 근거용 시간
 	if (m_iDash < m_iMaxDash)
 		m_dDashCountRecoveryElapseTime += DT;
+
+	// 피해 유효 근거용 시간
+	if (m_bHit)
+	{
+		m_dHitElapseTime += DT;
+
+		if (m_dHitElapseTime >= m_dIframeTime)
+		{
+			m_bHit = false;
+			m_dHitElapseTime = 0.;
+		}
+	}
 }
 
 void CPlayer::Move()

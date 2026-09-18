@@ -17,8 +17,9 @@ CSwordAndShield::CSwordAndShield()
 	: CState(SWORD_AND_SHIELD_STATE::END, SWORD_AND_SHIELD_STATE::IDLE),
 	m_pSword(nullptr), m_pShield(nullptr)
 {
-	ZeroMemory(&m_tAtkRect, sizeof(RECT));
-	ZeroMemory(&m_tDefRect, sizeof(RECT));
+	// reserve가 아닌 이유는, 0으로 초기화해두기 위해서
+	m_vecAtkRect.resize(toUType(SWORD_AND_SHIELD_ATK_RECT::END));
+	m_vecDefRect.resize(toUType(SWORD_AND_SHIELD_DEF_RECT::END));
 }
 
 CSwordAndShield::~CSwordAndShield()
@@ -76,22 +77,23 @@ void CSwordAndShield::Render(Graphics* pGraphics)
 	SolidBrush blackBrush(Color(255, 0, 0, 0));
 
 	// 공격 충돌 RECT
-	pGraphics->FillRectangle(&blackBrush, (int)(m_tAtkRect.left + vScroll.fX),
-		(int)(m_tAtkRect.top + vScroll.fY),
-		(int)m_tAtkRect.right - m_tAtkRect.left,
-		(int)m_tAtkRect.bottom - m_tAtkRect.top);
+	pGraphics->FillRectangle(&blackBrush, (int)(m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::ATTACK)].left + vScroll.fX),
+		(int)(m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::ATTACK)].top + vScroll.fY),
+		(int)m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::ATTACK)].right - m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::ATTACK)].left,
+		(int)m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::ATTACK)].bottom - m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::ATTACK)].top);
 
 	// 방어 충돌 RECT
-	pGraphics->FillRectangle(&blackBrush, (int)(m_tDefRect.left + vScroll.fX),
-		(int)(m_tDefRect.top + vScroll.fY),
-		(int)m_tDefRect.right - m_tDefRect.left,
-		(int)m_tDefRect.bottom - m_tDefRect.top);
+	pGraphics->FillRectangle(&blackBrush, (int)(m_vecDefRect[toUType(SWORD_AND_SHIELD_DEF_RECT::DEFENSE)].left + vScroll.fX),
+		(int)(m_vecDefRect[toUType(SWORD_AND_SHIELD_DEF_RECT::DEFENSE)].top + vScroll.fY),
+		(int)m_vecDefRect[toUType(SWORD_AND_SHIELD_DEF_RECT::DEFENSE)].right - m_vecDefRect[toUType(SWORD_AND_SHIELD_DEF_RECT::DEFENSE)].left,
+		(int)m_vecDefRect[toUType(SWORD_AND_SHIELD_DEF_RECT::DEFENSE)].bottom - m_vecDefRect[toUType(SWORD_AND_SHIELD_DEF_RECT::DEFENSE)].top);
 
 	// 회전 충돌 RECT
-	pGraphics->FillRectangle(&blackBrush, (int)(m_tClvRect.left + vScroll.fX),
-		(int)(m_tClvRect.top + vScroll.fY),
-		(int)m_tClvRect.right - m_tClvRect.left,
-		(int)m_tClvRect.bottom - m_tClvRect.top);
+	pGraphics->FillRectangle(&blackBrush, (int)(m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::CLEAVE)].left + vScroll.fX),
+		(int)(m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::CLEAVE)].top + vScroll.fY),
+		(int)m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::CLEAVE)].right - m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::CLEAVE)].left,
+		(int)m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::CLEAVE)].bottom - m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::CLEAVE)].top);
+
 #endif // _DEBUG
 }
 
@@ -173,7 +175,7 @@ void CSwordAndShield::CreateEffect()
 			break;
 		}
 	}
-	SetRect(&m_tAtkRect, vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
+	SetRect(&m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::ATTACK)], vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
 	
 	// 방어
 	vRenderPoint = { 0.f, 0.f };
@@ -191,9 +193,8 @@ void CSwordAndShield::CreateEffect()
 		CEffectMgr::GetInstance()->CreateEffect(L"Shield", vRenderPoint, m_pTarget->GetAngle());
 		
 		vRenderPoint -= vOffset * 0.2f;
-		SetRect(&m_tDefRect, vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
 	}
-	SetRect(&m_tDefRect, vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
+	SetRect(&m_vecDefRect[toUType(SWORD_AND_SHIELD_DEF_RECT::DEFENSE)], vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
 
 	// 회전 베기
 	vRenderPoint = { 0.f, 0.f };
@@ -209,9 +210,8 @@ void CSwordAndShield::CreateEffect()
 		vRectSize = { fSizeFactor + fSizeFactor * fabsf(cosf(m_fAngle)), fSizeFactor + fSizeFactor * fabsf(sinf(m_fAngle)) };
 
 		CEffectMgr::GetInstance()->CreateEffect(L"Cleave", vRenderPoint, m_pTarget->GetAngle());
-		SetRect(&m_tClvRect, vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
 	}
-	SetRect(&m_tClvRect, vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
+	SetRect(&m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::CLEAVE)], vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
 }
 
 
@@ -261,7 +261,7 @@ void CSwordAndShield::DefenseUpdate()
 	if (KEY_UP(VK_RBUTTON))
 	{
 		m_eNextState = SWORD_AND_SHIELD_STATE::IDLE;
-		SetRect(&m_tDefRect, 0, 0, 0, 0);
+		SetRect(&m_vecDefRect[toUType(SWORD_AND_SHIELD_DEF_RECT::DEFENSE)], 0, 0, 0, 0);
 		return;
 	}
 }

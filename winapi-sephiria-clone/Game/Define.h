@@ -39,7 +39,7 @@
 /////////////////////////////////////////
 // 열거체
 
-enum class OBJID	{ PLAYER, MONSTER, WEAPON, EFFECT, CAMERA, END };
+enum class OBJID	{ PLAYER, MONSTER, MONSTER_BULLET, WEAPON, EFFECT, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, END };
 enum class SCENEID	{ STAGE, END };
 

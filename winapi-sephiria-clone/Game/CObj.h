@@ -31,7 +31,7 @@ public:
 	void			SetSpeed(float fSpeed)			{ m_fSpeed = fSpeed; }
 	void			SetSize(VEC vec)				{ m_tInfo.vSize = vec; }
 	virtual void	SetTarget(CObj* pObj) { if (nullptr != pObj) m_pTarget = pObj; }
-	virtual	void	SetDamage(int iDamage, CObj* pObj = nullptr) { m_iHp -= iDamage; if (m_iHp <= 0) m_bDead = true; }
+	virtual	void	SetDamage(int iDamage, CObj* pObj = nullptr);
 
 public:
 	void			AddPos(float fDx, float fDy)	{ m_tInfo.vPoint.fX += fDx; m_tInfo.vPoint.fY += fDy; }
@@ -61,5 +61,9 @@ protected:
 	CObj*			m_pTarget;
 
 	const TCHAR*	m_pFrameKey;
+
+	bool			m_bHit;				 // 피해를 입은 플래그
+	double			m_dIframeTime;       // 피해를 입지 않는 i-frame 시간
+	double			m_dHitElapseTime;    // 피해를 입은 뒤 경과한 시간
 };
 

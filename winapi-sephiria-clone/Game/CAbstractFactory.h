@@ -60,5 +60,15 @@ public:
 		pSwordOrShield->SetAtkInfo(pAtk);
 		return static_cast<CObj*>(pSwordOrShield);
 	}
+
+	static CObj* CreateBullet(VEC vPoint, const TCHAR* pFrameKey, CObj* pTarget)
+	{
+		CObj* pObj = new T;
+		pObj->Initialize();
+		pObj->SetPos(vPoint.fX, vPoint.fY);
+		pObj->SetTarget(pTarget);
+		pObj->SetFrameKey(pFrameKey);
+		return pObj;
+	}
 };
 

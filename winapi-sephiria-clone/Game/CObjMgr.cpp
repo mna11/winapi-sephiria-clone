@@ -66,7 +66,9 @@ void CObjMgr::LateUpdate()
 		}
 	}
 
+	CCollisionMgr::CollisionPlayerAttack(m_ObjList[toUType(OBJID::PLAYER)], m_ObjList[toUType(OBJID::MONSTER)]);
 	//CCollisionMgr::CollisionCircle(m_ObjList[BULLET], m_ObjList[MONSTER]);
+	CCollisionMgr::CollisionPlayerDefense(m_ObjList[toUType(OBJID::PLAYER)], m_ObjList[toUType(OBJID::MONSTER_BULLET)]);
 }
 
 void CObjMgr::Render(Graphics* pGraphics)
