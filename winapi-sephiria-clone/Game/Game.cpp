@@ -60,9 +60,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // 폰트 추가 
     g_pFontCollection = new PrivateFontCollection;
-    //g_pFontCollection->AddFontFile(L"../Resource/Font/PerfectDOSVGA437.ttf");
-    //g_pFontCollection->AddFontFile(L"../Resource/Font/Pixel.ttf");
+    // 갈무리 7 - 일반 글 출력용
     g_pFontCollection->AddFontFile(L"../Resource/Font/Galmuri7.ttf");
+    // 아틀라스 pixel 이미지 ttf
+    g_pFontCollection->AddFontFile(L"../Resource/Font/Sephiria_PixelBig.ttf");
+    g_pFontCollection->AddFontFile(L"../Resource/Font/Sephiria_PixelBold.ttf");
+    g_pFontCollection->AddFontFile(L"../Resource/Font/Sephiria_PixelSmall.ttf");
+
     {
         CMainGame MainGame;
         MainGame.Initialize();

@@ -71,7 +71,7 @@ void CStage::Render(Graphics* pGraphics)
 	CTileMgr::GetInstance()->Render(pGraphics);
 
 	CObjMgr::GetInstance()->Render(pGraphics);
-}
+} 
 
 void CStage::Release()
 {

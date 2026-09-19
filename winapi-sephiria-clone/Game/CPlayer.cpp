@@ -54,11 +54,11 @@ void CPlayer::Initialize()
 
 	// 스탯 초기화
 	m_tStat = {
-		65,				// HP
-		65,			// MAX HP
+		70,				// HP
+		70,			// MAX HP
 		20,				// 공격력
-		30,				// MP
-		50,				// MAX HP
+		60,				// MP
+		60,				// MAX HP
 
 		0,				// 방어력
 		0,				// 회피

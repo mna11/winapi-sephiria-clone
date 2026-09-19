@@ -83,15 +83,15 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	///////////////////////////////////// 본격적인 출력 전 설정 (출력? 렌더?)
 
 	// 픽셀 갭 
-	int iGap = 2 * PIXEL_SCALE;
+	int iGap = 1.5f * PIXEL_SCALE;
 	// 프레임 사이즈
-	VEC vFrameSize = VEC{ 68.f, 16.f } * PIXEL_SCALE;
+	VEC vFrameSize = VEC{ 63.f, 13.5f } * PIXEL_SCALE;
 	// 각 바들 사이즈
-	VEC vHpSize = VEC{ vFrameSize.fX - 2 * iGap, 6.f * PIXEL_SCALE };
+	VEC vHpSize = VEC{ vFrameSize.fX - 2 * iGap, 5.f * PIXEL_SCALE };
 	VEC vMpSize = VEC{ vFrameSize.fX - 2 * iGap, 4.f * PIXEL_SCALE };
 	// 대시 사이즈 
 	VEC vDashCellSize = { 11.f, 9.f };
-	VEC vDashSize = vDashCellSize * PIXEL_SCALE * 0.75;
+	VEC vDashSize = vDashCellSize * PIXEL_SCALE * 0.6;
 
 
 	// 띄울 위치
@@ -99,13 +99,13 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	// 플레이어 스탯 정보 받아오기
 	const STAT& tPlayerStat = pPlayer->GetStat();
 	// 텍스트 출력을 위한 폰트 설정
-	FontFamily fontFamily;
-	int iNumFamilies;
-	g_pFontCollection->GetFamilies(1, &fontFamily, &iNumFamilies);
-	Font font(&fontFamily, 18.f, FontStyleRegular, UnitPixel);
+	FontFamily fontBigFamily(L"Pixel Big", g_pFontCollection);
+	FontFamily fontSmallFamily(L"Pixel Small", g_pFontCollection);
+	Font fontHp(&fontBigFamily, 24.f, FontStyleRegular, UnitPixel);
+	Font fontMp(&fontSmallFamily, 18.f, FontStyleRegular, UnitPixel);
 
-	SolidBrush outlineBrush(Color(255, 0, 0, 0));
-	SolidBrush solidBrush(Color(255, 255, 255, 255));
+	SolidBrush solidWhiteBrush(Color(255, 255, 255, 255));
+	SolidBrush solidBlackBrush(Color(255, 0, 0, 0));
 
 	StringFormat sf;
 	sf.SetAlignment(StringAlignmentCenter);
@@ -131,15 +131,16 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	vStartPoint += iGap;
 
 	float fHpRatio = (float)tPlayerStat.iHp / (float)tPlayerStat.iMaxHp;
-
 	rcDest = { vStartPoint.fX, vStartPoint.fY,
 			   vHpSize.fX * fHpRatio, vHpSize.fY };
 	pGraphics->DrawImage(
 		pHpImg, rcDest, 0, 0, 1.f, 1.f, UnitPixel
 	);
-
 	pGraphics->DrawString(
-		szHp, -1, &font, { vStartPoint.fX, vStartPoint.fY, vHpSize.fX, vHpSize.fY }, &sf, &solidBrush
+		szHp, -1, &fontHp, { vStartPoint.fX + int(iGap * 0.5), vStartPoint.fY + int(iGap * 0.5), vHpSize.fX, vHpSize.fY }, &sf, &solidBlackBrush
+	);
+	pGraphics->DrawString(
+		szHp, -1, &fontHp, { vStartPoint.fX, vStartPoint.fY, vHpSize.fX, vHpSize.fY }, &sf, &solidWhiteBrush
 	);
 
 	// MP 그리기
@@ -151,10 +152,11 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	pGraphics->DrawImage(
 		pMpImg, rcDest, 0, 0, 1.f, 1.f, UnitPixel
 	);
-	Font fontMp(&fontFamily, 16.f, FontStyleRegular, UnitPixel);
-
 	pGraphics->DrawString(
-		szMp, -1, &fontMp, { vStartPoint.fX, vStartPoint.fY, vMpSize.fX, vMpSize.fY }, &sf, &solidBrush
+		szMp, -1, &fontMp, { vStartPoint.fX + int(iGap * 0.5), vStartPoint.fY + int(iGap * 0.2), vHpSize.fX, vHpSize.fY }, &sf, &solidBlackBrush
+	);
+	pGraphics->DrawString(
+		szMp, -1, &fontMp, { vStartPoint.fX, vStartPoint.fY, vMpSize.fX, vMpSize.fY }, &sf, &solidWhiteBrush
 	);
 
 	// Dash

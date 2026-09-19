@@ -15,7 +15,7 @@
 #define     TILEX   100
 #define     TILEY   100 
 
-#define		PIXEL_SCALE 3.5 // 도트 픽셀 배율
+#define		PIXEL_SCALE 5 // 도트 픽셀 배율
 
 #define     TILECX  (16 * PIXEL_SCALE)
 #define     TILECY  (16 * PIXEL_SCALE)
