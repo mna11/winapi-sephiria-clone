@@ -143,6 +143,7 @@
     <ClInclude Include="CEffectMgr.h" />
     <ClInclude Include="CErma.h" />
     <ClInclude Include="CFluffy.h" />
+    <ClInclude Include="CFontMgr.h" />
     <ClInclude Include="CImgMgr.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CLine.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="CEffectMgr.cpp" />
     <ClCompile Include="CErma.cpp" />
     <ClCompile Include="CFluffy.cpp" />
+    <ClCompile Include="CFontMgr.cpp" />
     <ClCompile Include="CImgMgr.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLine.cpp" />

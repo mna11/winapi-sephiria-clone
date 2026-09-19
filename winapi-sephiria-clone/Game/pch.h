@@ -16,6 +16,7 @@
 #include <map>
 #include <algorithm>
 #include <random>
+#include <string>
 
 #include <iostream>
 

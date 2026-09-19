@@ -12,10 +12,8 @@
 #include "CTimeMgr.h"
 #include "CEffectMgr.h"
 #include "CUIMgr.h"
+#include "CFontMgr.h"
 #include "CAbstractFactory.h"
-
-// UI
-#include "CBasicInfo.h"
 
 CMainGame::CMainGame()
 	: m_hDC(0), m_hBackDC(0), m_pBackGraphics(nullptr), m_hBackBit(0), m_hOldBit(0)
@@ -40,7 +38,8 @@ void CMainGame::Initialize()
 #undef new
 	m_pBackGraphics = new Gdiplus::Graphics(m_hBackDC);
 	m_pBackGraphics->SetInterpolationMode(InterpolationModeNearestNeighbor);
-	m_pBackGraphics->SetPixelOffsetMode(PixelOffsetModeHalf);
+	m_pBackGraphics->SetPixelOffsetMode(PixelOffsetModeHalf); 
+	m_pBackGraphics->SetTextRenderingHint(TextRenderingHintSingleBitPerPixel); // 폰트 안티 앨리어싱 없고 글자 픽셀 격자 맞게 보정
 #pragma pop_macro("new")
 
 	CSceneMgr::GetInstance()->RequestChange(SCENEID::STAGE);
@@ -95,6 +94,7 @@ void CMainGame::Release()
 	CObjMgr::DestroyInstance();
 	CTimeMgr::DestroyInstance();
 	CUIMgr::DestroyInstance();
+	CFontMgr::DestroyInstance();
 
 	// 그래픽스 먼저 없애야 함
 	SafeDelete<Graphics*>(m_pBackGraphics);

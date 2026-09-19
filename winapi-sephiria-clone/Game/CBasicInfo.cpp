@@ -5,6 +5,7 @@
 
 #include "CImgMgr.h"
 #include "CObjMgr.h"
+#include "CFontMgr.h"
 
 CBasicInfo::CBasicInfo()
 {
@@ -43,8 +44,6 @@ void CBasicInfo::LateUpdate()
 {
 	if (!m_bView)
 		return;
-
-
 }
 
 void CBasicInfo::Render(Graphics* pGraphics)
@@ -98,26 +97,10 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	VEC vStartPoint = m_tInfo.vPoint;
 	// 플레이어 스탯 정보 받아오기
 	const STAT& tPlayerStat = pPlayer->GetStat();
-	// 텍스트 출력을 위한 폰트 설정
-	FontFamily fontBigFamily(L"Pixel Big", g_pFontCollection);
-	FontFamily fontSmallFamily(L"Pixel Small", g_pFontCollection);
-	Font fontHp(&fontBigFamily, 24.f, FontStyleRegular, UnitPixel);
-	Font fontMp(&fontSmallFamily, 18.f, FontStyleRegular, UnitPixel);
-
-	SolidBrush solidWhiteBrush(Color(255, 255, 255, 255));
-	SolidBrush solidBlackBrush(Color(255, 0, 0, 0));
-
-	StringFormat sf;
-	sf.SetAlignment(StringAlignmentCenter);
-	sf.SetLineAlignment(StringAlignmentCenter);
-
-	TCHAR szHp[32], szMp[32];
-	swprintf_s(szHp, L"%d/%d", tPlayerStat.iHp, tPlayerStat.iMaxHp);
-	swprintf_s(szMp, L"%d/%d", tPlayerStat.iMp, tPlayerStat.iMaxMp);
-
-	pGraphics->SetTextRenderingHint(
-		TextRenderingHintSingleBitPerPixelGridFit
-	);
+	// 텍스트 출력 string 설정
+	// to_wstring 안했더니 L"/"을 주소 이동한게 되서 이상한 한자 나오더라
+	wstring strHp = to_wstring(tPlayerStat.iHp) + L"/" + to_wstring(tPlayerStat.iMaxHp);
+	wstring strMp = to_wstring(tPlayerStat.iMp) + L"/" + to_wstring(tPlayerStat.iMaxMp);
 
 	///////////////////////////////////// 그리기
 
@@ -136,12 +119,8 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	pGraphics->DrawImage(
 		pHpImg, rcDest, 0, 0, 1.f, 1.f, UnitPixel
 	);
-	pGraphics->DrawString(
-		szHp, -1, &fontHp, { vStartPoint.fX + int(iGap * 0.5), vStartPoint.fY + int(iGap * 0.5), vHpSize.fX, vHpSize.fY }, &sf, &solidBlackBrush
-	);
-	pGraphics->DrawString(
-		szHp, -1, &fontHp, { vStartPoint.fX, vStartPoint.fY, vHpSize.fX, vHpSize.fY }, &sf, &solidWhiteBrush
-	);
+	CFontMgr::GetInstance()->DrawString(pGraphics, strHp, FONT_TYPE::PIXEL_BIG, RectF{ vStartPoint.fX + int(iGap * 0.5), vStartPoint.fY + int(iGap * 0.5), vHpSize.fX, vHpSize.fY }, Color(255, 0, 0, 0));
+	CFontMgr::GetInstance()->DrawString(pGraphics, strHp, FONT_TYPE::PIXEL_BIG, RectF{ vStartPoint.fX, vStartPoint.fY, vHpSize.fX, vHpSize.fY }, Color(255, 255, 255, 255));
 
 	// MP 그리기
 	vStartPoint.fY += iGap + vHpSize.fY;
@@ -152,28 +131,24 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	pGraphics->DrawImage(
 		pMpImg, rcDest, 0, 0, 1.f, 1.f, UnitPixel
 	);
-	pGraphics->DrawString(
-		szMp, -1, &fontMp, { vStartPoint.fX + int(iGap * 0.5), vStartPoint.fY + int(iGap * 0.2), vHpSize.fX, vHpSize.fY }, &sf, &solidBlackBrush
-	);
-	pGraphics->DrawString(
-		szMp, -1, &fontMp, { vStartPoint.fX, vStartPoint.fY, vMpSize.fX, vMpSize.fY }, &sf, &solidWhiteBrush
-	);
+	CFontMgr::GetInstance()->DrawString(pGraphics, strMp, FONT_TYPE::PIXEL_SMALL, RectF{ vStartPoint.fX + int(iGap * 0.5), vStartPoint.fY + int(iGap * 0.5), vMpSize.fX, vMpSize.fY }, Color(255, 0, 0, 0));
+	CFontMgr::GetInstance()->DrawString(pGraphics, strMp, FONT_TYPE::PIXEL_SMALL, RectF{ vStartPoint.fX, vStartPoint.fY, vMpSize.fX, vMpSize.fY }, Color(255, 255, 255, 255));
 
-	// Dash
+	// Dash 그리기
 	vStartPoint.fX -= iGap;
 	vStartPoint.fY += vMpSize.fY + 2.f * iGap;
-
-	 // 비교적 커서 좀 줄여줌
 
 	for (int i = 0; i < tPlayerStat.iMaxDash; ++i)
 	{
 		rcDest = { vStartPoint.fX + vDashSize.fX * i, vStartPoint.fY,
 			   vDashSize.fX, vDashSize.fY };
 
+		// Blank 이미지는 매 위치 그림
 		pGraphics->DrawImage(
 			pDashBlank, rcDest, 0, 0, vDashCellSize.fX, vDashCellSize.fY, UnitPixel
 		);
 
+		// Fill 되어진 이미지는 iDash 개수만큼 그리고, 만약 쓴 대쉬가 있다면 점점 차오르게 보이게 만듬
 		if (i < tPlayerStat.iDash)
 		{
 			pGraphics->DrawImage(
