@@ -15,7 +15,7 @@
 #define     TILEX   100
 #define     TILEY   100 
 
-#define		PIXEL_SCALE 4 // 도트 픽셀 배율
+#define		PIXEL_SCALE 5 // 도트 픽셀 배율
 
 #define     TILECX  (16 * PIXEL_SCALE)
 #define     TILECY  (16 * PIXEL_SCALE)
@@ -39,8 +39,9 @@
 /////////////////////////////////////////
 // 열거체
 
-enum class OBJID	{ PLAYER, MONSTER, MONSTER_BULLET, WEAPON, EFFECT, CAMERA, END };
+enum class OBJID	{ PLAYER, MONSTER, MONSTER_BULLET, WEAPON, EFFECT, UI, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, END };
+enum class UIID		{ BASIC_INFO, STAT_INFO, INVENTORY, SHOP, ITEM_INFO, REWARD, END };
 enum class SCENEID	{ STAGE, END };
 
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };
@@ -71,6 +72,16 @@ typedef struct tagVector
 	tagVector& operator+=(const tagVector& rhs) {
 		fX += rhs.fX;
 		fY += rhs.fY;
+		return *this;
+	}
+	tagVector& operator+=(int iScalar) {
+		fX += iScalar;
+		fY += iScalar;
+		return *this;
+	}
+	tagVector& operator+=(float fScalar) {
+		fX += fScalar;
+		fY += fScalar;
 		return *this;
 	}
 	tagVector& operator-=(const tagVector& rhs) {
@@ -106,6 +117,39 @@ typedef struct tagInfo
 	tagInfo() { ZeroMemory(this, sizeof(tagInfo)); }
 	tagInfo(float fX, float fY, float fCX, float fCY) : vPoint{ fX, fY }, vSize{ fCX, fCY } {}
 } INFO;
+
+
+// 스탯
+typedef struct tagStat
+{
+	int				iHp;		// 체력
+	int				iMaxHp;		// 최대 체력
+	int				iAtk;		// 공격력
+
+	int				iMp;		// MP
+	int				iMaxMp;		// 최대 MP
+
+	int				iDefense;   // 방어력
+	int				iEvasion;   // 회피율
+
+	int				iDash;		// 대시 가능 횟수
+	int				iMaxDash;	// 대시 최대 보유 횟수
+
+	// 백분율형
+	float			fCriticalChange;	// 치확
+	float			fCriticalDamage;	// 치뎀
+	float			fAttackSpeed;		// 공속
+	float			fMoveSpeed;			// 이속
+	float			fDashRecoverySpeed; // 대시 회복 속도
+
+	int				iBarter;			// 교섭력
+	int				iLuck;				// 행운
+
+	// 백분율형
+	float			fExperienceDrop;	  // 경험치 드랍율
+	float			fLeafDrop;			  // 돈(리프) 드랍율
+	float			fHpRestoredOnLevelUp; // 레벨업시 체력 회복률
+} STAT;
 
 // 무기공격 정보
 typedef struct tagAttackInfo
@@ -181,3 +225,4 @@ toUType(E enumerator) noexcept
 
 extern HWND g_hWnd;
 extern std::mt19937 g_engine;
+extern Gdiplus::PrivateFontCollection* g_pFontCollection;

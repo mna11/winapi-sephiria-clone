@@ -13,7 +13,7 @@ WCHAR       szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스
 WCHAR       szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
 HWND        g_hWnd; 
-ULONG_PTR   g_gdiplusToken;  // GDI Plus를 사용하기 위함
+PrivateFontCollection* g_pFontCollection;
 
 // 난수 엔진
 mt19937     g_engine((unsigned int)time(NULL));
@@ -54,8 +54,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // gdiplus 토큰 초기화
 
+    ULONG_PTR   gdiplusToken;  // GDI Plus를 사용하기 위함
     GdiplusStartupInput gdiplusStartUpInput;
-    GdiplusStartup(&g_gdiplusToken, &gdiplusStartUpInput, NULL);
+    GdiplusStartup(&gdiplusToken, &gdiplusStartUpInput, NULL);
+
+    // 폰트 추가 
+    g_pFontCollection = new PrivateFontCollection;
+    // 갈무리 7 - 일반 글 출력용
+    g_pFontCollection->AddFontFile(L"../Resource/Font/Galmuri7.ttf");
+    // 아틀라스 pixel 이미지 ttf
+    g_pFontCollection->AddFontFile(L"../Resource/Font/Sephiria_PixelBig.ttf");
+    g_pFontCollection->AddFontFile(L"../Resource/Font/Sephiria_PixelBold.ttf");
+    g_pFontCollection->AddFontFile(L"../Resource/Font/Sephiria_PixelSmall.ttf");
 
     {
         CMainGame MainGame;
@@ -87,7 +97,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
 
-    GdiplusShutdown(g_gdiplusToken); // 토큰 끝
+    delete g_pFontCollection;
+
+    GdiplusShutdown(gdiplusToken); // 토큰 끝
 
     return (int) msg.wParam;
 }

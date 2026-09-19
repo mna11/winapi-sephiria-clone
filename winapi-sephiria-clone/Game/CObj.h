@@ -20,6 +20,7 @@ public:
 	const int&		GetRenderLayer()const			{ return m_iRenderLayer; }
 	const float&	GetAngle()		const			{ return m_fAngle; }
 	const VEC&		GetPrePoint()	const			{ return m_vPrePoint; }
+	const STAT&		GetStat()		const			{ return m_tStat; }
 
 public:
 	void			SetPos(float _fX, float _fY)	{ m_tInfo.vPoint.fX = _fX; m_tInfo.vPoint.fY = _fY; }
@@ -49,6 +50,7 @@ protected:
 	RECT			m_tRect;
 	FRAME			m_tFrame;
 	RENDERID		m_eRender;
+	STAT			m_tStat;
 	
 	VEC				m_vPrePoint;		// 이번 프레임 이동 전 위치
 
@@ -56,7 +58,6 @@ protected:
 	float			m_fSpeed;	
 	float			m_fAngle;
 	bool			m_bDead;
-	int				m_iHp;				// 체력
 
 	CObj*			m_pTarget;
 

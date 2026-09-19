@@ -18,8 +18,6 @@ void CErma::Initialize()
 {
 	m_eRender = RENDERID::GAMEOBJECT;
 	m_iRenderLayer = 3;
-	
-	m_iHp = 500; // 임시
 
 	// 기초 정보 초기화
 	m_tInfo = { WINCX >> 1, WINCY >> 1, 100.f, 100.f };
@@ -42,6 +40,10 @@ void CErma::Initialize()
 	m_dHitElapseTime = 0.;
 	m_dIframeTime = 0.3;   // 피격 후 무적시간 0.3초
 	m_bHit = false;
+
+	// 기본 스탯 세팅
+	// 체력 100, 공격력 30
+	m_tStat = { 100, 100, 30 };
 }
 
 int CErma::Update()
@@ -175,11 +177,11 @@ void CErma::SetDamage(int iDamage, CObj* pObj)
 		return;
 
 	m_bHit = true;		// m_bHit은 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
-	m_iHp -= iDamage;
+	m_tStat.iHp -= iDamage;
 
 	m_eNextState = ERMA_STATE::STUN;
 
-	if (m_iHp <= 0)
+	if (m_tStat.iHp <= 0)
 	{
 		m_pFrameKey = L"Erma_Stone_L";
 		m_eNextState = ERMA_STATE::STONE;

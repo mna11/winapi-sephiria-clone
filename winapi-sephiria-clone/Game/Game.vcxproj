@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAbstractFactory.h" />
+    <ClInclude Include="CBasicInfo.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCameraMgr.h" />
@@ -142,6 +143,7 @@
     <ClInclude Include="CEffectMgr.h" />
     <ClInclude Include="CErma.h" />
     <ClInclude Include="CFluffy.h" />
+    <ClInclude Include="CFontMgr.h" />
     <ClInclude Include="CImgMgr.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CLine.h" />
@@ -161,6 +163,8 @@
     <ClInclude Include="CTile.h" />
     <ClInclude Include="CTileMgr.h" />
     <ClInclude Include="CTimeMgr.h" />
+    <ClInclude Include="CUI.h" />
+    <ClInclude Include="CUIMgr.h" />
     <ClInclude Include="CWeapon.h" />
     <ClInclude Include="CWeaponController.h" />
     <ClInclude Include="Define.h" />
@@ -171,6 +175,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CBasicInfo.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCameraMgr.cpp" />
@@ -179,6 +184,7 @@
     <ClCompile Include="CEffectMgr.cpp" />
     <ClCompile Include="CErma.cpp" />
     <ClCompile Include="CFluffy.cpp" />
+    <ClCompile Include="CFontMgr.cpp" />
     <ClCompile Include="CImgMgr.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLine.cpp" />
@@ -198,6 +204,8 @@
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTileMgr.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
+    <ClCompile Include="CUI.cpp" />
+    <ClCompile Include="CUIMgr.cpp" />
     <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="CWeaponController.cpp" />
     <ClCompile Include="Game.cpp" />

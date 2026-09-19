@@ -12,7 +12,6 @@ CObj::CObj()
 	m_pFrameKey(L""),
 	m_eRender(RENDERID::END),
 	m_iRenderLayer(0),
-	m_iHp(0),
 	m_bHit(false),
 	m_dIframeTime(0.),
 	m_dHitElapseTime(0.)
@@ -21,6 +20,7 @@ CObj::CObj()
 	ZeroMemory(&m_tRect, sizeof(RECT));
 	ZeroMemory(&m_tFrame, sizeof(FRAME));
 	ZeroMemory(&m_vPrePoint, sizeof(VEC));
+	ZeroMemory(&m_tStat, sizeof(STAT));
 }
 
 CObj::~CObj()
@@ -39,9 +39,9 @@ void CObj::SetDamage(int iDamage, CObj* pObj)
 		return;
 
 	m_bHit = true;		// m_bHit은 final 객체의 Update에서 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
-	m_iHp -= iDamage;
+	m_tStat.iHp -= iDamage;
 
-	if (m_iHp <= 0)
+	if (m_tStat.iHp <= 0)
 		m_bDead = true;
 }
 
