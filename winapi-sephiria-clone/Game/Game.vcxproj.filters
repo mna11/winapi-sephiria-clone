@@ -124,6 +124,12 @@
     <Filter Include="04. Scene\01. BossStage">
       <UniqueIdentifier>{e4e5358a-060c-4e59-a9f4-e90aaf197077}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\02. Monster\00. Erma\00. ErmaGolem">
+      <UniqueIdentifier>{026dbc24-6cf8-49fa-8b77-c7bc321c5a8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\00. Erma\01. ErmaHand">
+      <UniqueIdentifier>{75e8df34-0be2-4c0e-bd12-c49f99ec0a6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -249,6 +255,12 @@
     <ClInclude Include="CBossStage.h">
       <Filter>04. Scene\01. BossStage</Filter>
     </ClInclude>
+    <ClInclude Include="CErmaGolem.h">
+      <Filter>01. Obj\02. Monster\00. Erma\00. ErmaGolem</Filter>
+    </ClInclude>
+    <ClInclude Include="CErmaHand.h">
+      <Filter>01. Obj\02. Monster\00. Erma\01. ErmaHand</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -358,6 +370,12 @@
     </ClCompile>
     <ClCompile Include="CBossStage.cpp">
       <Filter>04. Scene\01. BossStage</Filter>
+    </ClCompile>
+    <ClCompile Include="CErmaGolem.cpp">
+      <Filter>01. Obj\02. Monster\00. Erma\00. ErmaGolem</Filter>
+    </ClCompile>
+    <ClCompile Include="CErmaHand.cpp">
+      <Filter>01. Obj\02. Monster\00. Erma\01. ErmaHand</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

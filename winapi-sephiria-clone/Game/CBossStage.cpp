@@ -3,7 +3,8 @@
 
 #include "CPlayer.h"
 #include "CErma.h"
-#include "CFluffy.h"
+#include "CErmaGolem.h"
+#include "CErmaHand.h"
 #include "CMonster.h"
 
 #include "CAbstractFactory.h"
@@ -48,9 +49,6 @@ void CBossStage::Update()
 void CBossStage::LateUpdate()
 {
 	CObjMgr::GetInstance()->LateUpdate();
-
-	if (CObjMgr::GetInstance()->ObjEmpty(OBJID::MONSTER))
-		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CFluffy>::CreateObj(1700.f, 1200.f));
 }
 
 void CBossStage::Render(Graphics* pGraphics)
@@ -108,10 +106,25 @@ void CBossStage::Init_CreateObj()
 {
 	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(412.f, 1024.f));
 	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
-	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CErma>::CreateObj(4000.f, 1300.f));
+
+	CErmaGolem* pGolem = static_cast<CErmaGolem*>(
+		CAbstractFactory<CErmaGolem>::CreateObj(3960.f, 1100.f));
+	CErma* pErma = static_cast<CErma*>(
+		CAbstractFactory<CErma>::CreateObj(3960.f, 1500.f));
+	CErmaHand* pLeftHand = static_cast<CErmaHand*>(
+		CAbstractFactory<CErmaHand>::CreateObj(3480.f, 1100.f));
+	CErmaHand* pRightHand = static_cast<CErmaHand*>(
+		CAbstractFactory<CErmaHand>::CreateObj(4440.f, 1100.f));
+
+	pGolem->SetParts(pErma, pLeftHand, pRightHand);
+
+	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, pGolem);
+	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, pErma);
+	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, pLeftHand);
+	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, pRightHand);
 }
 
 void CBossStage::Init_InsertImg()
 {
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Stage/Map3.png", L"Map");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Stage/Map3_BossWall2.png", L"Map");
 }
