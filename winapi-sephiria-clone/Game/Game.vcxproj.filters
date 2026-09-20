@@ -121,6 +121,9 @@
     <Filter Include="03. Manager\12. FontMgr">
       <UniqueIdentifier>{2d728248-8ff4-4355-9f5f-87225fb362c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Scene\01. BossStage">
+      <UniqueIdentifier>{e4e5358a-060c-4e59-a9f4-e90aaf197077}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -243,6 +246,9 @@
     <ClInclude Include="CFontMgr.h">
       <Filter>03. Manager\12. FontMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CBossStage.h">
+      <Filter>04. Scene\01. BossStage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -349,6 +355,9 @@
     </ClCompile>
     <ClCompile Include="CFontMgr.cpp">
       <Filter>03. Manager\12. FontMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossStage.cpp">
+      <Filter>04. Scene\01. BossStage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

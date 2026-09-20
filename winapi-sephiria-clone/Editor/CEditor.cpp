@@ -93,7 +93,7 @@ void CEditor::Release()
 void CEditor::KeyInput()
 {
 	// 카메라 이동
-	float fSpeed = 100.f * float(DT);
+	float fSpeed = 500.f * float(DT);
 	if (KEY_PRESS(VK_LEFT))
 		CCameraMgr::GetInstance()->AddCameraPos({ -fSpeed, 0.f });
 	if (KEY_PRESS(VK_RIGHT))

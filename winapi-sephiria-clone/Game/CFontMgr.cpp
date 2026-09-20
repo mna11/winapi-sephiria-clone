@@ -17,6 +17,8 @@ CFontMgr::~CFontMgr()
 
 void CFontMgr::Initialize()
 {
+#pragma push_macro("new")
+#undef new
 	// 폰트 패밀리 초기화
 	m_vecFontFamily.push_back(new FontFamily(L"Pixel Big", g_pFontCollection));
 	m_vecFontFamily.push_back(new FontFamily(L"Pixel Bold", g_pFontCollection));
@@ -28,6 +30,7 @@ void CFontMgr::Initialize()
 	m_vecFont.push_back(new Font(m_vecFontFamily[toUType(FONT_TYPE::PIXEL_BOLD)], 24.f, FontStyleRegular, UnitPixel));
 	m_vecFont.push_back(new Font(m_vecFontFamily[toUType(FONT_TYPE::PIXEL_SMALL)], 18.f, FontStyleRegular, UnitPixel));
 	m_vecFont.push_back(new Font(m_vecFontFamily[toUType(FONT_TYPE::NORMAL)], 21.f, FontStyleRegular, UnitPixel));
+#pragma pop_macro("new")
 
 	// 폰트 정렬 초기화
 	m_sf.SetAlignment(StringAlignmentCenter);

@@ -60,11 +60,11 @@ void CStage::Render(Graphics* pGraphics)
 		return;
 	
 	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
-	RectF destRect = { 0.f + vScroll.fX, 0.f + vScroll.fY,  6400.f, 6400.f };
+	RectF destRect = { 0.f + vScroll.fX, 0.f + vScroll.fY,  8400.f, 8400.f };
 	
 	pGraphics->DrawImage(
 		pGround, destRect,
-		0.f, 0.f, 6400.f, 6400.f,
+		0.f, 0.f, 8400.f, 8400.f,
 		UnitPixel
 	);
 
@@ -86,5 +86,5 @@ void CStage::Init_CreateObj()
 
 void CStage::Init_InsertImg()
 {
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Stage/Map.png", L"Map");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Stage/Map3.png", L"Map");
 }
