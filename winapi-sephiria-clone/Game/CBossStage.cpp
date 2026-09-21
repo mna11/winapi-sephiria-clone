@@ -2,9 +2,7 @@
 #include "CBossStage.h"
 
 #include "CPlayer.h"
-#include "CErma.h"
-#include "CErmaGolem.h"
-#include "CErmaHand.h"
+#include "CBossErma.h"
 #include "CMonster.h"
 
 #include "CAbstractFactory.h"
@@ -95,19 +93,11 @@ void CBossStage::Init_CreateObj()
 	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
 
 	// 보스 추가하기
-	CErmaGolem* pGolem = static_cast<CErmaGolem*>(
-		CAbstractFactory<CErmaGolem>::CreateObj(3960.f, 1100.f));
-	CErma* pErma = static_cast<CErma*>(
-		CAbstractFactory<CErma>::CreateObj(3960.f, 1500.f));
-	CErmaHand* pLeftHand = static_cast<CErmaHand*>(
-		CAbstractFactory<CErmaHand>::CreateObj(3480.f, 1100.f));
-	CErmaHand* pRightHand = static_cast<CErmaHand*>(
-		CAbstractFactory<CErmaHand>::CreateObj(4440.f, 1100.f));
+	CBossErma* pBoss = static_cast<CBossErma*>(
+		CAbstractFactory<CBossErma>::CreateObj(3960.f, 1100.f));
 
-	pGolem->SetParts(pErma, pLeftHand, pRightHand);
-
-	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, pGolem);
-	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, pErma);
-	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, pLeftHand);
-	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, pRightHand);
+	// Register the controller first so it schedules state changes before its
+	// independently updated parts.
+	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, pBoss);
+	pBoss->InitializeParts();
 }

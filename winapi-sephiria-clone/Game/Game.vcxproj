@@ -148,6 +148,8 @@
     <ClInclude Include="CErmaBody.h" />
     <ClInclude Include="CErmaHand.h" />
     <ClInclude Include="CErmaHead.h" />
+    <ClInclude Include="CErmaLaser.h" />
+    <ClInclude Include="CErmaMissile.h" />
     <ClInclude Include="CErmaPhase.h" />
     <ClInclude Include="CErmaPhase1.h" />
     <ClInclude Include="CErmaPhase2.h" />
@@ -198,6 +200,8 @@
     <ClCompile Include="CErmaBody.cpp" />
     <ClCompile Include="CErmaHand.cpp" />
     <ClCompile Include="CErmaHead.cpp" />
+    <ClCompile Include="CErmaLaser.cpp" />
+    <ClCompile Include="CErmaMissile.cpp" />
     <ClCompile Include="CErmaPhase.cpp" />
     <ClCompile Include="CErmaPhase1.cpp" />
     <ClCompile Include="CErmaPhase2.cpp" />

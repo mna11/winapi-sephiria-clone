@@ -151,6 +151,12 @@
     <Filter Include="01. Obj\02. Monster\00. BossErma\00. ErmaParts\00. Erma">
       <UniqueIdentifier>{f6a73bb3-2b70-430a-aa98-1210e506704d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\02. Monster\00. BossErma\02. ErmaMissile">
+      <UniqueIdentifier>{6920bebe-f650-4749-9ef2-987d861d331d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\00. BossErma\03. ErmaLaser">
+      <UniqueIdentifier>{f764bd10-7dd4-414d-9d0b-d995bb12105b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -300,6 +306,12 @@
     <ClInclude Include="CErma.h">
       <Filter>01. Obj\02. Monster\00. BossErma\00. ErmaParts\00. Erma</Filter>
     </ClInclude>
+    <ClInclude Include="CErmaMissile.h">
+      <Filter>01. Obj\02. Monster\00. BossErma\02. ErmaMissile</Filter>
+    </ClInclude>
+    <ClInclude Include="CErmaLaser.h">
+      <Filter>01. Obj\02. Monster\00. BossErma\03. ErmaLaser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -433,6 +445,12 @@
     </ClCompile>
     <ClCompile Include="CErma.cpp">
       <Filter>01. Obj\02. Monster\00. BossErma\00. ErmaParts\00. Erma</Filter>
+    </ClCompile>
+    <ClCompile Include="CErmaMissile.cpp">
+      <Filter>01. Obj\02. Monster\00. BossErma\02. ErmaMissile</Filter>
+    </ClCompile>
+    <ClCompile Include="CErmaLaser.cpp">
+      <Filter>01. Obj\02. Monster\00. BossErma\03. ErmaLaser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

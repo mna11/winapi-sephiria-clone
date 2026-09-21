@@ -1,17 +1,25 @@
-﻿#pragma once
+#pragma once
+
 #include "CMonster.h"
 #include "CState.h"
 
+class CErma;
+class CErmaBody;
+class CErmaHand;
+class CErmaHead;
 class CErmaPhase;
+class CErmaPhase1;
 
 enum class BOSS_ERMA_STATE
 {
-    WAIT,    // 플레이어 오기 전
-    INTRO,   // 플레이어 오고 인트로씬
-    IDLE,    // 가만히 있을 때
-    ATTACK,  // 손으로 찍기
-    LASER,   // 레이저 발사하기
-    MISSILE, // 미사일 발사하기
+    WAIT,
+    INTRO,
+    IDLE,
+    ATTACK,
+    EXPOSED,
+    RECOVER,
+    LASER,
+    MISSILE,
     END
 };
 
@@ -31,30 +39,44 @@ public:
 
 public:
     void ApplyChange() override;
+    void SetDamage(int iDamage, CObj* pObj = nullptr) override;
 
 public:
-    void SetDamage(int iDamage, CObj* pObj) override;
+    void InitializeParts();
+    bool AddStaggerDamage(int iDamage);
 
 public:
-    const CObj* GetHead() const { return m_pHead; }
-    const CObj* GetBody() const { return m_pBody; }
-    const CObj* GetRightHand() const { return m_pRightHand; }
-    const CObj* GetLeftHand() const { return m_pLeftHand; }
-    const CObj* GetErma() const { return m_pErma; }
-
+    CErmaHead* GetHead() const { return m_pHead; }
+    CErmaBody* GetBody() const { return m_pBody; }
+    CErmaHand* GetRightHand() const { return m_pRightHand; }
+    CErmaHand* GetLeftHand() const { return m_pLeftHand; }
+    CErma* GetErma() const { return m_pErma; }
+    bool IsHit() const { return m_bHit; }
 
 private:
     void UpdateTime();
     void ChangePhase(CErmaPhase* pNextPhase);
+    bool IsTargetInArena() const;
+    void StartMissileVolley();
+    void StartLaserPattern();
+    void BeginEnding();
 
 private:
-    CObj* m_pHead;      // 골렘 머리
-    CObj* m_pBody;      // 골렘 바디
-    CObj* m_pRightHand; // 골렘 오른손
-    CObj* m_pLeftHand;  // 골렘 왼손
-    CObj* m_pErma;      // 미친 과학자 에르마
+    CErmaHead* m_pHead;
+    CErmaBody* m_pBody;
+    CErmaHand* m_pRightHand;
+    CErmaHand* m_pLeftHand;
+    CErmaHand* m_pAttackingHand;
+    CErma* m_pErma;
 
-    CErmaPhase* m_pPhase;       // 페이즈
-    double m_dStateElapseTime;  // 현재 스테이트에서 걸린 시간
+    CErmaPhase* m_pPhase;
+    double m_dStateElapseTime;
+
+    bool m_bNextLeftHand;
+    int m_iNextPattern;
+    bool m_bBattleStarted;
+    bool m_bPartsInitialized;
+    bool m_bEnding;
+
+    friend class CErmaPhase1;
 };
-
