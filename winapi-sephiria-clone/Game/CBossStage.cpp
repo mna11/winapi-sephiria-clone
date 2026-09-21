@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CBossStage.h"
 
 #include "CPlayer.h"
@@ -27,6 +27,8 @@ CBossStage::~CBossStage()
 void CBossStage::Initialize()
 {
 	CTileMgr::GetInstance()->Initialize();
+
+	// UI Show
 	CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
 
 	Init_CreateObj();
@@ -35,7 +37,7 @@ void CBossStage::Initialize()
 
 void CBossStage::Update()
 {
-	// Å×½ºÆ®¿ë
+	// í…ŒìŠ¤íŠ¸ìš©
 	/*if (CKeyMgr::GetInstance()->KeyDown('M'))
 		CCameraMgr::GetInstance()->MoveCamera(VEC{ 1000.f, 1000.f });
 	if (CKeyMgr::GetInstance()->KeyDown('A'))
@@ -59,13 +61,13 @@ void CBossStage::Render(Graphics* pGraphics)
 
 	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
-	// ÇöÀç È­¸éÀÌ ¹Ù¶óº¸´Â ¿ùµå ÁÂÇ¥
+	// í˜„ìž¬ í™”ë©´ì´ ë°”ë¼ë³´ëŠ” ì›”ë“œ ì¢Œí‘œ
 	float fViewLeft = -vScroll.fX;
 	float fViewTop = -vScroll.fY;
 	float fViewRight = fViewLeft + WINCX;
 	float fViewBottom = fViewTop + WINCY;
 
-	// ÀÌ¹ÌÁö ¹üÀ§ ¾ÈÀ¸·Î Á¦ÇÑ
+	// ì´ë¯¸ì§€ ë²”ìœ„ ì•ˆìœ¼ë¡œ ì œí•œ
 	float fSrcLeft = std::clamp(fViewLeft, 0.f, 8400.f);
 	float fSrcTop = std::clamp(fViewTop, 0.f, 8400.f);
 	float fSrcRight = std::clamp(fViewRight, 0.f, 8400.f);
@@ -107,6 +109,7 @@ void CBossStage::Init_CreateObj()
 	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(412.f, 1024.f));
 	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
 
+	// ë³´ìŠ¤
 	CErmaGolem* pGolem = static_cast<CErmaGolem*>(
 		CAbstractFactory<CErmaGolem>::CreateObj(3960.f, 1100.f));
 	CErma* pErma = static_cast<CErma*>(

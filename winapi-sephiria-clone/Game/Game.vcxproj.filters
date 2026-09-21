@@ -124,11 +124,17 @@
     <Filter Include="04. Scene\01. BossStage">
       <UniqueIdentifier>{e4e5358a-060c-4e59-a9f4-e90aaf197077}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\02. Monster\00. Erma\00. ErmaGolem">
+    <Filter Include="01. Obj\06. UI\01. BossHp">
+      <UniqueIdentifier>{df4f24d7-d9e3-40df-8def-25bed12a8515}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\00. Erma\01. ErmaGolem">
       <UniqueIdentifier>{026dbc24-6cf8-49fa-8b77-c7bc321c5a8d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\02. Monster\00. Erma\01. ErmaHand">
+    <Filter Include="01. Obj\02. Monster\00. Erma\02. ErmaHand">
       <UniqueIdentifier>{75e8df34-0be2-4c0e-bd12-c49f99ec0a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\00. Erma\00. Erma">
+      <UniqueIdentifier>{44924f61-fb72-4b7e-b9ce-9cd4f5ac0518}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -231,9 +237,6 @@
     <ClInclude Include="CSwordAndShield.h">
       <Filter>01. Obj\03. Weapon\01. SwordAndShield</Filter>
     </ClInclude>
-    <ClInclude Include="CErma.h">
-      <Filter>01. Obj\02. Monster\00. Erma</Filter>
-    </ClInclude>
     <ClInclude Include="CFluffy.h">
       <Filter>01. Obj\02. Monster\01. Fluffy</Filter>
     </ClInclude>
@@ -256,10 +259,16 @@
       <Filter>04. Scene\01. BossStage</Filter>
     </ClInclude>
     <ClInclude Include="CErmaGolem.h">
-      <Filter>01. Obj\02. Monster\00. Erma\00. ErmaGolem</Filter>
+      <Filter>01. Obj\02. Monster\00. Erma\01. ErmaGolem</Filter>
     </ClInclude>
     <ClInclude Include="CErmaHand.h">
-      <Filter>01. Obj\02. Monster\00. Erma\01. ErmaHand</Filter>
+      <Filter>01. Obj\02. Monster\00. Erma\02. ErmaHand</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossHp.h">
+      <Filter>01. Obj\06. UI\01. BossHp</Filter>
+    </ClInclude>
+    <ClInclude Include="CErma.h">
+      <Filter>01. Obj\02. Monster\00. Erma\00. Erma</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -347,9 +356,6 @@
     <ClCompile Include="CEffect.cpp">
       <Filter>01. Obj\04. Effect</Filter>
     </ClCompile>
-    <ClCompile Include="CErma.cpp">
-      <Filter>01. Obj\02. Monster\00. Erma</Filter>
-    </ClCompile>
     <ClCompile Include="CFluffy.cpp">
       <Filter>01. Obj\02. Monster\01. Fluffy</Filter>
     </ClCompile>
@@ -372,10 +378,16 @@
       <Filter>04. Scene\01. BossStage</Filter>
     </ClCompile>
     <ClCompile Include="CErmaGolem.cpp">
-      <Filter>01. Obj\02. Monster\00. Erma\00. ErmaGolem</Filter>
+      <Filter>01. Obj\02. Monster\00. Erma\01. ErmaGolem</Filter>
     </ClCompile>
     <ClCompile Include="CErmaHand.cpp">
-      <Filter>01. Obj\02. Monster\00. Erma\01. ErmaHand</Filter>
+      <Filter>01. Obj\02. Monster\00. Erma\02. ErmaHand</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossHp.cpp">
+      <Filter>01. Obj\06. UI\01. BossHp</Filter>
+    </ClCompile>
+    <ClCompile Include="CErma.cpp">
+      <Filter>01. Obj\02. Monster\00. Erma\00. Erma</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

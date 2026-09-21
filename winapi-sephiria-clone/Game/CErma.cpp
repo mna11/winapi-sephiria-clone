@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CErma.h"
 
 #include "CImgMgr.h"
@@ -10,7 +10,7 @@ namespace
     constexpr double AIR_TIME = 0.75;
     constexpr double RETURN_TIME = 1.4;
     constexpr float AIR_ARC_HEIGHT = 140.f;
-    constexpr int EXPOSED_HIT_COUNT = 3;
+    constexpr int EXPOSED_HIT_COUNT = 1;
 }
 
 CErma::CErma()
@@ -65,7 +65,7 @@ void CErma::Initialize()
     m_dIframeTime = 0.3;
     m_bHit = false;
 
-    m_tStat = { 1000, 1000, 30 };
+    m_tStat = { 200, 200, 30 };
 }
 
 int CErma::Update()

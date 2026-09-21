@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CErmaGolem.h"
 
 #include "CErma.h"
@@ -7,6 +7,8 @@
 #include "CCameraMgr.h"
 #include "CImgMgr.h"
 #include "CTimeMgr.h"
+#include "CUIMgr.h"
+#include "CFontMgr.h"
 
 namespace
 {
@@ -86,7 +88,7 @@ void CErmaGolem::Render(Graphics* pGraphics)
         constexpr float fCellX = 113.f;
         constexpr float fCellY = 55.f;
         const int iFrame = (m_eCurState == ERMA_GOLEM_STATE::EXPOSED) ? 1 : 0;
-        VEC vDrawSize = VEC{ fCellX, fCellY } * PIXEL_SCALE;
+        VEC vDrawSize = VEC{ fCellX, fCellY } *PIXEL_SCALE;
         RectF rcDest{
             m_tInfo.vPoint.fX - vDrawSize.fX * 0.5f + vScroll.fX,
             m_tInfo.vPoint.fY - vDrawSize.fY * 0.5f + vScroll.fY,
@@ -107,7 +109,7 @@ void CErmaGolem::Render(Graphics* pGraphics)
         constexpr float fCellX = 93.f;
         constexpr float fCellY = 80.f;
         const int iFrameY = (m_eCurState == ERMA_GOLEM_STATE::EXPOSED) ? 2 : 0;
-        VEC vDrawSize = VEC{ fCellX, fCellY } * PIXEL_SCALE;
+        VEC vDrawSize = VEC{ fCellX, fCellY } *PIXEL_SCALE;
         RectF rcDest{
             m_tInfo.vPoint.fX - vDrawSize.fX * 0.5f + vScroll.fX,
             m_tInfo.vPoint.fY + HEAD_OFFSET_Y - vDrawSize.fY * 0.5f + vScroll.fY,
@@ -260,6 +262,7 @@ void CErmaGolem::CheckBattleStart()
         ARENA_TOP <= vPlayerPoint.fY && vPlayerPoint.fY <= ARENA_BOTTOM)
     {
         m_eNextState = ERMA_GOLEM_STATE::INTRO;
+        CUIMgr::GetInstance()->ShowUI(UIID::BOSS_HP, this);
     }
 }
 
@@ -338,6 +341,8 @@ void CErmaGolem::BeginEnding()
         m_pLeftHand->RequestRemove();
     if (m_pRightHand != nullptr)
         m_pRightHand->RequestRemove();
+
+    CUIMgr::GetInstance()->HideUI(UIID::BOSS_HP);
 
     m_bEnding = true;
 }

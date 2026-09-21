@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 class CUI;
+class CObj;
 
 class CUIMgr
 {
@@ -32,6 +33,7 @@ public:
 
 public:
 	void ShowUI(UIID eID);
+	void ShowUI(UIID eID, CObj* pTarget);
 	void HideUI(UIID eID);
 	void ToggleUI(UIID eID);
 
