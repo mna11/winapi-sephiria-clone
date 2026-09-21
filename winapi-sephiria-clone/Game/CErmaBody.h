@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "CMonster.h"
-class CErmaHand :
+class CErmaBody :
     public CMonster
 {
 };

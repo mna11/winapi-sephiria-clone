@@ -29,6 +29,8 @@ void CPlayer::Initialize()
 	m_tInfo = { WINCX >> 1, WINCY >> 1, 30.f, 40.f };
 	m_eRender = RENDERID::GAMEOBJECT;
 	m_fSpeed = m_fNormalSpeed;
+	// 렌더 레이어 - 0 ~ 5 사이 플레이어는 중간인 3
+	m_iRenderLayer = 3;
 
 	// 스프라이트 시트 Insert 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Player/Player_LEFTDOWN.png", L"Player_LD");
@@ -43,8 +45,6 @@ void CPlayer::Initialize()
 	// 무기 컨트롤러 초기화 - 무기는 누가 사용하는지 참조 시켜야 함
 	m_pWeaponController = CAbstractFactory<CWeaponController>::CreateWeaponController(this);
 
-	// 렌더 레이어 - 0 ~ 5 사이 플레이어는 중간인 3
-	m_iRenderLayer = 3;
 
 	// iframe 세팅 
 	m_dHitElapseTime = 0.;

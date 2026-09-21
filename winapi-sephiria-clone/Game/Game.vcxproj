@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="CAbstractFactory.h" />
     <ClInclude Include="CBasicInfo.h" />
+    <ClInclude Include="CBossErma.h" />
     <ClInclude Include="CBossHp.h" />
     <ClInclude Include="CBossStage.h" />
     <ClInclude Include="CBullet.h" />
@@ -144,8 +145,12 @@
     <ClInclude Include="CEffect.h" />
     <ClInclude Include="CEffectMgr.h" />
     <ClInclude Include="CErma.h" />
-    <ClInclude Include="CErmaGolem.h" />
+    <ClInclude Include="CErmaBody.h" />
     <ClInclude Include="CErmaHand.h" />
+    <ClInclude Include="CErmaHead.h" />
+    <ClInclude Include="CErmaPhase.h" />
+    <ClInclude Include="CErmaPhase1.h" />
+    <ClInclude Include="CErmaPhase2.h" />
     <ClInclude Include="CFluffy.h" />
     <ClInclude Include="CFontMgr.h" />
     <ClInclude Include="CImgMgr.h" />
@@ -180,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CBasicInfo.cpp" />
+    <ClCompile Include="CBossErma.cpp" />
     <ClCompile Include="CBossHp.cpp" />
     <ClCompile Include="CBossStage.cpp" />
     <ClCompile Include="CBullet.cpp" />
@@ -189,8 +195,12 @@
     <ClCompile Include="CEffect.cpp" />
     <ClCompile Include="CEffectMgr.cpp" />
     <ClCompile Include="CErma.cpp" />
-    <ClCompile Include="CErmaGolem.cpp" />
+    <ClCompile Include="CErmaBody.cpp" />
     <ClCompile Include="CErmaHand.cpp" />
+    <ClCompile Include="CErmaHead.cpp" />
+    <ClCompile Include="CErmaPhase.cpp" />
+    <ClCompile Include="CErmaPhase1.cpp" />
+    <ClCompile Include="CErmaPhase2.cpp" />
     <ClCompile Include="CFluffy.cpp" />
     <ClCompile Include="CFontMgr.cpp" />
     <ClCompile Include="CImgMgr.cpp" />

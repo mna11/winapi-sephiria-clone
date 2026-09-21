@@ -82,9 +82,6 @@
     <Filter Include="01. Obj\02. Monster">
       <UniqueIdentifier>{c40e4d5a-848c-4b9b-9fff-744b77f2e737}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\02. Monster\00. Erma">
-      <UniqueIdentifier>{5ca27ce4-69f4-4b21-bf02-ad52c945ef86}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Obj\02. Monster\01. Fluffy">
       <UniqueIdentifier>{9e85d714-b5cd-4b72-9a14-c8f67c23e212}</UniqueIdentifier>
     </Filter>
@@ -127,14 +124,32 @@
     <Filter Include="01. Obj\06. UI\01. BossHp">
       <UniqueIdentifier>{df4f24d7-d9e3-40df-8def-25bed12a8515}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\02. Monster\00. Erma\01. ErmaGolem">
-      <UniqueIdentifier>{026dbc24-6cf8-49fa-8b77-c7bc321c5a8d}</UniqueIdentifier>
+    <Filter Include="01. Obj\02. Monster\00. BossErma">
+      <UniqueIdentifier>{a736c66a-1a4d-4c30-8c3d-cd7e3dde3c06}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\02. Monster\00. Erma\02. ErmaHand">
-      <UniqueIdentifier>{75e8df34-0be2-4c0e-bd12-c49f99ec0a6b}</UniqueIdentifier>
+    <Filter Include="01. Obj\02. Monster\00. BossErma\00. ErmaParts">
+      <UniqueIdentifier>{6bca5d92-f615-43d3-84f0-aba7c99c5125}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\02. Monster\00. Erma\00. Erma">
-      <UniqueIdentifier>{44924f61-fb72-4b7e-b9ce-9cd4f5ac0518}</UniqueIdentifier>
+    <Filter Include="01. Obj\02. Monster\00. BossErma\01. ErmaPhase">
+      <UniqueIdentifier>{8c68ff17-d1cb-4141-a6cb-10a94cb2ca27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\00. BossErma\01. ErmaPhase\01. ErmaPhase1">
+      <UniqueIdentifier>{e499b2e2-fa8b-45a7-b75c-f27ff741cf36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\00. BossErma\01. ErmaPhase\02. ErmaPhase2">
+      <UniqueIdentifier>{aa85eeec-9c2a-43a4-80b5-c3012d0f32ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\00. BossErma\00. ErmaParts\01. ErmaBody">
+      <UniqueIdentifier>{25afa720-ff39-441b-af63-66d142a98e66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\00. BossErma\00. ErmaParts\02. ErmaHead">
+      <UniqueIdentifier>{92303b1d-ec7a-4908-bbea-e9eb6efef38a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\00. BossErma\00. ErmaParts\03. ErmaHand">
+      <UniqueIdentifier>{8ba684fb-6f5d-4b3c-8833-398c4c8b8668}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\00. BossErma\00. ErmaParts\00. Erma">
+      <UniqueIdentifier>{f6a73bb3-2b70-430a-aa98-1210e506704d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -258,17 +273,32 @@
     <ClInclude Include="CBossStage.h">
       <Filter>04. Scene\01. BossStage</Filter>
     </ClInclude>
-    <ClInclude Include="CErmaGolem.h">
-      <Filter>01. Obj\02. Monster\00. Erma\01. ErmaGolem</Filter>
-    </ClInclude>
-    <ClInclude Include="CErmaHand.h">
-      <Filter>01. Obj\02. Monster\00. Erma\02. ErmaHand</Filter>
-    </ClInclude>
     <ClInclude Include="CBossHp.h">
       <Filter>01. Obj\06. UI\01. BossHp</Filter>
     </ClInclude>
+    <ClInclude Include="CBossErma.h">
+      <Filter>01. Obj\02. Monster\00. BossErma</Filter>
+    </ClInclude>
+    <ClInclude Include="CErmaHead.h">
+      <Filter>01. Obj\02. Monster\00. BossErma\00. ErmaParts\02. ErmaHead</Filter>
+    </ClInclude>
+    <ClInclude Include="CErmaHand.h">
+      <Filter>01. Obj\02. Monster\00. BossErma\00. ErmaParts\03. ErmaHand</Filter>
+    </ClInclude>
+    <ClInclude Include="CErmaBody.h">
+      <Filter>01. Obj\02. Monster\00. BossErma\00. ErmaParts\01. ErmaBody</Filter>
+    </ClInclude>
+    <ClInclude Include="CErmaPhase.h">
+      <Filter>01. Obj\02. Monster\00. BossErma\01. ErmaPhase</Filter>
+    </ClInclude>
+    <ClInclude Include="CErmaPhase1.h">
+      <Filter>01. Obj\02. Monster\00. BossErma\01. ErmaPhase\01. ErmaPhase1</Filter>
+    </ClInclude>
+    <ClInclude Include="CErmaPhase2.h">
+      <Filter>01. Obj\02. Monster\00. BossErma\01. ErmaPhase\02. ErmaPhase2</Filter>
+    </ClInclude>
     <ClInclude Include="CErma.h">
-      <Filter>01. Obj\02. Monster\00. Erma\00. Erma</Filter>
+      <Filter>01. Obj\02. Monster\00. BossErma\00. ErmaParts\00. Erma</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -377,17 +407,32 @@
     <ClCompile Include="CBossStage.cpp">
       <Filter>04. Scene\01. BossStage</Filter>
     </ClCompile>
-    <ClCompile Include="CErmaGolem.cpp">
-      <Filter>01. Obj\02. Monster\00. Erma\01. ErmaGolem</Filter>
-    </ClCompile>
-    <ClCompile Include="CErmaHand.cpp">
-      <Filter>01. Obj\02. Monster\00. Erma\02. ErmaHand</Filter>
-    </ClCompile>
     <ClCompile Include="CBossHp.cpp">
       <Filter>01. Obj\06. UI\01. BossHp</Filter>
     </ClCompile>
+    <ClCompile Include="CBossErma.cpp">
+      <Filter>01. Obj\02. Monster\00. BossErma</Filter>
+    </ClCompile>
+    <ClCompile Include="CErmaBody.cpp">
+      <Filter>01. Obj\02. Monster\00. BossErma\00. ErmaParts\01. ErmaBody</Filter>
+    </ClCompile>
+    <ClCompile Include="CErmaHand.cpp">
+      <Filter>01. Obj\02. Monster\00. BossErma\00. ErmaParts\03. ErmaHand</Filter>
+    </ClCompile>
+    <ClCompile Include="CErmaHead.cpp">
+      <Filter>01. Obj\02. Monster\00. BossErma\00. ErmaParts\02. ErmaHead</Filter>
+    </ClCompile>
+    <ClCompile Include="CErmaPhase.cpp">
+      <Filter>01. Obj\02. Monster\00. BossErma\01. ErmaPhase</Filter>
+    </ClCompile>
+    <ClCompile Include="CErmaPhase1.cpp">
+      <Filter>01. Obj\02. Monster\00. BossErma\01. ErmaPhase\01. ErmaPhase1</Filter>
+    </ClCompile>
+    <ClCompile Include="CErmaPhase2.cpp">
+      <Filter>01. Obj\02. Monster\00. BossErma\01. ErmaPhase\02. ErmaPhase2</Filter>
+    </ClCompile>
     <ClCompile Include="CErma.cpp">
-      <Filter>01. Obj\02. Monster\00. Erma\00. Erma</Filter>
+      <Filter>01. Obj\02. Monster\00. BossErma\00. ErmaParts\00. Erma</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
