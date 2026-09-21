@@ -15,5 +15,10 @@ public:
 
 public:
 	virtual void Init_CreateObj() PURE;
-	virtual void Init_InsertImg() PURE;
+	virtual void Init_LoadImg(wstring wstr);
+
+protected:
+	HDC		m_hMapDC;
+	HBITMAP m_hMapBitmap;
+	HBITMAP	m_hOldBitmap;
 };

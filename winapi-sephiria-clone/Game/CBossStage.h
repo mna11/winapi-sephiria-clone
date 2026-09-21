@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CScene.h"
 
 class CBossStage :
@@ -16,6 +16,5 @@ public:
 
 public:
     void Init_CreateObj() override;
-    void Init_InsertImg() override;
 };
 

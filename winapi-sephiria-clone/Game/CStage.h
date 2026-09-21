@@ -15,6 +15,5 @@ public:
 
 public:
     void Init_CreateObj() override;
-    void Init_InsertImg() override;
 };
 

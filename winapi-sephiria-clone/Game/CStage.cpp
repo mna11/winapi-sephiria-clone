@@ -29,7 +29,6 @@ void CStage::Initialize()
 	CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
 
 	Init_CreateObj();
-	Init_InsertImg();
 }
 
 void CStage::Update()
@@ -82,9 +81,4 @@ void CStage::Init_CreateObj()
 	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(280.f, 280.f));
 	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
 	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CErma>::CreateObj(1700.f, 1000.f));
-}
-
-void CStage::Init_InsertImg()
-{
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Stage/Map3.png", L"Map");
 }
