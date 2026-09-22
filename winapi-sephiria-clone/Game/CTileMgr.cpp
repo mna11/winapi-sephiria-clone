@@ -21,7 +21,6 @@ CTileMgr::~CTileMgr()
 
 void CTileMgr::Initialize()
 {
-	LoadTile();
 }
 
 void CTileMgr::Update()
@@ -76,9 +75,26 @@ void CTileMgr::Release()
 	}
 }
 
-void CTileMgr::LoadTile()
+
+void CTileMgr::LoadTile(SCENEID eSceneID)
 {
-	HANDLE	hFile = CreateFile(L"../Data/Tile_Client3.dat", // 이름을 포함한 파일 경로
+	wstring strFile = L"";
+
+	switch (eSceneID)
+	{
+	case SCENEID::STAGE0:
+		break;
+	case SCENEID::STAGE1:
+		strFile = L"../Data/Stage01/Tile_Client_Stage01.dat";
+		break;
+	case SCENEID::BOSS_STAGE:
+		strFile = L"../Data/BossStage/Tile_Client_BossStage.dat";
+		break;
+	default:
+		break;
+	}
+
+	HANDLE	hFile = CreateFile(strFile.c_str(), // 이름을 포함한 파일 경로
 		GENERIC_READ,		// 파일 접근 모드
 		NULL,				// 공유 방식, NULL로 지정하면 공유하지 않음
 		NULL,				// 보안 속성, NULL인 기본 값 설정

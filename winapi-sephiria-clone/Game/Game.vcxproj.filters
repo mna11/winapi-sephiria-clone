@@ -64,9 +64,6 @@
     <Filter Include="04. Scene">
       <UniqueIdentifier>{b8ee814c-7d36-4d1f-a40e-c46b14b554bb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Scene\00. Stage">
-      <UniqueIdentifier>{e00739a8-abf4-4dbc-8042-e0a59b299a12}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. State">
       <UniqueIdentifier>{8a089e36-8ce5-4178-badc-442b768965f8}</UniqueIdentifier>
     </Filter>
@@ -118,9 +115,6 @@
     <Filter Include="03. Manager\12. FontMgr">
       <UniqueIdentifier>{2d728248-8ff4-4355-9f5f-87225fb362c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Scene\01. BossStage">
-      <UniqueIdentifier>{e4e5358a-060c-4e59-a9f4-e90aaf197077}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Obj\06. UI\01. BossHp">
       <UniqueIdentifier>{df4f24d7-d9e3-40df-8def-25bed12a8515}</UniqueIdentifier>
     </Filter>
@@ -156,6 +150,15 @@
     </Filter>
     <Filter Include="01. Obj\02. Monster\00. BossErma\03. ErmaLaser">
       <UniqueIdentifier>{f764bd10-7dd4-414d-9d0b-d995bb12105b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\00. Stage0">
+      <UniqueIdentifier>{e00739a8-abf4-4dbc-8042-e0a59b299a12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\99. BossStage">
+      <UniqueIdentifier>{e4e5358a-060c-4e59-a9f4-e90aaf197077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\01. Stage1">
+      <UniqueIdentifier>{f229f306-9d3a-442a-beac-069f0526866a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -226,7 +229,7 @@
       <Filter>01. Obj\00. Player</Filter>
     </ClInclude>
     <ClInclude Include="CStage.h">
-      <Filter>04. Scene\00. Stage</Filter>
+      <Filter>04. Scene\00. Stage0</Filter>
     </ClInclude>
     <ClInclude Include="CCamera.h">
       <Filter>03. Manager\05. CameraMgr\00. Camera</Filter>
@@ -277,7 +280,7 @@
       <Filter>03. Manager\12. FontMgr</Filter>
     </ClInclude>
     <ClInclude Include="CBossStage.h">
-      <Filter>04. Scene\01. BossStage</Filter>
+      <Filter>04. Scene\99. BossStage</Filter>
     </ClInclude>
     <ClInclude Include="CBossHp.h">
       <Filter>01. Obj\06. UI\01. BossHp</Filter>
@@ -311,6 +314,9 @@
     </ClInclude>
     <ClInclude Include="CErmaLaser.h">
       <Filter>01. Obj\02. Monster\00. BossErma\03. ErmaLaser</Filter>
+    </ClInclude>
+    <ClInclude Include="CStage1.h">
+      <Filter>04. Scene\01. Stage1</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -366,7 +372,7 @@
       <Filter>01. Obj\00. Player</Filter>
     </ClCompile>
     <ClCompile Include="CStage.cpp">
-      <Filter>04. Scene\00. Stage</Filter>
+      <Filter>04. Scene\00. Stage0</Filter>
     </ClCompile>
     <ClCompile Include="CCamera.cpp">
       <Filter>03. Manager\05. CameraMgr\00. Camera</Filter>
@@ -417,7 +423,7 @@
       <Filter>03. Manager\12. FontMgr</Filter>
     </ClCompile>
     <ClCompile Include="CBossStage.cpp">
-      <Filter>04. Scene\01. BossStage</Filter>
+      <Filter>04. Scene\99. BossStage</Filter>
     </ClCompile>
     <ClCompile Include="CBossHp.cpp">
       <Filter>01. Obj\06. UI\01. BossHp</Filter>
@@ -451,6 +457,9 @@
     </ClCompile>
     <ClCompile Include="CErmaLaser.cpp">
       <Filter>01. Obj\02. Monster\00. BossErma\03. ErmaLaser</Filter>
+    </ClCompile>
+    <ClCompile Include="CStage1.cpp">
+      <Filter>04. Scene\01. Stage1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

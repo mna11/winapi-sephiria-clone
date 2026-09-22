@@ -39,7 +39,7 @@ public:
 	const vector<CObj*>& GetTile(TILE_LAYER eLayer) const { return m_vecTile[toUType(eLayer)]; }
 
 public:
-	void	LoadTile();
+	void	LoadTile(SCENEID eSceneID);
 
 private:
 	static CTileMgr* m_pInstance;

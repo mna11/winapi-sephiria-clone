@@ -168,6 +168,7 @@
     <ClInclude Include="CSceneMgr.h" />
     <ClInclude Include="CShield.h" />
     <ClInclude Include="CStage.h" />
+    <ClInclude Include="CStage1.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="CSword.h" />
     <ClInclude Include="CSwordAndShield.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="CSceneMgr.cpp" />
     <ClCompile Include="CShield.cpp" />
     <ClCompile Include="CStage.cpp" />
+    <ClCompile Include="CStage1.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CSword.cpp" />
     <ClCompile Include="CSwordAndShield.cpp" />

@@ -42,7 +42,7 @@ void CMainGame::Initialize()
 	m_pBackGraphics->SetTextRenderingHint(TextRenderingHintSingleBitPerPixel); // 폰트 안티 앨리어싱 없고 글자 픽셀 격자 맞게 보정
 #pragma pop_macro("new")
 
-	CSceneMgr::GetInstance()->RequestChange(SCENEID::BOSS_STAGE);
+	CSceneMgr::GetInstance()->RequestChange(SCENEID::STAGE1);
 
 	// 디버깅 시 콘솔 창 출력 
 #ifdef _DEBUG

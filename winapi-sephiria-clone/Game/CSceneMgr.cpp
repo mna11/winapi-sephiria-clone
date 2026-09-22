@@ -3,6 +3,7 @@
 #include "CScene.h"
 
 #include "CStage.h"
+#include "CStage1.h"
 #include "CBossStage.h"
 
 CSceneMgr* CSceneMgr::m_pInstance = nullptr;
@@ -50,8 +51,11 @@ void CSceneMgr::ApplyChange()
 
 		switch (m_eCurScene)
 		{
-		case SCENEID::STAGE:
+		case SCENEID::STAGE0:
 			m_pScene = new CStage;
+			break;
+		case SCENEID::STAGE1:
+			m_pScene = new CStage1;
 			break;
 		case SCENEID::BOSS_STAGE:
 			m_pScene = new CBossStage;
