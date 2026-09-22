@@ -35,8 +35,11 @@ public:
 	void	Initialize();
 
 public:
-	CObj*	CreateEffect(const TCHAR*, VEC vPoint, float fFactor);
+	CObj* CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
+		float fFactor = 0.f, double dFrameSpeed = 0., CObj* pObj = nullptr, VEC vDir = { 0.f, 0.f }, wstring wstr = L"", Color tColor = {0, 0, 0, 0});
 
 private:
 	static CEffectMgr* m_pInstance;
 };
+
+

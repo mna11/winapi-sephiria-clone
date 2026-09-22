@@ -2,6 +2,7 @@
 #include "CObj.h"
 
 #include "CTimeMgr.h"
+#include "CEffectMgr.h"
 
 CObj::CObj()
 	:
@@ -29,8 +30,7 @@ CObj::~CObj()
 
 void CObj::SetFrame(int iStart, int iEnd, int iMotion, double dFrameSpeed)
 {
-	m_tFrame = { iStart, iEnd, iMotion, dFrameSpeed, 0UL};
-	QueryPerformanceCounter(&m_tFrame.iFrameTime);
+	m_tFrame = { iStart, iEnd, iMotion, dFrameSpeed, 0.};
 }
 
 void CObj::SetDamage(int iDamage, CObj* pObj)
@@ -40,6 +40,8 @@ void CObj::SetDamage(int iDamage, CObj* pObj)
 
 	m_bHit = true;		// m_bHit은 final 객체의 Update에서 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
 	m_tStat.iHp -= iDamage;
+
+	CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 255, 255 });
 
 	if (m_tStat.iHp <= 0)
 		m_bDead = true;
@@ -55,11 +57,11 @@ void CObj::UpdateRect()
 
 void CObj::UpdateFrame()
 {
-	if (m_tFrame.dFrameSpeed <= CTimeMgr::GetInstance()->GetTime(m_tFrame.iFrameTime))
+	m_tFrame.dFrameElapsedTime += DT;
+	if (m_tFrame.dFrameSpeed <= m_tFrame.dFrameElapsedTime)
 	{
 		++m_tFrame.iStart;
-
-		QueryPerformanceCounter(&m_tFrame.iFrameTime);
+		m_tFrame.dFrameElapsedTime -= m_tFrame.dFrameSpeed;
 
 		if (m_tFrame.iStart > m_tFrame.iEnd)
 			m_tFrame.iStart = 0;

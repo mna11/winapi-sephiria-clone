@@ -6,6 +6,7 @@
 #include "CEffectMgr.h"
 
 CMonster::CMonster()
+	: m_fAtkDistance(0.f)
 {
 	// 몬스터의 타겟은 항상 플레이어
 	// 근데 나중에 동료 구현할 때는 이거 없애야 한다. 

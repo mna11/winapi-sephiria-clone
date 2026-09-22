@@ -99,7 +99,7 @@ void CCollisionMgr::CollisionPlayerAttack(list<CObj*>& DstList, list<CObj*>& Src
             {
                 if (IntersectRect(&rc, &ColRect, &Src->GetRect()))
                 {
-                    Src->SetDamage(100);
+                    Src->SetDamage(Dst->GetStat().iAtk, Dst);
                 }
             }
         }
@@ -121,6 +121,26 @@ void CCollisionMgr::CollisionPlayerDefense(list<CObj*>& DstList, list<CObj*>& Sr
                 if (IntersectRect(&rc, &ColRect, &Src->GetRect()))
                 {
                     Src->SetDead(true);
+                }
+            }
+        }
+    }
+}
+
+void CCollisionMgr::CollisionMonsterAttack(list<CObj*>& DstList, list<CObj*>& SrcList)
+{
+    RECT rc{};
+
+    for (auto& Dst : DstList) // 플레이어
+    {
+        for (auto& Src : SrcList) // 몬스터
+        {
+            const vector<RECT>& vecAtkRect = Src->GetAtkRectVec();
+            for (auto& ColRect : vecAtkRect)
+            {
+                if (IntersectRect(&rc, &ColRect, &Dst->GetRect()))
+                {
+                    Dst->SetDamage(Src->GetStat().iAtk, Src);
                 }
             }
         }

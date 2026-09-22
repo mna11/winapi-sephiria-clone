@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CErma.h"
 
 #include "CImgMgr.h"
@@ -132,10 +132,11 @@ void CErma::UpdateFrame()
     if (m_eCurState == ERMA_STATE::RETURN)
         return;
 
-    if (m_tFrame.dFrameSpeed <= CTimeMgr::GetInstance()->GetTime(m_tFrame.iFrameTime))
+    m_tFrame.dFrameElapsedTime += DT;
+    if (m_tFrame.dFrameSpeed <= m_tFrame.dFrameElapsedTime)
     {
         ++m_tFrame.iStart;
-        QueryPerformanceCounter(&m_tFrame.iFrameTime);
+        m_tFrame.dFrameElapsedTime -= m_tFrame.dFrameSpeed;
 
         if (m_tFrame.iStart > m_tFrame.iEnd)
         {

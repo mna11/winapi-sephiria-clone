@@ -162,15 +162,15 @@ void CSwordAndShield::CreateEffect()
 		switch (m_tAtk.iLevel)
 		{
 		case 0:
-			CEffectMgr::GetInstance()->CreateEffect(L"SwordSwing1", vRenderPoint, m_pTarget->GetAngle());
+			CEffectMgr::GetInstance()->CreateEffect(L"SwordSwing1", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
 			vRectSize = { 50.f, 50.f };
 			break;
 		case 1:
-			CEffectMgr::GetInstance()->CreateEffect(L"SwordSwing2", vRenderPoint, m_pTarget->GetAngle());
+			CEffectMgr::GetInstance()->CreateEffect(L"SwordSwing2", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
 			vRectSize = { 60.f, 60.f };
 			break;
 		case 2:
-			CEffectMgr::GetInstance()->CreateEffect(L"SwordSwing3", vRenderPoint, m_pTarget->GetAngle());
+			CEffectMgr::GetInstance()->CreateEffect(L"SwordSwing3", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
 			vRectSize = { 80.f, 80.f };
 			break;
 		}
@@ -190,7 +190,7 @@ void CSwordAndShield::CreateEffect()
 		float fSizeFactor = 27.f;
 		vRectSize = { fSizeFactor + fSizeFactor * fabsf(sinf(fTargetAngle)), fSizeFactor + fSizeFactor * fabsf(cosf(fTargetAngle))};
 
-		CEffectMgr::GetInstance()->CreateEffect(L"Shield", vRenderPoint, m_pTarget->GetAngle());
+		CEffectMgr::GetInstance()->CreateEffect(L"Shield", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
 		
 		vRenderPoint -= vOffset * 0.2f;
 	}
@@ -209,7 +209,7 @@ void CSwordAndShield::CreateEffect()
 		float fSizeFactor = 130.f;
 		vRectSize = { fSizeFactor + fSizeFactor * fabsf(cosf(m_fAngle)), fSizeFactor + fSizeFactor * fabsf(sinf(m_fAngle)) };
 
-		CEffectMgr::GetInstance()->CreateEffect(L"Cleave", vRenderPoint, m_pTarget->GetAngle());
+		CEffectMgr::GetInstance()->CreateEffect(L"Cleave", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
 	}
 	SetRect(&m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::CLEAVE)], vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
 }
@@ -338,7 +338,7 @@ void CSwordAndShield::PrintInfo()
 		cout << "공격 상태 : " << m_tAtk.iLevel << ", " << m_tAtk.bNextAtk << ", " << m_tAtk.dElapseTime << ", " << m_tAtk.dMaxTime << ", " << m_tAtk.iLevel << ", " << m_tAtk.iMaxLevel << endl;
 		cout << "현재 상태 : " << toUType(m_eCurState) << endl;
 		cout << "검 위치 : " << m_pSword->GetInfo().vPoint.fX << " " << m_pSword->GetInfo().vPoint.fY << endl;
-		m_dPrintInterval = 0.2;
+		m_dPrintInterval = 3.;
 	}
 }
 #endif // _DEBUG

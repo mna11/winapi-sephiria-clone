@@ -24,6 +24,16 @@
 
 #define		PI		3.14f
 
+
+// EffectMgr 옵션
+#define		EFTMGR_IMAGE  0x0000
+#define		EFTMGR_STRING 0x0001
+
+#define		EFTMGR_FIXED  0x0000
+#define		EFTMGR_FOLLOW 0x0010
+#define		EFTMGR_MOVE   0x0020
+
+
 /////////////////////////////////////////
 // 매니저 싱글톤 단축
 // - TimeMgr
@@ -104,7 +114,8 @@ typedef struct tagVector
 	tagVector	Normalize() const 
 	{ 
 		float fNorm = sqrtf(fX * fX + fY * fY);
-		return tagVector{ fX / fNorm, fY / fNorm };
+		if (fNorm == 0) return tagVector{ 0.f, 0.f };
+		else return tagVector{ fX / fNorm, fY / fNorm };
 	}
 } VEC;
 
@@ -173,7 +184,7 @@ typedef struct tagFrame
 	int iEnd;
 	int iMotion;
 	double		  dFrameSpeed;
-	LARGE_INTEGER iFrameTime; 
+	double		  dFrameElapsedTime;
 } FRAME;
 
 typedef struct tagLinePoint

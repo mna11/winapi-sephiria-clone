@@ -142,5 +142,5 @@ void CTileMgr::LoadTile(SCENEID eSceneID)
 
 	CloseHandle(hFile);
 
-	MessageBox(g_hWnd, _T("Tile Load 완료"), L"Success", MB_OK);
+	//MessageBox(g_hWnd, _T("Tile Load 완료"), L"Success", MB_OK);
 }

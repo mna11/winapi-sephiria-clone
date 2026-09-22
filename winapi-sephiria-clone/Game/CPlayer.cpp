@@ -55,8 +55,8 @@ void CPlayer::Initialize()
 	// 스탯 초기화
 	m_tStat = {
 		70,				// HP
-		70,			// MAX HP
-		20,				// 공격력
+		70,			    // MAX HP
+		45,				// 공격력
 		60,				// MP
 		60,				// MAX HP
 
@@ -299,13 +299,13 @@ void CPlayer::CreateEffect()
 		// 일반 걷기
 		if (m_fSpeed == m_fNormalSpeed)
 		{
-			CEffectMgr::GetInstance()->CreateEffect(L"RunDust", m_tInfo.vPoint, 0.f);
+			CEffectMgr::GetInstance()->CreateEffect(L"RunDust", m_tInfo.vPoint, EFTMGR_IMAGE | EFTMGR_FIXED, 0.f);
 		}
 		// 대쉬 - 와다다
 		else if (m_fSpeed == m_fRunSpeed)
 		{
 			VEC vDir = m_tInfo.vPoint - m_vPrePoint;
-			CEffectMgr::GetInstance()->CreateEffect(L"DashDust", m_tInfo.vPoint, atan2f(vDir.fY, vDir.fX));
+			CEffectMgr::GetInstance()->CreateEffect(L"DashDust", m_tInfo.vPoint, EFTMGR_IMAGE | EFTMGR_FIXED, atan2f(vDir.fY, vDir.fX));
 		}
 		m_dDustElapseTime = 0.;
 	}
@@ -319,7 +319,7 @@ void CPlayer::CreateEffect()
 		for (float i = 0.25f; i <= 1.f; i+=0.25f)
 		{
 			VEC vTrail = vDir * i + m_vPrePoint;
-			CEffectMgr::GetInstance()->CreateEffect(L"DashTrail", vTrail, i);
+			CEffectMgr::GetInstance()->CreateEffect(L"DashTrail", vTrail, EFTMGR_IMAGE | EFTMGR_FIXED, i);
 		}
 	}
 }

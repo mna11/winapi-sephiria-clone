@@ -160,6 +160,9 @@
     <Filter Include="04. Scene\01. Stage1">
       <UniqueIdentifier>{f229f306-9d3a-442a-beac-069f0526866a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\02. Monster\02. Gargoyle">
+      <UniqueIdentifier>{7c41fed8-58b9-4fff-ba98-becaa1d5ff0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -318,6 +321,9 @@
     <ClInclude Include="CStage1.h">
       <Filter>04. Scene\01. Stage1</Filter>
     </ClInclude>
+    <ClInclude Include="CGargoyle.h">
+      <Filter>01. Obj\02. Monster\02. Gargoyle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -460,6 +466,9 @@
     </ClCompile>
     <ClCompile Include="CStage1.cpp">
       <Filter>04. Scene\01. Stage1</Filter>
+    </ClCompile>
+    <ClCompile Include="CGargoyle.cpp">
+      <Filter>01. Obj\02. Monster\02. Gargoyle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

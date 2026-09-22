@@ -36,17 +36,22 @@ void CEffectMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Alert_Square.png", L"Erma_Alert_Square");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Golem_Hand_Shadow_LEFT.png", L"Erma_Hand_Shadow_L");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Golem_Hand_Shadow_RIGHT.png", L"Erma_Hand_Shadow_R");
+
+	// 가고일
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Monster/Gargoyle/Gargoyle_Attack.png", L"Gargoyle_Attack");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Monster/Gargoyle/Gargoyle_ShockWave.png", L"Gargoyle_ShockWave");
 }
 
-CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, float fFactor)
+
+CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, float fFactor, double dFrameSpeed, CObj* pObj, VEC vDir, wstring wstr, Color tColor)
 {
-	CObj* pObj = CAbstractFactory<CEffect>::CreateObj(vPoint.fX, vPoint.fY);
-	pObj->SetFrameKey(pFrameKey);
+	CObj* pEffect = CAbstractFactory<CEffect>::CreateObj(vPoint.fX, vPoint.fY);
+	pEffect->SetFrameKey(pFrameKey);
 
 	if (pFrameKey == L"RunDust")
 	{
-		pObj->SetFrame(0, 8, 0, 0.2);
-		pObj->SetSize({ 7.f, 7.f });
+		pEffect->SetFrame(0, 8, 0, 0.2);
+		pEffect->SetSize({ 7.f, 7.f });
 	}
 	else if (pFrameKey == L"DashDust")
 	{
@@ -54,48 +59,84 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, float fFactor
 			fFactor += 2 * PI + PI / 8;
 
 		int iDirection = (int)(fFactor / (PI / 4));
-		pObj->SetFrame(0, 5, iDirection, 0.2);
-		pObj->SetSize({37, 23});
+		pEffect->SetFrame(0, 5, iDirection, 0.2);
+		pEffect->SetSize({ 37, 23 });
 	}
 	else if (pFrameKey == L"DashTrail")
 	{
-		pObj->SetFrame(0, 5, 0, 0.05);
-		pObj->SetSize({ 15.f, 16.f });
-		static_cast<CEffect*>(pObj)->SetAlpha(fFactor);
+		pEffect->SetFrame(0, 5, 0, 0.05);
+		pEffect->SetSize({ 15.f, 16.f });
+		static_cast<CEffect*>(pEffect)->SetAlpha(fFactor);
 	}
 	else if (pFrameKey == L"SwordSwing1")
 	{
-		pObj->SetFrame(0, 1, 0, 0.1);
-		pObj->SetSize({ 37.f, 22.f });
-		pObj->SetAngle(fFactor);
+		pEffect->SetFrame(0, 1, 0, 0.1);
+		pEffect->SetSize({ 37.f, 22.f });
+		pEffect->SetAngle(fFactor);
 	}
 	else if (pFrameKey == L"SwordSwing2")
 	{
-		pObj->SetFrame(0, 1, 0, 0.1);
-		pObj->SetSize({ 30.f, 30.f });
-		pObj->SetAngle(fFactor);
+		pEffect->SetFrame(0, 1, 0, 0.1);
+		pEffect->SetSize({ 30.f, 30.f });
+		pEffect->SetAngle(fFactor);
 	}
 	else if (pFrameKey == L"SwordSwing3")
 	{
-		pObj->SetFrame(0, 3, 0, 0.1);
-		pObj->SetSize({ 32.f, 43.f });
-		pObj->SetAngle(fFactor);
+		pEffect->SetFrame(0, 3, 0, 0.1);
+		pEffect->SetSize({ 32.f, 43.f });
+		pEffect->SetAngle(fFactor);
 	}
 	else if (pFrameKey == L"Shield")
-	{	
+	{
 		// 이거 나중에 꼭 고쳐야함
-		pObj->SetFrame(0, 1, 0, 0.001);
-		pObj->SetSize({ 16, 32 });
-		pObj->SetAngle(fFactor);
+		pEffect->SetFrame(0, 1, 0, 0.001);
+		pEffect->SetSize({ 16, 32 });
+		pEffect->SetAngle(fFactor);
 	}
 	else if (pFrameKey == L"Cleave")
 	{
-		pObj->SetFrame(0, 7, 0, 0.1);
-		pObj->SetSize({ 142, 105 });
-		pObj->SetAngle(fFactor);
+		pEffect->SetFrame(0, 7, 0, 0.1);
+		pEffect->SetSize({ 142, 105 });
+		pEffect->SetAngle(fFactor);
 	}
-	
+	// 가고일
+	else if (pFrameKey == L"Gargoyle_Attack")
+	{
+		pEffect->SetFrame(0, 1, 0, dFrameSpeed);
+		pEffect->SetSize({ 43, 49 });
+		pEffect->SetAngle(fFactor);
+	}
 
-	CObjMgr::GetInstance()->AddObject(OBJID::EFFECT, pObj);
-	return pObj;
+	if (iOption & EFTMGR_IMAGE)
+	{
+		// 이미지 - 기본값
+	}
+	if (iOption & EFTMGR_STRING)
+	{
+		if (0 != wstr.compare(L""))
+		{
+			pEffect->SetFrame(0, 0, 0, dFrameSpeed);
+			static_cast<CEffect*>(pEffect)->SetPhrase(wstr);
+			static_cast<CEffect*>(pEffect)->SetColor(tColor);
+			static_cast<CEffect*>(pEffect)->SetSpeed(fFactor);
+		}
+	}
+	if (iOption & EFTMGR_FIXED)
+	{
+		// 고정 - 기본값 
+	}
+	if (iOption & EFTMGR_FOLLOW)
+	{
+		if (nullptr != pObj)
+			pEffect->SetTarget(pObj);
+	}
+	if (iOption & EFTMGR_MOVE)
+	{
+		if (vDir.fX != 0.f && vDir.fY != 0.f)
+			static_cast<CEffect*>(pEffect)->SetDirVec(vDir);
+	}
+
+
+	CObjMgr::GetInstance()->AddObject(OBJID::EFFECT, pEffect);
+	return pEffect;
 }

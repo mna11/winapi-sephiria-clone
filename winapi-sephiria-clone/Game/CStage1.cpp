@@ -2,6 +2,7 @@
 #include "CStage1.h"
 
 #include "CPlayer.h"
+#include "CGargoyle.h"
 
 #include "CAbstractFactory.h"
 #include "CObjMgr.h"
@@ -79,5 +80,6 @@ void CStage1::Release()
 void CStage1::Init_CreateObj()
 {
 	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(360.f, 7600.f));
+	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(500.f, 7600.f));
 	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
 }

@@ -155,6 +155,7 @@
     <ClInclude Include="CErmaPhase2.h" />
     <ClInclude Include="CFluffy.h" />
     <ClInclude Include="CFontMgr.h" />
+    <ClInclude Include="CGargoyle.h" />
     <ClInclude Include="CImgMgr.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CLine.h" />
@@ -208,6 +209,7 @@
     <ClCompile Include="CErmaPhase2.cpp" />
     <ClCompile Include="CFluffy.cpp" />
     <ClCompile Include="CFontMgr.cpp" />
+    <ClCompile Include="CGargoyle.cpp" />
     <ClCompile Include="CImgMgr.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLine.cpp" />
