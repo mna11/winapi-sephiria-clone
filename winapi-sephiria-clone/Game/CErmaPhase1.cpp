@@ -36,7 +36,7 @@ void CErmaPhase1::Update()
 		break;
 
 	case BOSS_ERMA_STATE::IDLE:
-		if (m_pBoss->m_dStateElapseTime >= 0.5)
+		if (m_pBoss->m_dStateElapseTime >= 0.3)
 		{
 			switch (m_pBoss->m_iNextPattern)
 			{

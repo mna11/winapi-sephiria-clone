@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CErmaMissile.h"
 
 #include "CCameraMgr.h"
@@ -8,7 +8,7 @@
 
 namespace
 {
-    constexpr double WARNING_TIME = 1.2;
+    constexpr double WARNING_TIME = 1.0;
     constexpr int WARNING_STEP_COUNT = 4;
     constexpr int WARNING_FRAME_STEP = 5;
 

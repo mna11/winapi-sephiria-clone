@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CErmaHand.h"
 
 #include "CBossErma.h"
@@ -15,6 +15,16 @@ namespace
     constexpr double SLAM_TIME = 0.35;
     constexpr double IMPACT_HOLD_TIME = 0.18;
     constexpr double RETURN_TIME = 0.65;
+    constexpr double LASER_READY_TIME = 0.85;
+    constexpr double LASER_ACTIVE_TIME = 3.0;
+    constexpr double LASER_FADE_TIME = 0.25;
+    constexpr double LASER_RETURN_TIME = 0.25;
+    constexpr double LASER_FRAME_TIME = 0.08;
+    constexpr int LASER_READY_LAST_FRAME = 5;
+    constexpr int LASER_FIRE_FIRST_FRAME = 5;
+    constexpr int LASER_FIRE_FRAME_COUNT = 7;
+    constexpr int LASER_EXIT_FIRST_FRAME = 12;
+    constexpr int LASER_EXIT_FRAME_COUNT = 6;
 }
 
 CErmaHand::CErmaHand()
@@ -24,6 +34,9 @@ CErmaHand::CErmaHand()
     m_vAnchor{},
     m_vMoveStart{},
     m_vSlamTarget{},
+    m_fLaserHandX(0.f),
+    m_fLaserStartY(0.f),
+    m_fLaserEndY(0.f),
     m_dStateElapseTime(0.),
     m_bRemoveRequested(false)
 {
@@ -112,9 +125,38 @@ void CErmaHand::Render(Graphics* pGraphics)
         };
         ImageAttributes* pImgAttr = m_bHit ? &m_imgAttrHit : nullptr;
 
+        int iFrame = 0;
+        if (m_eCurState == ERMA_HAND_STATE::LASER_READY)
+        {
+            const float fRatio = std::clamp(
+                static_cast<float>(m_dStateElapseTime / LASER_READY_TIME),
+                0.f,
+                1.f);
+            iFrame = std::clamp(
+                static_cast<int>(fRatio * (LASER_READY_LAST_FRAME + 1)),
+                0,
+                LASER_READY_LAST_FRAME);
+        }
+        else if (m_eCurState == ERMA_HAND_STATE::LASER_ACTIVE)
+        {
+            iFrame = LASER_FIRE_FIRST_FRAME +
+                static_cast<int>(m_dStateElapseTime / LASER_FRAME_TIME) %
+                LASER_FIRE_FRAME_COUNT;
+        }
+        else if (m_eCurState == ERMA_HAND_STATE::LASER_RETURN)
+        {
+            const float fRatio = std::clamp(
+                static_cast<float>(m_dStateElapseTime / LASER_RETURN_TIME),
+                0.f,
+                1.f);
+            iFrame = LASER_EXIT_FIRST_FRAME + (std::min)(
+                static_cast<int>(fRatio * LASER_EXIT_FRAME_COUNT),
+                LASER_EXIT_FRAME_COUNT - 1);
+        }
+
         pGraphics->DrawImage(
             pImg, rcDest,
-            0.f, 0.f,
+            CELL_X * iFrame, 0.f,
             CELL_X, CELL_Y,
             UnitPixel, pImgAttr);
     }
@@ -149,7 +191,12 @@ void CErmaHand::ApplyChange()
         break;
     case ERMA_HAND_STATE::SLAM:
     case ERMA_HAND_STATE::RETURN:
+    case ERMA_HAND_STATE::LASER_READY:
+    case ERMA_HAND_STATE::LASER_RETURN:
         m_vMoveStart = m_tInfo.vPoint;
+        break;
+    case ERMA_HAND_STATE::LASER_ACTIVE:
+        m_tInfo.vPoint = { m_fLaserHandX, m_fLaserStartY };
         break;
     case ERMA_HAND_STATE::BROKEN:
         m_tInfo.vSize = { 0.f, 0.f };
@@ -188,6 +235,17 @@ void CErmaHand::StartSlam(const VEC& vTargetPoint)
     m_eNextState = ERMA_HAND_STATE::READY;
 }
 
+void CErmaHand::StartLaser(float fHandX, float fStartY, float fEndY)
+{
+    if (m_eCurState != ERMA_HAND_STATE::WAIT || IsBusy())
+        return;
+
+    m_fLaserHandX = fHandX;
+    m_fLaserStartY = fStartY;
+    m_fLaserEndY = fEndY;
+    m_eNextState = ERMA_HAND_STATE::LASER_READY;
+}
+
 void CErmaHand::ForceBreak()
 {
     m_eNextState = ERMA_HAND_STATE::BROKEN;
@@ -207,9 +265,15 @@ bool CErmaHand::IsBusy() const
     return m_eCurState == ERMA_HAND_STATE::READY ||
         m_eCurState == ERMA_HAND_STATE::SLAM ||
         m_eCurState == ERMA_HAND_STATE::RETURN ||
+        m_eCurState == ERMA_HAND_STATE::LASER_READY ||
+        m_eCurState == ERMA_HAND_STATE::LASER_ACTIVE ||
+        m_eCurState == ERMA_HAND_STATE::LASER_RETURN ||
         m_eNextState == ERMA_HAND_STATE::READY ||
         m_eNextState == ERMA_HAND_STATE::SLAM ||
-        m_eNextState == ERMA_HAND_STATE::RETURN;
+        m_eNextState == ERMA_HAND_STATE::RETURN ||
+        m_eNextState == ERMA_HAND_STATE::LASER_READY ||
+        m_eNextState == ERMA_HAND_STATE::LASER_ACTIVE ||
+        m_eNextState == ERMA_HAND_STATE::LASER_RETURN;
 }
 
 void CErmaHand::UpdateTime()
@@ -231,6 +295,20 @@ void CErmaHand::UpdateTime()
         m_dStateElapseTime >= READY_TIME)
     {
         m_eNextState = ERMA_HAND_STATE::SLAM;
+    }
+
+    if (m_eCurState == ERMA_HAND_STATE::LASER_READY &&
+        m_eNextState != ERMA_HAND_STATE::BROKEN &&
+        m_dStateElapseTime >= LASER_READY_TIME)
+    {
+        m_eNextState = ERMA_HAND_STATE::LASER_ACTIVE;
+    }
+
+    if (m_eCurState == ERMA_HAND_STATE::LASER_ACTIVE &&
+        m_eNextState != ERMA_HAND_STATE::BROKEN &&
+        m_dStateElapseTime >= LASER_ACTIVE_TIME)
+    {
+        m_eNextState = ERMA_HAND_STATE::LASER_RETURN;
     }
 }
 
@@ -269,6 +347,42 @@ void CErmaHand::Move()
     case ERMA_HAND_STATE::RETURN:
     {
         float fRatio = static_cast<float>(m_dStateElapseTime / RETURN_TIME);
+        fRatio = std::clamp(fRatio, 0.f, 1.f);
+        const float fEaseOut = 1.f - (1.f - fRatio) * (1.f - fRatio);
+        m_tInfo.vPoint = m_vMoveStart + (m_vAnchor - m_vMoveStart) * fEaseOut;
+
+        if (fRatio >= 1.f)
+            m_eNextState = ERMA_HAND_STATE::WAIT;
+        break;
+    }
+
+
+    case ERMA_HAND_STATE::LASER_READY:
+    {
+        float fRatio = static_cast<float>(m_dStateElapseTime / LASER_READY_TIME);
+        fRatio = std::clamp(fRatio, 0.f, 1.f);
+        const float fEaseOut = 1.f - (1.f - fRatio) * (1.f - fRatio) * (1.f - fRatio);
+        const VEC vLaserStart{ m_fLaserHandX, m_fLaserStartY };
+        m_tInfo.vPoint = m_vMoveStart + (vLaserStart - m_vMoveStart) * fEaseOut;
+        break;
+    }
+
+    case ERMA_HAND_STATE::LASER_ACTIVE:
+    {
+        const double dSweepTime = LASER_ACTIVE_TIME - LASER_FADE_TIME;
+        float fRatio = static_cast<float>(m_dStateElapseTime / dSweepTime);
+        fRatio = std::clamp(fRatio, 0.f, 1.f);
+        const float fSmoothRatio = fRatio * fRatio * (3.f - 2.f * fRatio);
+        m_tInfo.vPoint = {
+            m_fLaserHandX,
+            m_fLaserStartY + (m_fLaserEndY - m_fLaserStartY) * fSmoothRatio
+        };
+        break;
+    }
+
+    case ERMA_HAND_STATE::LASER_RETURN:
+    {
+        float fRatio = static_cast<float>(m_dStateElapseTime / LASER_RETURN_TIME);
         fRatio = std::clamp(fRatio, 0.f, 1.f);
         const float fEaseOut = 1.f - (1.f - fRatio) * (1.f - fRatio);
         m_tInfo.vPoint = m_vMoveStart + (m_vAnchor - m_vMoveStart) * fEaseOut;

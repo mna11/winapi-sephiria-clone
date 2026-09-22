@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CBossErma.h"
 
 #include "CErma.h"
@@ -47,8 +47,6 @@ CBossErma::~CBossErma()
 
 void CBossErma::Initialize()
 {
-    // The controller is intentionally non-collidable. Body and hands own the
-    // collision rectangles and forward stagger damage here.
     m_tInfo = { 0.f, 0.f, 0.f, 0.f };
     m_tStat = { 600, 600, 30 };
 
@@ -72,8 +70,6 @@ int CBossErma::Update()
 
     UpdateTime();
 
-    // Damage is applied during LateUpdate, so consume that pending transition
-    // before the phase can schedule its next normal action.
     ApplyChange();
 
     if (m_pPhase != nullptr)
@@ -310,21 +306,49 @@ void CBossErma::StartMissileVolley()
 
 void CBossErma::StartLaserPattern()
 {
+    constexpr float ARENA_LEFT = 3350.f;
+    constexpr float ARENA_RIGHT = 4570.f;
     constexpr float ARENA_TOP = 1080.f;
     constexpr float ARENA_BOTTOM = 2300.f;
     constexpr float LANE_MARGIN_Y = 260.f;
+    constexpr float HAND_TIP_OFFSET_X = 70.f;
 
     const float fUpperLaneY = ARENA_TOP + LANE_MARGIN_Y;
     const float fLowerLaneY = ARENA_BOTTOM - LANE_MARGIN_Y;
+    const float fLeftHandLaserX = ARENA_LEFT - HAND_TIP_OFFSET_X;
+    const float fRightHandLaserX = ARENA_RIGHT + HAND_TIP_OFFSET_X;
+
+    if (m_pLeftHand != nullptr)
+        m_pLeftHand->StartLaser(
+            fLeftHandLaserX,
+            fUpperLaneY,
+            fLowerLaneY);
+    if (m_pRightHand != nullptr)
+        m_pRightHand->StartLaser(
+            fRightHandLaserX,
+            fLowerLaneY,
+            fUpperLaneY);
 
     CErmaLaser* pDownwardLaser = static_cast<CErmaLaser*>(
         CAbstractFactory<CErmaLaser>::CreateObj());
-    pDownwardLaser->Configure(fUpperLaneY, fLowerLaneY, 0., true);
+    pDownwardLaser->Configure(
+        ARENA_LEFT,
+        ARENA_RIGHT,
+        fUpperLaneY,
+        fLowerLaneY,
+        0.,
+        true);
     CObjMgr::GetInstance()->AddObject(OBJID::EFFECT, pDownwardLaser);
 
     CErmaLaser* pUpwardLaser = static_cast<CErmaLaser*>(
         CAbstractFactory<CErmaLaser>::CreateObj());
-    pUpwardLaser->Configure(fLowerLaneY, fUpperLaneY, 0., false);
+    pUpwardLaser->Configure(
+        ARENA_RIGHT,
+        ARENA_LEFT,
+        fLowerLaneY,
+        fUpperLaneY,
+        0.,
+        false);
     CObjMgr::GetInstance()->AddObject(OBJID::EFFECT, pUpwardLaser);
 }
 

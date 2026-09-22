@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CErmaLaser.h"
 
 #include "CCameraMgr.h"
@@ -8,8 +8,6 @@
 
 namespace
 {
-    constexpr float ARENA_LEFT = 3350.f;
-    constexpr float ARENA_RIGHT = 4570.f;
     constexpr float ARENA_TOP = 1080.f;
     constexpr float ARENA_BOTTOM = 2300.f;
 
@@ -24,30 +22,21 @@ namespace
     constexpr float BODY_CELL_Y = 32.f;
     constexpr float HEAD_CELL_X = 48.f;
     constexpr float HEAD_CELL_Y = 48.f;
-    constexpr float LASER_SPRITE_SCALE = 3.f;
+    constexpr float LASER_SPRITE_SCALE = 4.f;
 
-    constexpr float HAND_CELL_X = 62.f;
-    constexpr float HAND_CELL_Y = 64.f;
-    constexpr int HAND_READY_LAST_FRAME = 5;
-    constexpr int HAND_FIRE_FIRST_FRAME = 5;
-    constexpr int HAND_FIRE_FRAME_COUNT = 7;
-    constexpr int HAND_EXIT_FIRST_FRAME = 12;
-    constexpr int HAND_EXIT_FRAME_COUNT = 6;
-    constexpr float HAND_MOVE_DISTANCE = 260.f;
-    constexpr float HAND_TIP_OFFSET_X = 70.f;
-
-    constexpr float HIT_HEIGHT = 70.f;
+    constexpr float HIT_HEIGHT = 100.f;
     constexpr float LASER_MARGIN_Y = 120.f;
 }
 
 CErmaLaser::CErmaLaser()
     : m_eState(ERMA_LASER_STATE::DELAY),
+    m_fLaserStartX(0.f),
+    m_fLaserEndX(0.f),
     m_fLaserY(0.f),
     m_fLaserStartY(0.f),
     m_fLaserEndY(0.f),
     m_dStateElapseTime(0.),
     m_dStartDelay(0.),
-    m_fHandStartY(0.f),
     m_bFromLeft(true),
     m_bDamageApplied(false)
 {
@@ -72,12 +61,6 @@ void CErmaLaser::Initialize()
     CImgMgr::GetInstance()->InsertImg(
         L"../Resource/Image/Monster/Boss/Effect/Laser/BigGolem_Laser_Head.png",
         L"Erma_Laser_Head");
-    CImgMgr::GetInstance()->InsertImg(
-        L"../Resource/Image/Monster/Boss/Hand/BigGolem_Hand_LEFT.png",
-        L"Erma_Golem_Hand_L");
-    CImgMgr::GetInstance()->InsertImg(
-        L"../Resource/Image/Monster/Boss/Hand/BigGolem_Hand_RIGHT.png",
-        L"Erma_Golem_Hand_R");
 }
 
 int CErmaLaser::Update()
@@ -134,7 +117,6 @@ void CErmaLaser::Render(Graphics* pGraphics)
         return;
 
     const VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
-    RenderHand(pGraphics, vScroll);
 
     if (m_eState == ERMA_LASER_STATE::WARNING)
         RenderWarning(pGraphics, vScroll);
@@ -160,11 +142,15 @@ void CErmaLaser::Release()
 }
 
 void CErmaLaser::Configure(
+    float fStartX,
+    float fEndX,
     float fStartY,
     float fEndY,
     double dStartDelay,
     bool bFromLeft)
 {
+    m_fLaserStartX = fStartX;
+    m_fLaserEndX = fEndX;
     m_fLaserStartY = std::clamp(
         fStartY,
         ARENA_TOP + LASER_MARGIN_Y,
@@ -176,10 +162,7 @@ void CErmaLaser::Configure(
     m_fLaserY = m_fLaserStartY;
     m_dStartDelay = (std::max)(0., dStartDelay);
     m_bFromLeft = bFromLeft;
-    m_fHandStartY = m_fLaserY + (m_bFromLeft
-        ? -HAND_MOVE_DISTANCE
-        : HAND_MOVE_DISTANCE);
-    m_tInfo.vPoint = { (ARENA_LEFT + ARENA_RIGHT) * 0.5f, m_fLaserY };
+    m_tInfo.vPoint = { m_fLaserStartX, m_fLaserY };
 }
 
 void CErmaLaser::ChangeState(ERMA_LASER_STATE eNextState)
@@ -214,10 +197,10 @@ void CErmaLaser::UpdateLaserPosition()
 void CErmaLaser::UpdateHitBox()
 {
     const float fBeamRatio = GetBeamRatio();
-    const float fBeamWidth = (ARENA_RIGHT - ARENA_LEFT) * fBeamRatio;
-    const float fCenterX = m_bFromLeft
-        ? ARENA_LEFT + fBeamWidth * 0.5f
-        : ARENA_RIGHT - fBeamWidth * 0.5f;
+    const float fBeamDeltaX =
+        (m_fLaserEndX - m_fLaserStartX) * fBeamRatio;
+    const float fBeamWidth = std::abs(fBeamDeltaX);
+    const float fCenterX = m_fLaserStartX + fBeamDeltaX * 0.5f;
 
     m_tInfo.vPoint = { fCenterX, m_fLaserY };
     m_tInfo.vSize = { fBeamWidth, HIT_HEIGHT };
@@ -246,94 +229,6 @@ float CErmaLaser::GetBeamAlpha() const
     return std::clamp(fAlpha, 0.f, 1.f);
 }
 
-float CErmaLaser::GetHandY() const
-{
-    if (m_eState != ERMA_LASER_STATE::WARNING)
-        return m_fLaserY;
-
-    float fRatio = static_cast<float>(m_dStateElapseTime / WARNING_TIME);
-    fRatio = std::clamp(fRatio, 0.f, 1.f);
-    const float fEaseOut = 1.f - (1.f - fRatio) * (1.f - fRatio) * (1.f - fRatio);
-    return m_fHandStartY + (m_fLaserY - m_fHandStartY) * fEaseOut;
-}
-
-void CErmaLaser::RenderHand(Graphics* pGraphics, const VEC& vScroll) const
-{
-    const TCHAR* pHandKey = m_bFromLeft
-        ? L"Erma_Golem_Hand_L"
-        : L"Erma_Golem_Hand_R";
-    Image* pHand = CImgMgr::GetInstance()->FindImg(pHandKey);
-    if (pHand == nullptr)
-        return;
-
-    int iHandFrame = 0;
-    float fAlpha = 1.f;
-
-    if (m_eState == ERMA_LASER_STATE::WARNING)
-    {
-        float fRatio = static_cast<float>(m_dStateElapseTime / WARNING_TIME);
-        fRatio = std::clamp(fRatio, 0.f, 1.f);
-        iHandFrame = std::clamp(
-            static_cast<int>(fRatio * (HAND_READY_LAST_FRAME + 1)),
-            0,
-            HAND_READY_LAST_FRAME);
-    }
-    else
-    {
-        const double dFadeStart = ACTIVE_TIME - FADE_TIME;
-        if (m_dStateElapseTime >= dFadeStart)
-        {
-            const float fExitRatio = std::clamp(
-                static_cast<float>((m_dStateElapseTime - dFadeStart) / FADE_TIME),
-                0.f,
-                1.f);
-            iHandFrame = HAND_EXIT_FIRST_FRAME + (std::min)(
-                static_cast<int>(fExitRatio * HAND_EXIT_FRAME_COUNT),
-                HAND_EXIT_FRAME_COUNT - 1);
-            fAlpha = GetBeamAlpha();
-        }
-        else
-        {
-            iHandFrame = HAND_FIRE_FIRST_FRAME +
-                static_cast<int>(m_dStateElapseTime / FRAME_TIME) %
-                HAND_FIRE_FRAME_COUNT;
-        }
-    }
-
-    ColorMatrix colorMatrix = {
-        1.f, 0.f, 0.f, 0.f, 0.f,
-        0.f, 1.f, 0.f, 0.f, 0.f,
-        0.f, 0.f, 1.f, 0.f, 0.f,
-        0.f, 0.f, 0.f, fAlpha, 0.f,
-        0.f, 0.f, 0.f, 0.f, 1.f
-    };
-    ImageAttributes imageAttribute;
-    imageAttribute.SetColorMatrix(
-        &colorMatrix,
-        ColorMatrixFlagsDefault,
-        ColorAdjustTypeBitmap);
-
-    const float fHandWidth = HAND_CELL_X * PIXEL_SCALE;
-    const float fHandHeight = HAND_CELL_Y * PIXEL_SCALE;
-    const float fHandX = (m_bFromLeft
-        ? ARENA_LEFT - HAND_TIP_OFFSET_X
-        : ARENA_RIGHT + HAND_TIP_OFFSET_X) + vScroll.fX;
-    const float fHandY = GetHandY() + vScroll.fY;
-    const RectF rcHand{
-        fHandX - fHandWidth * 0.5f,
-        fHandY - fHandHeight * 0.5f,
-        fHandWidth,
-        fHandHeight
-    };
-
-    pGraphics->DrawImage(
-        pHand, rcHand,
-        HAND_CELL_X * iHandFrame, 0.f,
-        HAND_CELL_X, HAND_CELL_Y,
-        UnitPixel,
-        &imageAttribute);
-}
-
 void CErmaLaser::RenderWarning(Graphics* pGraphics, const VEC& vScroll) const
 {
     float fRatio = static_cast<float>(m_dStateElapseTime / WARNING_TIME);
@@ -342,8 +237,8 @@ void CErmaLaser::RenderWarning(Graphics* pGraphics, const VEC& vScroll) const
         static_cast<float>(m_dStateElapseTime * 22.));
     const BYTE byAlpha = static_cast<BYTE>(135.f + 80.f * fRatio * fPulse);
     const float fWidth = 3.f + 3.f * fRatio;
-    const float fStartX = ARENA_LEFT + vScroll.fX;
-    const float fEndX = ARENA_RIGHT + vScroll.fX;
+    const float fStartX = m_fLaserStartX + vScroll.fX;
+    const float fEndX = m_fLaserEndX + vScroll.fX;
     const float fY = m_fLaserY + vScroll.fY;
 
     Pen warningPen(Color(byAlpha, 255, 70, 70), fWidth);
@@ -379,13 +274,10 @@ void CErmaLaser::RenderLaser(Graphics* pGraphics, const VEC& vScroll) const
     const float fBodyHeight = BODY_CELL_Y * LASER_SPRITE_SCALE;
     const float fBodySegmentLength = fBodyHeight;
     const float fBeamRatio = GetBeamRatio();
-    const float fArenaWidth = ARENA_RIGHT - ARENA_LEFT;
-    const float fWorldBeamLeft = m_bFromLeft
-        ? ARENA_LEFT
-        : ARENA_RIGHT - fArenaWidth * fBeamRatio;
-    const float fWorldBeamRight = m_bFromLeft
-        ? ARENA_LEFT + fArenaWidth * fBeamRatio
-        : ARENA_RIGHT;
+    const float fWorldHeadX = m_fLaserStartX +
+        (m_fLaserEndX - m_fLaserStartX) * fBeamRatio;
+    const float fWorldBeamLeft = (std::min)(m_fLaserStartX, fWorldHeadX);
+    const float fWorldBeamRight = (std::max)(m_fLaserStartX, fWorldHeadX);
     const float fScreenLeft = fWorldBeamLeft + vScroll.fX;
     const float fScreenRight = fWorldBeamRight + vScroll.fX;
     const float fScreenY = m_fLaserY + vScroll.fY;
@@ -422,7 +314,9 @@ void CErmaLaser::RenderLaser(Graphics* pGraphics, const VEC& vScroll) const
     pGraphics->Restore(beamGraphicsState);
 
     const float fHeadSize = HEAD_CELL_X * LASER_SPRITE_SCALE;
-    const float fHeadX = (m_bFromLeft ? ARENA_LEFT : ARENA_RIGHT) + vScroll.fX;
+    // Keep the head at the advancing tip of the beam. The emission side is
+    // filled by body tiles, while the opposite edge grows toward the target.
+    const float fHeadX = fWorldHeadX + vScroll.fX;
     const GraphicsState graphicsState = pGraphics->Save();
     pGraphics->TranslateTransform(fHeadX, fScreenY);
     pGraphics->RotateTransform(m_bFromLeft ? 90.f : -90.f);

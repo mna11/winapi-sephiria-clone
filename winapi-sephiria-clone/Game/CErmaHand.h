@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CMonster.h"
 #include "CState.h"
@@ -17,6 +17,9 @@ enum class ERMA_HAND_STATE
     READY,
     SLAM,
     RETURN,
+    LASER_READY,
+    LASER_ACTIVE,
+    LASER_RETURN,
     BROKEN,
     END
 };
@@ -44,6 +47,7 @@ public:
     void SetOwner(CBossErma* pOwner) { m_pOwner = pOwner; }
     void SetAnchor(const VEC& vAnchor);
     void StartSlam(const VEC& vTargetPoint);
+    void StartLaser(float fHandX, float fStartY, float fEndY);
     void ForceBreak();
     void Restore();
     void RequestRemove() { m_bRemoveRequested = true; }
@@ -63,6 +67,9 @@ private:
     VEC m_vAnchor;
     VEC m_vMoveStart;
     VEC m_vSlamTarget;
+    float m_fLaserHandX;
+    float m_fLaserStartY;
+    float m_fLaserEndY;
 
     double m_dStateElapseTime;
     bool m_bRemoveRequested;

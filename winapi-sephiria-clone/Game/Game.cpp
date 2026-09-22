@@ -70,6 +70,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     g_pFontCollection->AddFontFile(L"../Resource/Font/Sephiria_PixelBold.ttf");
     g_pFontCollection->AddFontFile(L"../Resource/Font/Sephiria_PixelSmall.ttf");
 
+    DWORD       dwTime = GetTickCount();   // 1 / 1000초
     {
         CMainGame MainGame;
         MainGame.Initialize();
@@ -93,9 +94,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             }
             else
             {
-                MainGame.Update();
-                MainGame.LateUpdate();
-                MainGame.Render();
+                if (dwTime + 10 < GetTickCount())
+                {
+                    MainGame.Update();
+                    MainGame.LateUpdate();
+                    MainGame.Render();
+
+                    dwTime = GetTickCount();
+                }
             }
         }
     }

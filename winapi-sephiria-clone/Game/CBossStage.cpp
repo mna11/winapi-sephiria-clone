@@ -96,8 +96,6 @@ void CBossStage::Init_CreateObj()
 	CBossErma* pBoss = static_cast<CBossErma*>(
 		CAbstractFactory<CBossErma>::CreateObj(3960.f, 1100.f));
 
-	// Register the controller first so it schedules state changes before its
-	// independently updated parts.
 	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, pBoss);
 	pBoss->InitializeParts();
 }
