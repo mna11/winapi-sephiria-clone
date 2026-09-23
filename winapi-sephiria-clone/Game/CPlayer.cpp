@@ -48,7 +48,7 @@ void CPlayer::Initialize()
 
 	// iframe 세팅 
 	m_dHitElapseTime = 0.;
-	m_dIframeTime = 0.3;   // 피격 후 무적시간 0.3초
+	m_dIframeTime = 0.5;   // 피격 후 무적시간 0.5초
 	m_bHit = false; 
 
 
@@ -322,6 +322,20 @@ void CPlayer::CreateEffect()
 			CEffectMgr::GetInstance()->CreateEffect(L"DashTrail", vTrail, EFTMGR_IMAGE | EFTMGR_FIXED, i);
 		}
 	}
+}
+
+void CPlayer::SetDamage(int iDamage, CObj* pObj)
+{
+	if (m_bHit)
+		return;
+
+	m_bHit = true;		// m_bHit은 final 객체의 Update에서 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
+	m_tStat.iHp -= iDamage;
+
+	CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 255, 255 });
+	CCameraMgr::GetInstance()->CameraShaking(5, 0.2);
+	if (m_tStat.iHp <= 0)
+		m_bDead = true;
 }
 
 void CPlayer::ApplyChange()

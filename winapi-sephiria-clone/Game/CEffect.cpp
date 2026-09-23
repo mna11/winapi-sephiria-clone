@@ -7,7 +7,7 @@
 #include "CFontMgr.h"
 
 CEffect::CEffect()
-	: m_fAlpha(1.f)
+	: m_fAlpha(1.f), m_dStopTime(0.), m_bFollowStop(false)
 {
 	ZeroMemory(&m_vDir, sizeof(VEC));
 	m_strPhrase.clear();
@@ -28,6 +28,9 @@ int CEffect::Update()
 	if (m_bDead)
 		return DEAD;
 
+	if (m_bFollowStop)
+		m_dStopTime -= DT; 
+
 	UpdateFrame();
 	__super::UpdateRect();
 
@@ -42,6 +45,9 @@ void CEffect::LateUpdate()
 		VEC vPrePoint = m_pTarget->GetPrePoint();
 		VEC vCurPoint = m_pTarget->GetInfo().vPoint;
 
+		if (m_bFollowStop && m_dStopTime <= 0.)
+			return;
+		
 		m_tInfo.vPoint += vCurPoint - vPrePoint;
 	}
 

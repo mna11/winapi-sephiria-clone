@@ -9,8 +9,6 @@ public:
 
 protected:
     ImageAttributes m_imgAttrHit;
-
-    // 공격 기준 - 플레이어와의 거리
-    float m_fAtkDistance;
+    ImageAttributes m_imgAttrDown;
 };
 

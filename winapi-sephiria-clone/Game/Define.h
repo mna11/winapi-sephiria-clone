@@ -26,12 +26,13 @@
 
 
 // EffectMgr 옵션
-#define		EFTMGR_IMAGE  0x0000
-#define		EFTMGR_STRING 0x0001
+#define		EFTMGR_IMAGE			0x0000
+#define		EFTMGR_STRING			0x0001
 
-#define		EFTMGR_FIXED  0x0000
-#define		EFTMGR_FOLLOW 0x0010
-#define		EFTMGR_MOVE   0x0020
+#define		EFTMGR_FIXED			0x0000
+#define		EFTMGR_FOLLOW			0x0010
+#define		EFTMGR_FOLLOW_N_STOP	0x0020
+#define		EFTMGR_MOVE				0x0040
 
 
 /////////////////////////////////////////

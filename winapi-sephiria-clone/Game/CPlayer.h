@@ -38,6 +38,8 @@ public:
     const double&               GetDashRecoveryInterval()   const { return m_dDashRecorveyInterval; }
     const double&               GetDashRecoveryElapse()     const { return m_dDashRecoveryElapseTime; }
 public:
+    void SetDamage(int iDamage, CObj* pObj) override;
+public:
     void ApplyChange() override;
 
 public:
