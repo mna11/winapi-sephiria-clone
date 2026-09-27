@@ -23,6 +23,9 @@ public:
     void SetColor(Color tColor)                                 { m_tColor = tColor; }
     void SetStopTime(double dTime)                              { m_dStopTime = dTime; m_bFollowStop = true; }
     void SetRenderOption(RENDERID eRenderID, int iRenderLayer)  { m_eRender = eRenderID; m_iRenderLayer = iRenderLayer; }
+    void SetScroll(bool bScroll)                                { m_bScroll = false; }
+    void SetScale(float fScale)                                 { m_fScale = fScale; }
+    void SetLoop(bool bLoop)                                    { m_bLoop = bLoop; }
 
 private:
     float   m_fAlpha;
@@ -31,5 +34,8 @@ private:
     VEC     m_vDir;
     wstring m_strPhrase;
     Color   m_tColor;
+    bool    m_bScroll;
+    float   m_fScale;
+    bool    m_bLoop;
 };
 

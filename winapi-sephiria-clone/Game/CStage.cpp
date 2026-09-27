@@ -5,8 +5,10 @@
 #include "CErma.h"
 #include "CFluffy.h"
 #include "CMonster.h"
+#include "CTile.h"
 
 #include "CAbstractFactory.h"
+#include "CEffectMgr.h"
 #include "CObjMgr.h"
 #include "CCameraMgr.h"
 #include "CImgMgr.h"
@@ -14,71 +16,76 @@
 #include "CTileMgr.h"
 #include "CUIMgr.h"
 
+
 CStage::CStage()
+	: m_iCurBattleRoomIdx(-1)
 {
 }
 
 CStage::~CStage()
 {
-	Release();
 }
 
-void CStage::Initialize()
+void CStage::StartBattleRoom(int iRoomIdx)
 {
-	CTileMgr::GetInstance()->Initialize();
-	CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
-
-	Init_CreateObj();
+	ROOM_INFO& room = m_vecRooms[iRoomIdx];
+	room.eState = ROOM_STATE::BATTLE;
+	m_iCurBattleRoomIdx = iRoomIdx;
+	CTileMgr::GetInstance()->SetInteractionBlocked(true);
+    CreateBattleWallEffects();
+    SpawnMonster(iRoomIdx);
 }
 
-void CStage::Update()
+void CStage::ClearCurRoom()
 {
-	// 테스트용
-	/*if (CKeyMgr::GetInstance()->KeyDown('M'))
-		CCameraMgr::GetInstance()->MoveCamera(VEC{ 1000.f, 1000.f });
-	if (CKeyMgr::GetInstance()->KeyDown('A'))
-		CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
-	if (CKeyMgr::GetInstance()->KeyDown('S'))
-		CCameraMgr::GetInstance()->CameraShaking(5, 2);*/
+	ROOM_INFO& room = m_vecRooms[m_iCurBattleRoomIdx];
+	room.eState = ROOM_STATE::CLEAR;
+	m_iCurBattleRoomIdx = -1;
+	CTileMgr::GetInstance()->SetInteractionBlocked(false);
 
-	CObjMgr::GetInstance()->Update();
+    RemoveBattleWallEffects();
 }
 
-void CStage::LateUpdate()
+void CStage::CreateBattleWallEffects()
 {
-	CObjMgr::GetInstance()->LateUpdate();
+    for (int i = 0; i < toUType(TILE_LAYER::END); ++i)
+    {
+        TILE_LAYER eLayer =
+            static_cast<TILE_LAYER>(i);
 
-	if (CObjMgr::GetInstance()->ObjEmpty(OBJID::MONSTER))
-		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CFluffy>::CreateObj(1700.f, 1200.f));
+        const vector<CObj*>& vecTiles =
+            CTileMgr::GetInstance()->GetTile(eLayer);
+
+        for (CObj* pObj : vecTiles)
+        {
+            CTile* pTile =
+                static_cast<CTile*>(pObj);
+
+            if (pTile->GetTile().eTileOption !=
+                TILE_OPTION::INTERACTION)
+            {
+                continue;
+            }
+
+            CObj* pEffect =
+                CEffectMgr::GetInstance()->CreateEffect(
+                    L"Battle_Wall",
+                    pTile->GetInfo().vPoint,
+                    EFTMGR_IMAGE | EFTMGR_FIXED
+                );
+
+            m_vecBattleWallEffects.push_back(pEffect);
+        }
+    }
 }
 
-void CStage::Render(Graphics* pGraphics)
+void CStage::RemoveBattleWallEffects()
 {
-	Image* pGround = CImgMgr::GetInstance()->FindImg(L"Map");
-	if (nullptr == pGround)
-		return;
-	
-	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
-	RectF destRect = { 0.f + vScroll.fX, 0.f + vScroll.fY,  8400.f, 8400.f };
-	
-	pGraphics->DrawImage(
-		pGround, destRect,
-		0.f, 0.f, 8400.f, 8400.f,
-		UnitPixel
-	);
+    for (CObj* pEffect : m_vecBattleWallEffects)
+    {
+        if (pEffect != nullptr)
+            pEffect->SetDead(true);
+    }
 
-	CTileMgr::GetInstance()->Render(pGraphics);
-
-	CObjMgr::GetInstance()->Render(pGraphics);
-} 
-
-void CStage::Release()
-{
-}
-
-void CStage::Init_CreateObj()
-{
-	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(280.f, 280.f));
-	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
-	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CErma>::CreateObj(1700.f, 1000.f));
+    m_vecBattleWallEffects.clear();
 }

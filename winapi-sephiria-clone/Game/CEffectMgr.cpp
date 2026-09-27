@@ -41,6 +41,11 @@ void CEffectMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Monster/Gargoyle/Gargoyle_Attack.png", L"Gargoyle_Attack");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Monster/Gargoyle/Gargoyle_ShockWave.png", L"Gargoyle_ShockWave");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Monster/Gargoyle/Gargoyle_ShockWave_Targeting.png", L"Gargoyle_Targeting");
+
+	// 전투 알람
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Stage/ExclamationMark.png", L"Exclamation_Mark");
+	// 전투 벽
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Stage/BattleWall.png", L"Battle_Wall");
 }
 
 
@@ -112,6 +117,20 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 		pEffect->SetSize({ 96, 72 });
 		pEffect->SetRenderOption(RENDERID::GAMEOBJECT, 1);
 	}
+	// 전투
+	else if (!lstrcmpW(pFrameKey, L"Exclamation_Mark"))
+	{
+		pEffect->SetFrame(0, 5, 0, 0.1);
+		pEffect->SetSize({ 89, 82 });
+		pEffect->SetScale(0.5);
+	}
+	else if (!lstrcmpW(pFrameKey, L"Battle_Wall"))
+	{
+		pEffect->SetFrame(0, 7, 0, 0.1);
+		pEffect->SetSize({ 16.f, 16.f });
+		pEffect->SetLoop(true);
+	}
+
 
 	if (iOption & EFTMGR_IMAGE)
 	{
@@ -144,6 +163,14 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 	{
 		if (vDir.fX != 0.f && vDir.fY != 0.f)
 			pEffect->SetDirVec(vDir);
+	}
+	if (iOption & EFTMGR_SCROLL)
+	{
+		// 스크롤 적용 - 기본값
+	}
+	if (iOption & EFTMGR_NO_SCROLL)
+	{
+		pEffect->SetScroll(false);
 	}
 
 

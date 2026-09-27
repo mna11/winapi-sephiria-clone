@@ -52,7 +52,6 @@ void CSceneMgr::ApplyChange()
 		switch (m_eCurScene)
 		{
 		case SCENEID::STAGE0:
-			m_pScene = new CStage;
 			break;
 		case SCENEID::STAGE1:
 			m_pScene = new CStage1;

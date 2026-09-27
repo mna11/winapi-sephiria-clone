@@ -99,3 +99,10 @@ void CBossStage::Init_CreateObj()
 	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, pBoss);
 	pBoss->InitializeParts();
 }
+
+void CBossStage::InitializeRooms()
+{
+}
+void CBossStage::SpawnMonster(int iRoomIdx)
+{
+}

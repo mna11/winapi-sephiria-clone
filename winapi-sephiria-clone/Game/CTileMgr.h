@@ -14,7 +14,10 @@ public:
 	static CTileMgr* GetInstance()
 	{
 		if (!m_pInstance)
+		{
 			m_pInstance = new CTileMgr;
+			m_pInstance->m_bInteractionBlocked = false;
+		}
 
 		return m_pInstance;
 	}
@@ -27,6 +30,10 @@ public:
 			m_pInstance = nullptr;
 		}
 	}
+
+public:
+	void SetInteractionBlocked(bool bBlocked) { m_bInteractionBlocked = bBlocked; }
+	bool GetInteractionBlocked() const		  { return m_bInteractionBlocked; }
 
 public:
 	void	Initialize();
@@ -45,5 +52,6 @@ private:
 	static CTileMgr* m_pInstance;
 
 	vector<CObj*>		m_vecTile[toUType(TILE_LAYER::END)];
+	bool				m_bInteractionBlocked;					// Interaction 블록 이동 불가 플래그
 };
 

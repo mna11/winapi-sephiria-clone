@@ -7,7 +7,7 @@
 #include "CFontMgr.h"
 
 CEffect::CEffect()
-	: m_fAlpha(1.f), m_dStopTime(0.), m_bFollowStop(false)
+	: m_fAlpha(1.f), m_dStopTime(0.), m_bFollowStop(false), m_bScroll(true), m_fScale(1.f), m_bLoop(false)
 {
 	ZeroMemory(&m_vDir, sizeof(VEC));
 	m_strPhrase.clear();
@@ -74,7 +74,7 @@ void CEffect::Render(Graphics* pGraphics)
 		if (nullptr == pImg)
 			return;
 
-		VEC vImgSize = m_tInfo.vSize * PIXEL_SCALE;
+		VEC vImgSize = m_tInfo.vSize * PIXEL_SCALE * m_fScale;
 
 		ColorMatrix colorMatrix = { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 									0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
@@ -89,6 +89,9 @@ void CEffect::Render(Graphics* pGraphics)
 		float fDegree = m_fAngle * 180.f / PI;
 		matRot.RotateAt(fDegree, { m_tInfo.vPoint.fX + vScroll.fX, m_tInfo.vPoint.fY + vScroll.fY });
 		pGraphics->SetTransform(&matRot); // DC 회전
+
+		if (!m_bScroll)
+			vScroll = { 0.f, 0.f };
 
 		RectF rcDest{ m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + vScroll.fX,
 					  m_tInfo.vPoint.fY - vImgSize.fY * 0.5f + vScroll.fY,
@@ -122,6 +125,11 @@ void CEffect::UpdateFrame()
 		m_tFrame.dFrameElapsedTime -= m_tFrame.dFrameSpeed;
 
 		if (m_tFrame.iStart > m_tFrame.iEnd)
-			m_bDead = true;
+		{
+			if (m_bLoop)
+				m_tFrame.iStart = 0;
+			else
+				m_bDead = true;
+		}
 	}
 }

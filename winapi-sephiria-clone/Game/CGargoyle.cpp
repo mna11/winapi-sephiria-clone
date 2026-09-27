@@ -59,7 +59,7 @@ void CGargoyle::Initialize()
 
 	// 플레이어와의 공격 거리
 	m_fAtkDistance = 100.f; 
-	m_fFlyAtkDistance = 400.f; // 400보다 멀어지면 공중 공격 진행
+	m_fFlyAtkDistance = 600.f; // 400보다 멀어지면 공중 공격 진행
 
 	// 시간 초기화
 	m_dStateTime = 0.;
@@ -69,11 +69,11 @@ void CGargoyle::Initialize()
 	m_dAtkTime = 1.;
 	m_dAtkCollisionTime = m_dAtkTime / 8. * 5; // 6번째 프레임부터 공격한다.
 
-	m_dFlyAtkTime = 2.7;    
+	m_dFlyAtkTime = 2.3;    
 	m_dFlyAtkCycleTime = 0.5;
 	m_dFlyAtkDownTime = 2.0;
 	m_dFlyAtkEndTime = 2.2;
-	m_dFlyAtkCollisionTime = 2.5;
+	m_dFlyAtkCollisionTime = 2.2;
 }
 
 int CGargoyle::Update()
@@ -231,6 +231,22 @@ void CGargoyle::UpdateTime()
 {
 	m_dStateTime += DT;
 
+	// 피해 유효 근거용 시간
+	if (m_bHit)
+	{
+		m_dHitElapseTime += DT;
+
+		if (m_dHitElapseTime >= m_dIframeTime)
+		{
+			m_bHit = false;
+			m_dHitElapseTime -= m_dIframeTime;
+		}
+	}
+
+
+	if (m_eNextState == GARGOYLE_STATE::DOWN && m_eCurState != GARGOYLE_STATE::DOWN)
+		return;
+
 	switch (m_eCurState)
 	{
 	case GARGOYLE_STATE::SUMMON:
@@ -283,25 +299,14 @@ void CGargoyle::UpdateTime()
 	case GARGOYLE_STATE::AIR:
 		break;
 	case GARGOYLE_STATE::DOWN:
+		SetRect(&m_vecAtkRect[toUType(GARGOYLE_ATK_RECT::ATK)], 0, 0, 0, 0);
+		SetRect(&m_vecAtkRect[toUType(GARGOYLE_ATK_RECT::FLY_ATK)], 0, 0, 0, 0);
 		if (m_dStateTime >= m_dDownTime)
 		{
 			m_bDead = true;
 		}
 		break;
 	}
-
-	// 피해 유효 근거용 시간
-	if (m_bHit)
-	{
-		m_dHitElapseTime += DT;
-
-		if (m_dHitElapseTime >= m_dIframeTime)
-		{
-			m_bHit = false;
-			m_dHitElapseTime -= m_dIframeTime;
-		}
-	}
-
 }
 
 void CGargoyle::Move()
@@ -386,10 +391,28 @@ void CGargoyle::Attack()
 		{
 			if (!m_bEffectCreate)
 			{
-				CEffectMgr::GetInstance()->CreateEffect(L"Gargoyle_Targeting", m_pTarget->GetInfo().vPoint, EFTMGR_IMAGE | EFTMGR_FOLLOW_N_STOP, m_dFlyAtkEndTime - m_dFlyAtkCycleTime, (m_dFlyAtkEndTime - m_dFlyAtkCycleTime) / 20.f, m_pTarget);
+				CEffectMgr::GetInstance()->CreateEffect(L"Gargoyle_Targeting", m_pTarget->GetInfo().vPoint, EFTMGR_IMAGE | EFTMGR_FOLLOW_N_STOP, m_dFlyAtkDownTime - m_dFlyAtkCycleTime, (m_dFlyAtkDownTime - m_dFlyAtkCycleTime) / 20.f, m_pTarget);
 				m_bEffectCreate = true;
 			}
 		}
+
+		if (m_dStateTime >= m_dFlyAtkCollisionTime)
+		{
+			VEC vRectSize = { 100.f, 100.f };
+
+			SetRect(
+				&m_vecAtkRect[toUType(GARGOYLE_ATK_RECT::FLY_ATK)],
+				m_tInfo.vPoint.fX - vRectSize.fX,
+				m_tInfo.vPoint.fY - vRectSize.fY,
+				m_tInfo.vPoint.fX + vRectSize.fX,
+				m_tInfo.vPoint.fY + vRectSize.fY
+			);
+		}
+	}
+	// 사망 상태
+	else if (m_eCurState == GARGOYLE_STATE::DOWN)
+	{
+		// 
 	}
 	// 공격이 아닐 때, 
 	else

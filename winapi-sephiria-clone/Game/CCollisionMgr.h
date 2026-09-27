@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 class CObj;
+class CStage;
 
 class CCollisionMgr
 {
@@ -11,5 +12,6 @@ public:
 	static void CollisionPlayerDefense(list<CObj*>& DstList, list<CObj*>& SrcList);
 
 	static void CollisionMonsterAttack(list<CObj*>& DstList, list<CObj*>& SrcList);
+	static void CollisionRoom(CObj* pPlayer, CStage* pScene);
 };
 
