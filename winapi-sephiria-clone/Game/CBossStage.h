@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "CScene.h"
+#include "CStage.h"
 
 class CBossStage :
-    public CScene
+    public CStage
 {
 public:
     CBossStage();
@@ -16,5 +16,9 @@ public:
 
 public:
     void Init_CreateObj() override;
+
+public:
+    void InitializeRooms() override;
+    void SpawnMonster(int iRoomIdx) override;
 };
 

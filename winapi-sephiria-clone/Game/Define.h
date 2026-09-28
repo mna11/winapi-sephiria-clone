@@ -24,6 +24,20 @@
 
 #define		PI		3.14f
 
+
+// EffectMgr 옵션
+#define		EFTMGR_IMAGE			0x0000
+#define		EFTMGR_STRING			0x0001
+
+#define		EFTMGR_FIXED			0x0000
+#define		EFTMGR_FOLLOW			0x0010
+#define		EFTMGR_FOLLOW_N_STOP	0x0020
+#define		EFTMGR_MOVE				0x0040
+
+#define     EFTMGR_SCROLL			0x0000
+#define     EFTMGR_NO_SCROLL		0x0100
+
+
 /////////////////////////////////////////
 // 매니저 싱글톤 단축
 // - TimeMgr
@@ -42,15 +56,26 @@
 enum class OBJID	{ PLAYER, MONSTER, MONSTER_BULLET, WEAPON, EFFECT, UI, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, END };
 enum class UIID		{ BASIC_INFO, BOSS_HP, STAT_INFO, INVENTORY, SHOP, ITEM_INFO, REWARD, END };
-enum class SCENEID	{ STAGE, BOSS_STAGE, END };
+enum class SCENEID	{ LIB_LOADING, STAGE0, STAGE1, BOSS_STAGE, END };
 
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };
 
 enum class TILE_OPTION { FLOOR, WALL, AIR, INTERACTION, END };
 enum class TILE_LAYER { LAYER0, LAYER1, LAYER2, LAYER3, END };
 
+// 방 상태
+enum class ROOM_STATE { READY, BATTLE, CLEAR };
+
 /////////////////////////////////////////
 // 구조체
+
+// 스테이지 내 방 정보
+typedef struct tagRoomInfo
+{
+	RECT rcTrigger;  // 플레이어와 충돌 시 방 상태를 변경해야되기 때문에 그 트리거 용도
+	ROOM_STATE eState = ROOM_STATE::READY; // 방 상태
+} ROOM_INFO;
+
 
 // 2차원 벡터 - 원래 클래스로 만들었다가 INFO랑 변환이 힘들어 구조체로 만든 뒤, INFO도 VEC으로 바꿈
 typedef struct tagVector
@@ -104,7 +129,8 @@ typedef struct tagVector
 	tagVector	Normalize() const 
 	{ 
 		float fNorm = sqrtf(fX * fX + fY * fY);
-		return tagVector{ fX / fNorm, fY / fNorm };
+		if (fNorm == 0) return tagVector{ 0.f, 0.f };
+		else return tagVector{ fX / fNorm, fY / fNorm };
 	}
 } VEC;
 
@@ -173,7 +199,7 @@ typedef struct tagFrame
 	int iEnd;
 	int iMotion;
 	double		  dFrameSpeed;
-	LARGE_INTEGER iFrameTime; 
+	double		  dFrameElapsedTime;
 } FRAME;
 
 typedef struct tagLinePoint

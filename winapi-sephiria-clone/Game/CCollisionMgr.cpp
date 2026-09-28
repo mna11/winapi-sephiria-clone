@@ -3,11 +3,16 @@
 
 #include "CObj.h"
 #include "CPlayer.h"
+#include "CStage.h"
 #include "CWeaponController.h"
 #include "CWeapon.h"
 
+#include "CEffectMgr.h"
 #include "CTileMgr.h"
+#include "CObjMgr.h"
+#include "CSceneMgr.h"
 #include "CTile.h"
+#include "CKeyMgr.h"
 
 void CCollisionMgr::CollisionRect(list<CObj*>& DstList, list<CObj*>& SrcList)
 {
@@ -36,7 +41,10 @@ void CCollisionMgr::CollisionWall(list<CObj*>& DstList, TILE_LAYER eLayer)
         {
             CTile* pTile = static_cast<CTile*>(pTileObj);
 
-            if (pTile->GetTile().eTileOption != TILE_OPTION::WALL)
+            bool bIsWall = (pTile->GetTile().eTileOption == TILE_OPTION::WALL);
+            bool bIsBlockedInteraction = (pTile->GetTile().eTileOption == TILE_OPTION::INTERACTION && CTileMgr::GetInstance()->GetInteractionBlocked());
+
+            if (!bIsWall && !bIsBlockedInteraction)
                 continue;
 
             // 대쉬 처리  - 개선 필요
@@ -99,7 +107,7 @@ void CCollisionMgr::CollisionPlayerAttack(list<CObj*>& DstList, list<CObj*>& Src
             {
                 if (IntersectRect(&rc, &ColRect, &Src->GetRect()))
                 {
-                    Src->SetDamage(100);
+                    Src->SetDamage(Dst->GetStat().iAtk, Dst);
                 }
             }
         }
@@ -124,5 +132,73 @@ void CCollisionMgr::CollisionPlayerDefense(list<CObj*>& DstList, list<CObj*>& Sr
                 }
             }
         }
+    }
+}
+
+void CCollisionMgr::CollisionMonsterAttack(list<CObj*>& DstList, list<CObj*>& SrcList)
+{
+    RECT rc{};
+
+    for (auto& Dst : DstList) // 플레이어
+    {
+        for (auto& Src : SrcList) // 몬스터
+        {
+            const vector<RECT>& vecAtkRect = Src->GetAtkRectVec();
+            for (auto& ColRect : vecAtkRect)
+            {
+                if (IntersectRect(&rc, &ColRect, &Dst->GetRect()))
+                {
+                    Dst->SetDamage(Src->GetStat().iAtk, Src);
+                }
+            }
+        }
+    }
+}
+
+void CCollisionMgr::CollisionRoom(CObj* pPlayer, CStage* pStage)
+{
+    RECT rc{};
+
+    int iCurBattleRoomIdx = pStage->GetBattleRoomIdx();
+
+    // 현재 싸우고 있는 상태가 아니라면
+    if (-1 == iCurBattleRoomIdx)
+    {
+        vector<ROOM_INFO> vecRooms = pStage->GetVecRooms();
+
+        // 방을 순회한다.
+        for (int i = 0; i < vecRooms.size(); ++i)
+        {
+            ROOM_INFO& room = vecRooms[i];
+
+            // 이미 클리어 한 방이라면 다른 방 순회
+            if (room.eState == ROOM_STATE::CLEAR)
+                continue;
+
+            // 만약 준비중인 방과 트리거가 충돌이 된다면
+            if (IntersectRect(&rc, &pPlayer->GetRect(), &room.rcTrigger))
+            {
+                // 현재 방을 전투 상태로 변환
+                pStage->StartBattleRoom(i);
+                CEffectMgr::GetInstance()->CreateEffect(L"Exclamation_Mark", { WINCX >> 1, 200.f }, EFTMGR_IMAGE | EFTMGR_FIXED | EFTMGR_NO_SCROLL);
+                break;
+            }
+        }
+    }
+    else
+    {
+        // 전투 중인 상황인데, 현재 몬스터를 다 죽였다면 방을 클리어 상태로 변경한다.
+        if (CObjMgr::GetInstance()->ObjEmpty(OBJID::MONSTER))
+            pStage->ClearCurRoom();
+    }
+}
+
+void CCollisionMgr::CollisionStair(CObj* pPlayer, RECT& pStair, SCENEID eSceneID)
+{
+    RECT rc{};
+
+    if (IntersectRect(&rc, &pPlayer->GetRect(), &pStair) && KEY_DOWN('F'))
+    {
+        CSceneMgr::GetInstance()->RequestChange(eSceneID);
     }
 }

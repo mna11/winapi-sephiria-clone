@@ -52,6 +52,10 @@ void CObjMgr::LateUpdate()
 	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::PLAYER)], TILE_LAYER::LAYER1);
 	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::PLAYER)], TILE_LAYER::LAYER2);
 
+	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::MONSTER)], TILE_LAYER::LAYER0);
+	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::MONSTER)], TILE_LAYER::LAYER1);
+	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::MONSTER)], TILE_LAYER::LAYER2);
+
 	for (size_t i = 0; i < toUType(OBJID::END); ++i)
 	{
 		for (auto& pObj : m_ObjList[i])
@@ -69,6 +73,7 @@ void CObjMgr::LateUpdate()
 	CCollisionMgr::CollisionPlayerAttack(m_ObjList[toUType(OBJID::PLAYER)], m_ObjList[toUType(OBJID::MONSTER)]);
 	//CCollisionMgr::CollisionCircle(m_ObjList[BULLET], m_ObjList[MONSTER]);
 	CCollisionMgr::CollisionPlayerDefense(m_ObjList[toUType(OBJID::PLAYER)], m_ObjList[toUType(OBJID::MONSTER_BULLET)]);
+	CCollisionMgr::CollisionMonsterAttack(m_ObjList[toUType(OBJID::PLAYER)], m_ObjList[toUType(OBJID::MONSTER)]);
 }
 
 void CObjMgr::Render(Graphics* pGraphics)

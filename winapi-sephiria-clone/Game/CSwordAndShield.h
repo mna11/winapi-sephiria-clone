@@ -66,7 +66,7 @@ private:
 #ifdef _DEBUG
 private:
     void    PrintInfo();
-    double  m_dPrintInterval = 1.;
+    double  m_dPrintInterval = 3.;
 #endif // DEBUG 
 };
 

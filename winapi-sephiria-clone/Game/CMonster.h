@@ -9,5 +9,6 @@ public:
 
 protected:
     ImageAttributes m_imgAttrHit;
+    ImageAttributes m_imgAttrDown;
 };
 

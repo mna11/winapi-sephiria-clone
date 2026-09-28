@@ -1,19 +1,33 @@
 ﻿#pragma once
 #include "CScene.h"
+
+class CObj;
+
 class CStage :
     public CScene
 {
 public:
     CStage();
     ~CStage();
-public:
-    void Initialize() override;
-    void Update() override;
-    void LateUpdate() override;
-    void Render(Graphics* pGraphics) override;
-    void Release() override;
 
 public:
-    void Init_CreateObj() override;
+	virtual void InitializeRooms()				PURE;
+	virtual void SpawnMonster(int iRoomIdx)		PURE;
+	void StartBattleRoom(int iRoomIdx);
+	void ClearCurRoom();
+
+public:
+	const vector<ROOM_INFO>& GetVecRooms() const { return m_vecRooms; }
+	const int& GetBattleRoomIdx() const { return m_iCurBattleRoomIdx; }
+
+protected:
+	void CreateBattleWallEffects();
+	void RemoveBattleWallEffects();
+
+protected:
+	vector<ROOM_INFO> m_vecRooms;
+	vector<CObj*>	  m_vecBattleWallEffects;
+	int				  m_iCurBattleRoomIdx;
+	RECT			  m_rcStair;
 };
 

@@ -13,7 +13,7 @@
 
 CPlayer::CPlayer()
 	: CState(PLAYER_STATE::END, PLAYER_STATE::IDLE), m_pWeaponController(nullptr),
-	m_dDustInterval(0.5), m_dDustElapseTime(0.), m_fNormalSpeed(200.f), m_fRunSpeed(400.f),
+	m_dDustInterval(0.5), m_dDustElapseTime(0.), m_fNormalSpeed(300.f), m_fRunSpeed(400.f),
 	m_dDashRecorveyInterval(1.), m_dDashRecoveryElapseTime(0.)
 {
 }
@@ -48,15 +48,15 @@ void CPlayer::Initialize()
 
 	// iframe 세팅 
 	m_dHitElapseTime = 0.;
-	m_dIframeTime = 0.3;   // 피격 후 무적시간 0.3초
+	m_dIframeTime = 0.5;   // 피격 후 무적시간 0.5초
 	m_bHit = false; 
 
 
 	// 스탯 초기화
 	m_tStat = {
 		70,				// HP
-		70,			// MAX HP
-		20,				// 공격력
+		70,			    // MAX HP
+		45,				// 공격력
 		60,				// MP
 		60,				// MAX HP
 
@@ -299,13 +299,13 @@ void CPlayer::CreateEffect()
 		// 일반 걷기
 		if (m_fSpeed == m_fNormalSpeed)
 		{
-			CEffectMgr::GetInstance()->CreateEffect(L"RunDust", m_tInfo.vPoint, 0.f);
+			CEffectMgr::GetInstance()->CreateEffect(L"RunDust", m_tInfo.vPoint, EFTMGR_IMAGE | EFTMGR_FIXED, 0.f);
 		}
 		// 대쉬 - 와다다
 		else if (m_fSpeed == m_fRunSpeed)
 		{
 			VEC vDir = m_tInfo.vPoint - m_vPrePoint;
-			CEffectMgr::GetInstance()->CreateEffect(L"DashDust", m_tInfo.vPoint, atan2f(vDir.fY, vDir.fX));
+			CEffectMgr::GetInstance()->CreateEffect(L"DashDust", m_tInfo.vPoint, EFTMGR_IMAGE | EFTMGR_FIXED, atan2f(vDir.fY, vDir.fX));
 		}
 		m_dDustElapseTime = 0.;
 	}
@@ -319,9 +319,23 @@ void CPlayer::CreateEffect()
 		for (float i = 0.25f; i <= 1.f; i+=0.25f)
 		{
 			VEC vTrail = vDir * i + m_vPrePoint;
-			CEffectMgr::GetInstance()->CreateEffect(L"DashTrail", vTrail, i);
+			CEffectMgr::GetInstance()->CreateEffect(L"DashTrail", vTrail, EFTMGR_IMAGE | EFTMGR_FIXED, i);
 		}
 	}
+}
+
+void CPlayer::SetDamage(int iDamage, CObj* pObj)
+{
+	if (m_bHit)
+		return;
+
+	m_bHit = true;		// m_bHit은 final 객체의 Update에서 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
+	m_tStat.iHp -= iDamage;
+
+	CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 255, 255 });
+	CCameraMgr::GetInstance()->CameraShaking(5, 0.2);
+	if (m_tStat.iHp <= 0)
+		m_bDead = true;
 }
 
 void CPlayer::ApplyChange()
