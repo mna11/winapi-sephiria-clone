@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-class CUI;
+#include "CUI.h"
+
 class CObj;
 
 class CUIMgr

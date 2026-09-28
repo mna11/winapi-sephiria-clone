@@ -166,6 +166,12 @@
     <Filter Include="04. Scene\01. LibLoading">
       <UniqueIdentifier>{331bf089-6b7c-4458-813a-bf5506012622}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\06. UI\02. Inventory">
+      <UniqueIdentifier>{70589247-b01e-4ed0-811f-f5813648347f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Inventory">
+      <UniqueIdentifier>{265bcbc6-c35a-4ae0-b6b1-07361f206e00}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -330,6 +336,9 @@
     <ClInclude Include="CLibLoading.h">
       <Filter>04. Scene\01. LibLoading</Filter>
     </ClInclude>
+    <ClInclude Include="CInventoryUI.h">
+      <Filter>01. Obj\06. UI\02. Inventory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -478,6 +487,9 @@
     </ClCompile>
     <ClCompile Include="CLibLoading.cpp">
       <Filter>04. Scene\01. LibLoading</Filter>
+    </ClCompile>
+    <ClCompile Include="CInventoryUI.cpp">
+      <Filter>01. Obj\06. UI\02. Inventory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

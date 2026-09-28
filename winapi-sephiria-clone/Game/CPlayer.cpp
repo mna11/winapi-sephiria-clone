@@ -14,7 +14,8 @@
 CPlayer::CPlayer()
 	: CState(PLAYER_STATE::END, PLAYER_STATE::IDLE), m_pWeaponController(nullptr),
 	m_dDustInterval(0.5), m_dDustElapseTime(0.), m_fNormalSpeed(300.f), m_fRunSpeed(400.f),
-	m_dDashRecorveyInterval(1.), m_dDashRecoveryElapseTime(0.)
+	m_dDashRecorveyInterval(1.), m_dDashRecoveryElapseTime(0.),
+	m_bPlayerBehaviorEnable(true)
 {
 }
 
@@ -88,23 +89,25 @@ int CPlayer::Update()
 
 	// Elapse 변수들 업데이트
 	UpdateTime();
-
-	// 이번 프레임 상태 결정
-	ApplyChange();
-	// 무기 컨트롤러 업데이트
-	m_pWeaponController->Update();
-
 	// 이번 프레임 이동 전 위치 기억
 	m_vPrePoint = m_tInfo.vPoint;
 
-	// 플레이어 대쉬
-	Dash();
-	// 플레이어 이동
-	Move(); 
-	// 플레이어 회전 
-	Rotate();
-	// 플레이어 공격 
-	Attack();
+	if (m_bPlayerBehaviorEnable)
+	{
+		// 이번 프레임 상태 결정
+		ApplyChange();
+		// 무기 컨트롤러 업데이트
+		m_pWeaponController->Update();
+
+		// 플레이어 대쉬
+		Dash();
+		// 플레이어 이동
+		Move();
+		// 플레이어 회전 
+		Rotate();
+		// 플레이어 공격 
+		Attack();
+	}
 
 	// 충돌 박스 & 애니메이션 프레임 업데이트
 	__super::UpdateRect();
@@ -119,10 +122,13 @@ int CPlayer::Update()
 
 void CPlayer::LateUpdate()
 {
-	m_pWeaponController->LateUpdate();
-	
-	// 이펙트 생성
-	CreateEffect();
+	if (m_bPlayerBehaviorEnable)
+	{
+		m_pWeaponController->LateUpdate();
+
+		// 이펙트 생성
+		CreateEffect();
+	}
 }
 
 void CPlayer::Render(Graphics* pGraphics)

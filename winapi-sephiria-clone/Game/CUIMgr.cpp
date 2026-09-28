@@ -2,11 +2,13 @@
 #include "CUIMgr.h"
 
 #include "CObjMgr.h"
+#include "CPlayer.h"
 #include "CAbstractFactory.h"
 
 #include "CUI.h"
 #include "CBasicInfo.h"
 #include "CBossHp.h"
+#include "CInventoryUI.h"
 
 CUIMgr* CUIMgr::m_pInstance = nullptr;
 
@@ -36,6 +38,10 @@ void CUIMgr::ShowUI(UIID eID, CObj* pTarget)
 {
 	auto iter = m_mapUI.find(eID);
 
+	CPlayer* pPlayer = static_cast<CPlayer*>(CObjMgr::GetInstance()->GetPlayer());
+	if (nullptr == pPlayer)
+		return;
+
 	if (iter == m_mapUI.end())
 	{
 		CUI* pUI = CreateUI(eID);
@@ -47,11 +53,18 @@ void CUIMgr::ShowUI(UIID eID, CObj* pTarget)
 		(*iter).second->Show();
 		(*iter).second->SetTarget(pTarget);
 	}
+
+	if (eID == UIID::INVENTORY)
+		pPlayer->SetPlayerBehaviorEnable(true);
 }
 
 void CUIMgr::HideUI(UIID eID)
 {
 	auto iter = m_mapUI.find(eID);
+
+	CPlayer* pPlayer = static_cast<CPlayer*>(CObjMgr::GetInstance()->GetPlayer());
+	if (nullptr == pPlayer)
+		return;
 
 	if (iter == m_mapUI.end())
 	{
@@ -60,11 +73,18 @@ void CUIMgr::HideUI(UIID eID)
 	}
 	else
 		(*iter).second->Hide();
+
+	if (eID == UIID::INVENTORY)
+		pPlayer->SetPlayerBehaviorEnable(false);
 }
 
 void CUIMgr::ToggleUI(UIID eID)
 {
 	auto iter = m_mapUI.find(eID);
+
+	CPlayer* pPlayer = static_cast<CPlayer*>(CObjMgr::GetInstance()->GetPlayer());
+	if (nullptr == pPlayer)
+		return;
 
 	if (iter == m_mapUI.end())
 	{
@@ -73,6 +93,10 @@ void CUIMgr::ToggleUI(UIID eID)
 	}
 	else
 		(*iter).second->Toggle();
+
+
+	if (eID == UIID::INVENTORY)
+		pPlayer->SetPlayerBehaviorEnable(!m_mapUI[eID]->GetView());
 }
 
 CUI* CUIMgr::CreateUI(UIID eID)
@@ -86,6 +110,9 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		break;
 	case UIID::BOSS_HP: // 에르마 체력 바
 		pUI = static_cast<CUI*>(CAbstractFactory<CBossHp>::CreateObj());
+		break;
+	case UIID::INVENTORY:
+		pUI = static_cast<CUI*>(CAbstractFactory<CInventoryUI>::CreateObj());
 		break;
 	default:
 		break;

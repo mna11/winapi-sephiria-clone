@@ -37,6 +37,10 @@ public:
     const CWeaponController*    GetWeaponController()       const { return m_pWeaponController; }
     const double&               GetDashRecoveryInterval()   const { return m_dDashRecorveyInterval; }
     const double&               GetDashRecoveryElapse()     const { return m_dDashRecoveryElapseTime; }
+
+public:
+    void                        SetPlayerBehaviorEnable(bool bEnable) { m_bPlayerBehaviorEnable = bEnable; }
+
 public:
     void SetDamage(int iDamage, CObj* pObj) override;
 public:
@@ -66,6 +70,9 @@ private:
     // 먼지 이펙트 발생 간격
     double              m_dDustInterval;
     double              m_dDustElapseTime;
+
+    // 플레이어 행동 가능 - UI 때문에 만듬
+    bool                m_bPlayerBehaviorEnable;
 
 #ifdef _DEBUG
 private:

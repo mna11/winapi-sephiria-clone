@@ -12,6 +12,9 @@ public:
     void    Hide();
     void    Toggle();
 
+public:
+    bool    GetView() const { return m_bView; }
+
 protected:
     bool    m_bView;
 };

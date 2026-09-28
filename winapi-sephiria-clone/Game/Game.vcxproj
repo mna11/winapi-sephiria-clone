@@ -157,6 +157,7 @@
     <ClInclude Include="CFontMgr.h" />
     <ClInclude Include="CGargoyle.h" />
     <ClInclude Include="CImgMgr.h" />
+    <ClInclude Include="CInventoryUI.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CLibLoading.h" />
     <ClInclude Include="CLine.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="CFontMgr.cpp" />
     <ClCompile Include="CGargoyle.cpp" />
     <ClCompile Include="CImgMgr.cpp" />
+    <ClCompile Include="CInventoryUI.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLibLoading.cpp" />
     <ClCompile Include="CLine.cpp" />
