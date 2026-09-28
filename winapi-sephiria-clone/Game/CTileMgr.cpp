@@ -37,33 +37,31 @@ void CTileMgr::Render(Graphics* pGraphics)
 #ifdef _DEBUG
 	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
-	VEC vStart{ 0.f, 0.f };
-	VEC vEnd{ WINCX / TILECX + 2.f, WINCY / TILECY + 2.f };
-	VEC vAdd{ -vScroll.fX / TILECX, -vScroll.fY / TILECY };
+	float fViewLeft = -vScroll.fX;
+	float fViewTop = -vScroll.fY;
+	float fViewRight = fViewLeft + WINCX;
+	float fViewBottom = fViewTop + WINCY;
 
-	vStart += vAdd;
-	vEnd += vAdd;
-
-	// 빌드는 문제 없는데, 인텔리전스가 모호하다고 해서 std 붙여줌
-	// iIndex 검사를 하긴 하지만, i가 -1이고 j가 abs(-TILEX) 보다 크면 문제가 생기므로 clamp해줌 
-	int iStartX = std::clamp((int)vStart.fX, 0, TILEX);
-	int iStartY = std::clamp((int)vStart.fY, 0, TILEY);
-	int iEndX = std::clamp((int)vEnd.fX, 0, TILEX);
-	int iEndY = std::clamp((int)vEnd.fY, 0, TILEY);
-
-	for (int i = iStartY; i < iEndY; ++i)
+	for (int l = 0; l < toUType(TILE_LAYER::END); ++l)
 	{
-		for (int j = iStartX; j < iEndX; ++j)
+		for (CObj* pTile : m_vecTile[l])
 		{
-			int iIndex = i * TILEX + j;
+			const INFO& tInfo = pTile->GetInfo();
 
-			for (int l = 0; l < toUType(TILE_LAYER::END); ++l)
+			float fTileLeft = tInfo.vPoint.fX - TILECX * 0.5f;
+			float fTileTop = tInfo.vPoint.fY - TILECY * 0.5f;
+			float fTileRight = tInfo.vPoint.fX + TILECX * 0.5f;
+			float fTileBottom = tInfo.vPoint.fY + TILECY * 0.5f;
+
+			if (fTileRight < fViewLeft ||
+				fTileLeft > fViewRight ||
+				fTileBottom < fViewTop ||
+				fTileTop > fViewBottom)
 			{
-				if (0 > iIndex || m_vecTile[l].size() <= (size_t)iIndex)
-					continue;
-
-				m_vecTile[l][iIndex]->Render(pGraphics);
+				continue;
 			}
+
+			pTile->Render(pGraphics);
 		}
 	}
 #endif
@@ -80,7 +78,7 @@ void CTileMgr::Release()
 
 void CTileMgr::LoadTile()
 {
-	HANDLE	hFile = CreateFile(L"../Data/Tile_Client.dat", // 이름을 포함한 파일 경로
+	HANDLE	hFile = CreateFile(L"../Data/Tile_Client3.dat", // 이름을 포함한 파일 경로
 		GENERIC_READ,		// 파일 접근 모드
 		NULL,				// 공유 방식, NULL로 지정하면 공유하지 않음
 		NULL,				// 보안 속성, NULL인 기본 값 설정
@@ -107,26 +105,23 @@ void CTileMgr::LoadTile()
 
 	while (true)
 	{
-		ReadFile(hFile, &tTile, sizeof(TILE), &dwbyte, nullptr);
-		ReadFile(hFile, &bDraw, sizeof(bool), &dwbyte, nullptr);
-		ReadFile(hFile, &tTileInfo, sizeof(INFO), &dwbyte, nullptr);
+		TILE tTile{};
+		INFO tTileInfo{};
 
+		ReadFile(hFile, &tTile, sizeof(TILE), &dwbyte, nullptr);
+		ReadFile(hFile, &tTileInfo, sizeof(INFO), &dwbyte, nullptr);
 		if (dwbyte == 0)
 			break;
-
-		int iLayer = iCnt / (TILEX * TILEY);
 
 		CObj* pTile = CAbstractFactory<CTile>::CreateObj(
 			tTileInfo.vPoint.fX,
 			tTileInfo.vPoint.fY
 		);
 
-		tTile.eTileLayer = static_cast<TILE_LAYER>(iLayer);
-		static_cast<CTile*>(pTile)->SetTile(tTile);
+		static_cast<CTile*>(pTile)->SetTile(tTile);  
 
+		int iLayer = static_cast<int>(tTile.eTileLayer);
 		m_vecTile[iLayer].push_back(pTile);
-
-		++iCnt;
 	}
 
 	CloseHandle(hFile);

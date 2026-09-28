@@ -39,7 +39,7 @@ void CTileMgr::Initialize()
 		}
 	}
 
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Tile/Library/Library_BG.png", L"LIB_TILE_BG");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Tile/Library/Library_BG0.png", L"LIB_TILE_BG");
 
 	for (int i = 0; i < EnumToInt(TILE_OPTION::END); ++i)
 	{
@@ -175,7 +175,7 @@ void CTileMgr::PickingTile(POINT pt, TILE tTile)
 
 void CTileMgr::SaveTile()
 {
-	HANDLE	hFile = CreateFile(L"../Data/Tile.dat", // 이름을 포함한 파일 경로
+	HANDLE	hFile = CreateFile(L"../Data/Tile3.dat", // 이름을 포함한 파일 경로
 		GENERIC_WRITE,		// 파일 접근 모드
 		NULL,				// 공유 방식, NULL로 지정하면 공유하지 않음
 		NULL,				// 보안 속성, NULL인 기본 값 설정
@@ -212,7 +212,7 @@ void CTileMgr::SaveTile()
 
 void CTileMgr::SaveTileToClient()
 {
-	HANDLE	hFile = CreateFile(L"../Data/Tile_Client.dat", // 이름을 포함한 파일 경로
+	HANDLE	hFile = CreateFile(L"../Data/Tile_Client3.dat", // 이름을 포함한 파일 경로
 		GENERIC_WRITE,		// 파일 접근 모드
 		NULL,				// 공유 방식, NULL로 지정하면 공유하지 않음
 		NULL,				// 보안 속성, NULL인 기본 값 설정
@@ -236,9 +236,11 @@ void CTileMgr::SaveTileToClient()
 		{
 			tTile = static_cast<CTile*>(pTile)->GetTile();
 
+			if (!tTile.bDraw)
+				continue;
+
 			WriteFile(hFile, &tTile.eTileOption, sizeof(TILE_OPTION), &dwbyte, nullptr);
 			WriteFile(hFile, &tTile.eTileLayer, sizeof(TILE_LAYER), &dwbyte, nullptr);
-			WriteFile(hFile, &tTile.bDraw, sizeof(bool), &dwbyte, nullptr);
 			WriteFile(hFile, &pTile->GetInfo(), sizeof(INFO), &dwbyte, nullptr);
 		}
 	}
@@ -294,7 +296,7 @@ void CTileMgr::ExtractPNG()
 	{
 		MessageBox(g_hWnd, L"PNG EXTRACTOR ERR", L"추출 실패", MB_OK);
 	}
-	bitmap.Save(L"../Resource/Image/Stage/Map.png", &pngClsid, NULL);
+	bitmap.Save(L"../Resource/Image/Stage/Map3.png", &pngClsid, NULL);
 }
 
 // MSDN 코드
@@ -331,7 +333,7 @@ int CTileMgr::GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 
 void CTileMgr::LoadTile()
 {
-	HANDLE	hFile = CreateFile(L"../Data/Tile.dat", // 이름을 포함한 파일 경로
+	HANDLE	hFile = CreateFile(L"../Data/Tile3.dat", // 이름을 포함한 파일 경로
 		GENERIC_READ,		// 파일 접근 모드
 		NULL,				// 공유 방식, NULL로 지정하면 공유하지 않음
 		NULL,				// 보안 속성, NULL인 기본 값 설정

@@ -31,6 +31,11 @@ void CEffectMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/Shield.png", L"Shield");
 	// 한손검 회전베기
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/Sword_TurnSwin.png", L"Cleave");
+
+	// 보스 몬스터 에르마
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Alert_Square.png", L"Erma_Alert_Square");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Golem_Hand_Shadow_LEFT.png", L"Erma_Hand_Shadow_L");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Golem_Hand_Shadow_RIGHT.png", L"Erma_Hand_Shadow_R");
 }
 
 CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, float fFactor)
@@ -89,6 +94,7 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, float fFactor
 		pObj->SetSize({ 142, 105 });
 		pObj->SetAngle(fFactor);
 	}
+	
 
 	CObjMgr::GetInstance()->AddObject(OBJID::EFFECT, pObj);
 	return pObj;

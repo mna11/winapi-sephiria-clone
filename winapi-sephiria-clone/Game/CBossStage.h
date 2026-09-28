@@ -1,11 +1,12 @@
 ﻿#pragma once
 #include "CScene.h"
-class CStage :
+
+class CBossStage :
     public CScene
 {
 public:
-    CStage();
-    ~CStage();
+    CBossStage();
+    ~CBossStage();
 public:
     void Initialize() override;
     void Update() override;

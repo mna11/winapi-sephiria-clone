@@ -6,8 +6,8 @@
 
 #define		PURE =0
 
-#define		WINCX 960
-#define		WINCY 540
+#define		WINCX 1280
+#define		WINCY 720
 
 #define		DEAD    1
 #define     NOEVENT 0
@@ -15,7 +15,7 @@
 #define     TILEX   100
 #define     TILEY   100
 
-#define		PIXEL_SCALE 4 // 도트 픽셀 배율
+#define		PIXEL_SCALE 5 // 도트 픽셀 배율
 
 #define     TILECX  (16 * PIXEL_SCALE)
 #define     TILECY  (16 * PIXEL_SCALE)

@@ -23,7 +23,7 @@
 #include <ole2.h>
 #include <gdiplus.h>
 #pragma comment(lib, "Gdiplus.lib")
-
+#pragma comment(lib, "Msimg32.lib")
 #include "Define.h"
 
 using namespace std;

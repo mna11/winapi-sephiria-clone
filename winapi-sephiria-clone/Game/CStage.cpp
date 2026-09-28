@@ -29,7 +29,6 @@ void CStage::Initialize()
 	CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
 
 	Init_CreateObj();
-	Init_InsertImg();
 }
 
 void CStage::Update()
@@ -60,11 +59,11 @@ void CStage::Render(Graphics* pGraphics)
 		return;
 	
 	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
-	RectF destRect = { 0.f + vScroll.fX, 0.f + vScroll.fY,  6400.f, 6400.f };
+	RectF destRect = { 0.f + vScroll.fX, 0.f + vScroll.fY,  8400.f, 8400.f };
 	
 	pGraphics->DrawImage(
 		pGround, destRect,
-		0.f, 0.f, 6400.f, 6400.f,
+		0.f, 0.f, 8400.f, 8400.f,
 		UnitPixel
 	);
 
@@ -82,9 +81,4 @@ void CStage::Init_CreateObj()
 	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(280.f, 280.f));
 	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
 	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CErma>::CreateObj(1700.f, 1000.f));
-}
-
-void CStage::Init_InsertImg()
-{
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Stage/Map.png", L"Map");
 }

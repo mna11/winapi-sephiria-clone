@@ -57,9 +57,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ULONG_PTR   gdiplusToken;  // GDI Plus를 사용하기 위함
     GdiplusStartupInput gdiplusStartUpInput;
     GdiplusStartup(&gdiplusToken, &gdiplusStartUpInput, NULL);
-
+#pragma push_macro("new")
+#undef new
     // 폰트 추가 
     g_pFontCollection = new PrivateFontCollection;
+#pragma pop_macro("new")
+
     // 갈무리 7 - 일반 글 출력용
     g_pFontCollection->AddFontFile(L"../Resource/Font/Galmuri7.ttf");
     // 아틀라스 pixel 이미지 ttf
@@ -67,6 +70,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     g_pFontCollection->AddFontFile(L"../Resource/Font/Sephiria_PixelBold.ttf");
     g_pFontCollection->AddFontFile(L"../Resource/Font/Sephiria_PixelSmall.ttf");
 
+    DWORD       dwTime = GetTickCount();   // 1 / 1000초
     {
         CMainGame MainGame;
         MainGame.Initialize();
@@ -90,9 +94,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             }
             else
             {
-                MainGame.Update();
-                MainGame.LateUpdate();
-                MainGame.Render();
+                if (dwTime + 10 < GetTickCount())
+                {
+                    MainGame.Update();
+                    MainGame.LateUpdate();
+                    MainGame.Render();
+
+                    dwTime = GetTickCount();
+                }
             }
         }
     }
