@@ -10,7 +10,9 @@
 #include "CEffectMgr.h"
 #include "CTileMgr.h"
 #include "CObjMgr.h"
+#include "CSceneMgr.h"
 #include "CTile.h"
+#include "CKeyMgr.h"
 
 void CCollisionMgr::CollisionRect(list<CObj*>& DstList, list<CObj*>& SrcList)
 {
@@ -188,5 +190,15 @@ void CCollisionMgr::CollisionRoom(CObj* pPlayer, CStage* pStage)
         // 전투 중인 상황인데, 현재 몬스터를 다 죽였다면 방을 클리어 상태로 변경한다.
         if (CObjMgr::GetInstance()->ObjEmpty(OBJID::MONSTER))
             pStage->ClearCurRoom();
+    }
+}
+
+void CCollisionMgr::CollisionStair(CObj* pPlayer, RECT& pStair, SCENEID eSceneID)
+{
+    RECT rc{};
+
+    if (IntersectRect(&rc, &pPlayer->GetRect(), &pStair) && KEY_DOWN('F'))
+    {
+        CSceneMgr::GetInstance()->RequestChange(eSceneID);
     }
 }

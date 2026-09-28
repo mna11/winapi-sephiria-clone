@@ -27,6 +27,7 @@ protected:
 protected:
 	vector<ROOM_INFO> m_vecRooms;
 	vector<CObj*>	  m_vecBattleWallEffects;
-	int m_iCurBattleRoomIdx;
+	int				  m_iCurBattleRoomIdx;
+	RECT			  m_rcStair;
 };
 

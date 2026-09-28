@@ -4,6 +4,7 @@
 
 #include "CStage.h"
 #include "CStage1.h"
+#include "CLibLoading.h"
 #include "CBossStage.h"
 
 CSceneMgr* CSceneMgr::m_pInstance = nullptr;
@@ -51,6 +52,9 @@ void CSceneMgr::ApplyChange()
 
 		switch (m_eCurScene)
 		{
+		case SCENEID::LIB_LOADING:
+			m_pScene = new CLibLoading;
+			break;
 		case SCENEID::STAGE0:
 			break;
 		case SCENEID::STAGE1:

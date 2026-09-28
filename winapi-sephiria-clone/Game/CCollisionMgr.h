@@ -13,5 +13,6 @@ public:
 
 	static void CollisionMonsterAttack(list<CObj*>& DstList, list<CObj*>& SrcList);
 	static void CollisionRoom(CObj* pPlayer, CStage* pScene);
+	static void CollisionStair(CObj* pPlayer, RECT& pStair, SCENEID eSceneID);
 };
 

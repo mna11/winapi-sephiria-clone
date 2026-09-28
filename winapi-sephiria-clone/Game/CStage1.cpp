@@ -35,6 +35,7 @@ void CStage1::LateUpdate()
 {
 	CObjMgr::GetInstance()->LateUpdate();
 	CCollisionMgr::CollisionRoom(CObjMgr::GetInstance()->GetPlayer(), this);
+	CCollisionMgr::CollisionStair(CObjMgr::GetInstance()->GetPlayer(), m_rcStair, SCENEID::LIB_LOADING);
 }
 
 void CStage1::Render(Graphics* pGraphics)
@@ -95,6 +96,15 @@ void CStage1::Render(Graphics* pGraphics)
 		);
 	}
 
+	pGraphics->DrawRectangle(
+		&roomPen,
+		RectF(
+			m_rcStair.left + vScroll.fX,
+			m_rcStair.top + vScroll.fY,
+			static_cast<float>(m_rcStair.right - m_rcStair.left),
+			static_cast<float>(m_rcStair.bottom - m_rcStair.top)
+		)
+	);
 #endif // _DEBUG
 }
 
@@ -118,6 +128,8 @@ void CStage1::InitializeRooms()
 	m_vecRooms.push_back(room1);
 	m_vecRooms.push_back(room2);
 	m_vecRooms.push_back(room3);
+
+	SetRect(&m_rcStair, 4700, 6700, 5000, 7000);
 }
 
 void CStage1::SpawnMonster(int iRoomIdx)

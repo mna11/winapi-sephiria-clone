@@ -158,6 +158,7 @@
     <ClInclude Include="CGargoyle.h" />
     <ClInclude Include="CImgMgr.h" />
     <ClInclude Include="CKeyMgr.h" />
+    <ClInclude Include="CLibLoading.h" />
     <ClInclude Include="CLine.h" />
     <ClInclude Include="CLineMgr.h" />
     <ClInclude Include="CMainGame.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="CGargoyle.cpp" />
     <ClCompile Include="CImgMgr.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
+    <ClCompile Include="CLibLoading.cpp" />
     <ClCompile Include="CLine.cpp" />
     <ClCompile Include="CLineMgr.cpp" />
     <ClCompile Include="CMainGame.cpp" />

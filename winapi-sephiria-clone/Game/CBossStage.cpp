@@ -24,7 +24,8 @@ CBossStage::~CBossStage()
 
 void CBossStage::Initialize()
 {
-	CTileMgr::GetInstance()->Initialize();
+	CTileMgr::GetInstance()->LoadTile(SCENEID::BOSS_STAGE);
+	CTileMgr::GetInstance()->SetInteractionBlocked(false);
 
 	// UI Show
 	CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
@@ -89,7 +90,11 @@ void CBossStage::Release()
 
 void CBossStage::Init_CreateObj()
 {
-	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(412.f, 1024.f));
+	if (nullptr == CObjMgr::GetInstance()->GetPlayer())
+		CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(412.f, 1024.f));
+	else
+		CObjMgr::GetInstance()->GetPlayer()->SetPos({412.f, 1024.f});
+
 	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
 
 	// 보스 추가하기

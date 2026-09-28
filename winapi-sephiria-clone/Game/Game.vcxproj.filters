@@ -155,16 +155,16 @@
       <UniqueIdentifier>{7c41fed8-58b9-4fff-ba98-becaa1d5ff0d}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. Scene\00. Stage">
-      <UniqueIdentifier>{5720d764-fa62-4297-a392-cc0e64f9a053}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Scene\00. Stage\99. BossStage">
-      <UniqueIdentifier>{e4e5358a-060c-4e59-a9f4-e90aaf197077}</UniqueIdentifier>
+      <UniqueIdentifier>{e00739a8-abf4-4dbc-8042-e0a59b299a12}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. Scene\00. Stage\01. Stage1">
       <UniqueIdentifier>{f229f306-9d3a-442a-beac-069f0526866a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Scene\00. Stage\00. Stage0">
-      <UniqueIdentifier>{e00739a8-abf4-4dbc-8042-e0a59b299a12}</UniqueIdentifier>
+    <Filter Include="04. Scene\00. Stage\99. BossStage">
+      <UniqueIdentifier>{e4e5358a-060c-4e59-a9f4-e90aaf197077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\01. LibLoading">
+      <UniqueIdentifier>{331bf089-6b7c-4458-813a-bf5506012622}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -233,6 +233,9 @@
     </ClInclude>
     <ClInclude Include="CPlayer.h">
       <Filter>01. Obj\00. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CStage.h">
+      <Filter>04. Scene\00. Stage</Filter>
     </ClInclude>
     <ClInclude Include="CCamera.h">
       <Filter>03. Manager\05. CameraMgr\00. Camera</Filter>
@@ -324,8 +327,8 @@
     <ClInclude Include="CGargoyle.h">
       <Filter>01. Obj\02. Monster\02. Gargoyle</Filter>
     </ClInclude>
-    <ClInclude Include="CStage.h">
-      <Filter>04. Scene\00. Stage</Filter>
+    <ClInclude Include="CLibLoading.h">
+      <Filter>04. Scene\01. LibLoading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -379,6 +382,9 @@
     </ClCompile>
     <ClCompile Include="CPlayer.cpp">
       <Filter>01. Obj\00. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CStage.cpp">
+      <Filter>04. Scene\00. Stage</Filter>
     </ClCompile>
     <ClCompile Include="CCamera.cpp">
       <Filter>03. Manager\05. CameraMgr\00. Camera</Filter>
@@ -470,8 +476,8 @@
     <ClCompile Include="CGargoyle.cpp">
       <Filter>01. Obj\02. Monster\02. Gargoyle</Filter>
     </ClCompile>
-    <ClCompile Include="CStage.cpp">
-      <Filter>04. Scene\00. Stage</Filter>
+    <ClCompile Include="CLibLoading.cpp">
+      <Filter>04. Scene\01. LibLoading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

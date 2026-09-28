@@ -20,6 +20,7 @@
 CStage::CStage()
 	: m_iCurBattleRoomIdx(-1)
 {
+    ZeroMemory(&m_rcStair, sizeof(RECT));
 }
 
 CStage::~CStage()
