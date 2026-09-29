@@ -47,6 +47,14 @@ void CStage::ClearCurRoom()
     RemoveBattleWallEffects();
 }
 
+void CStage::HotKey()
+{
+    if (KEY_DOWN('U'))
+    {
+        CUIMgr::GetInstance()->ToggleUI(UIID::INVENTORY);
+    }
+}
+
 void CStage::CreateBattleWallEffects()
 {
     for (int i = 0; i < toUType(TILE_LAYER::END); ++i)

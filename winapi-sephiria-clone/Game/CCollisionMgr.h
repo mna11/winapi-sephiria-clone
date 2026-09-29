@@ -1,7 +1,9 @@
 ﻿#pragma once
 
 class CObj;
+class CPlayer;
 class CStage;
+class CInventorySlotUI;
 
 class CCollisionMgr
 {
@@ -12,7 +14,8 @@ public:
 	static void CollisionPlayerDefense(list<CObj*>& DstList, list<CObj*>& SrcList);
 
 	static void CollisionMonsterAttack(list<CObj*>& DstList, list<CObj*>& SrcList);
-	static void CollisionRoom(CObj* pPlayer, CStage* pScene);
-	static void CollisionStair(CObj* pPlayer, RECT& pStair, SCENEID eSceneID);
+	static void CollisionRoom(CPlayer* pPlayer, CStage* pScene);
+	static void CollisionStair(CPlayer* pPlayer, RECT& pStair, SCENEID eSceneID);
+	static int GetCollisionSlotIndex(VEC vMousePoint, vector<CInventorySlotUI*>& vecSlots);
 };
 

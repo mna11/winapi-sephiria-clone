@@ -30,6 +30,9 @@ void CBasicInfo::Initialize()
 	// 렌더 정보 초기화 
 	m_eRender = RENDERID::UI;
 	m_iRenderLayer = 0;      // UI 중에 최약체
+
+
+	m_fUIScale = PIXEL_SCALE;
 }
 
 int CBasicInfo::Update()
@@ -54,7 +57,7 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	///////////////////////////////////// 정보, 이미지 가져오기
 
 	// 플레이어 정보 가져오기
-	CObj* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer)
 		return;
 
@@ -82,15 +85,15 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	///////////////////////////////////// 본격적인 출력 전 설정 (출력? 렌더?)
 
 	// 픽셀 갭 
-	int iGap = 1.5f * PIXEL_SCALE;
+	int iGap = 1.5f * m_fUIScale;
 	// 프레임 사이즈
-	VEC vFrameSize = VEC{ 63.f, 13.5f } * PIXEL_SCALE;
+	VEC vFrameSize = VEC{ 63.f, 13.5f } *m_fUIScale;
 	// 각 바들 사이즈
-	VEC vHpSize = VEC{ vFrameSize.fX - 2 * iGap, 5.f * PIXEL_SCALE };
-	VEC vMpSize = VEC{ vFrameSize.fX - 2 * iGap, 4.f * PIXEL_SCALE };
+	VEC vHpSize = VEC{ vFrameSize.fX - 2 * iGap, 5.f * m_fUIScale };
+	VEC vMpSize = VEC{ vFrameSize.fX - 2 * iGap, 4.f * m_fUIScale };
 	// 대시 사이즈 
 	VEC vDashCellSize = { 11.f, 9.f };
-	VEC vDashSize = vDashCellSize * PIXEL_SCALE * 0.6;
+	VEC vDashSize = vDashCellSize * m_fUIScale * 0.6; // 대시만 조금 더 작게 함
 
 
 	// 띄울 위치
@@ -157,8 +160,8 @@ void CBasicInfo::Render(Graphics* pGraphics)
 		}
 		else if (i == tPlayerStat.iDash)
 		{
-			double dElapse	= static_cast<CPlayer*>(pPlayer)->GetDashRecoveryElapse();
-			double dInterval = static_cast<CPlayer*>(pPlayer)->GetDashRecoveryInterval();
+			double dElapse	= pPlayer->GetDashRecoveryElapse();
+			double dInterval = pPlayer->GetDashRecoveryInterval();
 			
 			double dRatio = dElapse / dInterval;
 			double dImgWidth = vDashSize.fX * dRatio;

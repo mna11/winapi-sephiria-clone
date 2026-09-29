@@ -3,6 +3,7 @@
 
 #include "CCameraMgr.h"
 #include "CCollisionMgr.h"
+#include "CUIMgr.h"
 
 CObjMgr* CObjMgr::m_pInstance = nullptr;
 

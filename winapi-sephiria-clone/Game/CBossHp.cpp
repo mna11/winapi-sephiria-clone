@@ -27,6 +27,8 @@ void CBossHp::Initialize()
 	// 렌더 정보 초기화 
 	m_eRender = RENDERID::UI;
 	m_iRenderLayer = 0;      // UI 중에 최약체
+
+	m_fUIScale = PIXEL_SCALE;
 }
 
 int CBossHp::Update()
@@ -67,11 +69,11 @@ void CBossHp::Render(Graphics* pGraphics)
 	///////////////////////////////////// 본격적인 출력 전 설정 (출력? 렌더?)
 
 	// 픽셀 갭 
-	int iGap = 5.f * PIXEL_SCALE;
+	int iGap = 5.f * m_fUIScale;
 	// 프레임 사이즈
-	VEC vFrameSize = VEC{ 254.f, 35.f } *PIXEL_SCALE * 0.5f;
+	VEC vFrameSize = VEC{ 254.f, 35.f } * m_fUIScale * 0.5f;
 	// 바 사이즈
-	VEC vHpSize = VEC{ vFrameSize.fX - 3 * iGap, 10.f * PIXEL_SCALE * 0.5f };
+	VEC vHpSize = VEC{ vFrameSize.fX - 3 * iGap, 10.f * m_fUIScale * 0.5f };
 
 	// 띄울 위치
 	VEC vStartPoint = m_tInfo.vPoint;

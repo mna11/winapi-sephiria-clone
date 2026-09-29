@@ -70,6 +70,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     g_pFontCollection->AddFontFile(L"../Resource/Font/Sephiria_PixelBold.ttf");
     g_pFontCollection->AddFontFile(L"../Resource/Font/Sephiria_PixelSmall.ttf");
 
+    ShowCursor(false);
+
     DWORD       dwTime = GetTickCount();   // 1 / 1000초
     {
         CMainGame MainGame;

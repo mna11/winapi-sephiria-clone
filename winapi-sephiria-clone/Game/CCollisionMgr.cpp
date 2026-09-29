@@ -8,6 +8,7 @@
 #include "CWeapon.h"
 
 #include "CEffectMgr.h"
+#include "CInventorySlotUI.h"
 #include "CTileMgr.h"
 #include "CObjMgr.h"
 #include "CSceneMgr.h"
@@ -155,7 +156,7 @@ void CCollisionMgr::CollisionMonsterAttack(list<CObj*>& DstList, list<CObj*>& Sr
     }
 }
 
-void CCollisionMgr::CollisionRoom(CObj* pPlayer, CStage* pStage)
+void CCollisionMgr::CollisionRoom(CPlayer* pPlayer, CStage* pStage)
 {
     RECT rc{};
 
@@ -193,7 +194,7 @@ void CCollisionMgr::CollisionRoom(CObj* pPlayer, CStage* pStage)
     }
 }
 
-void CCollisionMgr::CollisionStair(CObj* pPlayer, RECT& pStair, SCENEID eSceneID)
+void CCollisionMgr::CollisionStair(CPlayer* pPlayer, RECT& pStair, SCENEID eSceneID)
 {
     RECT rc{};
 
@@ -201,4 +202,16 @@ void CCollisionMgr::CollisionStair(CObj* pPlayer, RECT& pStair, SCENEID eSceneID
     {
         CSceneMgr::GetInstance()->RequestChange(eSceneID);
     }
+}
+
+int CCollisionMgr::GetCollisionSlotIndex(VEC vMousePoint, vector<CInventorySlotUI*>& vecSlots)
+{
+    POINT ptMouse{ static_cast<int>(vMousePoint.fX), static_cast<int>(vMousePoint.fY) };
+
+    for (int i = 0; i < static_cast<int>(vecSlots.size()); ++i)
+    {
+        if (PtInRect(&vecSlots[i]->GetRect(), ptMouse))
+            return i;
+    }
+    return -1;
 }

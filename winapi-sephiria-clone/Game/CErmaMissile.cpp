@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "CErmaMissile.h"
 
+#include "CPlayer.h"
+
 #include "CCameraMgr.h"
 #include "CImgMgr.h"
 #include "CObjMgr.h"
@@ -181,7 +183,7 @@ void CErmaMissile::TryDamageTarget()
 
     m_bDamageApplied = true;
 
-    CObj* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+    CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
     if (pPlayer == nullptr)
         return;
 

@@ -34,6 +34,8 @@ void CStage1::Update()
 void CStage1::LateUpdate()
 {
 	CObjMgr::GetInstance()->LateUpdate();
+
+	HotKey();
 	CCollisionMgr::CollisionRoom(CObjMgr::GetInstance()->GetPlayer(), this);
 	CCollisionMgr::CollisionStair(CObjMgr::GetInstance()->GetPlayer(), m_rcStair, SCENEID::LIB_LOADING);
 }

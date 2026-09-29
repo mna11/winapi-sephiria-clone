@@ -1,7 +1,8 @@
 ﻿#pragma once
 
-class CUI;
-class CObj;
+#include "CUI.h"
+
+class CMouse;
 
 class CUIMgr
 {
@@ -37,11 +38,19 @@ public:
 	void HideUI(UIID eID);
 	void ToggleUI(UIID eID);
 
+public:
+	CUI* GetUI(UIID eID);
+
+public:
+	void SetMouse(CMouse* pMouse) { m_pMouse = pMouse; }
+
 private:
 	CUI* CreateUI(UIID eID);
 
 private:
 	static CUIMgr* m_pInstance;
 	map<UIID, CUI*> m_mapUI;
+
+	CMouse* m_pMouse;
 };
 

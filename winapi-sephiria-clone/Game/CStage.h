@@ -17,6 +17,9 @@ public:
 	void ClearCurRoom();
 
 public:
+	void HotKey(); // 스테이지에서 사용하는 단축키
+
+public:
 	const vector<ROOM_INFO>& GetVecRooms() const { return m_vecRooms; }
 	const int& GetBattleRoomIdx() const { return m_iCurBattleRoomIdx; }
 

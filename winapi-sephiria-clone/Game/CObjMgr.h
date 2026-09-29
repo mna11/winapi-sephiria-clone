@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CObj.h"
+#include "CPlayer.h"
 
 class CObjMgr
 {
@@ -36,11 +37,11 @@ public:
 	void Release();
 
 public:
-	CObj* GetPlayer() { 
+	CPlayer* GetPlayer() { 
 		if (m_ObjList[toUType(OBJID::PLAYER)].empty())
 			return nullptr;
 
-		return m_ObjList[toUType(OBJID::PLAYER)].front(); 
+		return static_cast<CPlayer*>(m_ObjList[toUType(OBJID::PLAYER)].front()); 
 	}
 
 public:

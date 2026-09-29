@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "CErmaLaser.h"
 
+#include "CPlayer.h"
+
 #include "CCameraMgr.h"
 #include "CImgMgr.h"
 #include "CObjMgr.h"
@@ -99,7 +101,7 @@ void CErmaLaser::LateUpdate()
     if (m_eState != ERMA_LASER_STATE::ACTIVE || m_bDamageApplied)
         return;
 
-    CObj* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+    CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
     if (pPlayer == nullptr)
         return;
 
