@@ -181,6 +181,9 @@
     <Filter Include="01. Obj\06. UI\02. Inventory\01. CInventorySlotUI">
       <UniqueIdentifier>{3c79e06d-e89d-4543-b482-bdda3eb28fd3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\06. UI\03. ItemToolTip">
+      <UniqueIdentifier>{79c9b0e5-680c-49db-a9bd-50262dfc4feb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -360,6 +363,9 @@
     <ClInclude Include="CInventory.h">
       <Filter>05. Inventory</Filter>
     </ClInclude>
+    <ClInclude Include="CItemToolTip.h">
+      <Filter>01. Obj\06. UI\03. ItemToolTip</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -523,6 +529,9 @@
     </ClCompile>
     <ClCompile Include="CMouse.cpp">
       <Filter>01. Obj\01. Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="CItemToolTip.cpp">
+      <Filter>01. Obj\06. UI\03. ItemToolTip</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

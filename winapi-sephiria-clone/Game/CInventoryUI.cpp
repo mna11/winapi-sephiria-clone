@@ -74,7 +74,6 @@ int CInventoryUI::Update()
 			m_bDrag = true;
 
 			// 원래 슬롯은 안보이게 함
-			// 실제 마우스는
 			m_vecItemSlot[m_iStartSlot]->SetItem(nullptr);
 		}
 	}
@@ -93,18 +92,7 @@ int CInventoryUI::Update()
 			m_pInventory->MoveItem(iStartIdx, iEndIdx);
 		}
 
-		// 원래 슬롯은 항상 복구
-		m_vecItemSlot[iStartIdx]->SetItem(
-			m_pInventory->GetItem(iStartIdx)
-		);
-
-		// 유효한 다른 슬롯에 놓았다면 해당 슬롯도 갱신
-		if (iEndIdx != -1 && iEndIdx != iStartIdx)
-		{
-			m_vecItemSlot[iEndIdx]->SetItem(
-				m_pInventory->GetItem(iEndIdx)
-			);
-		}
+		// SyncInventorySlot이 LateUpdate에서 Slot 동기화 해줘서 별도로 할 것 없음
 
 		// 초기화
 		m_pMouse->SetDragItem(nullptr);

@@ -58,7 +58,7 @@
 
 enum class OBJID	{ PLAYER, MONSTER, MONSTER_BULLET, MOUSE, WEAPON, EFFECT, UI, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, MOUSE, END };
-enum class UIID		{ BASIC_INFO, BOSS_HP, STAT_INFO, INVENTORY, SHOP, ITEM_INFO, REWARD, END };
+enum class UIID		{ BASIC_INFO, BOSS_HP, STAT_INFO, INVENTORY, ITEM_TOOLTIP, SHOP, ITEM_INFO, REWARD, END };
 enum class SCENEID	{ LIB_LOADING, STAGE0, STAGE1, BOSS_STAGE, END };
 
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };
@@ -93,7 +93,6 @@ enum class ITEM_CATEGORY
 	SHADOW,			// 그림자
 	STURDY,			// 견고
 	WINDSONG,		// 바람노래
-	STONETARBLET,	// 석판
 	END
 };
 /////////////////////////////////////////
@@ -264,12 +263,6 @@ typedef struct tagItemInfo
 	std::wstring	strDescription;		// 아이템 설명
 	ITEM_CATEGORY	eCategory;          // 아이템 소속
 } ITEM_INFO;
-
-// 아이템 인스턴스
-typedef struct tagItemInstance
-{
-
-} ITEM_INSTANCE;
 
 
 // 스프라이트 애니메이션용

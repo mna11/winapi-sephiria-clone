@@ -161,6 +161,7 @@
     <ClInclude Include="CInventorySlotUI.h" />
     <ClInclude Include="CInventoryUI.h" />
     <ClInclude Include="CItem.h" />
+    <ClInclude Include="CItemToolTip.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CLibLoading.h" />
     <ClInclude Include="CLine.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="CInventorySlotUI.cpp" />
     <ClCompile Include="CInventoryUI.cpp" />
     <ClCompile Include="CItem.cpp" />
+    <ClCompile Include="CItemToolTip.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLibLoading.cpp" />
     <ClCompile Include="CLine.cpp" />
