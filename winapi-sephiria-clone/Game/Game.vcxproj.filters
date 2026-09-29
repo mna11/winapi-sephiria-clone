@@ -172,6 +172,18 @@
     <Filter Include="05. Inventory">
       <UniqueIdentifier>{265bcbc6-c35a-4ae0-b6b1-07361f206e00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\06. UI\02. Inventory\00. CInventoryUI">
+      <UniqueIdentifier>{433abf15-a0d6-41cb-bff6-3adc7823ddd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\07. Item">
+      <UniqueIdentifier>{1a161843-b6d6-4cd9-b3da-5561e8c5af5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\02. Inventory\01. CInventorySlotUI">
+      <UniqueIdentifier>{3c79e06d-e89d-4543-b482-bdda3eb28fd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\02. Inventory\02. CInventoryUIController">
+      <UniqueIdentifier>{f2ff6ce7-0fe0-40ca-a672-bfb679dfb23f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -336,8 +348,20 @@
     <ClInclude Include="CLibLoading.h">
       <Filter>04. Scene\01. LibLoading</Filter>
     </ClInclude>
+    <ClInclude Include="CInventory.h">
+      <Filter>05. Inventory</Filter>
+    </ClInclude>
     <ClInclude Include="CInventoryUI.h">
-      <Filter>01. Obj\06. UI\02. Inventory</Filter>
+      <Filter>01. Obj\06. UI\02. Inventory\00. CInventoryUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CItem.h">
+      <Filter>01. Obj\07. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="CInventorySlotUI.h">
+      <Filter>01. Obj\06. UI\02. Inventory\01. CInventorySlotUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CMouse.h">
+      <Filter>01. Obj\01. Mouse</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -488,8 +512,20 @@
     <ClCompile Include="CLibLoading.cpp">
       <Filter>04. Scene\01. LibLoading</Filter>
     </ClCompile>
+    <ClCompile Include="CInventory.cpp">
+      <Filter>05. Inventory</Filter>
+    </ClCompile>
     <ClCompile Include="CInventoryUI.cpp">
-      <Filter>01. Obj\06. UI\02. Inventory</Filter>
+      <Filter>01. Obj\06. UI\02. Inventory\00. CInventoryUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CItem.cpp">
+      <Filter>01. Obj\07. Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CInventorySlotUI.cpp">
+      <Filter>01. Obj\06. UI\02. Inventory\01. CInventorySlotUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CMouse.cpp">
+      <Filter>01. Obj\01. Mouse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

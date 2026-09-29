@@ -1,0 +1,190 @@
+﻿#include "pch.h"
+#include "CMouse.h"
+
+#include "CItem.h"
+
+#include "CUIMgr.h"
+#include "CImgMgr.h"
+#include "CKeyMgr.h"
+#include "CTimeMgr.h"
+
+CMouse::CMouse()
+	: CState(MOUSE_STATE::END, MOUSE_STATE::COMBAT),
+	m_dStateTime(0.), m_dClickTime(0.),
+	m_pDragItem(nullptr)
+{
+}
+
+CMouse::~CMouse()
+{
+	Release();
+}
+
+void CMouse::Initialize()
+{
+	m_tInfo = { 0.f, 0.f, 0.f, 0.f };
+	m_eRender = RENDERID::MOUSE;
+	m_iRenderLayer = 5;
+
+	// 스프라이트 넣기
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Cursor/Cursor_UI.png", L"Cursor_UI");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Cursor/Cursor_Combat.png", L"Cursor_Combat");
+
+	// 반투명 이미지 Attr 정의 
+	ColorMatrix colorMatrix = {	1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+									0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+									0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+									0.0f, 0.0f, 0.0f, 0.7f, 0.0f,
+									0.0f, 0.0f, 0.0f, 0.0f, 1.0f };
+
+	m_imgAttrTranslucent.SetColorMatrix(&colorMatrix, ColorMatrixFlagsDefault, ColorAdjustTypeBitmap);
+}
+
+int CMouse::Update()
+{
+	UpdateTime();
+
+	ApplyChange();
+
+	UpdatePoint();
+
+	__super::UpdateFrame();
+	return NOEVENT;
+}
+
+void CMouse::LateUpdate()
+{
+	UpdateClick();
+}
+
+void CMouse::Render(Graphics* pGraphics)
+{
+	Image* pImg(nullptr);
+	VEC vCellSize{};
+	VEC vImgSize{};
+	RectF DestRect{};
+
+	// 드래그한 아이템 렌더링
+	if (nullptr != m_pDragItem)
+	{
+		pImg = CImgMgr::GetInstance()->FindImg(m_pDragItem->GetItemInfo().strImg.c_str());
+		vCellSize = { 32.f, 32.f };
+		vImgSize = vCellSize * PIXEL_SCALE * 0.5f;
+
+		RectF rcDest{
+				m_tInfo.vPoint.fX - vImgSize.fX * 0.5f,
+				m_tInfo.vPoint.fY - vImgSize.fY * 0.5f,
+				vImgSize.fX,
+				vImgSize.fY
+		};
+
+		pGraphics->DrawImage(
+			pImg,
+			rcDest,
+			0,
+			0,
+			vCellSize.fX,
+			vCellSize.fY,
+			UnitPixel,
+			&m_imgAttrTranslucent
+		);
+	}
+
+	// 마우스 커서 종류별 렌더링
+	pImg = CImgMgr::GetInstance()->FindImg(m_pFrameKey);
+	switch (m_eCurState)
+	{
+	case MOUSE_STATE::COMBAT:
+		vCellSize = { 27.f, 27.f };
+		vImgSize = vCellSize * PIXEL_SCALE * 0.5f;
+		DestRect = { m_tInfo.vPoint.fX - vImgSize.fX * 0.5f, m_tInfo.vPoint.fY - vImgSize.fY * 0.5f, vImgSize.fX, vImgSize.fY };
+		pGraphics->DrawImage(
+			pImg, DestRect,
+			0, 0,
+			vCellSize.fX, vCellSize.fY,
+			UnitPixel
+		);
+		break;
+	case MOUSE_STATE::UI_IDLE:
+		vCellSize = { 18.f, 18.f };
+		vImgSize = vCellSize * PIXEL_SCALE * 0.5f;
+		DestRect = { m_tInfo.vPoint.fX, m_tInfo.vPoint.fY, vImgSize.fX, vImgSize.fY };
+		pGraphics->DrawImage(
+			pImg, DestRect,
+			0, 0,
+			vCellSize.fX, vCellSize.fY,
+			UnitPixel
+		);
+		break;
+	case MOUSE_STATE::UI_CLICK:
+	{
+		vCellSize = { 18.f, 18.f };
+		vImgSize = vCellSize * PIXEL_SCALE * 0.5f;
+		DestRect = { m_tInfo.vPoint.fX, m_tInfo.vPoint.fY, vImgSize.fX, vImgSize.fY };
+		pGraphics->DrawImage(
+			pImg, DestRect,
+			vCellSize.fX * m_tFrame.iStart, vCellSize.fY * m_tFrame.iMotion,
+			vCellSize.fX, vCellSize.fY,
+			UnitPixel
+		);
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void CMouse::Release()
+{
+
+}
+
+void CMouse::UpdateTime()
+{
+	m_dStateTime += DT;
+	
+	if (m_eCurState == MOUSE_STATE::UI_CLICK && m_dStateTime > m_dClickTime)
+		m_eNextState = MOUSE_STATE::UI_IDLE;
+}
+
+void CMouse::UpdatePoint()
+{
+	POINT ptMouse{};
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+	m_tInfo.vPoint = { (float)ptMouse.x, (float)ptMouse.y };
+}
+
+void CMouse::UpdateClick()
+{
+	if (KEY_DOWN(VK_LBUTTON) && m_eCurState == MOUSE_STATE::UI_IDLE)
+	{
+		m_eNextState = MOUSE_STATE::UI_CLICK;
+		m_dClickTime = 1.0;
+	}
+}
+
+void CMouse::ApplyChange()
+{
+	if (m_eCurState != m_eNextState)
+	{
+		switch (m_eNextState)
+		{
+		case MOUSE_STATE::COMBAT:
+			m_pFrameKey = L"Cursor_Combat";
+			break;
+		case MOUSE_STATE::UI_IDLE:
+			m_pFrameKey = L"Cursor_UI";
+			break;
+		case MOUSE_STATE::UI_CLICK:
+			m_pFrameKey = L"Cursor_UI";
+			SetFrame(0, 6, 0, m_dClickTime / 7.);
+			break;
+		default:
+			break;
+		}
+
+		m_eCurState = m_eNextState;
+		m_dStateTime = 0.;
+	}
+}

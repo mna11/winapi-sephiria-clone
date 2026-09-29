@@ -2,7 +2,7 @@
 #include "CUI.h"
 
 CUI::CUI()
-	: m_bView(false)
+	: m_bView(false), m_fUIScale(PIXEL_SCALE), m_pMouse(nullptr)
 {
 }
 

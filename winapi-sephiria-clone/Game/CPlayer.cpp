@@ -10,12 +10,14 @@
 #include "CCameraMgr.h"
 #include "CImgMgr.h"
 #include "CEffectMgr.h"
+#include "CItem.h"
 
 CPlayer::CPlayer()
 	: CState(PLAYER_STATE::END, PLAYER_STATE::IDLE), m_pWeaponController(nullptr),
 	m_dDustInterval(0.5), m_dDustElapseTime(0.), m_fNormalSpeed(300.f), m_fRunSpeed(400.f),
 	m_dDashRecorveyInterval(1.), m_dDashRecoveryElapseTime(0.),
-	m_bPlayerBehaviorEnable(true)
+	m_bPlayerBehaviorEnable(true),
+	m_pInventory(nullptr)
 {
 }
 
@@ -43,17 +45,13 @@ void CPlayer::Initialize()
 	m_pFrameKey = L"Player_RD";
 	SetFrame(0, 5, 0, 0.2);
 
-	// 무기 컨트롤러 초기화 - 무기는 누가 사용하는지 참조 시켜야 함
-	m_pWeaponController = CAbstractFactory<CWeaponController>::CreateWeaponController(this);
-
-
 	// iframe 세팅 
 	m_dHitElapseTime = 0.;
 	m_dIframeTime = 0.5;   // 피격 후 무적시간 0.5초
 	m_bHit = false; 
 
 
-	// 스탯 초기화
+	// 기본 스탯 초기화
 	m_tStat = {
 		70,				// HP
 		70,			    // MAX HP
@@ -72,7 +70,7 @@ void CPlayer::Initialize()
 		100.f,			// 공속
 		100.f,			// 이속
 		100.f,			// 대시 회복 속도
-				
+
 		0,				// 교섭력
 		0,				// 행운
 
@@ -80,6 +78,11 @@ void CPlayer::Initialize()
 		100.f,			// 돈(리프) 드랍율
 		100.f			// 레벨업시 체력 회복률
 	};
+
+	// 무기 컨트롤러 초기화 - 무기는 누가 사용하는지 참조 시켜야 함
+	m_pWeaponController = CAbstractFactory<CWeaponController>::CreateWeaponController(this);
+	// 인벤토리 생성
+	m_pInventory = CAbstractFactory<CInventory>::CreateInventory(this);
 }
 
 int CPlayer::Update()
@@ -96,6 +99,7 @@ int CPlayer::Update()
 	{
 		// 이번 프레임 상태 결정
 		ApplyChange();
+		
 		// 무기 컨트롤러 업데이트
 		m_pWeaponController->Update();
 

@@ -1,11 +1,14 @@
 ﻿#pragma once
 
 #include "CObj.h"
+#include "CUI.h"
 #include "CWeapon.h"
 #include "CWeaponController.h"
 #include "CSwordAndShield.h"
 #include "CSword.h"
 #include "CShield.h"
+#include "CItem.h"
+#include "CInventory.h"
 
 template<typename T>
 class CAbstractFactory
@@ -69,6 +72,39 @@ public:
 		pObj->SetTarget(pTarget);
 		pObj->SetFrameKey(pFrameKey);
 		return pObj;
+	}
+
+	static CItem* CreateItem(int iID)
+	{
+		CItem* pItem = new T;
+		pItem->Initialize();
+		pItem->UpdateData(iID);
+		return pItem;
+	}
+
+	static CInventory* CreateInventory(CPlayer* pPlayer)
+	{
+		CInventory* pInven = new T;
+		pInven->SetOwner(pPlayer);
+		pInven->Initialize();
+		return pInven;
+	}
+
+	static CUI* CreateUI(CMouse* pMouse)
+	{
+		CUI* pUI = new T;
+		pUI->Initialize();
+		pUI->SetMouse(pMouse);
+		return pUI;
+	}
+
+	static CUI* CreateUI(float fX, float fY, CMouse* pMouse)
+	{
+		CUI* pUI = new T;
+		pUI->Initialize();
+		pUI->SetPos(fX, fY);
+		pUI->SetMouse(pMouse);
+		return pUI;
 	}
 };
 

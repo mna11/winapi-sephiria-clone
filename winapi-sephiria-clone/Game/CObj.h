@@ -39,6 +39,7 @@ public:
 public:
 	void				AddPos(float fDx, float fDy)		{ m_tInfo.vPoint.fX += fDx; m_tInfo.vPoint.fY += fDy; }
 	void				AddPos(VEC vec)						{ m_tInfo.vPoint += vec; }
+	void				AddStat(STAT tStat)					{ m_tStat = m_tStat + tStat; }
 
 public:
 	void				RefreshRect()					{ UpdateRect(); }

@@ -8,6 +8,7 @@
 #include "CWeapon.h"
 
 #include "CEffectMgr.h"
+#include "CInventorySlotUI.h"
 #include "CTileMgr.h"
 #include "CObjMgr.h"
 #include "CSceneMgr.h"
@@ -201,4 +202,18 @@ void CCollisionMgr::CollisionStair(CObj* pPlayer, RECT& pStair, SCENEID eSceneID
     {
         CSceneMgr::GetInstance()->RequestChange(eSceneID);
     }
+}
+
+int CCollisionMgr::GetCollisionSlotIndex(vector<CInventorySlotUI*>& vecSlots)
+{
+    POINT ptMouse{};
+    GetCursorPos(&ptMouse);
+    ScreenToClient(g_hWnd, &ptMouse);
+
+    for (int i = 0; i < static_cast<int>(vecSlots.size()); ++i)
+    {
+        if (PtInRect(&vecSlots[i]->GetRect(), ptMouse))
+            return i;
+    }
+    return -1;
 }

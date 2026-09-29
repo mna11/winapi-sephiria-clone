@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <random>
+#include <string>
 
 /////////////////////////////////////////
 
@@ -19,6 +20,8 @@
 
 #define     TILECX  (16 * PIXEL_SCALE)
 #define     TILECY  (16 * PIXEL_SCALE)
+
+#define		INVEN_COL 6 // 인벤토리 7열
 
 #define		VK_MAX	0xff
 
@@ -53,8 +56,8 @@
 /////////////////////////////////////////
 // 열거체
 
-enum class OBJID	{ PLAYER, MONSTER, MONSTER_BULLET, WEAPON, EFFECT, UI, CAMERA, END };
-enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, END };
+enum class OBJID	{ PLAYER, MONSTER, MONSTER_BULLET, MOUSE, WEAPON, EFFECT, UI, CAMERA, END };
+enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, MOUSE, END };
 enum class UIID		{ BASIC_INFO, BOSS_HP, STAT_INFO, INVENTORY, SHOP, ITEM_INFO, REWARD, END };
 enum class SCENEID	{ LIB_LOADING, STAGE0, STAGE1, BOSS_STAGE, END };
 
@@ -66,6 +69,31 @@ enum class TILE_LAYER { LAYER0, LAYER1, LAYER2, LAYER3, END };
 // 방 상태
 enum class ROOM_STATE { READY, BATTLE, CLEAR };
 
+// 아이템 카테고리
+enum class ITEM_CATEGORY 
+{
+	NONE,			// 없음
+	ACADEMY,		// 아카데미
+	ALCHEMY,		// 연금술
+	COMPANION,		// 동료
+	CURSE,			// 저주
+	DARKCLOUD,		// 먹구름
+	ELEMENTAL,		// 원소
+	EMBER,			// 잉걸불
+	FLAMESWORD,		// 태양검
+	FROST,			// 얼음무구
+	GLACIER,		// 빙하
+	GUARDIAN,		// 수호
+	LAKE,			// 호수
+	MAGITECH,		// 마법공학
+	MYSTIC,			// 신비
+	PLANET,			// 행성
+	PRECISION,		// 정밀
+	SAVVY,			// 교섭
+	SHADOW,			// 그림자
+	STURDY,			// 견고
+	WINDSONG		// 바람노래
+};
 /////////////////////////////////////////
 // 구조체
 
@@ -175,6 +203,39 @@ typedef struct tagStat
 	float			fExperienceDrop;	  // 경험치 드랍율
 	float			fLeafDrop;			  // 돈(리프) 드랍율
 	float			fHpRestoredOnLevelUp; // 레벨업시 체력 회복률
+
+	tagStat	operator+(const tagStat& rhs) const {
+		return tagStat
+		{
+			iHp + rhs.iHp,
+			iMaxHp + rhs.iMaxHp,
+			iAtk + rhs.iAtk,
+
+			iMp + rhs.iMp,
+			iMaxMp + rhs.iMaxMp,
+
+			iDefense + rhs.iDefense,
+			iEvasion + rhs.iEvasion,
+
+			iDash + rhs.iDash,
+			iMaxDash + rhs.iMaxDash,
+
+
+			fCriticalChange + rhs.fCriticalChange,
+			fCriticalDamage + rhs.fCriticalDamage,
+			fAttackSpeed + rhs.fAttackSpeed,
+			fMoveSpeed + rhs.fMoveSpeed,
+			fDashRecoverySpeed + rhs.fDashRecoverySpeed,
+
+			iBarter + rhs.iBarter,
+			iLuck + rhs.iLuck,
+
+
+			fExperienceDrop + rhs.fExperienceDrop,
+			fLeafDrop + rhs.fLeafDrop,
+			fHpRestoredOnLevelUp + rhs.fHpRestoredOnLevelUp
+		};
+	}
 } STAT;
 
 // 무기공격 정보
@@ -189,6 +250,23 @@ typedef struct tagAttackInfo
 								// 끝나고 클릭, 끝나고 클릭 -> Attack1 - Attack1 ....
 								// 끝나기 전 클릭, 끝나기 전 클릭 -> Attack1 - Attack2 - Attack3
 } ATK_INFO;
+
+
+// 아이템 정보
+typedef struct tagItemInfo
+{
+	int				iID;				// 아이템 아이디
+	std::wstring	strImg;				// 이미지 프레임 키
+	std::wstring	strName;			// 아이템 이름
+	std::wstring	strDescription;		// 아이템 설명
+	ITEM_CATEGORY	eCategory;          // 아이템 소속
+} ITEM_INFO;
+
+// 아이템 인스턴스
+typedef struct tagItemInstance
+{
+
+} ITEM_INSTANCE;
 
 
 // 스프라이트 애니메이션용

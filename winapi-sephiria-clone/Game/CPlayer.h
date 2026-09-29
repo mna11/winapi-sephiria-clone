@@ -3,6 +3,7 @@
 #include "CState.h"
 
 class CWeaponController;
+class CInventory;
 
 // State 상속을 위해 클래스 내부 선언이 아닌 밖에서 함
 // Define에 안한 이유는 헷갈릴까봐
@@ -43,6 +44,7 @@ public:
 
 public:
     void SetDamage(int iDamage, CObj* pObj) override;
+
 public:
     void ApplyChange() override;
 
@@ -58,6 +60,7 @@ public:
 
 private:
     CWeaponController*  m_pWeaponController;
+    CInventory*         m_pInventory;
 
     // 대시 회복 시간
     double              m_dDashRecorveyInterval;
@@ -73,7 +76,6 @@ private:
 
     // 플레이어 행동 가능 - UI 때문에 만듬
     bool                m_bPlayerBehaviorEnable;
-
 #ifdef _DEBUG
 private:
     void    PrintInfo();
