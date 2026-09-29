@@ -23,19 +23,12 @@ void CInventory::Initialize()
 {
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Item/Balisong.png", L"Balisong");
 
-	CInventoryUI* pInvenUI = static_cast<CInventoryUI*>(CUIMgr::GetInstance()->GetUI(UIID::INVENTORY));
-	pInvenUI->SetInventorySize(m_iInvenSize); 
-	pInvenUI->SetInventory(this);
-
-
-	// 임시 테스트용 집어넣기
-	auto& vecSlot = pInvenUI->GetItemSlots();
+	// 테스트용
 	for (int i = 0; i < m_vecItems.size(); ++i)
 	{
 		if (i < 15)
 		{
 			InsertItem(i, 0);
-			static_cast<CInventorySlotUI*>(vecSlot[i])->SetItem(m_vecItems[i]);
 		}
 	}
 }

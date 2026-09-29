@@ -35,9 +35,10 @@ public:
     void Release() override;
 
 public:
-    const CWeaponController*    GetWeaponController()       const { return m_pWeaponController; }
-    const double&               GetDashRecoveryInterval()   const { return m_dDashRecorveyInterval; }
-    const double&               GetDashRecoveryElapse()     const { return m_dDashRecoveryElapseTime; }
+    const CWeaponController*    GetWeaponController()       const   { return m_pWeaponController; }
+    const double&               GetDashRecoveryInterval()   const   { return m_dDashRecorveyInterval; }
+    const double&               GetDashRecoveryElapse()     const   { return m_dDashRecoveryElapseTime; }
+    CInventory*                 GetInventory()              const { return m_pInventory; }
 
 public:
     void                        SetPlayerBehaviorEnable(bool bEnable) { m_bPlayerBehaviorEnable = bEnable; }

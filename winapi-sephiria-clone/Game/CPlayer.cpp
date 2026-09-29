@@ -174,6 +174,7 @@ void CPlayer::Render(Graphics* pGraphics)
 void CPlayer::Release()
 {
 	SafeDelete<CWeaponController*>(m_pWeaponController);
+	SafeDelete<CInventory*>(m_pInventory);
 }
 
 void CPlayer::UpdateTime()

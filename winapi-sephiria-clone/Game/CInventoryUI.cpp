@@ -47,7 +47,7 @@ int CInventoryUI::Update()
 		slot->Update();
 
 	// 마우스 포인터와 충돌하는 슬롯이 없는 경우에는 -1을 반환해줌
-	m_iMouseHoverSlot = CCollisionMgr::GetCollisionSlotIndex(m_vecItemSlot);
+	m_iMouseHoverSlot = CCollisionMgr::GetCollisionSlotIndex(m_pMouse->GetInfo().vPoint, m_vecItemSlot);
 
 	// Collide 체크를 해줌
 	// 사족 - 어차피 ItemSlot도 마우스 객체를 참조하고 있으니깐 객체 위치로 내부에서 판단하는게 좋지 않나요?
@@ -119,6 +119,10 @@ void CInventoryUI::LateUpdate()
 	if (!m_bView)
 		return;
 
+	for (int i = 0; i < m_vecItemSlot.size(); ++i)
+	{
+		m_vecItemSlot[i]->SetItem(m_pInventory->GetItem(i));
+	}
 }
 
 void CInventoryUI::Render(Graphics* pGraphics)
@@ -170,4 +174,10 @@ void CInventoryUI::SetInventorySize(int iSize)
 		};
 		m_vecItemSlot[i] = static_cast<CInventorySlotUI*>(CAbstractFactory<CInventorySlotUI>::CreateUI(vPoint.fX,vPoint.fY,m_pMouse));
 	}
+}
+
+void CInventoryUI::SetInventory(CInventory* pInventory)
+{
+	m_pInventory = pInventory;
+	SetInventorySize(m_pInventory->GetInventorySize());
 }

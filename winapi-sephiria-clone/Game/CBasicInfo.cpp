@@ -57,7 +57,7 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	///////////////////////////////////// 정보, 이미지 가져오기
 
 	// 플레이어 정보 가져오기
-	CObj* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer)
 		return;
 
@@ -160,8 +160,8 @@ void CBasicInfo::Render(Graphics* pGraphics)
 		}
 		else if (i == tPlayerStat.iDash)
 		{
-			double dElapse	= static_cast<CPlayer*>(pPlayer)->GetDashRecoveryElapse();
-			double dInterval = static_cast<CPlayer*>(pPlayer)->GetDashRecoveryInterval();
+			double dElapse	= pPlayer->GetDashRecoveryElapse();
+			double dInterval = pPlayer->GetDashRecoveryInterval();
 			
 			double dRatio = dElapse / dInterval;
 			double dImgWidth = vDashSize.fX * dRatio;

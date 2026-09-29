@@ -8,7 +8,8 @@ enum class MOUSE_STATE
 {
     COMBAT,
     UI_IDLE,
-    UI_CLICK,
+    UI_CLICK_DOWN,
+    UI_CLICK_UP,
     END
 };
 
@@ -38,7 +39,7 @@ private:
 
 private:
     double m_dStateTime;
-    double m_dClickTime;
+    double m_dClickTime; // 클릭 업 애니메이션 타임
 
     CItem* m_pDragItem;
     ImageAttributes m_imgAttrTranslucent;

@@ -23,13 +23,14 @@ public:
 
 public:
 	const vector<CItem*>& GetItems() const { return m_vecItems; }
+	const int& GetInventorySize() const { return m_iInvenSize; }
+
 	CItem* GetItem(int iIdx) const { return m_vecItems[iIdx]; }
 
 private:
-	int				m_iInvenSize;
+	const int		m_iInvenSize;
 	vector<CItem*>	m_vecItems;
 
 	CPlayer*		m_pOwner;
-
 };
 

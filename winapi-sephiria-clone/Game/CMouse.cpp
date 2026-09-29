@@ -38,6 +38,9 @@ void CMouse::Initialize()
 									0.0f, 0.0f, 0.0f, 0.0f, 1.0f };
 
 	m_imgAttrTranslucent.SetColorMatrix(&colorMatrix, ColorMatrixFlagsDefault, ColorAdjustTypeBitmap);
+
+
+	m_dClickTime = 0.5;
 }
 
 int CMouse::Update()
@@ -116,7 +119,21 @@ void CMouse::Render(Graphics* pGraphics)
 			UnitPixel
 		);
 		break;
-	case MOUSE_STATE::UI_CLICK:
+	case MOUSE_STATE::UI_CLICK_DOWN:
+	{
+		vCellSize = { 18.f, 18.f };
+		vImgSize = vCellSize * PIXEL_SCALE * 0.5f;
+		DestRect = { m_tInfo.vPoint.fX, m_tInfo.vPoint.fY, vImgSize.fX, vImgSize.fY };
+		// 아틀라스 이미지에서 두번째 이미지가 클릭시 이미지임
+		pGraphics->DrawImage(
+			pImg, DestRect,
+			vCellSize.fX * 1, vCellSize.fY * m_tFrame.iMotion,
+			vCellSize.fX, vCellSize.fY,
+			UnitPixel
+		);
+		break;
+	}
+	case MOUSE_STATE::UI_CLICK_UP:
 	{
 		vCellSize = { 18.f, 18.f };
 		vImgSize = vCellSize * PIXEL_SCALE * 0.5f;
@@ -143,7 +160,7 @@ void CMouse::UpdateTime()
 {
 	m_dStateTime += DT;
 	
-	if (m_eCurState == MOUSE_STATE::UI_CLICK && m_dStateTime > m_dClickTime)
+	if (m_eCurState == MOUSE_STATE::UI_CLICK_UP && m_dStateTime > m_dClickTime)
 		m_eNextState = MOUSE_STATE::UI_IDLE;
 }
 
@@ -159,8 +176,12 @@ void CMouse::UpdateClick()
 {
 	if (KEY_DOWN(VK_LBUTTON) && m_eCurState == MOUSE_STATE::UI_IDLE)
 	{
-		m_eNextState = MOUSE_STATE::UI_CLICK;
-		m_dClickTime = 1.0;
+		m_eNextState = MOUSE_STATE::UI_CLICK_DOWN;
+	}
+
+	if (KEY_UP(VK_LBUTTON) && m_eCurState == MOUSE_STATE::UI_CLICK_DOWN)
+	{
+		m_eNextState = MOUSE_STATE::UI_CLICK_UP;
 	}
 }
 
@@ -176,9 +197,12 @@ void CMouse::ApplyChange()
 		case MOUSE_STATE::UI_IDLE:
 			m_pFrameKey = L"Cursor_UI";
 			break;
-		case MOUSE_STATE::UI_CLICK:
+		case MOUSE_STATE::UI_CLICK_DOWN:
 			m_pFrameKey = L"Cursor_UI";
-			SetFrame(0, 6, 0, m_dClickTime / 7.);
+			break;
+		case MOUSE_STATE::UI_CLICK_UP:
+			m_pFrameKey = L"Cursor_UI";
+			SetFrame(1, 6, 0, m_dClickTime / 6.);
 			break;
 		default:
 			break;

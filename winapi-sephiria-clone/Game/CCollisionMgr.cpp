@@ -156,7 +156,7 @@ void CCollisionMgr::CollisionMonsterAttack(list<CObj*>& DstList, list<CObj*>& Sr
     }
 }
 
-void CCollisionMgr::CollisionRoom(CObj* pPlayer, CStage* pStage)
+void CCollisionMgr::CollisionRoom(CPlayer* pPlayer, CStage* pStage)
 {
     RECT rc{};
 
@@ -194,7 +194,7 @@ void CCollisionMgr::CollisionRoom(CObj* pPlayer, CStage* pStage)
     }
 }
 
-void CCollisionMgr::CollisionStair(CObj* pPlayer, RECT& pStair, SCENEID eSceneID)
+void CCollisionMgr::CollisionStair(CPlayer* pPlayer, RECT& pStair, SCENEID eSceneID)
 {
     RECT rc{};
 
@@ -204,11 +204,9 @@ void CCollisionMgr::CollisionStair(CObj* pPlayer, RECT& pStair, SCENEID eSceneID
     }
 }
 
-int CCollisionMgr::GetCollisionSlotIndex(vector<CInventorySlotUI*>& vecSlots)
+int CCollisionMgr::GetCollisionSlotIndex(VEC vMousePoint, vector<CInventorySlotUI*>& vecSlots)
 {
-    POINT ptMouse{};
-    GetCursorPos(&ptMouse);
-    ScreenToClient(g_hWnd, &ptMouse);
+    POINT ptMouse{ static_cast<int>(vMousePoint.fX), static_cast<int>(vMousePoint.fY) };
 
     for (int i = 0; i < static_cast<int>(vecSlots.size()); ++i)
     {

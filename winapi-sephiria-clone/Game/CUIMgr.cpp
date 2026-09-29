@@ -26,7 +26,7 @@ void CUIMgr::ShowUI(UIID eID)
 {
 	auto iter = m_mapUI.find(eID);
 
-	CPlayer* pPlayer = static_cast<CPlayer*>(CObjMgr::GetInstance()->GetPlayer());
+	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer || nullptr == m_pMouse)
 		return;
 
@@ -49,7 +49,7 @@ void CUIMgr::ShowUI(UIID eID, CObj* pTarget)
 {
 	auto iter = m_mapUI.find(eID);
 
-	CPlayer* pPlayer = static_cast<CPlayer*>(CObjMgr::GetInstance()->GetPlayer());
+	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer)
 		return;
 
@@ -76,7 +76,7 @@ void CUIMgr::HideUI(UIID eID)
 {
 	auto iter = m_mapUI.find(eID);
 
-	CPlayer* pPlayer = static_cast<CPlayer*>(CObjMgr::GetInstance()->GetPlayer());
+	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer)
 		return;
 
@@ -99,7 +99,7 @@ void CUIMgr::ToggleUI(UIID eID)
 {
 	auto iter = m_mapUI.find(eID);
 
-	CPlayer* pPlayer = static_cast<CPlayer*>(CObjMgr::GetInstance()->GetPlayer());
+	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer)
 		return;
 
@@ -146,13 +146,15 @@ CUI* CUIMgr::CreateUI(UIID eID)
 	switch (eID)
 	{
 	case UIID::BASIC_INFO: // 플레이어 체력 마나 대시 바 (스테이지에서 왼쪽 상단에 있는거)
-		pUI = static_cast<CUI*>(CAbstractFactory<CBasicInfo>::CreateUI(m_pMouse));
+		pUI = CAbstractFactory<CBasicInfo>::CreateUI(m_pMouse);
 		break;
 	case UIID::BOSS_HP: // 에르마 체력 바
-		pUI = static_cast<CUI*>(CAbstractFactory<CBossHp>::CreateUI(m_pMouse));
+		pUI = CAbstractFactory<CBossHp>::CreateUI(m_pMouse);
 		break;
 	case UIID::INVENTORY:
-		pUI = static_cast<CUI*>(CAbstractFactory<CInventoryUI>::CreateUI(m_pMouse));
+		// 인벤토리UI를 생성할 때, 플레이어의 인벤토리를 연결해줌
+		pUI = CAbstractFactory<CInventoryUI>::CreateUI(m_pMouse);
+		static_cast<CInventoryUI*>(pUI)->SetInventory(CObjMgr::GetInstance()->GetPlayer()->GetInventory());
 		break;
 	default:
 		break;
@@ -163,7 +165,6 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		m_mapUI.emplace(eID, pUI);
 		CObjMgr::GetInstance()->AddObject(OBJID::UI, pUI);
 	}
-
 
 	return pUI;
 }
