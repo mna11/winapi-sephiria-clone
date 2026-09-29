@@ -78,7 +78,7 @@ public:
 	{
 		CItem* pItem = new T;
 		pItem->Initialize();
-		pItem->UpdateData(iID);
+		pItem->InitializeData(iID);
 		return pItem;
 	}
 

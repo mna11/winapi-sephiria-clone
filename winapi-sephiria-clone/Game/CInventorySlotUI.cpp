@@ -2,9 +2,8 @@
 #include "CInventorySlotUI.h"
 #include "CItem.h"
 
-#include "CMouse.h"
-
 #include "CImgMgr.h"
+#include "CFontMgr.h"
 
 CInventorySlotUI::CInventorySlotUI()
 	: m_pItem(nullptr), m_bCol(false)
@@ -19,7 +18,7 @@ CInventorySlotUI::~CInventorySlotUI()
 void CInventorySlotUI::Initialize()
 {
 	m_fUIScale = PIXEL_SCALE * 0.5f;
-	m_tInfo = { 0.f, 0.f, 32.f * m_fUIScale, 32.f * m_fUIScale };
+	m_tInfo = { 0.f, 0.f, 34.f * m_fUIScale, 34.f * m_fUIScale };
 
 	// 렌더 정보 초기화 
 	m_eRender = RENDERID::UI;
@@ -38,13 +37,14 @@ void CInventorySlotUI::LateUpdate()
 
 void CInventorySlotUI::Render(Graphics* pGraphics)
 {
-	// 배경 그리기
-	Image* pInventorySlotImg = CImgMgr::GetInstance()->FindImg(L"Inventory_Slot");
-	if (nullptr == pInventorySlotImg)
-		return;
-
-	VEC vCellSize = { 32.f, 32.f };
+	Image* pImg(nullptr);
+	VEC vCellSize{ 32.f, 32.f };
 	VEC vImgSize = vCellSize * m_fUIScale;
+
+	m_pFrameKey = (nullptr == m_pItem ? L"Inventory_Slot_Blank" : L"Inventory_Slot_Item");
+	pImg = CImgMgr::GetInstance()->FindImg(m_pFrameKey);
+	if (nullptr == pImg)
+		return;
 
 	RectF rcDest{ m_tInfo.vPoint.fX - vImgSize.fX * 0.5f,
 					m_tInfo.vPoint.fY - vImgSize.fY * 0.5f,
@@ -52,7 +52,7 @@ void CInventorySlotUI::Render(Graphics* pGraphics)
 					vImgSize.fY };
 
 	pGraphics->DrawImage(
-		pInventorySlotImg, rcDest,
+		pImg, rcDest,
 		(m_bCol ? vCellSize.fX : 0),
 		0,
 		vCellSize.fX,
@@ -80,6 +80,14 @@ void CInventorySlotUI::Render(Graphics* pGraphics)
 		vCellSize.fY,
 		UnitPixel
 	);
+
+	// 아이템 레벨 그리기
+	wstring strLevel = to_wstring(m_pItem->GetLevel()) + L"/" + to_wstring(m_pItem->GetItemInfo().iMaxLevel);
+	VEC vOffset{ 5.f * m_fUIScale, 5.f * m_fUIScale };
+	RectF DestRect{	m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + vOffset.fX, 
+					m_tInfo.vPoint.fY - vImgSize.fX * 0.5f + vOffset.fY, 
+					50.f, 50.f};
+	CFontMgr::GetInstance()->DrawString(pGraphics, strLevel, FONT_TYPE::PIXEL_SMALL, DestRect, Color{ 255, 255, 255, 255 }, 12.f, StringAlignmentNear, StringAlignmentNear);
 }
 
 void CInventorySlotUI::Release()

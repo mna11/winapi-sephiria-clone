@@ -14,16 +14,26 @@ public:
     void Release() override;
 
 public:
-    void UpdateData(int iID);
+    void InitializeData(int iID);
+    void UpdateData();
+
 public:
-    void SetItemInfo(int iID, wstring strImg, wstring strName, wstring strDescription, ITEM_CATEGORY eCategory)
+    const int& GetLevel() const { return m_iLevel; }
+
+public:
+    void SetItemInfo(int iID, int iMaxLevel, wstring strImg, wstring strName, wstring strDescription, ITEM_CATEGORY eCategory)
     {
-        m_tItemInfo = { iID, strImg, strName, strDescription, eCategory };
+        m_tItemInfo = { iID, iMaxLevel, strImg, strName, strDescription, eCategory };
     }
+  
+public:
+    void AddLevel(int iLevel);
+
 public:
     const ITEM_INFO& GetItemInfo() const { return m_tItemInfo; }
 
 private:
+    int       m_iLevel;
     ITEM_INFO m_tItemInfo;
 };
 

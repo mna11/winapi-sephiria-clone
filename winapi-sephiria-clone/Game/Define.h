@@ -92,7 +92,9 @@ enum class ITEM_CATEGORY
 	SAVVY,			// 교섭
 	SHADOW,			// 그림자
 	STURDY,			// 견고
-	WINDSONG		// 바람노래
+	WINDSONG,		// 바람노래
+	STONETARBLET,	// 석판
+	END
 };
 /////////////////////////////////////////
 // 구조체
@@ -256,6 +258,7 @@ typedef struct tagAttackInfo
 typedef struct tagItemInfo
 {
 	int				iID;				// 아이템 아이디
+	int				iMaxLevel;			// 아이템 최대 레벨
 	std::wstring	strImg;				// 이미지 프레임 키
 	std::wstring	strName;			// 아이템 이름
 	std::wstring	strDescription;		// 아이템 설명

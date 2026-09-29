@@ -31,7 +31,8 @@ void CInventoryUI::Initialize()
 
 	// 스프라이트 넣기 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventoryBase.png", L"Inventory_Base");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot.png", L"Inventory_Slot");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot_Blank.png", L"Inventory_Slot_Blank");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot_Item.png", L"Inventory_Slot_Item");
 
 	// 렌더 정보 초기화 
 	m_eRender = RENDERID::UI;
@@ -58,7 +59,7 @@ int CInventoryUI::Update()
 		m_vecItemSlot[i]->SetCollide(i == m_iMouseHoverSlot);
 	}
 
-	// 드래그 시작!
+	// 드래그 시작
 	if (KEY_DOWN(VK_LBUTTON) && m_iMouseHoverSlot != -1)
 	{
 		CItem* pDragItem = m_pInventory->GetItem(m_iMouseHoverSlot);
@@ -78,7 +79,7 @@ int CInventoryUI::Update()
 		}
 	}
 
-	// 드래그 끝!
+	// 드래그 끝
 	if (KEY_UP(VK_LBUTTON) && m_bDrag)
 	{
 		// 이동해야되는 인덱스 정리
@@ -119,10 +120,7 @@ void CInventoryUI::LateUpdate()
 	if (!m_bView)
 		return;
 
-	for (int i = 0; i < m_vecItemSlot.size(); ++i)
-	{
-		m_vecItemSlot[i]->SetItem(m_pInventory->GetItem(i));
-	}
+	SyncInventorySlot();
 }
 
 void CInventoryUI::Render(Graphics* pGraphics)
@@ -140,7 +138,7 @@ void CInventoryUI::Render(Graphics* pGraphics)
 	RectF rcDest = { m_tInfo.vPoint.fX, m_tInfo.vPoint.fY, vImgSize.fX, vImgSize.fY};
 	pGraphics->DrawImage(pInventoryBaseImg, rcDest, 0, 0, vCellSize.fX, vCellSize.fY, UnitPixel);
 
-	// 슬롯 그리기
+	// 슬롯 & 레벨 그리기
 	for (auto& slot : m_vecItemSlot)
 		slot->Render(pGraphics);
 }
@@ -157,20 +155,20 @@ void CInventoryUI::SetInventorySize(int iSize)
 	Release();
 
 	float fSlotSize = 32.f;
-	float fGap = 2.f;
-	float fStep = (fSlotSize + fGap) * m_fUIScale;
+	VEC vGap = { 2.f, 1.5f };
+	VEC vStep = VEC{ fSlotSize + vGap.fX, fSlotSize + vGap.fY } * m_fUIScale;
 
 	// 첫 슬롯 위치
 	const VEC vOffset{ (21.f + fSlotSize * 0.5f) * m_fUIScale,
-						(22.f + fSlotSize * 0.5f) * m_fUIScale };
+					   (23.f + fSlotSize * 0.5f) * m_fUIScale };
 
 	m_vecItemSlot.resize(iSize, nullptr);
 
 	for (int i = 0; i < iSize; ++i)
 	{
 		const VEC vPoint{
-			m_tInfo.vPoint.fX + vOffset.fX + fStep * (i % INVEN_COL),
-			m_tInfo.vPoint.fY + vOffset.fY + fStep * (i / INVEN_COL)
+			m_tInfo.vPoint.fX + vOffset.fX + vStep.fX * (i % INVEN_COL),
+			m_tInfo.vPoint.fY + vOffset.fY + vStep.fY * (i / INVEN_COL)
 		};
 		m_vecItemSlot[i] = static_cast<CInventorySlotUI*>(CAbstractFactory<CInventorySlotUI>::CreateUI(vPoint.fX,vPoint.fY,m_pMouse));
 	}
@@ -181,3 +179,13 @@ void CInventoryUI::SetInventory(CInventory* pInventory)
 	m_pInventory = pInventory;
 	SetInventorySize(m_pInventory->GetInventorySize());
 }
+
+void CInventoryUI::SyncInventorySlot()
+{
+	// 인벤토리 슬롯 싱크 맞추기
+	for (int i = 0; i < m_vecItemSlot.size(); ++i)
+	{
+		m_vecItemSlot[i]->SetItem(m_pInventory->GetItem(i));
+	}
+}
+
