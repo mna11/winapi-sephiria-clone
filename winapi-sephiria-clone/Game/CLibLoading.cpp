@@ -19,7 +19,6 @@ CLibLoading::~CLibLoading()
 
 void CLibLoading::Initialize()
 {
-	CUIMgr::GetInstance()->HideUI(UIID::BASIC_INFO);
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Stage/LibLoading.png",L"LibLoading");
 }
 

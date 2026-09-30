@@ -5,12 +5,15 @@
 #include "CPlayer.h"
 #include "CMouse.h"
 #include "CAbstractFactory.h"
+#include "CImgMgr.h"
 
 #include "CUI.h"
 #include "CBasicInfo.h"
 #include "CBossHp.h"
 #include "CInventoryUI.h"
 #include "CItemToolTip.h"
+#include "CShopTable.h"
+#include "CEscapeButton.h"
 
 CUIMgr* CUIMgr::m_pInstance = nullptr;
 
@@ -21,6 +24,21 @@ CUIMgr::CUIMgr()
 
 CUIMgr::~CUIMgr()
 {
+}
+
+void CUIMgr::Initialize()
+{
+	// 스프라이트 넣기 
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventoryBase.png", L"Inventory_Base");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot_Blank.png", L"Inventory_Slot_Blank");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot_Item.png", L"Inventory_Slot_Item");
+
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/ItemToolTip_Base.png", L"ItemToolTip_Base");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Shop/ShopListBase.png", L"ShopList");
+
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/EscapeButton/EscapeButton.png", L"EscapeButton");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/EscapeButton/EscString.png", L"EscapeString");
+
 }
 
 void CUIMgr::ShowUI(UIID eID)
@@ -43,7 +61,7 @@ void CUIMgr::ShowUI(UIID eID)
 
 	if (eID == UIID::INVENTORY)
 	{
-		pPlayer->SetPlayerBehaviorEnable(true);
+		pPlayer->SetPlayerBehaviorEnable(false);
 		m_pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
 	}
 }
@@ -72,7 +90,7 @@ void CUIMgr::ShowUI(UIID eID, CObj* pTarget)
 
 	if (eID == UIID::INVENTORY)
 	{
-		pPlayer->SetPlayerBehaviorEnable(true);
+		pPlayer->SetPlayerBehaviorEnable(false);
 		m_pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
 	}
 }
@@ -80,25 +98,27 @@ void CUIMgr::ShowUI(UIID eID, CObj* pTarget)
 void CUIMgr::HideUI(UIID eID)
 {
 	auto iter = m_mapUI.find(eID);
+	if (iter == m_mapUI.end())
+		return;
 
 	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer)
 		return;
 
-	if (iter == m_mapUI.end())
-	{
-		CUI* pUI = CreateUI(eID);
-		if (nullptr == pUI)
-			return;
-		pUI->Hide();
-	}
-	else
-		(*iter).second->Hide();
+	(*iter).second->Hide();
 
 	if (eID == UIID::INVENTORY)
 	{
 		pPlayer->SetPlayerBehaviorEnable(true);
 		m_pMouse->RequestChange(MOUSE_STATE::COMBAT);
+	}
+}
+
+void CUIMgr::HideAllUI()
+{
+	for (int i = 0; i < toUType(UIID::END); ++i)
+	{
+		HideUI(static_cast<UIID>(i));
 	}
 }
 
@@ -173,6 +193,12 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		break;
 	case UIID::ITEM_TOOLTIP:
 		pUI = CAbstractFactory<CItemToolTip>::CreateUI(m_pMouse);
+		break;
+	case UIID::SHOP_TABLE:
+		pUI = CAbstractFactory<CShopTable>::CreateUI(m_pMouse);
+		break;
+	case UIID::ESCAPE_BUTTON:
+		pUI = CAbstractFactory<CEscapeButton>::CreateUI(m_pMouse);
 		break;
 	default:
 		break;

@@ -43,9 +43,18 @@ public:
 	void ApplyChange();
 	void RequestChange(SCENEID eScene);
 	
+	// 저장해둔 씬으로 변경하는 상황
+	void BackToSaveScene();
+
+private:
+	bool HandleChangeShop();
+
 private:
 	static CSceneMgr* m_pInstance;
 	CScene* m_pScene;
+
+	CScene* m_pSaveScene;
+	SCENEID m_eSaveScene;
 
 	SCENEID	m_eCurScene;
 	SCENEID m_ePreScene;

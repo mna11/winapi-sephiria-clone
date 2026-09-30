@@ -30,11 +30,6 @@ void CInventoryUI::Initialize()
 	// m_tInfo.vPoint가 중점이 아니라 LT임
 	m_tInfo = { 600.f, (WINCY >> 1) - 169.f * 0.5f * m_fUIScale, 0.f, 0.f };
 
-	// 스프라이트 넣기 
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventoryBase.png", L"Inventory_Base");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot_Blank.png", L"Inventory_Slot_Blank");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot_Item.png", L"Inventory_Slot_Item");
-
 	// 렌더 정보 초기화 
 	m_eRender = RENDERID::UI;
 	m_iRenderLayer = 3;    
@@ -65,7 +60,7 @@ int CInventoryUI::Update()
 	{
 		m_pMouse->SetHoverItem(m_pInventory->GetItem(m_iMouseHoverSlot));
 		CUIMgr::GetInstance()->ShowUI(UIID::ITEM_TOOLTIP);
-		CUIMgr::GetInstance()->SetPos(UIID::ITEM_TOOLTIP, VEC{ 150.f, 200.f });
+		CUIMgr::GetInstance()->SetPos(UIID::ITEM_TOOLTIP, VEC{ 210.f, 200.f });
 	}
 	else
 	{

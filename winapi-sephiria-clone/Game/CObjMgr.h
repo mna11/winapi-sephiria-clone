@@ -32,7 +32,9 @@ public:
 public:
 	void AddObject(OBJID eID, CObj* pObj);
 	int  Update();
+	int  UpdateOnly(initializer_list<OBJID> ids);
 	void LateUpdate();
+	void LateUpdateOnly(initializer_list<OBJID> ids);
 	void Render(Graphics* pGraphics);
 	void Release();
 

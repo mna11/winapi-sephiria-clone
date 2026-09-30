@@ -22,9 +22,6 @@ void CItemToolTip::Initialize()
 	// m_tInfo.vPoint가 중점이 아니라 LT임
 	m_tInfo = { 0.f, 0.f, 0.f, 0.f };
 
-	// 스프라이트 넣기 
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/ItemToolTip_Base.png", L"ItemToolTip_Base");
-
 	// 렌더 정보 초기화 
 	m_eRender = RENDERID::UI;
 	m_iRenderLayer = 5;

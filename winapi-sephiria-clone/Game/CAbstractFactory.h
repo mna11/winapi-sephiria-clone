@@ -8,6 +8,7 @@
 #include "CSword.h"
 #include "CShield.h"
 #include "CItem.h"
+#include "CScene.h"
 #include "CInventory.h"
 
 template<typename T>
@@ -106,6 +107,13 @@ public:
 		pUI->SetPos(fX, fY);
 		pUI->SetMouse(pMouse);
 		return pUI;
+	}
+
+	static CScene* CreateScene()
+	{
+		CScene* pScene = new T;
+		pScene->Initialize();
+		return pScene;
 	}
 };
 
