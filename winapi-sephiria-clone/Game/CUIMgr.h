@@ -10,7 +10,7 @@ private:
 	CUIMgr();
 	~CUIMgr();
 	CUIMgr(const CUIMgr& rhs) = delete;
-	CUIMgr& operator=(CUIMgr& rTileMgr) = delete;
+	CUIMgr& operator=(CUIMgr& rUIMgr) = delete;
 
 public:
 	static CUIMgr* GetInstance()
@@ -43,6 +43,7 @@ public:
 
 public:
 	void SetMouse(CMouse* pMouse) { m_pMouse = pMouse; }
+	void SetPos(UIID eID, VEC vPoint);
 
 private:
 	CUI* CreateUI(UIID eID);

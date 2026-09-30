@@ -3,6 +3,7 @@
 
 #include "CMouse.h"
 
+#include "CUIMgr.h"
 #include "CImgMgr.h"
 #include "CObjMgr.h"
 #include "CInventory.h"
@@ -36,7 +37,7 @@ void CInventoryUI::Initialize()
 
 	// 렌더 정보 초기화 
 	m_eRender = RENDERID::UI;
-	m_iRenderLayer = 4;    
+	m_iRenderLayer = 3;    
 }
 
 int CInventoryUI::Update()
@@ -59,23 +60,30 @@ int CInventoryUI::Update()
 		m_vecItemSlot[i]->SetCollide(i == m_iMouseHoverSlot);
 	}
 
-	// 드래그 시작
-	if (KEY_DOWN(VK_LBUTTON) && m_iMouseHoverSlot != -1)
+	// 마우스 호버 아이템 세팅
+	if (m_pInventory->IsExistItem(m_iMouseHoverSlot))
 	{
-		CItem* pDragItem = m_pInventory->GetItem(m_iMouseHoverSlot);
+		m_pMouse->SetHoverItem(m_pInventory->GetItem(m_iMouseHoverSlot));
+		CUIMgr::GetInstance()->ShowUI(UIID::ITEM_TOOLTIP);
+		CUIMgr::GetInstance()->SetPos(UIID::ITEM_TOOLTIP, VEC{ 150.f, 200.f });
+	}
+	else
+	{
+		CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
+	}
 
-		// 빈 슬롯이 아닌 경우에만 시작
-		if (pDragItem != nullptr)
-		{
-			// 마우스가 현재 드래그 중인 아이템을 참조하게 해줌 - 렌더용
-			m_pMouse->SetDragItem(pDragItem);
 
-			m_iStartSlot = m_iMouseHoverSlot;
-			m_bDrag = true;
+	// 드래그 시작
+	if (KEY_DOWN(VK_LBUTTON) && m_pInventory->IsExistItem(m_iMouseHoverSlot))
+	{
+		// 마우스가 현재 드래그 중인 아이템을 참조하게 해줌 - 렌더용
+		m_pMouse->SetDragItem(m_pInventory->GetItem(m_iMouseHoverSlot));
 
-			// 원래 슬롯은 안보이게 함
-			m_vecItemSlot[m_iStartSlot]->SetItem(nullptr);
-		}
+		m_iStartSlot = m_iMouseHoverSlot;
+		m_bDrag = true;
+
+		// 원래 슬롯은 안보이게 함
+		m_vecItemSlot[m_iStartSlot]->SetItem(nullptr);
 	}
 
 	// 드래그 끝

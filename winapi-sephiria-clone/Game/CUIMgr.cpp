@@ -10,6 +10,7 @@
 #include "CBasicInfo.h"
 #include "CBossHp.h"
 #include "CInventoryUI.h"
+#include "CItemToolTip.h"
 
 CUIMgr* CUIMgr::m_pInstance = nullptr;
 
@@ -33,6 +34,8 @@ void CUIMgr::ShowUI(UIID eID)
 	if (iter == m_mapUI.end())
 	{
 		CUI* pUI = CreateUI(eID);
+		if (nullptr == pUI)
+			return;
 		pUI->Show();
 	}
 	else
@@ -56,6 +59,8 @@ void CUIMgr::ShowUI(UIID eID, CObj* pTarget)
 	if (iter == m_mapUI.end())
 	{
 		CUI* pUI = CreateUI(eID);
+		if (nullptr == pUI)
+			return;
 		pUI->Show();
 		pUI->SetTarget(pTarget);
 	}
@@ -83,6 +88,8 @@ void CUIMgr::HideUI(UIID eID)
 	if (iter == m_mapUI.end())
 	{
 		CUI* pUI = CreateUI(eID);
+		if (nullptr == pUI)
+			return;
 		pUI->Hide();
 	}
 	else
@@ -106,6 +113,8 @@ void CUIMgr::ToggleUI(UIID eID)
 	if (iter == m_mapUI.end())
 	{
 		CUI* pUI = CreateUI(eID);
+		if (nullptr == pUI)
+			return;
 		pUI->Toggle();
 	}
 	else
@@ -134,9 +143,15 @@ CUI* CUIMgr::GetUI(UIID eID)
 	}
 	else
 	{
-		(*iter).second->Toggle();
 		return (*iter).second;
 	}
+}
+
+void CUIMgr::SetPos(UIID eID, VEC vPoint)
+{
+	CUI* pUI = GetUI(eID);
+	if (nullptr != pUI)
+		pUI->SetPos(vPoint);
 }
 
 CUI* CUIMgr::CreateUI(UIID eID)
@@ -155,6 +170,9 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		// 인벤토리UI를 생성할 때, 플레이어의 인벤토리를 연결해줌
 		pUI = CAbstractFactory<CInventoryUI>::CreateUI(m_pMouse);
 		static_cast<CInventoryUI*>(pUI)->SetInventory(CObjMgr::GetInstance()->GetPlayer()->GetInventory());
+		break;
+	case UIID::ITEM_TOOLTIP:
+		pUI = CAbstractFactory<CItemToolTip>::CreateUI(m_pMouse);
 		break;
 	default:
 		break;

@@ -29,8 +29,12 @@ public:
     void ApplyChange() override;
 
 public:
-    void            SetDragItem(CItem* pItem) { m_pDragItem = pItem; }
-    const CItem*    GetDragItem() const { return m_pDragItem; }
+    void            SetDragItem(CItem* pItem)   { m_pDragItem = pItem; }
+    void            SetHoverItem(CItem* pItem)  { m_pHoverItem = pItem; }
+
+public:
+    const CItem*    GetDragItem()   const   { return m_pDragItem; }
+    const CItem*    GetHoverItem()  const   { return m_pHoverItem; }
 
 private:
     void UpdateTime();
@@ -41,6 +45,7 @@ private:
     double m_dStateTime;
     double m_dClickTime; // 클릭 업 애니메이션 타임
 
+    CItem* m_pHoverItem;
     CItem* m_pDragItem;
     ImageAttributes m_imgAttrTranslucent;
 };

@@ -8,7 +8,7 @@ private:
 	CEffectMgr();
 	~CEffectMgr();
 	CEffectMgr(const CEffectMgr& rhs) = delete;
-	CEffectMgr& operator=(CEffectMgr& rTileMgr) = delete;
+	CEffectMgr& operator=(CEffectMgr& rEffectMgr) = delete;
 
 public:
 	static CEffectMgr* GetInstance()

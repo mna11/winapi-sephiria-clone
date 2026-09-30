@@ -2,9 +2,8 @@
 #include "CItem.h"
 
 CItem::CItem()
-	: m_iLevel(0)
+	: m_iLevel(0), m_iID(0)
 {
-	ZeroMemory(&m_tItemInfo, sizeof(ITEM_INFO));
 }
 
 CItem::~CItem()
@@ -18,6 +17,9 @@ void CItem::Initialize()
 
 int CItem::Update()
 {
+	if (m_bDead)
+		return DEAD;
+
 	return NOEVENT;
 }
 
@@ -35,189 +37,29 @@ void CItem::Release()
 
 void CItem::InitializeData(int iID)
 {
-	switch (iID)
-	{
-	case 0:
-		// 정보 초기화
-		SetItemInfo(iID, 5, L"Balisong", L"발리송", L"발리송 아이템 설명입니다.", ITEM_CATEGORY::PRECISION);
-		// 스탯 초기화
-		m_tStat.iAtk = 10;
-		break;
-	case 1:
-		// 정보 초기화
-		SetItemInfo(iID, 5, L"Balisong", L"발리송", L"발리송 아이템 설명입니다.", ITEM_CATEGORY::PRECISION);
-		// 스탯 초기화
-		m_tStat.iAtk = 10;
-		break;
-	case 2:
-		// 정보 초기화
-		SetItemInfo(iID, 5, L"Balisong", L"발리송", L"발리송 아이템 설명입니다.", ITEM_CATEGORY::PRECISION);
-		// 스탯 초기화
-		m_tStat.iAtk = 10;
-		break;
-	case 3:
-		// 정보 초기화
-		SetItemInfo(iID, 5, L"Balisong", L"발리송", L"발리송 아이템 설명입니다.", ITEM_CATEGORY::PRECISION);
-		// 스탯 초기화
-		m_tStat.iAtk = 10;
-		break;
-	case 4:
-		// 정보 초기화
-		SetItemInfo(iID, 5, L"Balisong", L"발리송", L"발리송 아이템 설명입니다.", ITEM_CATEGORY::PRECISION);
-		// 스탯 초기화
-		m_tStat.iAtk = 10;
-		break;
-	case 5:
-		// 정보 초기화
-		SetItemInfo(iID, 5, L"Balisong", L"발리송", L"발리송 아이템 설명입니다.", ITEM_CATEGORY::PRECISION);
-		// 스탯 초기화
-		m_tStat.iAtk = 10;
-		break;
-	default:
-		break;
-	}
+	m_iLevel = 0;
+	m_iID = iID;
+
+	const ITEM_INFO* pItemInfo = CItemData::GetInstance()->FindItemInfo(m_iID);
+	m_tStat = pItemInfo->vecStat[m_iLevel];
 }
 
-void CItem::UpdateData()
+void CItem::ChangeLevel(int iLevel)
 {
-	switch (m_tItemInfo.iID)
-	{
-	case 0:
-		switch (m_iLevel)
-		{
-		case 0:
-			m_tStat.iAtk = 10;
-			m_tItemInfo.strDescription += L"1렙";
-			break;
-		case 1:
-			m_tStat.iAtk = 15;
-			m_tItemInfo.strDescription += L"1렙";
-			break;
-		case 2:
-			m_tStat.iAtk = 20;
-			m_tItemInfo.strDescription += L"2렙";
-			break;
-		case 3:
-			m_tStat.iAtk = 25;
-			m_tItemInfo.strDescription += L"3렙";
-			break;
-		case 4:
-			m_tStat.iAtk = 30;
-			m_tItemInfo.strDescription += L"4렙";
-			break;
-		case 5:
-			m_tStat.iAtk = 40;
-			m_tItemInfo.strDescription += L"5렙";
-			break;
-		default:
-			break;
-		}
-		break;
-	case 1:
-		switch (m_iLevel)
-		{
-		case 0:
-			break;
-		case 1:
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		case 5:
-			break;
-		default:
-			break;
-		}
-		break;
-	case 2:
-		switch (m_iLevel)
-		{
-		case 0:
-			break;
-		case 1:
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		case 5:
-			break;
-		default:
-			break;
-		}
-		break;
-	case 3:
-		switch (m_iLevel)
-		{
-		case 0:
-			break;
-		case 1:
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		case 5:
-			break;
-		default:
-			break;
-		}
-		break;
-	case 4:
-		switch (m_iLevel)
-		{
-		case 0:
-			break;
-		case 1:
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		case 5:
-			break;
-		default:
-			break;
-		}
-		break;
-	case 5:
-		switch (m_iLevel)
-		{
-		case 0:
-			break;
-		case 1:
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		case 5:
-			break;
-		default:
-			break;
-		}
-		break;
-	default:
-		break;
-	}
-}
+	// 최대 레벨보다 클 수도 있지만, 스탯이 높아지지는 않고
+	// 0보다 작아질 수 있지만 스탯 적용이 안됨
+	m_iLevel = iLevel;
 
-void CItem::AddLevel(int iLevel)
-{
-	m_iLevel += iLevel;
-	if (m_iLevel <= 0)
-		m_iLevel = 0; 
+	m_pTarget->AddStat(m_tStat * -1);
 
-	UpdateData();
+	const ITEM_INFO* pItemInfo = CItemData::GetInstance()->FindItemInfo(m_iID);
+	int iMaxLevel = pItemInfo->vecStat.size() - 1; // 3렙까지 (0 1 2 3)
+	if (iLevel > iMaxLevel)
+		m_tStat = pItemInfo->vecStat[iMaxLevel];
+	else if (iLevel < 0)
+		m_tStat = STAT{}; 
+	else
+		m_tStat = pItemInfo->vecStat[iLevel];
+
+	m_pTarget->AddStat(m_tStat);
 }

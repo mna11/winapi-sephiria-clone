@@ -52,6 +52,7 @@ void CStage::HotKey()
     if (KEY_DOWN('U'))
     {
         CUIMgr::GetInstance()->ToggleUI(UIID::INVENTORY);
+        CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
     }
 }
 

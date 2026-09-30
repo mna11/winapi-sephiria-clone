@@ -74,11 +74,12 @@ public:
 		return pObj;
 	}
 
-	static CItem* CreateItem(int iID)
+	static CItem* CreateItem(int iID, CPlayer* pPlayer)
 	{
 		CItem* pItem = new T;
 		pItem->Initialize();
 		pItem->InitializeData(iID);
+		pItem->SetTarget(pPlayer);
 		return pItem;
 	}
 

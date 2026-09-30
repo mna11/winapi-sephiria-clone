@@ -108,7 +108,7 @@ void CErmaLaser::LateUpdate()
     RECT rcCollision{};
     if (IntersectRect(&rcCollision, &m_tRect, &pPlayer->GetRect()))
     {
-        pPlayer->SetDamage(m_tStat.iAtk, this);
+        pPlayer->SetDamage(m_tStat.iPhysicalAtk, this);
         m_bDamageApplied = true;
     }
 }
