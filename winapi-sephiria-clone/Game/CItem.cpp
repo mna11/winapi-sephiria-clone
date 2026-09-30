@@ -2,9 +2,8 @@
 #include "CItem.h"
 
 CItem::CItem()
-	: m_iLevel(0)
+	: m_iLevel(0), m_tItemInfo{}
 {
-	ZeroMemory(&m_tItemInfo, sizeof(ITEM_INFO));
 }
 
 CItem::~CItem()
@@ -39,7 +38,7 @@ void CItem::InitializeData(int iID)
 	{
 	case 0:
 		// 정보 초기화
-		SetItemInfo(iID, 5, L"Balisong", L"발리송", L"발리송 아이템 설명입니다.", ITEM_CATEGORY::PRECISION);
+		SetItemInfo(iID, 5, L"Balisong", L"발리송", L"2.5타일 이내 거리의 적에게 주는 피해량 +6/8/11/14%", ITEM_CATEGORY::PRECISION);
 		// 스탯 초기화
 		m_tStat.iAtk = 10;
 		break;

@@ -63,8 +63,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     g_pFontCollection = new PrivateFontCollection;
 #pragma pop_macro("new")
 
-    // 갈무리 7 - 일반 글 출력용
-    g_pFontCollection->AddFontFile(L"../Resource/Font/Galmuri7.ttf");
+    // 갈무리 11 - 일반 글 출력용
+    g_pFontCollection->AddFontFile(L"../Resource/Font/Galmuri11.ttf");
     // 아틀라스 pixel 이미지 ttf
     g_pFontCollection->AddFontFile(L"../Resource/Font/Sephiria_PixelBig.ttf");
     g_pFontCollection->AddFontFile(L"../Resource/Font/Sephiria_PixelBold.ttf");

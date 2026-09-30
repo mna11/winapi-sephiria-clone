@@ -10,6 +10,7 @@
 #include "CBasicInfo.h"
 #include "CBossHp.h"
 #include "CInventoryUI.h"
+#include "CItemToolTip.h"
 
 CUIMgr* CUIMgr::m_pInstance = nullptr;
 
@@ -155,6 +156,9 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		// 인벤토리UI를 생성할 때, 플레이어의 인벤토리를 연결해줌
 		pUI = CAbstractFactory<CInventoryUI>::CreateUI(m_pMouse);
 		static_cast<CInventoryUI*>(pUI)->SetInventory(CObjMgr::GetInstance()->GetPlayer()->GetInventory());
+		break;
+	case UIID::ITEM_TOOLTIP:
+		pUI = CAbstractFactory<CItemToolTip>::CreateUI(m_pMouse);
 		break;
 	default:
 		break;

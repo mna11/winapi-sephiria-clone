@@ -8,7 +8,7 @@ enum class FONT_TYPE
 	PIXEL_BIG,		// Unity TMP 아틀라스 추출한거 - 숫자용
 	PIXEL_BOLD,		// ...
 	PIXEL_SMALL,	// ...
-	NORMAL,			// 갈무리 7
+	NORMAL,			// 갈무리 11
 	END
 };
 
@@ -47,7 +47,7 @@ public:
 	
 public:
 	void DrawString(Graphics* pGraphics,									// 그래픽스 (그릴 곳) 
-					wstring& wstr,											// 출력할 문자열
+					const wstring& wstr,									// 출력할 문자열
 					FONT_TYPE eFont,										// 폰트 타입
 					RectF rc,												// 출력할 위치
 					Color color,											// 문자열 색깔

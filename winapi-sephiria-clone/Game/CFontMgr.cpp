@@ -23,13 +23,13 @@ void CFontMgr::Initialize()
 	m_vecFontFamily.push_back(new FontFamily(L"Pixel Big", g_pFontCollection));
 	m_vecFontFamily.push_back(new FontFamily(L"Pixel Bold", g_pFontCollection));
 	m_vecFontFamily.push_back(new FontFamily(L"Pixel Small", g_pFontCollection));
-	m_vecFontFamily.push_back(new FontFamily(L"Galmuri7 Regular", g_pFontCollection));
+	m_vecFontFamily.push_back(new FontFamily(L"Galmuri11 Regular", g_pFontCollection));
 	
 	// 폰트 초기화
 	m_vecFont.push_back(new Font(m_vecFontFamily[toUType(FONT_TYPE::PIXEL_BIG)], 24.f, FontStyleRegular, UnitPixel));
 	m_vecFont.push_back(new Font(m_vecFontFamily[toUType(FONT_TYPE::PIXEL_BOLD)], 24.f, FontStyleRegular, UnitPixel));
 	m_vecFont.push_back(new Font(m_vecFontFamily[toUType(FONT_TYPE::PIXEL_SMALL)], 18.f, FontStyleRegular, UnitPixel));
-	m_vecFont.push_back(new Font(m_vecFontFamily[toUType(FONT_TYPE::NORMAL)], 21.f, FontStyleRegular, UnitPixel));
+	m_vecFont.push_back(new Font(m_vecFontFamily[toUType(FONT_TYPE::NORMAL)], 18.f, FontStyleRegular, UnitPixel));
 #pragma pop_macro("new")
 
 	// 폰트 정렬 초기화
@@ -52,7 +52,7 @@ void CFontMgr::Release()
 	m_vecFontFamily.shrink_to_fit();
 }
 
-void CFontMgr::DrawString(Graphics* pGraphics, wstring& wstr, FONT_TYPE eFont, RectF rc, Color color, float fSize, StringAlignment alignment, StringAlignment lineAlignment)
+void CFontMgr::DrawString(Graphics* pGraphics, const wstring& wstr, FONT_TYPE eFont, RectF rc, Color color, float fSize, StringAlignment alignment, StringAlignment lineAlignment)
 {
 	m_sf.SetAlignment(alignment);
 	m_sf.SetLineAlignment(lineAlignment);

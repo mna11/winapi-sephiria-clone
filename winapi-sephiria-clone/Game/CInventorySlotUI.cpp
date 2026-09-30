@@ -22,7 +22,7 @@ void CInventorySlotUI::Initialize()
 
 	// 렌더 정보 초기화 
 	m_eRender = RENDERID::UI;
-	m_iRenderLayer = 5;      // UI 중에 최강
+	m_iRenderLayer = 4;      // UI 중에 최강
 }
 
 int CInventorySlotUI::Update()
