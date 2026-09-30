@@ -65,6 +65,7 @@ int CInventoryUI::Update()
 	{
 		m_pMouse->SetHoverItem(m_pInventory->GetItem(m_iMouseHoverSlot));
 		CUIMgr::GetInstance()->ShowUI(UIID::ITEM_TOOLTIP);
+		CUIMgr::GetInstance()->SetPos(UIID::ITEM_TOOLTIP, VEC{ 150.f, 200.f });
 	}
 	else
 	{

@@ -77,20 +77,20 @@ enum class ITEM_CATEGORY
 	ALCHEMY,		// 연금술
 	COMPANION,		// 동료
 	CURSE,			// 저주
-	DARKCLOUD,		// 먹구름
 	ELEMENTAL,		// 원소
 	EMBER,			// 잉걸불
-	FLAMESWORD,		// 태양검
-	FROST,			// 얼음무구
+	FROSTRELIC,		// 얼음무구
 	GLACIER,		// 빙하
 	GUARDIAN,		// 수호
 	LAKE,			// 호수
 	MAGITECH,		// 마법공학
 	MYSTIC,			// 신비
+	NEGOTIATION,	// 교섭
 	PLANET,			// 행성
 	PRECISION,		// 정밀
-	SAVVY,			// 교섭
 	SHADOW,			// 그림자
+	SOLARBLADE,		// 태양검
+	STORMCLOUD,		// 먹구름
 	STURDY,			// 견고
 	WINDSONG,		// 바람노래
 	END
@@ -246,6 +246,43 @@ typedef struct tagStat
 			fHpRestoredOnLevelUp + rhs.fHpRestoredOnLevelUp
 		};
 	}
+
+	tagStat	operator*(const int iMul) const {
+		return tagStat
+		{
+			iHp * iMul,
+			iMaxHp * iMul,
+			iPhysicalAtk* iMul,
+			iFireAtk * iMul,
+			iFrozenAtk * iMul,
+			iLightingAtk * iMul,
+
+			iMp * iMul,
+			iMaxMp * iMul,
+			iMpRegeneration * iMul,
+
+			iDefense * iMul,
+			iEvasion * iMul,
+
+			iDash * iMul,
+			iMaxDash * iMul,
+
+
+			fCriticalChange * iMul,
+			fCriticalDamage * iMul,
+			fAttackSpeed * iMul,
+			fMoveSpeed * iMul,
+			fDashRecoverySpeed * iMul,
+
+			iBarter * iMul,
+			iLuck * iMul,
+
+
+			fExperienceDrop * iMul,
+			fLeafDrop * iMul,
+			fHpRestoredOnLevelUp * iMul
+		};
+	}
 } STAT;
 
 // 무기공격 정보
@@ -265,20 +302,17 @@ typedef struct tagAttackInfo
 // 아이템 정보
 typedef struct tagItemInfo
 {
-	int				iID;				// 아이템 아이디
+	int				iID;						// 아이템 아이디
 
-	std::wstring	strImg;				// 아이템 이미지 프레임 키
-	std::wstring	strCategoryImg;		// 카테고리 이미지 프레임 키
+	std::wstring	strImg;						// 아이템 이미지 프레임 키
+	std::wstring	strCategoryImg;				// 카테고리 이미지 프레임 키
 
-	std::wstring	strName;			// 아이템 이름
-	std::wstring	strCategoryName;	// 카테고리 이름
-	std::wstring	strDescription1;	// 아이템 설명 1
-	std::wstring	strDescription2;	// 아이템 설명 2
-	std::wstring	strDescription3;	// 아이템 설명 3
+	std::wstring	strName;					// 아이템 이름
+	std::wstring	strCategoryName;			// 카테고리 이름
+	std::vector<std::wstring>	vecStrDescription;	// 아이템 설명
+	std::vector<tagStat>	vecStat;			// 아이템 스탯 (레벨별 다르게)
 	
-	vector<tagStat>	vecStat;			// 아이템 스탯 (레벨별 다르게)
-
-	ITEM_CATEGORY	eCategory;          // 카테고리
+	ITEM_CATEGORY	eCategory;					// 카테고리
 } ITEM_INFO;
 
 

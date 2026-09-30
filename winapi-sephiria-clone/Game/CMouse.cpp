@@ -70,7 +70,7 @@ void CMouse::Render(Graphics* pGraphics)
 	// 드래그한 아이템 렌더링
 	if (nullptr != m_pDragItem)
 	{
-		pImg = CImgMgr::GetInstance()->FindImg(m_pDragItem->GetItemInfo().strImg.c_str());
+		pImg = CImgMgr::GetInstance()->FindImg(m_pDragItem->GetItemInfo()->strImg.c_str());
 		vCellSize = { 32.f, 32.f };
 		vImgSize = vCellSize * PIXEL_SCALE * 0.5f;
 

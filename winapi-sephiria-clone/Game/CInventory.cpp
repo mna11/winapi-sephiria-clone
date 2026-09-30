@@ -22,14 +22,12 @@ CInventory::~CInventory()
 
 void CInventory::Initialize()
 {
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Item/Balisong.png", L"Balisong");
-
 	// 테스트용
 	for (int i = 0; i < m_vecItems.size(); ++i)
 	{
-		if (i < 15)
+		if (i < 9)
 		{
-			InsertItem(i, 0);
+			InsertItem(i, i);
 		}
 	}
 }
@@ -49,7 +47,7 @@ void CInventory::InsertItem(int iIdx, int iID)
 
 	if (nullptr == m_vecItems[iIdx])
 	{
-		m_vecItems[iIdx] = CAbstractFactory<CItem>::CreateItem(iID);
+		m_vecItems[iIdx] = CAbstractFactory<CItem>::CreateItem(iID, m_pOwner);
 		m_pOwner->AddStat(m_vecItems[iIdx]->GetStat());
 	}
 	else
@@ -59,12 +57,12 @@ void CInventory::InsertItem(int iIdx, int iID)
 		{
 			if (nullptr == m_vecItems[i])
 			{
-				m_vecItems[i] = CAbstractFactory<CItem>::CreateItem(iID);
+				m_vecItems[i] = CAbstractFactory<CItem>::CreateItem(iID, m_pOwner);
 				m_pOwner->AddStat(m_vecItems[i]->GetStat());
+				break;
 			}
 		}
 	}
-
 }
 
 void CInventory::EraseItem(int iIdx)

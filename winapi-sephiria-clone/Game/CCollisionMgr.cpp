@@ -108,7 +108,7 @@ void CCollisionMgr::CollisionPlayerAttack(list<CObj*>& DstList, list<CObj*>& Src
             {
                 if (IntersectRect(&rc, &ColRect, &Src->GetRect()))
                 {
-                    Src->SetDamage(Dst->GetStat().iAtk, Dst);
+                    Src->SetDamage(Dst->GetStat().iPhysicalAtk, Dst);
                 }
             }
         }
@@ -149,7 +149,7 @@ void CCollisionMgr::CollisionMonsterAttack(list<CObj*>& DstList, list<CObj*>& Sr
             {
                 if (IntersectRect(&rc, &ColRect, &Dst->GetRect()))
                 {
-                    Dst->SetDamage(Src->GetStat().iAtk, Src);
+                    Dst->SetDamage(Src->GetStat().iPhysicalAtk, Src);
                 }
             }
         }

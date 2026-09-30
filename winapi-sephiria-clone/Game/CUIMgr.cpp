@@ -34,6 +34,8 @@ void CUIMgr::ShowUI(UIID eID)
 	if (iter == m_mapUI.end())
 	{
 		CUI* pUI = CreateUI(eID);
+		if (nullptr == pUI)
+			return;
 		pUI->Show();
 	}
 	else
@@ -57,6 +59,8 @@ void CUIMgr::ShowUI(UIID eID, CObj* pTarget)
 	if (iter == m_mapUI.end())
 	{
 		CUI* pUI = CreateUI(eID);
+		if (nullptr == pUI)
+			return;
 		pUI->Show();
 		pUI->SetTarget(pTarget);
 	}
@@ -84,6 +88,8 @@ void CUIMgr::HideUI(UIID eID)
 	if (iter == m_mapUI.end())
 	{
 		CUI* pUI = CreateUI(eID);
+		if (nullptr == pUI)
+			return;
 		pUI->Hide();
 	}
 	else
@@ -107,6 +113,8 @@ void CUIMgr::ToggleUI(UIID eID)
 	if (iter == m_mapUI.end())
 	{
 		CUI* pUI = CreateUI(eID);
+		if (nullptr == pUI)
+			return;
 		pUI->Toggle();
 	}
 	else
@@ -135,9 +143,15 @@ CUI* CUIMgr::GetUI(UIID eID)
 	}
 	else
 	{
-		(*iter).second->Toggle();
 		return (*iter).second;
 	}
+}
+
+void CUIMgr::SetPos(UIID eID, VEC vPoint)
+{
+	CUI* pUI = GetUI(eID);
+	if (nullptr != pUI)
+		pUI->SetPos(vPoint);
 }
 
 CUI* CUIMgr::CreateUI(UIID eID)

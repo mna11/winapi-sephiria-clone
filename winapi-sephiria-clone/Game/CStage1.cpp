@@ -18,11 +18,11 @@ void CStage1::Initialize()
 	CTileMgr::GetInstance()->LoadTile(SCENEID::STAGE1);
 	CTileMgr::GetInstance()->SetInteractionBlocked(false);
 
+	Init_CreateObj();
 	// UI Show
 	CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
 
 	InitializeRooms();
-	Init_CreateObj();
 	Init_LoadImg(L"../Resource/Image/Stage/Stage01.png");
 }
 

@@ -96,7 +96,7 @@ void CErmaHand::LateUpdate()
 
     RECT rcCollision{};
     if (IntersectRect(&rcCollision, &m_tRect, &m_pTarget->GetRect()))
-        m_pTarget->SetDamage(m_tStat.iAtk, this);
+        m_pTarget->SetDamage(m_tStat.iPhysicalAtk, this);
 }
 
 void CErmaHand::Render(Graphics* pGraphics)

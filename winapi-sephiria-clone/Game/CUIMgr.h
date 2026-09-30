@@ -43,6 +43,7 @@ public:
 
 public:
 	void SetMouse(CMouse* pMouse) { m_pMouse = pMouse; }
+	void SetPos(UIID eID, VEC vPoint);
 
 private:
 	CUI* CreateUI(UIID eID);
