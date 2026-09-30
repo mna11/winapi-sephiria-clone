@@ -179,10 +179,15 @@ typedef struct tagStat
 {
 	int				iHp;		// 체력
 	int				iMaxHp;		// 최대 체력
-	int				iAtk;		// 공격력
 
-	int				iMp;		// MP
-	int				iMaxMp;		// 최대 MP
+	int				iPhysicalAtk;		// 물리 공격력
+	int				iFireAtk;			// 불 공격력
+	int				iFrozenAtk;			// 냉기 공격력
+	int				iLightingAtk;		// 번개 공격력
+
+	int				iMp;				// MP
+	int				iMaxMp;				// 최대 MP
+	int				iMpRegeneration;	// MP 재생
 
 	int				iDefense;   // 방어력
 	int				iEvasion;   // 회피율
@@ -210,10 +215,14 @@ typedef struct tagStat
 		{
 			iHp + rhs.iHp,
 			iMaxHp + rhs.iMaxHp,
-			iAtk + rhs.iAtk,
+			iPhysicalAtk + rhs.iPhysicalAtk,
+			iFireAtk + rhs.iFireAtk,
+			iFrozenAtk + rhs.iFrozenAtk,
+			iLightingAtk + rhs.iLightingAtk,
 
 			iMp + rhs.iMp,
 			iMaxMp + rhs.iMaxMp,
+			iMpRegeneration + rhs.iMpRegeneration,
 
 			iDefense + rhs.iDefense,
 			iEvasion + rhs.iEvasion,
@@ -257,11 +266,19 @@ typedef struct tagAttackInfo
 typedef struct tagItemInfo
 {
 	int				iID;				// 아이템 아이디
-	int				iMaxLevel;			// 아이템 최대 레벨
-	std::wstring	strImg;				// 이미지 프레임 키
+
+	std::wstring	strImg;				// 아이템 이미지 프레임 키
+	std::wstring	strCategoryImg;		// 카테고리 이미지 프레임 키
+
 	std::wstring	strName;			// 아이템 이름
-	std::wstring	strDescription;		// 아이템 설명
-	ITEM_CATEGORY	eCategory;          // 아이템 소속
+	std::wstring	strCategoryName;	// 카테고리 이름
+	std::wstring	strDescription1;	// 아이템 설명 1
+	std::wstring	strDescription2;	// 아이템 설명 2
+	std::wstring	strDescription3;	// 아이템 설명 3
+	
+	vector<tagStat>	vecStat;			// 아이템 스탯 (레벨별 다르게)
+
+	ITEM_CATEGORY	eCategory;          // 카테고리
 } ITEM_INFO;
 
 

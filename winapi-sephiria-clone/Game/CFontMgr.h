@@ -18,7 +18,7 @@ private:
 	CFontMgr();
 	~CFontMgr();
 	CFontMgr(const CFontMgr& rhs) = delete;
-	CFontMgr& operator=(CFontMgr& rTileMgr) = delete;
+	CFontMgr& operator=(CFontMgr& rFontMgr) = delete;
 
 public:
 	static CFontMgr* GetInstance()

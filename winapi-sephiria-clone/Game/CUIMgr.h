@@ -10,7 +10,7 @@ private:
 	CUIMgr();
 	~CUIMgr();
 	CUIMgr(const CUIMgr& rhs) = delete;
-	CUIMgr& operator=(CUIMgr& rTileMgr) = delete;
+	CUIMgr& operator=(CUIMgr& rUIMgr) = delete;
 
 public:
 	static CUIMgr* GetInstance()

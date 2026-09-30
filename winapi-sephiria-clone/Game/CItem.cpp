@@ -2,7 +2,7 @@
 #include "CItem.h"
 
 CItem::CItem()
-	: m_iLevel(0), m_tItemInfo{}
+	: m_iLevel(5), m_tItemInfo{}
 {
 }
 
