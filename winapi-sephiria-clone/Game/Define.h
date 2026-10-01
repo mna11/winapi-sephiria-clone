@@ -313,6 +313,8 @@ typedef struct tagItemInfo
 	std::vector<tagStat>	vecStat;			// 아이템 스탯 (레벨별 다르게)
 	
 	ITEM_CATEGORY	eCategory;					// 카테고리
+
+	int				iLeaf;						// 가격
 } ITEM_INFO;
 
 

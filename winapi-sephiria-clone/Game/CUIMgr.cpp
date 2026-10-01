@@ -34,10 +34,12 @@ void CUIMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot_Item.png", L"Inventory_Slot_Item");
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/ItemToolTip_Base.png", L"ItemToolTip_Base");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Shop/ShopListBase.png", L"ShopList");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Shop/ShopListBase.png", L"ShopList");
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/EscapeButton/EscapeButton.png", L"EscapeButton");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/EscapeButton/EscString.png", L"EscapeString");
+
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Shop/ShopListSlot.png", L"ShopListSlot");
 
 }
 

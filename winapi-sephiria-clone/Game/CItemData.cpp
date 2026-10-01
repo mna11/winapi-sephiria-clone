@@ -25,7 +25,7 @@ void CItemData::Release()
 	m_mapItemInfo.clear();
 }
 
-void CItemData::EmplaceItemInfo(int iID, wstring strImg, wstring strCategoryImg, wstring strName, wstring strCategoryName, vector<wstring> vecStrDescription, vector<tagStat> vecStat, ITEM_CATEGORY eCategory)
+void CItemData::EmplaceItemInfo(int iID, wstring strImg, wstring strCategoryImg, wstring strName, wstring strCategoryName, vector<wstring> vecStrDescription, vector<tagStat> vecStat, ITEM_CATEGORY eCategory, int iLeaf)
 {
 	ITEM_INFO tItemInfo;
 	tItemInfo.iID = iID;
@@ -39,6 +39,7 @@ void CItemData::EmplaceItemInfo(int iID, wstring strImg, wstring strCategoryImg,
 	tItemInfo.vecStat = move(vecStat);
 
 	tItemInfo.eCategory = eCategory;
+	tItemInfo.iLeaf = iLeaf;
 
 	m_mapItemInfo.emplace(iID, move(tItemInfo));
 }
@@ -274,25 +275,25 @@ void CItemData::InitializeItemInfo()
 {
 	// 정밀
 	// 0. 발리송
-	EmplaceItemInfo(0, L"Balisong", L"Precision", L"발리송", L"정밀", CreateStrDescriptionVec(0), CreateStatVec(0), ITEM_CATEGORY::PRECISION);
+	EmplaceItemInfo(0, L"Balisong", L"Precision", L"발리송", L"정밀", CreateStrDescriptionVec(0), CreateStatVec(0), ITEM_CATEGORY::PRECISION, 200);
 	// 1. 열망의 부적
-	EmplaceItemInfo(1, L"Charm_Of_Aspiration", L"Precision", L"열망의 부적", L"정밀", CreateStrDescriptionVec(1), CreateStatVec(1), ITEM_CATEGORY::PRECISION);
+	EmplaceItemInfo(1, L"Charm_Of_Aspiration", L"Precision", L"열망의 부적", L"정밀", CreateStrDescriptionVec(1), CreateStatVec(1), ITEM_CATEGORY::PRECISION, 300);
 	// 2. 뾰족한 방망이
-	EmplaceItemInfo(2, L"Pointed_Club", L"Precision", L"뾰족한 방망이", L"정밀", CreateStrDescriptionVec(2), CreateStatVec(2), ITEM_CATEGORY::PRECISION);
+	EmplaceItemInfo(2, L"Pointed_Club", L"Precision", L"뾰족한 방망이", L"정밀", CreateStrDescriptionVec(2), CreateStatVec(2), ITEM_CATEGORY::PRECISION, 400);
 
 	// 그림자
 	// 3. 부서진 사파이어
-	EmplaceItemInfo(3, L"Broken_Sapphire", L"Shadow", L"부서진 사파이어", L"그림자", CreateStrDescriptionVec(3), CreateStatVec(3), ITEM_CATEGORY::SHADOW);
+	EmplaceItemInfo(3, L"Broken_Sapphire", L"Shadow", L"부서진 사파이어", L"그림자", CreateStrDescriptionVec(3), CreateStatVec(3), ITEM_CATEGORY::SHADOW, 250);
 	// 4. 환락의 망토
-	EmplaceItemInfo(4, L"Cloak_Of_Verdant_Spirit", L"Shadow", L"환락의 망토", L"그림자", CreateStrDescriptionVec(4), CreateStatVec(4), ITEM_CATEGORY::SHADOW);
+	EmplaceItemInfo(4, L"Cloak_Of_Verdant_Spirit", L"Shadow", L"환락의 망토", L"그림자", CreateStrDescriptionVec(4), CreateStatVec(4), ITEM_CATEGORY::SHADOW, 350);
 	// 5. 모형 부리
-	EmplaceItemInfo(5, L"Model_Beak", L"Shadow", L"모형 부리", L"그림자", CreateStrDescriptionVec(5), CreateStatVec(5), ITEM_CATEGORY::SHADOW);
+	EmplaceItemInfo(5, L"Model_Beak", L"Shadow", L"모형 부리", L"그림자", CreateStrDescriptionVec(5), CreateStatVec(5), ITEM_CATEGORY::SHADOW, 450);
 
 	// 수호
 	// 6. 천 갑옷
-	EmplaceItemInfo(6, L"Cloth_Armor", L"Guardian", L"천 갑옷", L"수호", CreateStrDescriptionVec(6), CreateStatVec(6), ITEM_CATEGORY::GUARDIAN);
+	EmplaceItemInfo(6, L"Cloth_Armor", L"Guardian", L"천 갑옷", L"수호", CreateStrDescriptionVec(6), CreateStatVec(6), ITEM_CATEGORY::GUARDIAN, 300);
 	// 7. 방패 귀고리
-	EmplaceItemInfo(7, L"Shield_Earings", L"Guardian", L"방패 귀고리", L"수호", CreateStrDescriptionVec(7), CreateStatVec(7), ITEM_CATEGORY::GUARDIAN);
+	EmplaceItemInfo(7, L"Shield_Earings", L"Guardian", L"방패 귀고리", L"수호", CreateStrDescriptionVec(7), CreateStatVec(7), ITEM_CATEGORY::GUARDIAN, 400);
 	// 8. 냄비 뚜껑
-	EmplaceItemInfo(8, L"Pan_Lid", L"Guardian", L"냄비 뚜껑", L"수호", CreateStrDescriptionVec(8), CreateStatVec(8), ITEM_CATEGORY::GUARDIAN);
+	EmplaceItemInfo(8, L"Pan_Lid", L"Guardian", L"냄비 뚜껑", L"수호", CreateStrDescriptionVec(8), CreateStatVec(8), ITEM_CATEGORY::GUARDIAN, 500);
 }

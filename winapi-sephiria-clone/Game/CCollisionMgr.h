@@ -15,6 +15,18 @@ public:
 	static void CollisionPlayerDefense(list<CObj*>& DstList, list<CObj*>& SrcList);
 
 	static void CollisionMonsterAttack(list<CObj*>& DstList, list<CObj*>& SrcList);
-	static int GetCollisionSlotIndex(VEC vMousePoint, vector<CInventorySlotUI*>& vecSlots);
+
+	template<typename T>
+	static int GetCollisionSlotIndex(VEC vMousePoint, vector<T*>& vecSlots)
+	{
+		POINT ptMouse{ static_cast<int>(vMousePoint.fX), static_cast<int>(vMousePoint.fY) };
+
+		for (int i = 0; i < static_cast<int>(vecSlots.size()); ++i)
+		{
+			if (PtInRect(&vecSlots[i]->GetRect(), ptMouse))
+				return i;
+		}
+		return -1;
+	}
 };
 
