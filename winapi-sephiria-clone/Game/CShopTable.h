@@ -25,7 +25,6 @@ private:
     const int                   m_iItemSlotSize;
 
     int                         m_iMouseHoverSlot;
-    int                         m_iStartSlot;
     bool                        m_bDrag;
 };
 

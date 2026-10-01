@@ -58,7 +58,7 @@ int CInventoryUI::Update()
 	// 마우스 호버 아이템 세팅
 	if (m_pInventory->IsExistItem(m_iMouseHoverSlot))
 	{
-		m_pMouse->SetHoverItem(m_pInventory->GetItem(m_iMouseHoverSlot));
+		m_pMouse->SetHoverItem(m_pInventory->GetItem(m_iMouseHoverSlot)->GetItemInfo()->iID);
 		CUIMgr::GetInstance()->ShowUI(UIID::ITEM_TOOLTIP);
 		CUIMgr::GetInstance()->SetPos(UIID::ITEM_TOOLTIP, VEC{ 210.f, 200.f });
 	}
@@ -71,8 +71,8 @@ int CInventoryUI::Update()
 	// 드래그 시작
 	if (KEY_DOWN(VK_LBUTTON) && m_pInventory->IsExistItem(m_iMouseHoverSlot))
 	{
-		// 마우스가 현재 드래그 중인 아이템을 참조하게 해줌 - 렌더용
-		m_pMouse->SetDragItem(m_pInventory->GetItem(m_iMouseHoverSlot));
+		// 마우스가 현재 드래그 중인 아이템의 아이디를 참조하게 해줌 - 렌더용
+		m_pMouse->SetDragItem(m_pInventory->GetItem(m_iMouseHoverSlot)->GetItemInfo()->iID);
 
 		m_iStartSlot = m_iMouseHoverSlot;
 		m_bDrag = true;
@@ -98,7 +98,7 @@ int CInventoryUI::Update()
 		// SyncInventorySlot이 LateUpdate에서 Slot 동기화 해줘서 별도로 할 것 없음
 
 		// 초기화
-		m_pMouse->SetDragItem(nullptr);
+		m_pMouse->SetDragItem(-1);
 		m_iStartSlot = -1;
 		m_bDrag = false;
 	}

@@ -11,7 +11,7 @@
 #include "CCollisionMgr.h"
 
 CShopTable::CShopTable()
-	: m_iItemSlotSize(4), m_iStartSlot(-1), m_iMouseHoverSlot(-1), m_bDrag(false)
+	: m_iItemSlotSize(4), m_iMouseHoverSlot(-1), m_bDrag(false)
 {
 	m_vecItemSlot.reserve(m_iItemSlotSize);
 }
@@ -50,16 +50,35 @@ int CShopTable::Update()
 	}
 
 	// 마우스 호버 아이템 세팅
-	//if (-1 != m_iMouseHoverSlot)
-	//{
-	//	//m_pMouse->SetHoverItem(m_pInventory->GetItem(m_iMouseHoverSlot));
-	//	CUIMgr::GetInstance()->ShowUI(UIID::ITEM_TOOLTIP);
-	//	CUIMgr::GetInstance()->SetPos(UIID::ITEM_TOOLTIP, VEC{ 210.f, 200.f });
-	//}
-	//else
-	//{
-	//	CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
-	//}
+	if (-1 != m_iMouseHoverSlot)
+	{
+		m_pMouse->SetHoverItem(m_vecItemSlot[m_iMouseHoverSlot]->GetItemID());
+		CUIMgr::GetInstance()->ShowUI(UIID::ITEM_TOOLTIP);
+
+		VEC vPoint = m_vecItemSlot[m_iMouseHoverSlot]->GetInfo().vPoint;
+		vPoint += VEC{ 144 * 0.5f, 0.f } * m_fUIScale;
+		CUIMgr::GetInstance()->SetPos(UIID::ITEM_TOOLTIP, vPoint);
+	}
+	else
+	{
+		// 왜지?
+		//CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
+	}
+
+	// 드래그 시작
+	if (KEY_DOWN(VK_LBUTTON) && -1 != m_iMouseHoverSlot)
+	{
+		// 마우스가 현재 드래그 중인 아이템을 참조하게 해줌 - 렌더용
+		m_pMouse->SetDragItem(m_vecItemSlot[m_iMouseHoverSlot]->GetItemID());
+		m_bDrag = true;
+	}
+
+	if (KEY_UP(VK_LBUTTON) && m_bDrag)
+	{
+		// 마우스가 현재 드래그 중인 아이템을 참조하게 해줌 - 렌더용
+		m_pMouse->SetDragItem(-1);
+		m_bDrag = false;
+	}
 
 	return NOEVENT;
 }

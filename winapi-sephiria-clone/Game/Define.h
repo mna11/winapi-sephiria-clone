@@ -69,6 +69,8 @@ enum class TILE_LAYER { LAYER0, LAYER1, LAYER2, LAYER3, END };
 // 방 상태
 enum class ROOM_STATE { READY, BATTLE, CLEAR };
 
+enum class ITEM_SOURCE { INVENTORY, SHOP, END };
+
 // 아이템 카테고리
 enum class ITEM_CATEGORY 
 {
@@ -354,6 +356,12 @@ typedef struct tagTileInfo
 	TILE_OPTION	eTileOption;
 	TILE_LAYER	eTileLayer;
 } TILE;
+
+typedef struct tagMouseReferItem
+{
+	int			iID;
+	ITEM_SOURCE eItemSource;
+} MOUSE_REFER_ITEM;
 
 /////////////////////////////////////////
 // 함수
