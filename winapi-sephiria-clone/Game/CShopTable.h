@@ -17,7 +17,7 @@ public:
     void Release() override;
 
 public:
-    void SetSellingItem();
+    void SetSellingItem(SCENEID curStage);
 
 private:
     vector<CShopTableSlot*>     m_vecItemSlot;
@@ -25,5 +25,7 @@ private:
     const int                   m_iItemSlotSize;
 
     int                         m_iMouseHoverSlot;
+
+    SCENEID                     m_eLastStage;
 };
 

@@ -2,8 +2,8 @@
 
 #include "CScene.h"
 
-class CUI;
 class CButton;
+class CMsgBox;
 
 class CShop :
     public CScene
@@ -26,17 +26,18 @@ public:
     
     // 인벤토리 UI에서 호출
     void TryBuyItem(int iInventoryIdx, int iID);
-    void TrySellItem(int iInventoryIdx);
+    void TrySellItem(int iInventoryIdx, int iID);
 
     // ShopMsgBox에서 호출
-    void BuyItem();
-    void SellItem();
+    void BuyItem(int iInventoryIdx, int iID, int iPrice);
+    void SellItem(int iInventoryIdx, int iPrice);
 
 private:
     int     m_iFrame = 0;
     double  m_dFrameTime = 0.0;
 
     CButton*    m_pEscapeButton;
-    CUI*        m_pMsgBoxUI;
+    CMsgBox*    m_pMsgBoxUI;
+    RectF       m_rcMsgBox;
 };
 

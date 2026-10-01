@@ -27,7 +27,7 @@ public:
 public:
     const vector<CInventorySlotUI*>&    GetItemSlots() const { return m_vecItemSlot; }
 
-private:
+public:
     void    SyncInventorySlot();
 
 

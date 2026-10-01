@@ -9,6 +9,7 @@
 #include "CBossStage.h"
 #include "CShop.h"
 
+#include "CShopTable.h"
 #include "CUIMgr.h"
 #include "CAbstractFactory.h"
 
@@ -73,6 +74,7 @@ void CSceneMgr::ApplyChange()
 				m_pScene = CAbstractFactory<CShop>::CreateScene();
 			CUIMgr::GetInstance()->ShowUI(UIID::INVENTORY);
 			CUIMgr::GetInstance()->ShowUI(UIID::SHOP_TABLE);
+			static_cast<CShopTable*>(CUIMgr::GetInstance()->GetUI(UIID::SHOP_TABLE))->SetSellingItem(m_eSaveScene);
 			break;
 		}
 		case SCENEID::STAGE0:
@@ -116,12 +118,14 @@ void CSceneMgr::RequestChange(SCENEID eScene)
 void CSceneMgr::BackToSaveScene()
 {
 	if (SCENEID::END != m_eSaveScene)
+	{
 		RequestChange(m_eSaveScene);
+	}
 }
 
 bool CSceneMgr::HandleChangeShop()
 {
-	// 상점에에 진입하는 경우
+	// 상점에 진입하는 경우
 	if (m_eCurScene == SCENEID::SHOP)
 	{
 		// 이전 스테이지 정보를 기억한다.

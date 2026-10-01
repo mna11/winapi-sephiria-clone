@@ -30,7 +30,7 @@ void CButton::Initialize()
 	m_tInfo.vSize = m_vCellSize * m_fUIScale;
 
 	m_eRender = RENDERID::UI;
-	m_iRenderLayer = 4;
+	m_iRenderLayer = 6;
 }
 
 int CButton::Update()
@@ -85,7 +85,7 @@ void CButton::Render(Graphics* pGraphics)
 		UnitPixel
 	);
 
-	if (m_strBtn.empty() || lstrcmp(m_strBtn.c_str(), L""))
+	if (m_strBtn.empty())
 		return;
 
 	

@@ -3,6 +3,9 @@
 
 #include "CInventory.h"
 #include "CButton.h"
+#include "CMsgBox.h"
+
+#include "CInventoryUI.h"
 
 #include "CAbstractFactory.h"
 #include "CObjMgr.h"
@@ -29,6 +32,9 @@ void CShop::Initialize()
 	//CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Stage/ShopBackground.png", L"Shop_BG");
 	Init_LoadImg(L"../Resource/Image/Shop/ShopBackground.png");
 	Init_CreateObj();
+
+	// 메세지 박스 렉트
+	m_rcMsgBox = { (WINCX >> 1) - 200.f , (WINCY >> 1) - 100.f, 400.f, 200.f };
 }
 
 void CShop::Update()
@@ -48,41 +54,18 @@ void CShop::Update()
 	else
 	{
 		CObjMgr::GetInstance()->UpdateOnly({ OBJID::MOUSE });
-
-		// 근데 이게 뭐 때문에 열린 메세지 박스인지도 알아둬야 함
-		// 일단 Buy만 생각한다면
-		int iMsgBoxResult = m_pMsgBoxUI->Update();
-		switch (iMsgBoxResult)
-		{
-		case 0:
-			BuyItem();
-			m_pMsgBoxUI->SetDead(true);
-			m_pMsgBoxUI = nullptr;
-			break;
-		case 1:
-		case 2:
-			m_pMsgBoxUI->SetDead(true);
-			m_pMsgBoxUI = nullptr;
-			break;
-		}
+		m_pMsgBoxUI->Update();
 	}
 }
 
 void CShop::LateUpdate()
 {
-	if (nullptr == m_pMsgBoxUI)
-	{
-		CObjMgr::GetInstance()->LateUpdateOnly({ OBJID::UI, OBJID::MOUSE });
+	CObjMgr::GetInstance()->LateUpdateOnly({ OBJID::UI, OBJID::MOUSE });
 
-		if (KEY_DOWN(VK_ESCAPE))
-		{
-			CSceneMgr::GetInstance()->BackToSaveScene();
-		}
-	}
-	else
+	if (KEY_DOWN(VK_ESCAPE))
 	{
-		m_pMsgBoxUI->LateUpdate();
-		CObjMgr::GetInstance()->LateUpdateOnly({ OBJID::MOUSE });
+		Release();
+		CSceneMgr::GetInstance()->BackToSaveScene();
 	}
 }
 
@@ -108,20 +91,22 @@ void CShop::Render(Graphics* pGraphics)
 
 	pGraphics->ReleaseHDC(hBackDC);
 
-	if (nullptr != m_pMsgBoxUI)
-	{
-		SolidBrush dimBrush(Color(128, 0, 0, 0));
-		pGraphics->FillRectangle(&dimBrush, 0, 0, WINCX, WINCY);
-	}
-
 	CObjMgr::GetInstance()->Render(pGraphics);
 }
 
 void CShop::Release()
 {
 	// 버튼 삭제 규칙
-	m_pEscapeButton->SetDead(true);
-	m_pEscapeButton = nullptr;
+	if (nullptr != m_pEscapeButton)
+	{
+		m_pEscapeButton->SetDead(true);
+		m_pEscapeButton = nullptr;
+	}
+	if (nullptr != m_pMsgBoxUI)
+	{
+		m_pMsgBoxUI->SetDead(true);
+		m_pMsgBoxUI = nullptr;
+	}
 }
 
 void CShop::Init_CreateObj()
@@ -134,8 +119,9 @@ void CShop::Init_CreateObj()
 		L"EscapeButton",
 		VEC{ 21.f, 33.f }
 	);
+
 	// 버튼 함수 등록
-	m_pEscapeButton->SetOnClick([]() {
+	m_pEscapeButton->SetOnClick([this]() {
 		CSceneMgr::GetInstance()->BackToSaveScene();
 		});
 	CObjMgr::GetInstance()->AddObject(OBJID::UI, m_pEscapeButton);
@@ -143,47 +129,118 @@ void CShop::Init_CreateObj()
 
 void CShop::TryBuyItem(int iInventoryIdx, int iID)
 {
-	CUIMgr::GetInstance()->ShowUI(UIID::MSG_BOX);
-	// 메세지 박스 세팅
-}
-
-void CShop::BuyItem()
-{
-	//CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
-	//if (nullptr == pPlayer)
-	//	return;
-
-	//int iPrice = CItemData::GetInstance()->FindItemInfo(iID)->iLeaf;
-	//if (pPlayer->GetLeaf() >= iPrice)
-	//{
-	//	pPlayer->GetInventory()->InsertItem(iInventoryIdx, iID);
-	//	pPlayer->AddLeaf(-iPrice);
-	//}
-	//else
-	//{
-	//	// 돈이 부족합니다 ㅜㅜ 메세지 박스 띄우기
-	//}
-
-	// 초기화
-	// 이것저것들
-}
-
-void CShop::TrySellItem(int iInventoryIdx)
-{
-	CUIMgr::GetInstance()->ShowUI(UIID::MSG_BOX);
-	// 메세지 박스 세팅
-}
-
-void CShop::SellItem()
-{
-	/*CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer)
 		return;
 
+	// 상품 가격
+	const ITEM_INFO* pItemInfo = CItemData::GetInstance()->FindItemInfo(iID);
+	if (nullptr == pItemInfo)
+		return;
 	int iPrice = CItemData::GetInstance()->FindItemInfo(iID)->iLeaf;
+
+	// 돈이 있음
 	if (pPlayer->GetLeaf() >= iPrice)
 	{
-		pPlayer->GetInventory()->EraseItem(iInventoryIdx);
-		pPlayer->AddLeaf(iPrice);
-	}*/
+		wstring wstr = pItemInfo->strName + L"을(를) " + to_wstring(pItemInfo->iLeaf) + L" 리프로 구매하시겠습니까?";
+
+		m_pMsgBoxUI = CAbstractFactory<CMsgBox>::CreateMsgBox(
+			m_rcMsgBox,
+			2,
+			MSG_BOX_LAYOUT::NORMAL,
+			wstr
+		);
+		CObjMgr::GetInstance()->AddObject(OBJID::UI, m_pMsgBoxUI);
+
+		// 버튼 콜백 함수 등록
+		auto vecButtons = m_pMsgBoxUI->GetButtons();
+		vecButtons[0]->SetOnClick([this, iInventoryIdx, iID, iPrice]()
+			{
+				this->BuyItem(iInventoryIdx, iID, iPrice);
+				m_pMsgBoxUI->SetDead(true);
+				m_pMsgBoxUI = nullptr;
+			});
+		vecButtons[0]->SetString(L"Yes");
+
+		vecButtons[1]->SetOnClick([this]()
+			{
+				m_pMsgBoxUI->SetDead(true);
+				m_pMsgBoxUI = nullptr;
+			});
+		vecButtons[1]->SetString(L"No");
+	}
+	// 돈이 없음
+	else
+	{
+		wstring wstr = L"리프가 부족합니다.";
+		m_pMsgBoxUI = CAbstractFactory<CMsgBox>::CreateMsgBox(
+			m_rcMsgBox,
+			1,
+			MSG_BOX_LAYOUT::NORMAL,
+			wstr
+		);
+		CObjMgr::GetInstance()->AddObject(OBJID::UI, m_pMsgBoxUI);
+
+		// 버튼 콜백 함수 등록
+		auto vecButtons = m_pMsgBoxUI->GetButtons();
+		vecButtons[0]->SetOnClick([this, iInventoryIdx, iID]()
+			{
+				m_pMsgBoxUI->SetDead(true);
+				m_pMsgBoxUI = nullptr;
+			});
+		vecButtons[0]->SetString(L"Close");
+	}
+}
+
+void CShop::BuyItem(int iInventoryIdx, int iID, int iPrice)
+{
+	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+	if (nullptr == pPlayer)
+		return;
+
+	pPlayer->GetInventory()->InsertItem(iInventoryIdx, iID);
+	pPlayer->AddLeaf(-iPrice);
+}
+
+void CShop::TrySellItem(int iInventoryIdx, int iID)
+{
+	const ITEM_INFO* pItemInfo = CItemData::GetInstance()->FindItemInfo(iID);
+
+	wstring wstr = pItemInfo->strName + L"을(를) " + to_wstring(static_cast<int>(pItemInfo->iLeaf * 0.5)) + L" 리프에 판매하시겠습니까?";
+
+	m_pMsgBoxUI = CAbstractFactory<CMsgBox>::CreateMsgBox(
+		m_rcMsgBox,
+		2,
+		MSG_BOX_LAYOUT::NORMAL,
+		wstr
+	);
+	CObjMgr::GetInstance()->AddObject(OBJID::UI, m_pMsgBoxUI);
+	int iPrice = pItemInfo->iLeaf;
+	// 버튼 콜백 함수 등록
+	auto vecButtons = m_pMsgBoxUI->GetButtons();
+	vecButtons[0]->SetOnClick([this, iInventoryIdx, iPrice]()
+		{
+			this->SellItem(iInventoryIdx, iPrice);
+			m_pMsgBoxUI->SetDead(true);
+			m_pMsgBoxUI = nullptr;
+		});
+	vecButtons[0]->SetString(L"Yes");
+
+	vecButtons[1]->SetOnClick([this]()
+		{
+			m_pMsgBoxUI->SetDead(true);
+			m_pMsgBoxUI = nullptr;
+		});
+	vecButtons[1]->SetString(L"No");
+}
+
+void CShop::SellItem(int iInventoryIdx, int iPrice)
+{
+	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+	if (nullptr == pPlayer)
+		return;
+
+	pPlayer->GetInventory()->EraseItem(iInventoryIdx);
+	static_cast<CInventoryUI*>(CUIMgr::GetInstance()->GetUI(UIID::INVENTORY))->SyncInventorySlot();
+	pPlayer->AddLeaf(iPrice * 0.5f);
 }

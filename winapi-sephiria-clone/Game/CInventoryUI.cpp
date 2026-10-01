@@ -95,7 +95,7 @@ int CInventoryUI::Update()
 		if (SCENEID::SHOP == CSceneMgr::GetInstance()->GetCurrentSceneID())
 		{
 			// 판매 시도
-			static_cast<CShop*>(CSceneMgr::GetInstance()->GetCurrentScene())->TrySellItem(m_iMouseHoverSlot);
+			static_cast<CShop*>(CSceneMgr::GetInstance()->GetCurrentScene())->TrySellItem(m_iMouseHoverSlot, m_pMouse->GetHoverReferItem().iID);
 		}
 	}
 

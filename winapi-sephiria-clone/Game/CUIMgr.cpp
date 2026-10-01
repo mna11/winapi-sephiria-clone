@@ -37,6 +37,8 @@ void CUIMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Shop/ShopListBase.png", L"ShopList");
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Shop/ShopListSlot.png", L"ShopListSlot");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Shop/Leaf.png", L"Leaf");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Shop/Leaf_Big.png", L"Leaf_Big");
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/MsgBox/MsgBoxFrame.png", L"MsgBoxFrame");
 

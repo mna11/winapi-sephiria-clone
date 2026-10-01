@@ -72,9 +72,10 @@ enum class ROOM_STATE { READY, BATTLE, CLEAR };
 enum class ITEM_SOURCE { INVENTORY, SHOP, END };
 
 // 메세지 박스 종류
-enum class MSG_BOX_ID { QUESTION, ANOUNCE, END };
-// 메세지 박스 질문 종류
-enum class MSG_BOX_QUESTION_ID { SHOP_BUY, SHOP_SELL, END };
+// NORMAL이 상단 문구 하단 버튼 구조
+// HORIZONTAL은 버튼만 가로로 배치
+// VERTICAL은 버튼만 세로로 배치
+enum class MSG_BOX_LAYOUT { NORMAL, HORIZONTAL, VERTICAL, END };
 
 // 아이템 카테고리
 enum class ITEM_CATEGORY 

@@ -11,6 +11,7 @@
 #include "CScene.h"
 #include "CInventory.h"
 #include "CButton.h"
+#include "CMsgBox.h"
 
 template<typename T>
 class CAbstractFactory
@@ -129,6 +130,20 @@ public:
 		pButton->SetCellSize(vCellSize);
 		pButton->Show();
 		return pButton;
+	}
+
+	static CMsgBox* CreateMsgBox(RectF rcDest, int iBtnNum, MSG_BOX_LAYOUT eLayout, wstring wstr)
+	{
+		CMsgBox* pMsgBox = new T;
+		pMsgBox->Initialize();
+		pMsgBox->SetPrintRect(rcDest);
+		pMsgBox->SetLayout(eLayout);
+		pMsgBox->SetString(move(wstr));
+		pMsgBox->SetButtonNumber(iBtnNum);
+		pMsgBox->UpdateLayout();
+		pMsgBox->Show();
+
+		return pMsgBox;
 	}
 };
 

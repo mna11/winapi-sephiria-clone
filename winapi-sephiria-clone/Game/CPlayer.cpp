@@ -17,7 +17,8 @@ CPlayer::CPlayer()
 	m_dDustInterval(0.5), m_dDustElapseTime(0.), m_fNormalSpeed(300.f), m_fRunSpeed(400.f),
 	m_dDashRecorveyInterval(1.), m_dDashRecoveryElapseTime(0.),
 	m_bPlayerBehaviorEnable(true),
-	m_pInventory(nullptr)
+	m_pInventory(nullptr),
+	m_iLeaf(1000)
 {
 }
 
