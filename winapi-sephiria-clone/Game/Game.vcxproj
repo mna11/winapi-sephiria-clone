@@ -140,6 +140,7 @@
     <ClInclude Include="CBossHp.h" />
     <ClInclude Include="CBossStage.h" />
     <ClInclude Include="CBullet.h" />
+    <ClInclude Include="CButton.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCameraMgr.h" />
     <ClInclude Include="CCollisionMgr.h" />
@@ -165,7 +166,6 @@
     <ClInclude Include="CItemData.h" />
     <ClInclude Include="CItemToolTip.h" />
     <ClInclude Include="CKeyMgr.h" />
-    <ClInclude Include="CEscapeButton.h" />
     <ClInclude Include="CLibLoading.h" />
     <ClInclude Include="CLine.h" />
     <ClInclude Include="CLineMgr.h" />
@@ -179,6 +179,7 @@
     <ClInclude Include="CSceneMgr.h" />
     <ClInclude Include="CShield.h" />
     <ClInclude Include="CShop.h" />
+    <ClInclude Include="CMsgBox.h" />
     <ClInclude Include="CShopTable.h" />
     <ClInclude Include="CShopTableSlot.h" />
     <ClInclude Include="CStage.h" />
@@ -207,6 +208,7 @@
     <ClCompile Include="CBossHp.cpp" />
     <ClCompile Include="CBossStage.cpp" />
     <ClCompile Include="CBullet.cpp" />
+    <ClCompile Include="CButton.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCameraMgr.cpp" />
     <ClCompile Include="CCollisionMgr.cpp" />
@@ -232,7 +234,6 @@
     <ClCompile Include="CItemData.cpp" />
     <ClCompile Include="CItemToolTip.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
-    <ClCompile Include="CEscapeButton.cpp" />
     <ClCompile Include="CLibLoading.cpp" />
     <ClCompile Include="CLine.cpp" />
     <ClCompile Include="CLineMgr.cpp" />
@@ -246,6 +247,7 @@
     <ClCompile Include="CSceneMgr.cpp" />
     <ClCompile Include="CShield.cpp" />
     <ClCompile Include="CShop.cpp" />
+    <ClCompile Include="CMsgBox.cpp" />
     <ClCompile Include="CShopTable.cpp" />
     <ClCompile Include="CShopTableSlot.cpp" />
     <ClCompile Include="CStage.cpp" />

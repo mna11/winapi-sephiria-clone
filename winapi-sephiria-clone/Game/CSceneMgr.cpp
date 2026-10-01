@@ -73,7 +73,6 @@ void CSceneMgr::ApplyChange()
 				m_pScene = CAbstractFactory<CShop>::CreateScene();
 			CUIMgr::GetInstance()->ShowUI(UIID::INVENTORY);
 			CUIMgr::GetInstance()->ShowUI(UIID::SHOP_TABLE);
-			CUIMgr::GetInstance()->ShowUI(UIID::ESCAPE_BUTTON);
 			break;
 		}
 		case SCENEID::STAGE0:

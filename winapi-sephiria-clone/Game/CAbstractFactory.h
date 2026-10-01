@@ -10,6 +10,7 @@
 #include "CItem.h"
 #include "CScene.h"
 #include "CInventory.h"
+#include "CButton.h"
 
 template<typename T>
 class CAbstractFactory
@@ -114,6 +115,20 @@ public:
 		CScene* pScene = new T;
 		pScene->Initialize();
 		return pScene;
+	}
+
+	static CButton* CreateButton(CMouse* pMouse, RectF rcDest, wstring wstr,
+		 const TCHAR* pFrameKey = L"Button", VEC vCellSize = { 61.f, 24.f })
+	{
+		CButton* pButton = new T;
+		pButton->Initialize();
+		pButton->SetMouse(pMouse);
+		pButton->SetPrintRect(rcDest);
+		pButton->SetString(wstr);
+		pButton->SetFrameKey(pFrameKey);
+		pButton->SetCellSize(vCellSize);
+		pButton->Show();
+		return pButton;
 	}
 };
 

@@ -33,6 +33,9 @@ int CItemToolTip::Update()
 	if (!m_bView)
 		return NOEVENT;
 
+	if (m_bDead)
+		return DEAD;
+
 	return NOEVENT;
 }
 
@@ -51,7 +54,7 @@ void CItemToolTip::Render(Graphics* pGraphics)
 	if (nullptr == pItem)
 		return;*/
 
-	const int& iHoverItemID = m_pMouse->GetHoverItem();
+	const int& iHoverItemID = m_pMouse->GetHoverReferItem().iID;
 	if (-1 == iHoverItemID)
 		return;
 

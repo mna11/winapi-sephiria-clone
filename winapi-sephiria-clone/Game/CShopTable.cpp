@@ -11,7 +11,7 @@
 #include "CCollisionMgr.h"
 
 CShopTable::CShopTable()
-	: m_iItemSlotSize(4), m_iMouseHoverSlot(-1), m_bDrag(false)
+	: m_iItemSlotSize(4), m_iMouseHoverSlot(-1)
 {
 	m_vecItemSlot.reserve(m_iItemSlotSize);
 }
@@ -36,6 +36,8 @@ int CShopTable::Update()
 {
 	if (!m_bView)
 		return NOEVENT;
+	if (m_bDead)
+		return DEAD;
 
 	for (auto& slot : m_vecItemSlot)
 		slot->Update();
@@ -52,7 +54,7 @@ int CShopTable::Update()
 	// 마우스 호버 아이템 세팅
 	if (-1 != m_iMouseHoverSlot)
 	{
-		m_pMouse->SetHoverItem(m_vecItemSlot[m_iMouseHoverSlot]->GetItemID());
+		m_pMouse->SetHoverReferItem({ m_vecItemSlot[m_iMouseHoverSlot]->GetItemID(), ITEM_SOURCE::SHOP });
 		CUIMgr::GetInstance()->ShowUI(UIID::ITEM_TOOLTIP);
 
 		VEC vPoint = m_vecItemSlot[m_iMouseHoverSlot]->GetInfo().vPoint;
@@ -61,7 +63,8 @@ int CShopTable::Update()
 	}
 	else
 	{
-		// 왜지?
+		// 왜냐면 지금 인벤토리 업데이트 - 상점 업데이트 순서가 종속적인데, 여기서 가려버리면
+		// 인벤토리에서 호버한 아이템의 툴팁이 나오지 않음
 		//CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
 	}
 
@@ -69,15 +72,7 @@ int CShopTable::Update()
 	if (KEY_DOWN(VK_LBUTTON) && -1 != m_iMouseHoverSlot)
 	{
 		// 마우스가 현재 드래그 중인 아이템을 참조하게 해줌 - 렌더용
-		m_pMouse->SetDragItem(m_vecItemSlot[m_iMouseHoverSlot]->GetItemID());
-		m_bDrag = true;
-	}
-
-	if (KEY_UP(VK_LBUTTON) && m_bDrag)
-	{
-		// 마우스가 현재 드래그 중인 아이템을 참조하게 해줌 - 렌더용
-		m_pMouse->SetDragItem(-1);
-		m_bDrag = false;
+		m_pMouse->SetDragReferItem({ m_vecItemSlot[m_iMouseHoverSlot]->GetItemID(), ITEM_SOURCE::SHOP });
 	}
 
 	return NOEVENT;
@@ -113,6 +108,9 @@ void CShopTable::Render(Graphics* pGraphics)
 
 void CShopTable::Release()
 {
+	for_each(m_vecItemSlot.begin(), m_vecItemSlot.end(), SafeDelete<CShopTableSlot*>);
+	m_vecItemSlot.clear();
+	m_vecItemSlot.shrink_to_fit();
 }
 
 void CShopTable::SetSellingItem()

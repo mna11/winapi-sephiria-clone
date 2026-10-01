@@ -161,3 +161,9 @@ void CCollisionMgr::CollisionMonsterAttack(list<CObj*>& DstList, list<CObj*>& Sr
         }
     }
 }
+
+bool CCollisionMgr::CollisionMouse(VEC vMousePoint, RECT& rc)
+{
+    POINT ptMouse{ static_cast<int>(vMousePoint.fX), static_cast<int>(vMousePoint.fY) };
+    return PtInRect(&rc, ptMouse);
+}

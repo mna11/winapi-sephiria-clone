@@ -13,7 +13,7 @@
 #include "CInventoryUI.h"
 #include "CItemToolTip.h"
 #include "CShopTable.h"
-#include "CEscapeButton.h"
+#include "CMsgBox.h"
 
 CUIMgr* CUIMgr::m_pInstance = nullptr;
 
@@ -36,11 +36,12 @@ void CUIMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/ItemToolTip_Base.png", L"ItemToolTip_Base");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Shop/ShopListBase.png", L"ShopList");
 
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/EscapeButton/EscapeButton.png", L"EscapeButton");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/EscapeButton/EscString.png", L"EscapeString");
-
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Shop/ShopListSlot.png", L"ShopListSlot");
 
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/MsgBox/MsgBoxFrame.png", L"MsgBoxFrame");
+
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Button/Button.png", L"Button");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Button/EscapeButton.png", L"EscapeButton");
 }
 
 void CUIMgr::ShowUI(UIID eID)
@@ -199,8 +200,8 @@ CUI* CUIMgr::CreateUI(UIID eID)
 	case UIID::SHOP_TABLE:
 		pUI = CAbstractFactory<CShopTable>::CreateUI(m_pMouse);
 		break;
-	case UIID::ESCAPE_BUTTON:
-		pUI = CAbstractFactory<CEscapeButton>::CreateUI(m_pMouse);
+	case UIID::MSG_BOX:
+		pUI = CAbstractFactory<CMsgBox>::CreateUI(m_pMouse);
 		break;
 	default:
 		break;

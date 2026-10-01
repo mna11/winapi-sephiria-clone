@@ -29,12 +29,12 @@ public:
     void ApplyChange() override;
 
 public:
-    void            SetDragItem(int iID)        { m_iDragItemID = iID; }
-    void            SetHoverItem(int iID)       { m_iHoverItemID = iID; }
+    void                        SetDragReferItem(MOUSE_REFER_ITEM eReferItem)   { m_tDragReferItem = eReferItem; }
+    void                        SetHoverReferItem(MOUSE_REFER_ITEM eReferItem)  { m_tHoverReferItem = eReferItem; }
 
 public:
-    const int&      GetDragItem()   const   { return m_iDragItemID; }
-    const int&      GetHoverItem()  const   { return m_iHoverItemID; }
+    const MOUSE_REFER_ITEM&      GetDragReferItem()   const   { return m_tDragReferItem; }
+    const MOUSE_REFER_ITEM&      GetHoverReferItem()  const   { return m_tHoverReferItem; }
 
 private:
     void UpdateTime();
@@ -44,9 +44,6 @@ private:
 private:
     double m_dStateTime;
     double m_dClickTime; // 클릭 업 애니메이션 타임
-
-    int    m_iHoverItemID;
-    int    m_iDragItemID;
 
     MOUSE_REFER_ITEM m_tHoverReferItem;
     MOUSE_REFER_ITEM m_tDragReferItem;

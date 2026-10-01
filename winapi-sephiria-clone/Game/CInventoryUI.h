@@ -37,6 +37,5 @@ private:
 
     int                         m_iMouseHoverSlot;
     int                         m_iStartSlot;
-    bool                        m_bDrag;
 };
 

@@ -42,9 +42,12 @@ public:
 	// 다음 프레임 시작할 때, 다르면 변경할거다.
 	void ApplyChange();
 	void RequestChange(SCENEID eScene);
-	
 	// 저장해둔 씬으로 변경하는 상황
 	void BackToSaveScene();
+
+public:
+	CScene* GetCurrentScene() const { return m_pScene; }
+	const SCENEID& GetCurrentSceneID() const { return m_eCurScene; }
 
 private:
 	bool HandleChangeShop();

@@ -11,8 +11,7 @@
 
 CMouse::CMouse()
 	: CState(MOUSE_STATE::END, MOUSE_STATE::COMBAT),
-	m_dStateTime(0.), m_dClickTime(0.),
-	m_iHoverItemID(-1), m_iDragItemID(-1)
+	m_dStateTime(0.), m_dClickTime(0.)
 {
 	m_tHoverReferItem = { -1, ITEM_SOURCE::END };
 	m_tDragReferItem = { -1, ITEM_SOURCE::END };
@@ -70,9 +69,9 @@ void CMouse::Render(Graphics* pGraphics)
 	VEC vImgSize{};
 	RectF DestRect{};
 
-	if (-1 != m_iDragItemID)
+	if (-1 != m_tDragReferItem.iID)
 	{
-		const ITEM_INFO* pItemInfo = CItemData::GetInstance()->FindItemInfo(m_iDragItemID);
+		const ITEM_INFO* pItemInfo = CItemData::GetInstance()->FindItemInfo(m_tDragReferItem.iID);
 		pImg = CImgMgr::GetInstance()->FindImg(pItemInfo->strImg.c_str());
 		vCellSize = { 32.f, 32.f };
 		vImgSize = vCellSize * PIXEL_SCALE * 0.5f;
@@ -95,32 +94,6 @@ void CMouse::Render(Graphics* pGraphics)
 			&m_imgAttrTranslucent
 		);
 	}
-
-	// 드래그한 아이템 렌더링
-	/*if (nullptr != m_pDragItem)
-	{
-		pImg = CImgMgr::GetInstance()->FindImg(m_pDragItem->GetItemInfo()->strImg.c_str());
-		vCellSize = { 32.f, 32.f };
-		vImgSize = vCellSize * PIXEL_SCALE * 0.5f;
-
-		RectF rcDest{
-				m_tInfo.vPoint.fX - vImgSize.fX * 0.5f,
-				m_tInfo.vPoint.fY - vImgSize.fY * 0.5f,
-				vImgSize.fX,
-				vImgSize.fY
-		};
-
-		pGraphics->DrawImage(
-			pImg,
-			rcDest,
-			0,
-			0,
-			vCellSize.fX,
-			vCellSize.fY,
-			UnitPixel,
-			&m_imgAttrTranslucent
-		);
-	}*/
 
 	// 마우스 커서 종류별 렌더링
 	pImg = CImgMgr::GetInstance()->FindImg(m_pFrameKey);

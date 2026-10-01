@@ -16,6 +16,8 @@ public:
 
 	static void CollisionMonsterAttack(list<CObj*>& DstList, list<CObj*>& SrcList);
 
+	static bool CollisionMouse(VEC vMousePoint, RECT& rc);
+
 	template<typename T>
 	static int GetCollisionSlotIndex(VEC vMousePoint, vector<T*>& vecSlots)
 	{

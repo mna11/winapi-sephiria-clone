@@ -205,8 +205,11 @@
     <Filter Include="01. Obj\06. UI\04. ShopTable\01. ShopTableSlot">
       <UniqueIdentifier>{1c0670ed-6b79-4026-a43d-586daa11c0ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\06. UI\05. LeaveButton">
-      <UniqueIdentifier>{95e55273-c0d8-46ef-8440-991864374f36}</UniqueIdentifier>
+    <Filter Include="01. Obj\06. UI\05. MsgBox">
+      <UniqueIdentifier>{cfc7a1d5-e819-4099-a450-ef2cfe4b6d1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\06. Button">
+      <UniqueIdentifier>{d1d16f5e-83a4-4c06-a145-5f15b3303fac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -408,8 +411,11 @@
     <ClInclude Include="CShopTableSlot.h">
       <Filter>01. Obj\06. UI\04. ShopTable\01. ShopTableSlot</Filter>
     </ClInclude>
-    <ClInclude Include="CEscapeButton.h">
-      <Filter>01. Obj\06. UI\05. LeaveButton</Filter>
+    <ClInclude Include="CMsgBox.h">
+      <Filter>01. Obj\06. UI\05. MsgBox</Filter>
+    </ClInclude>
+    <ClInclude Include="CButton.h">
+      <Filter>01. Obj\06. UI\06. Button</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -596,8 +602,11 @@
     <ClCompile Include="CShopTableSlot.cpp">
       <Filter>01. Obj\06. UI\04. ShopTable\01. ShopTableSlot</Filter>
     </ClCompile>
-    <ClCompile Include="CEscapeButton.cpp">
-      <Filter>01. Obj\06. UI\05. LeaveButton</Filter>
+    <ClCompile Include="CMsgBox.cpp">
+      <Filter>01. Obj\06. UI\05. MsgBox</Filter>
+    </ClCompile>
+    <ClCompile Include="CButton.cpp">
+      <Filter>01. Obj\06. UI\06. Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

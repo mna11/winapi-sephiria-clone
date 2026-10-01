@@ -3,17 +3,21 @@
 
 #include "CMouse.h"
 
+#include "CShop.h"
+
 #include "CUIMgr.h"
+#include "CItemData.h"
 #include "CImgMgr.h"
 #include "CObjMgr.h"
 #include "CInventory.h"
 #include "CInventorySlotUI.h"
 #include "CCollisionMgr.h"
+#include "CSceneMgr.h"
 #include "CAbstractFactory.h"
 #include "CKeyMgr.h"
 
 CInventoryUI::CInventoryUI()
-	: m_pInventory(nullptr), m_iStartSlot(-1), m_iMouseHoverSlot(-1), m_bDrag(false)
+	: m_pInventory(nullptr), m_iStartSlot(-1), m_iMouseHoverSlot(-1)
 {
 }
 
@@ -40,6 +44,9 @@ int CInventoryUI::Update()
 	if (!m_bView)
 		return NOEVENT;
 
+	if (m_bDead)
+		return DEAD;
+
 	for (auto& slot : m_vecItemSlot)
 		slot->Update();
 
@@ -55,15 +62,19 @@ int CInventoryUI::Update()
 		m_vecItemSlot[i]->SetCollide(i == m_iMouseHoverSlot);
 	}
 
+	// 인벤토리 업데이트하고 -> 상점 테이블 업데이트하는 이 순서가 현재 종속적인 상태
+	// 만약 순서가 뒤바뀐다면 로직 작동안함
+	// 
 	// 마우스 호버 아이템 세팅
 	if (m_pInventory->IsExistItem(m_iMouseHoverSlot))
 	{
-		m_pMouse->SetHoverItem(m_pInventory->GetItem(m_iMouseHoverSlot)->GetItemInfo()->iID);
+		m_pMouse->SetHoverReferItem({ m_pInventory->GetItem(m_iMouseHoverSlot)->GetItemInfo()->iID, ITEM_SOURCE::INVENTORY });
 		CUIMgr::GetInstance()->ShowUI(UIID::ITEM_TOOLTIP);
 		CUIMgr::GetInstance()->SetPos(UIID::ITEM_TOOLTIP, VEC{ 210.f, 200.f });
 	}
 	else
 	{
+		// 아이템이 없는 칸 혹은 아예 밖
 		CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
 	}
 
@@ -72,36 +83,72 @@ int CInventoryUI::Update()
 	if (KEY_DOWN(VK_LBUTTON) && m_pInventory->IsExistItem(m_iMouseHoverSlot))
 	{
 		// 마우스가 현재 드래그 중인 아이템의 아이디를 참조하게 해줌 - 렌더용
-		m_pMouse->SetDragItem(m_pInventory->GetItem(m_iMouseHoverSlot)->GetItemInfo()->iID);
-
+		m_pMouse->SetDragReferItem({ m_pInventory->GetItem(m_iMouseHoverSlot)->GetItemInfo()->iID, ITEM_SOURCE::INVENTORY });
 		m_iStartSlot = m_iMouseHoverSlot;
-		m_bDrag = true;
 
 		// 원래 슬롯은 안보이게 함
 		m_vecItemSlot[m_iStartSlot]->SetItem(nullptr);
 	}
 
-	// 드래그 끝
-	if (KEY_UP(VK_LBUTTON) && m_bDrag)
+	if (KEY_DOWN(VK_RBUTTON) && m_pInventory->IsExistItem(m_iMouseHoverSlot))
 	{
-		// 이동해야되는 인덱스 정리
-		int iStartIdx = m_iStartSlot;
-		int iEndIdx = m_iMouseHoverSlot;
-
-		// 마우스가 놓은 곳이 현재와 다른 슬롯이라면!
-		if (iEndIdx != -1 && iEndIdx != iStartIdx)
+		if (SCENEID::SHOP == CSceneMgr::GetInstance()->GetCurrentSceneID())
 		{
-			// 아이템 이동
-			m_pInventory->MoveItem(iStartIdx, iEndIdx);
+			// 판매 시도
+			static_cast<CShop*>(CSceneMgr::GetInstance()->GetCurrentScene())->TrySellItem(m_iMouseHoverSlot);
 		}
-
-		// SyncInventorySlot이 LateUpdate에서 Slot 동기화 해줘서 별도로 할 것 없음
-
-		// 초기화
-		m_pMouse->SetDragItem(-1);
-		m_iStartSlot = -1;
-		m_bDrag = false;
 	}
+
+	if (-1 != m_pMouse->GetDragReferItem().iID)
+	{
+		// 인벤토리에서 인벤토리로 드래그
+		if (ITEM_SOURCE::INVENTORY == m_pMouse->GetDragReferItem().eItemSource)
+		{
+			if (KEY_UP(VK_LBUTTON))
+			{
+				// 이동해야되는 인덱스 정리
+				int iStartIdx = m_iStartSlot;
+				int iEndIdx = m_iMouseHoverSlot;
+
+				// 드래그 플래그가 필요없는 이유 -> 같은 슬롯이면 안되고 / 슬롯이 아니면 안되니깐
+				// 마우스가 놓은 곳이 현재와 다른 슬롯이라면!
+				if (iEndIdx != -1 && iEndIdx != iStartIdx)
+				{
+					// 아이템 이동
+					m_pInventory->MoveItem(iStartIdx, iEndIdx);
+				}
+
+				// SyncInventorySlot이 LateUpdate에서 Slot 동기화 해줘서 별도로 할 것 없음
+
+				// 초기화
+				m_pMouse->SetDragReferItem({ -1, ITEM_SOURCE::END });
+				m_iStartSlot = -1;
+			}
+		}
+		// 상점에서 인벤토리로 드래그
+		else if (ITEM_SOURCE::SHOP == m_pMouse->GetDragReferItem().eItemSource)
+		{
+			if (KEY_UP(VK_LBUTTON))
+			{
+				int iIdx = m_iMouseHoverSlot;
+
+				if (iIdx != -1 && SCENEID::SHOP == CSceneMgr::GetInstance()->GetCurrentSceneID())
+				{
+					// 구매 시도 - 아이템 삽입
+					static_cast<CShop*>(CSceneMgr::GetInstance()->GetCurrentScene())->TryBuyItem(iIdx, m_pMouse->GetDragReferItem().iID);
+				}
+
+				// SyncInventorySlot이 LateUpdate에서 Slot 동기화 해줘서 별도로 할 것 없음
+
+				// 초기화
+				m_pMouse->SetDragReferItem({ -1, ITEM_SOURCE::END });
+				m_iStartSlot = -1;
+			}
+		}
+		// 레벨업 보상에서 인벤토리로 드래그
+
+	}
+
 
 	return NOEVENT;
 }

@@ -25,6 +25,7 @@ public:
 	const vector<CItem*>& GetItems() const { return m_vecItems; }
 	const int& GetInventorySize() const { return m_iInvenSize; }
 	CItem* GetItem(int iIdx) const { return m_vecItems[iIdx]; }
+	const CPlayer* GetOwner() const { return m_pOwner; }
 
 public:
 	bool IsExistItem(int iIdx) { return (- 1 != iIdx && (nullptr != m_vecItems[iIdx])); }
