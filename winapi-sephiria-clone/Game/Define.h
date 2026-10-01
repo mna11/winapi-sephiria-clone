@@ -56,10 +56,10 @@
 /////////////////////////////////////////
 // 열거체
 
-enum class OBJID	{ PLAYER, MONSTER, MONSTER_BULLET, MOUSE, WEAPON, EFFECT, UI, CAMERA, END };
+enum class OBJID	{ PLAYER, MONSTER, MONSTER_BULLET, NPC, MOUSE, WEAPON, EFFECT, UI, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, MOUSE, END };
-enum class UIID		{ BASIC_INFO, BOSS_HP, STAT_INFO, INVENTORY, ITEM_TOOLTIP, SHOP, ITEM_INFO, REWARD, END };
-enum class SCENEID	{ LIB_LOADING, STAGE0, STAGE1, BOSS_STAGE, END };
+enum class UIID		{ BASIC_INFO, BOSS_HP, STAT_INFO, INVENTORY, ITEM_TOOLTIP, SHOP_TABLE, MSG_BOX, BUTTON, REWARD, END };
+enum class SCENEID	{ LIB_LOADING, SHOP, STAGE0, STAGE1, BOSS_STAGE, END };
 
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };
 
@@ -68,6 +68,14 @@ enum class TILE_LAYER { LAYER0, LAYER1, LAYER2, LAYER3, END };
 
 // 방 상태
 enum class ROOM_STATE { READY, BATTLE, CLEAR };
+
+enum class ITEM_SOURCE { INVENTORY, SHOP, END };
+
+// 메세지 박스 종류
+// NORMAL이 상단 문구 하단 버튼 구조
+// HORIZONTAL은 버튼만 가로로 배치
+// VERTICAL은 버튼만 세로로 배치
+enum class MSG_BOX_LAYOUT { NORMAL, HORIZONTAL, VERTICAL, END };
 
 // 아이템 카테고리
 enum class ITEM_CATEGORY 
@@ -313,6 +321,8 @@ typedef struct tagItemInfo
 	std::vector<tagStat>	vecStat;			// 아이템 스탯 (레벨별 다르게)
 	
 	ITEM_CATEGORY	eCategory;					// 카테고리
+
+	int				iLeaf;						// 가격
 } ITEM_INFO;
 
 
@@ -352,6 +362,12 @@ typedef struct tagTileInfo
 	TILE_OPTION	eTileOption;
 	TILE_LAYER	eTileLayer;
 } TILE;
+
+typedef struct tagMouseReferItem
+{
+	int			iID;
+	ITEM_SOURCE eItemSource;
+} MOUSE_REFER_ITEM;
 
 /////////////////////////////////////////
 // 함수

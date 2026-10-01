@@ -15,6 +15,7 @@
 #include "CKeyMgr.h"
 #include "CTileMgr.h"
 #include "CUIMgr.h"
+#include "CCollisionMgr.h"
 
 
 CStage::CStage()
@@ -53,6 +54,42 @@ void CStage::HotKey()
     {
         CUIMgr::GetInstance()->ToggleUI(UIID::INVENTORY);
         CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
+    }
+}
+
+void CStage::HandleCollisionBattleRoom()
+{
+    CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+    if (nullptr == pPlayer)
+        return;
+
+    // 현재 싸우고 있는 상태가 아니라면
+    if (-1 == m_iCurBattleRoomIdx)
+    {
+        // 방을 순회한다.
+        for (int i = 0; i < m_vecRooms.size(); ++i)
+        {
+            ROOM_INFO& room = m_vecRooms[i];
+
+            // 이미 클리어 한 방이라면 다른 방 순회
+            if (room.eState == ROOM_STATE::CLEAR)
+                continue;
+
+            // 만약 준비중인 방과 트리거가 충돌이 된다면
+            if (CCollisionMgr::CollisionRect(pPlayer->GetRect(), room.rcTrigger))
+            {
+                // 현재 방을 전투 상태로 변환
+                StartBattleRoom(i);
+                CEffectMgr::GetInstance()->CreateEffect(L"Exclamation_Mark", { WINCX >> 1, 200.f }, EFTMGR_IMAGE | EFTMGR_FIXED | EFTMGR_NO_SCROLL);
+                break;
+            }
+        }
+    }
+    else
+    {
+        // 전투 중인 상황인데, 현재 몬스터를 다 죽였다면 방을 클리어 상태로 변경한다.
+        if (CObjMgr::GetInstance()->ObjEmpty(OBJID::MONSTER))
+            ClearCurRoom();
     }
 }
 

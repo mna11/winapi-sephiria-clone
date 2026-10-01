@@ -8,14 +8,27 @@ class CInventorySlotUI;
 class CCollisionMgr
 {
 public:
+	static bool CollisionRect(const RECT& DstRect, const RECT& SrcRect);
 	static void CollisionRect(list<CObj*>& DstList, list<CObj*>& SrcList);
 	static void CollisionWall(list<CObj*>& DstList, TILE_LAYER eLayer);
 	static void CollisionPlayerAttack(list<CObj*>& DstList, list<CObj*>& SrcList);
 	static void CollisionPlayerDefense(list<CObj*>& DstList, list<CObj*>& SrcList);
 
 	static void CollisionMonsterAttack(list<CObj*>& DstList, list<CObj*>& SrcList);
-	static void CollisionRoom(CPlayer* pPlayer, CStage* pScene);
-	static void CollisionStair(CPlayer* pPlayer, RECT& pStair, SCENEID eSceneID);
-	static int GetCollisionSlotIndex(VEC vMousePoint, vector<CInventorySlotUI*>& vecSlots);
+
+	static bool CollisionMouse(VEC vMousePoint, RECT& rc);
+
+	template<typename T>
+	static int GetCollisionSlotIndex(VEC vMousePoint, vector<T*>& vecSlots)
+	{
+		POINT ptMouse{ static_cast<int>(vMousePoint.fX), static_cast<int>(vMousePoint.fY) };
+
+		for (int i = 0; i < static_cast<int>(vecSlots.size()); ++i)
+		{
+			if (PtInRect(&vecSlots[i]->GetRect(), ptMouse))
+				return i;
+		}
+		return -1;
+	}
 };
 

@@ -27,7 +27,7 @@ public:
 public:
     const vector<CInventorySlotUI*>&    GetItemSlots() const { return m_vecItemSlot; }
 
-private:
+public:
     void    SyncInventorySlot();
 
 
@@ -37,6 +37,5 @@ private:
 
     int                         m_iMouseHoverSlot;
     int                         m_iStartSlot;
-    bool                        m_bDrag;
 };
 

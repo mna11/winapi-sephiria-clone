@@ -2,6 +2,7 @@
 #include "CStage1.h"
 
 #include "CPlayer.h"
+#include "CBaba.h"
 #include "CGargoyle.h"
 
 #include "CAbstractFactory.h"
@@ -12,6 +13,7 @@
 #include "CKeyMgr.h"
 #include "CTileMgr.h"
 #include "CUIMgr.h"
+#include "CSceneMgr.h"
 
 void CStage1::Initialize()
 {
@@ -19,8 +21,6 @@ void CStage1::Initialize()
 	CTileMgr::GetInstance()->SetInteractionBlocked(false);
 
 	Init_CreateObj();
-	// UI Show
-	CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
 
 	InitializeRooms();
 	Init_LoadImg(L"../Resource/Image/Stage/Stage01.png");
@@ -36,8 +36,8 @@ void CStage1::LateUpdate()
 	CObjMgr::GetInstance()->LateUpdate();
 
 	HotKey();
-	CCollisionMgr::CollisionRoom(CObjMgr::GetInstance()->GetPlayer(), this);
-	CCollisionMgr::CollisionStair(CObjMgr::GetInstance()->GetPlayer(), m_rcStair, SCENEID::LIB_LOADING);
+
+	HandleCollision();
 }
 
 void CStage1::Render(Graphics* pGraphics)
@@ -117,6 +117,8 @@ void CStage1::Release()
 void CStage1::Init_CreateObj()
 {
 	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(360.f, 7600.f));
+	CObjMgr::GetInstance()->AddObject(OBJID::NPC, CAbstractFactory<CBaba>::CreateObj(720.f, 7600.f));
+	
 	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
 }
 
@@ -148,5 +150,17 @@ void CStage1::SpawnMonster(int iRoomIdx)
 	case 2:
 		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(4600, 5700));
 		break;
+	}
+}
+
+void CStage1::HandleCollision()
+{
+	// 전투 방
+	HandleCollisionBattleRoom();
+
+	// 계단
+	if (CCollisionMgr::CollisionRect(CObjMgr::GetInstance()->GetPlayer()->GetRect(), m_rcStair) && KEY_DOWN('F'))
+	{
+		CSceneMgr::GetInstance()->RequestChange(SCENEID::LIB_LOADING);
 	}
 }

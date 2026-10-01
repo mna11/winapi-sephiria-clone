@@ -46,6 +46,28 @@ int CObjMgr::Update()
 	return 0;
 }
 
+int CObjMgr::UpdateOnly(initializer_list<OBJID> ids)
+{
+	for (auto id : ids)
+	{
+		for (auto iter = m_ObjList[toUType(id)].begin();
+			iter != m_ObjList[toUType(id)].end(); )
+		{
+			int iResult = (*iter)->Update();
+
+			if (DEAD == iResult)
+			{
+				SafeDelete<CObj*>(*iter);
+				iter = m_ObjList[toUType(id)].erase(iter);
+			}
+			else
+				++iter;
+		}
+	}
+
+	return 0;
+}
+
 void CObjMgr::LateUpdate()
 {
 
@@ -75,6 +97,23 @@ void CObjMgr::LateUpdate()
 	//CCollisionMgr::CollisionCircle(m_ObjList[BULLET], m_ObjList[MONSTER]);
 	CCollisionMgr::CollisionPlayerDefense(m_ObjList[toUType(OBJID::PLAYER)], m_ObjList[toUType(OBJID::MONSTER_BULLET)]);
 	CCollisionMgr::CollisionMonsterAttack(m_ObjList[toUType(OBJID::PLAYER)], m_ObjList[toUType(OBJID::MONSTER)]);
+}
+
+void CObjMgr::LateUpdateOnly(initializer_list<OBJID> ids)
+{
+	for (auto id : ids)
+	{
+		for (auto& pObj : m_ObjList[toUType(id)])
+		{
+			pObj->LateUpdate();
+
+			if (m_ObjList[toUType(id)].empty())
+				break;
+
+			RENDERID  eID = pObj->GetRenderID();
+			m_RenderList[toUType(eID)].push_back(pObj);
+		}
+	}
 }
 
 void CObjMgr::Render(Graphics* pGraphics)

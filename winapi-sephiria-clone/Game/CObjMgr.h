@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CObj.h"
+#include "CMouse.h"
 #include "CPlayer.h"
 
 class CObjMgr
@@ -32,7 +33,9 @@ public:
 public:
 	void AddObject(OBJID eID, CObj* pObj);
 	int  Update();
+	int  UpdateOnly(initializer_list<OBJID> ids);
 	void LateUpdate();
+	void LateUpdateOnly(initializer_list<OBJID> ids);
 	void Render(Graphics* pGraphics);
 	void Release();
 
@@ -43,6 +46,13 @@ public:
 
 		return static_cast<CPlayer*>(m_ObjList[toUType(OBJID::PLAYER)].front()); 
 	}
+	CMouse* GetMouse() {
+		if (m_ObjList[toUType(OBJID::MOUSE)].empty())
+			return nullptr;
+
+		return static_cast<CMouse*>(m_ObjList[toUType(OBJID::MOUSE)].front());
+	}
+
 
 public:
 	void	DeleteID(OBJID eID);

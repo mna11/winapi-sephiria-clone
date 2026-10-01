@@ -18,6 +18,7 @@ public:
 		if (!m_pInstance)
 		{
 			m_pInstance = new CUIMgr;
+			m_pInstance->Initialize();
 		}
 
 		return m_pInstance;
@@ -31,11 +32,14 @@ public:
 			m_pInstance = nullptr;
 		}
 	}
+public:
+	void Initialize();
 
 public:
 	void ShowUI(UIID eID);
 	void ShowUI(UIID eID, CObj* pTarget);
 	void HideUI(UIID eID);
+	void HideAllUI();
 	void ToggleUI(UIID eID);
 
 public:

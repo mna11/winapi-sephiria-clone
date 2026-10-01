@@ -29,12 +29,12 @@ public:
     void ApplyChange() override;
 
 public:
-    void            SetDragItem(CItem* pItem)   { m_pDragItem = pItem; }
-    void            SetHoverItem(CItem* pItem)  { m_pHoverItem = pItem; }
+    void                        SetDragReferItem(MOUSE_REFER_ITEM eReferItem)   { m_tDragReferItem = eReferItem; }
+    void                        SetHoverReferItem(MOUSE_REFER_ITEM eReferItem)  { m_tHoverReferItem = eReferItem; }
 
 public:
-    const CItem*    GetDragItem()   const   { return m_pDragItem; }
-    const CItem*    GetHoverItem()  const   { return m_pHoverItem; }
+    const MOUSE_REFER_ITEM&      GetDragReferItem()   const   { return m_tDragReferItem; }
+    const MOUSE_REFER_ITEM&      GetHoverReferItem()  const   { return m_tHoverReferItem; }
 
 private:
     void UpdateTime();
@@ -45,8 +45,9 @@ private:
     double m_dStateTime;
     double m_dClickTime; // 클릭 업 애니메이션 타임
 
-    CItem* m_pHoverItem;
-    CItem* m_pDragItem;
+    MOUSE_REFER_ITEM m_tHoverReferItem;
+    MOUSE_REFER_ITEM m_tDragReferItem;
+
     ImageAttributes m_imgAttrTranslucent;
 };
 

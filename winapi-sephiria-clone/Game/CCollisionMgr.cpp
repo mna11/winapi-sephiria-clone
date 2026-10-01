@@ -15,6 +15,12 @@
 #include "CTile.h"
 #include "CKeyMgr.h"
 
+bool CCollisionMgr::CollisionRect(const RECT& DstRect, const RECT& SrcRect)
+{
+    RECT rc{};
+    return IntersectRect(&rc, &DstRect, &SrcRect);
+}
+
 void CCollisionMgr::CollisionRect(list<CObj*>& DstList, list<CObj*>& SrcList)
 {
 	RECT rc{};
@@ -156,62 +162,8 @@ void CCollisionMgr::CollisionMonsterAttack(list<CObj*>& DstList, list<CObj*>& Sr
     }
 }
 
-void CCollisionMgr::CollisionRoom(CPlayer* pPlayer, CStage* pStage)
-{
-    RECT rc{};
-
-    int iCurBattleRoomIdx = pStage->GetBattleRoomIdx();
-
-    // 현재 싸우고 있는 상태가 아니라면
-    if (-1 == iCurBattleRoomIdx)
-    {
-        vector<ROOM_INFO> vecRooms = pStage->GetVecRooms();
-
-        // 방을 순회한다.
-        for (int i = 0; i < vecRooms.size(); ++i)
-        {
-            ROOM_INFO& room = vecRooms[i];
-
-            // 이미 클리어 한 방이라면 다른 방 순회
-            if (room.eState == ROOM_STATE::CLEAR)
-                continue;
-
-            // 만약 준비중인 방과 트리거가 충돌이 된다면
-            if (IntersectRect(&rc, &pPlayer->GetRect(), &room.rcTrigger))
-            {
-                // 현재 방을 전투 상태로 변환
-                pStage->StartBattleRoom(i);
-                CEffectMgr::GetInstance()->CreateEffect(L"Exclamation_Mark", { WINCX >> 1, 200.f }, EFTMGR_IMAGE | EFTMGR_FIXED | EFTMGR_NO_SCROLL);
-                break;
-            }
-        }
-    }
-    else
-    {
-        // 전투 중인 상황인데, 현재 몬스터를 다 죽였다면 방을 클리어 상태로 변경한다.
-        if (CObjMgr::GetInstance()->ObjEmpty(OBJID::MONSTER))
-            pStage->ClearCurRoom();
-    }
-}
-
-void CCollisionMgr::CollisionStair(CPlayer* pPlayer, RECT& pStair, SCENEID eSceneID)
-{
-    RECT rc{};
-
-    if (IntersectRect(&rc, &pPlayer->GetRect(), &pStair) && KEY_DOWN('F'))
-    {
-        CSceneMgr::GetInstance()->RequestChange(eSceneID);
-    }
-}
-
-int CCollisionMgr::GetCollisionSlotIndex(VEC vMousePoint, vector<CInventorySlotUI*>& vecSlots)
+bool CCollisionMgr::CollisionMouse(VEC vMousePoint, RECT& rc)
 {
     POINT ptMouse{ static_cast<int>(vMousePoint.fX), static_cast<int>(vMousePoint.fY) };
-
-    for (int i = 0; i < static_cast<int>(vecSlots.size()); ++i)
-    {
-        if (PtInRect(&vecSlots[i]->GetRect(), ptMouse))
-            return i;
-    }
-    return -1;
+    return PtInRect(&rc, ptMouse);
 }

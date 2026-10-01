@@ -38,10 +38,15 @@ public:
     const CWeaponController*    GetWeaponController()       const   { return m_pWeaponController; }
     const double&               GetDashRecoveryInterval()   const   { return m_dDashRecorveyInterval; }
     const double&               GetDashRecoveryElapse()     const   { return m_dDashRecoveryElapseTime; }
+    const int&                  GetLeaf()                   const { return m_iLeaf; }
     CInventory*                 GetInventory()              const { return m_pInventory; }
 
 public:
     void                        SetPlayerBehaviorEnable(bool bEnable) { m_bPlayerBehaviorEnable = bEnable; }
+    void                        SetLeaf(int iLeaf) { m_iLeaf = iLeaf; }
+
+public:
+    void                        AddLeaf(int iAmount) { m_iLeaf += iAmount; }
 
 public:
     void SetDamage(int iDamage, CObj* pObj) override;
@@ -77,6 +82,9 @@ private:
 
     // 플레이어 행동 가능 - UI 때문에 만듬
     bool                m_bPlayerBehaviorEnable;
+    
+    // 돈
+    int                 m_iLeaf;
 #ifdef _DEBUG
 private:
     void    PrintInfo();

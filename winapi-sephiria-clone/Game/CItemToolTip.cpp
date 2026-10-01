@@ -4,6 +4,7 @@
 #include "CItem.h"
 #include "CMouse.h"
 #include "CFontMgr.h"
+#include "CItemData.h"
 
 CItemToolTip::CItemToolTip()
 {
@@ -22,9 +23,6 @@ void CItemToolTip::Initialize()
 	// m_tInfo.vPoint가 중점이 아니라 LT임
 	m_tInfo = { 0.f, 0.f, 0.f, 0.f };
 
-	// 스프라이트 넣기 
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/ItemToolTip_Base.png", L"ItemToolTip_Base");
-
 	// 렌더 정보 초기화 
 	m_eRender = RENDERID::UI;
 	m_iRenderLayer = 5;
@@ -34,6 +32,9 @@ int CItemToolTip::Update()
 {
 	if (!m_bView)
 		return NOEVENT;
+
+	if (m_bDead)
+		return DEAD;
 
 	return NOEVENT;
 }
@@ -49,9 +50,15 @@ void CItemToolTip::Render(Graphics* pGraphics)
 	if (!m_bView)
 		return;
 
-	const CItem* pItem = m_pMouse->GetHoverItem();
+	/*const CItem* pItem = m_pMouse->GetHoverItem();
 	if (nullptr == pItem)
+		return;*/
+
+	const int& iHoverItemID = m_pMouse->GetHoverReferItem().iID;
+	if (-1 == iHoverItemID)
 		return;
+
+	const ITEM_INFO* pItemInfo = CItemData::GetInstance()->FindItemInfo(iHoverItemID);
 
 	Image* pImg(nullptr);
 	VEC vCellSize{};
@@ -70,7 +77,7 @@ void CItemToolTip::Render(Graphics* pGraphics)
 	float fCellTopEnd		= 43.f;
 	float fCellMiddleEnd	= 51.f;
 
-	float fMiddleSize = 10.f + pItem->GetItemInfo()->vecStrDescription.size() * 10.f;
+	float fMiddleSize = 10.f + pItemInfo->vecStrDescription.size() * 10.f;
 
 	// 상
 	vCellSize = {160.f, fCellTopSize}; // 총 67.f
@@ -110,7 +117,7 @@ void CItemToolTip::Render(Graphics* pGraphics)
 	VEC vRectSize{};
 
 	// 아이템 아이콘 그리기
-	pImg = CImgMgr::GetInstance()->FindImg(pItem->GetItemInfo()->strImg.c_str());
+	pImg = CImgMgr::GetInstance()->FindImg(pItemInfo->strImg.c_str());
 	if (nullptr == pImg)
 		return;
 
@@ -135,11 +142,11 @@ void CItemToolTip::Render(Graphics* pGraphics)
 	SolidBrush GreenBrush(Color{ 255, 0, 128, 0 });
 	pGraphics->FillRectangle(&GreenBrush, DestRect);
 #endif // _DEBUG
-	CFontMgr::GetInstance()->DrawString(pGraphics, pItem->GetItemInfo()->strName, FONT_TYPE::NORMAL, DestRect, Color{255, 255, 255, 255}, 24.f, StringAlignmentCenter, StringAlignmentFar);
+	CFontMgr::GetInstance()->DrawString(pGraphics, pItemInfo->strName, FONT_TYPE::NORMAL, DestRect, Color{255, 255, 255, 255}, 24.f, StringAlignmentCenter, StringAlignmentFar);
 
 	// 아이템 시너지 그리기
 	// 1. 시너지 아이콘
-	pImg = CImgMgr::GetInstance()->FindImg(pItem->GetItemInfo()->strCategoryImg.c_str());
+	pImg = CImgMgr::GetInstance()->FindImg(pItemInfo->strCategoryImg.c_str());
 	if (nullptr == pImg)
 		return;
 
@@ -165,7 +172,7 @@ void CItemToolTip::Render(Graphics* pGraphics)
 	SolidBrush RedBrush(Color{ 255, 128, 0, 0 });
 	pGraphics->FillRectangle(&RedBrush, DestRect);
 #endif // _DEBUG
-	CFontMgr::GetInstance()->DrawString(pGraphics, pItem->GetItemInfo()->strCategoryName, FONT_TYPE::NORMAL, DestRect, Color{ 255, 105, 159, 139 }, 18.f, StringAlignmentNear, StringAlignmentNear);
+	CFontMgr::GetInstance()->DrawString(pGraphics, pItemInfo->strCategoryName, FONT_TYPE::NORMAL, DestRect, Color{ 255, 105, 159, 139 }, 18.f, StringAlignmentNear, StringAlignmentNear);
 
 	// 고유 텍스트 그리기
 	vOffset = VEC{ 12.f, fCellTopEnd + 5.f } *m_fUIScale;
@@ -179,7 +186,7 @@ void CItemToolTip::Render(Graphics* pGraphics)
 	CFontMgr::GetInstance()->DrawString(pGraphics, strUnique, FONT_TYPE::NORMAL, DestRect, Color { 255, 200, 158, 121 }, 18.f, StringAlignmentNear, StringAlignmentNear);
 
 	// 아이템 효과 텍스트 그리기
-	vector<wstring> vecStrDescription = pItem->GetItemInfo()->vecStrDescription;
+	vector<wstring> vecStrDescription = pItemInfo->vecStrDescription;
 	VEC vDashOffset{};
 	VEC vDashRectSize{};
 	RectF DashRect{};

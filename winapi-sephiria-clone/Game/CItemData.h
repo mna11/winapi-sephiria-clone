@@ -37,7 +37,7 @@ public:
 private:
 	void EmplaceItemInfo(int iID, wstring strImg, wstring strCategoryImg, wstring strName,
 		wstring strCategoryName, vector<wstring> vecStrDescription, vector<tagStat> vecStat, 
-		ITEM_CATEGORY eCategory);
+		ITEM_CATEGORY eCategory, int iLeaf);
 	vector<STAT> CreateStatVec(int iID);
 	vector<wstring> CreateStrDescriptionVec(int iID);
 

@@ -190,6 +190,27 @@
     <Filter Include="06. Data\00. ItemData">
       <UniqueIdentifier>{a7e59f2a-5a36-4662-bcee-415067a04b1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\08. BaBa">
+      <UniqueIdentifier>{042df00f-f6c3-4748-a068-65819303cc87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\02. Shop">
+      <UniqueIdentifier>{cb1a33f3-4dd4-47dd-a46a-1ae1aaded3a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\04. ShopTable">
+      <UniqueIdentifier>{ad368fd1-3700-46aa-8895-9fa69e50a71a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\04. ShopTable\00. ShopTable">
+      <UniqueIdentifier>{dc4843e4-ab3e-4796-a869-f843253a9a0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\04. ShopTable\01. ShopTableSlot">
+      <UniqueIdentifier>{1c0670ed-6b79-4026-a43d-586daa11c0ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\05. MsgBox">
+      <UniqueIdentifier>{cfc7a1d5-e819-4099-a450-ef2cfe4b6d1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\06. Button">
+      <UniqueIdentifier>{d1d16f5e-83a4-4c06-a145-5f15b3303fac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -375,6 +396,27 @@
     <ClInclude Include="CItemData.h">
       <Filter>06. Data\00. ItemData</Filter>
     </ClInclude>
+    <ClInclude Include="CBaba.h">
+      <Filter>01. Obj\08. BaBa</Filter>
+    </ClInclude>
+    <ClInclude Include="CShopTable.h">
+      <Filter>01. Obj\06. UI\04. ShopTable</Filter>
+    </ClInclude>
+    <ClInclude Include="CShop.h">
+      <Filter>04. Scene\02. Shop</Filter>
+    </ClInclude>
+    <ClInclude Include="CShopTable.h">
+      <Filter>01. Obj\06. UI\04. ShopTable\00. ShopTable</Filter>
+    </ClInclude>
+    <ClInclude Include="CShopTableSlot.h">
+      <Filter>01. Obj\06. UI\04. ShopTable\01. ShopTableSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="CMsgBox.h">
+      <Filter>01. Obj\06. UI\05. MsgBox</Filter>
+    </ClInclude>
+    <ClInclude Include="CButton.h">
+      <Filter>01. Obj\06. UI\06. Button</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -544,6 +586,27 @@
     </ClCompile>
     <ClCompile Include="CItemData.cpp">
       <Filter>06. Data\00. ItemData</Filter>
+    </ClCompile>
+    <ClCompile Include="CBaba.cpp">
+      <Filter>01. Obj\08. BaBa</Filter>
+    </ClCompile>
+    <ClCompile Include="CShopTable.cpp">
+      <Filter>01. Obj\06. UI\04. ShopTable</Filter>
+    </ClCompile>
+    <ClCompile Include="CShop.cpp">
+      <Filter>04. Scene\02. Shop</Filter>
+    </ClCompile>
+    <ClCompile Include="CShopTable.cpp">
+      <Filter>01. Obj\06. UI\04. ShopTable\00. ShopTable</Filter>
+    </ClCompile>
+    <ClCompile Include="CShopTableSlot.cpp">
+      <Filter>01. Obj\06. UI\04. ShopTable\01. ShopTableSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="CMsgBox.cpp">
+      <Filter>01. Obj\06. UI\05. MsgBox</Filter>
+    </ClCompile>
+    <ClCompile Include="CButton.cpp">
+      <Filter>01. Obj\06. UI\06. Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

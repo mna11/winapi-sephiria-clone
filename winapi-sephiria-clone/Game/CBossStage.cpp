@@ -27,9 +27,6 @@ void CBossStage::Initialize()
 	CTileMgr::GetInstance()->LoadTile(SCENEID::BOSS_STAGE);
 	CTileMgr::GetInstance()->SetInteractionBlocked(false);
 
-	// UI Show
-	CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
-
 	Init_CreateObj();
     Init_LoadImg(L"../Resource/Image/Stage/BossStage.png");
 }

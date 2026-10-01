@@ -134,11 +134,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAbstractFactory.h" />
+    <ClInclude Include="CBaba.h" />
     <ClInclude Include="CBasicInfo.h" />
     <ClInclude Include="CBossErma.h" />
     <ClInclude Include="CBossHp.h" />
     <ClInclude Include="CBossStage.h" />
     <ClInclude Include="CBullet.h" />
+    <ClInclude Include="CButton.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCameraMgr.h" />
     <ClInclude Include="CCollisionMgr.h" />
@@ -176,6 +178,10 @@
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneMgr.h" />
     <ClInclude Include="CShield.h" />
+    <ClInclude Include="CShop.h" />
+    <ClInclude Include="CMsgBox.h" />
+    <ClInclude Include="CShopTable.h" />
+    <ClInclude Include="CShopTableSlot.h" />
     <ClInclude Include="CStage.h" />
     <ClInclude Include="CStage1.h" />
     <ClInclude Include="CState.h" />
@@ -196,11 +202,13 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CBaba.cpp" />
     <ClCompile Include="CBasicInfo.cpp" />
     <ClCompile Include="CBossErma.cpp" />
     <ClCompile Include="CBossHp.cpp" />
     <ClCompile Include="CBossStage.cpp" />
     <ClCompile Include="CBullet.cpp" />
+    <ClCompile Include="CButton.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCameraMgr.cpp" />
     <ClCompile Include="CCollisionMgr.cpp" />
@@ -238,6 +246,10 @@
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneMgr.cpp" />
     <ClCompile Include="CShield.cpp" />
+    <ClCompile Include="CShop.cpp" />
+    <ClCompile Include="CMsgBox.cpp" />
+    <ClCompile Include="CShopTable.cpp" />
+    <ClCompile Include="CShopTableSlot.cpp" />
     <ClCompile Include="CStage.cpp" />
     <ClCompile Include="CStage1.cpp" />
     <ClCompile Include="CState.cpp" />

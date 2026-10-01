@@ -24,6 +24,9 @@ public:
 	const int& GetBattleRoomIdx() const { return m_iCurBattleRoomIdx; }
 
 protected:
+	void HandleCollisionBattleRoom();
+
+protected:
 	void CreateBattleWallEffects();
 	void RemoveBattleWallEffects();
 

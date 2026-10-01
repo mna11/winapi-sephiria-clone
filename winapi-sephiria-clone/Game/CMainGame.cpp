@@ -61,12 +61,7 @@ void CMainGame::Initialize()
 	}
 #endif // _DEBUG
 
-	// 마우스 초기화 - 나중에 StartScene으로 이동
-	// 마우스는 UI와 연동하여 렌더용 객체
-	// 실제 충돌은 굳이 마우스 객체를 써서 진행하지 않음
-	// 렌더와 충돌 책임 분리
-	// 이렇게 하는 이유는 마우스와 각도, 또는 마우스와 직접적인 충돌을 하기 위해서
-	// 매번 계산 시, CObjMgr에서 CMouse를 빼와야하는데, 이건 좋지 않다고 판단했음
+	// 마우스 생성
 	CObj* pMouse = CAbstractFactory<CMouse>::CreateObj();
 	CObjMgr::GetInstance()->AddObject(OBJID::MOUSE, pMouse);
 	CUIMgr::GetInstance()->SetMouse(static_cast<CMouse*>(pMouse));

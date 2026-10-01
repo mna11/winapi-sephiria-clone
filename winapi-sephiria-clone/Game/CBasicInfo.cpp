@@ -40,6 +40,9 @@ int CBasicInfo::Update()
 	if (!m_bView)
 		return NOEVENT;
 
+	if (m_bDead)
+		return DEAD;
+
 	return NOEVENT;
 }
 
