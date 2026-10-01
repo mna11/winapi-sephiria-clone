@@ -131,6 +131,26 @@ void CShopTableSlot::Render(Graphics* pGraphics)
 	CFontMgr::GetInstance()->DrawString(pGraphics, to_wstring(pItemInfo->iLeaf), FONT_TYPE::PIXEL_BIG, rcBackStringDest, Color{ 255, 0, 0, 0 }, 22.f, StringAlignmentFar, StringAlignmentFar);
 	CFontMgr::GetInstance()->DrawString(pGraphics, to_wstring(pItemInfo->iLeaf), FONT_TYPE::PIXEL_BIG, rcDest, Color{ 255, 238, 207, 116 }, 22.f, StringAlignmentFar, StringAlignmentFar);
 
+	// 리프 아이콘 그리기
+	pImg = CImgMgr::GetInstance()->FindImg(L"Leaf");
+	if (nullptr == pImg)
+		return;
+
+	vOffset = VEC{ 55.f, 6.f } * m_fUIScale;
+	vCellSize = { 10.f, 10.f };
+	vImgSize = vCellSize * m_fUIScale;
+	rcDest = { m_tInfo.vPoint.fX + vOffset.fX, m_tInfo.vPoint.fY + vOffset.fY, vImgSize.fX, vImgSize.fY };
+#ifdef _DEBUG
+	pGraphics->FillRectangle(&RedBrush, rcDest);
+#endif // _DEBUG
+	pGraphics->DrawImage(
+		pImg, rcDest,
+		0,
+		0,
+		vCellSize.fX,
+		vCellSize.fY,
+		UnitPixel
+	);
 }
 
 void CShopTableSlot::Release()
