@@ -14,6 +14,8 @@
 #include "CItemToolTip.h"
 #include "CShopTable.h"
 #include "CMsgBox.h"
+#include "CLevelUp.h"
+#include "CItemSelectUI.h"
 
 CUIMgr* CUIMgr::m_pInstance = nullptr;
 
@@ -29,6 +31,16 @@ CUIMgr::~CUIMgr()
 void CUIMgr::Initialize()
 {
 	// 스프라이트 넣기 
+
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Frame.png", L"BasicInfo_Frame");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/HP_Bar_Fill.png", L"HP_Bar");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/MP_Bar_Fill.png", L"MP_Bar");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Dash_Fill.png", L"Dash_Fill");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Dash_Blank.png", L"Dash_Blank");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Exp_Bar.png", L"Exp_Bar");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Exp_Bar_Fill.png", L"Exp_Bar_Fill");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Leaf.png", L"HUD_Leaf");
+
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventoryBase.png", L"Inventory_Base");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot_Blank.png", L"Inventory_Slot_Blank");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot_Item.png", L"Inventory_Slot_Item");
@@ -44,6 +56,14 @@ void CUIMgr::Initialize()
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Button/Button.png", L"Button");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Button/EscapeButton.png", L"EscapeButton");
+	
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/LevelUp/LevelUp.png", L"LevelUp");
+
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/KeyUI.png", L"KeyUI");
+
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemSelect/Sephirite_Broken.png", L"Sephirite_Broken");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemSelect/Sephirite_Slot.png", L"Sephirite_Slot");
+	
 }
 
 void CUIMgr::ShowUI(UIID eID)
@@ -64,7 +84,7 @@ void CUIMgr::ShowUI(UIID eID)
 	else
 		(*iter).second->Show();
 
-	if (eID == UIID::INVENTORY)
+	if (eID == UIID::INVENTORY || eID == UIID::ITEM_SELECT)
 	{
 		pPlayer->SetPlayerBehaviorEnable(false);
 		m_pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
@@ -93,7 +113,7 @@ void CUIMgr::ShowUI(UIID eID, CObj* pTarget)
 		(*iter).second->SetTarget(pTarget);
 	}
 
-	if (eID == UIID::INVENTORY)
+	if (eID == UIID::INVENTORY || eID == UIID::ITEM_SELECT)
 	{
 		pPlayer->SetPlayerBehaviorEnable(false);
 		m_pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
@@ -112,7 +132,7 @@ void CUIMgr::HideUI(UIID eID)
 
 	(*iter).second->Hide();
 
-	if (eID == UIID::INVENTORY)
+	if (eID == UIID::INVENTORY || eID == UIID::ITEM_SELECT)
 	{
 		pPlayer->SetPlayerBehaviorEnable(true);
 		m_pMouse->RequestChange(MOUSE_STATE::COMBAT);
@@ -146,7 +166,7 @@ void CUIMgr::ToggleUI(UIID eID)
 		(*iter).second->Toggle();
 
 
-	if (eID == UIID::INVENTORY)
+	if (eID == UIID::INVENTORY || eID == UIID::ITEM_SELECT)
 	{
 		bool bView = m_mapUI[eID]->GetView();
 		pPlayer->SetPlayerBehaviorEnable(!bView);
@@ -204,6 +224,12 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		break;
 	case UIID::MSG_BOX:
 		pUI = CAbstractFactory<CMsgBox>::CreateUI(m_pMouse);
+		break;
+	case UIID::LEVEL_UP:
+		pUI = CAbstractFactory<CLevelUp>::CreateUI(m_pMouse);
+		break;
+	case UIID::ITEM_SELECT:
+		pUI = CAbstractFactory<CItemSelectUI>::CreateUI(m_pMouse);
 		break;
 	default:
 		break;

@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "CGargoyle.h"
 
+#include "CPlayer.h"
+
 #include "CImgMgr.h"
 #include "CCameraMgr.h"
 #include "CTimeMgr.h"
@@ -173,6 +175,8 @@ void CGargoyle::SetDamage(int iDamage, CObj* pObj)
 	if (m_tStat.iHp <= 0)
 	{
 		m_eNextState = GARGOYLE_STATE::DOWN;
+		static_cast<CPlayer*>(pObj)->AddExp(50);
+		static_cast<CPlayer*>(pObj)->AddLeaf(100);
 	}
 
 	CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{255, 255, 255, 255});

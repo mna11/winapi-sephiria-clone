@@ -18,7 +18,8 @@ CPlayer::CPlayer()
 	m_dDashRecorveyInterval(1.), m_dDashRecoveryElapseTime(0.),
 	m_bPlayerBehaviorEnable(true),
 	m_pInventory(nullptr),
-	m_iLeaf(1000)
+	m_iLeaf(1000),
+	m_iMaxExp(100), m_iExp(50), m_bCanLevelUp(false)
 {
 }
 
@@ -57,7 +58,7 @@ void CPlayer::Initialize()
 		70,				// HP
 		70,			    // MAX HP
 
-		20,				// 물리 공격력
+		100,			// 물리 공격력
 		20,				// 불 공격력
 		20,				// 얼음 공격력
 		20,				// 번개 공격력
@@ -339,6 +340,17 @@ void CPlayer::CreateEffect()
 			VEC vTrail = vDir * i + m_vPrePoint;
 			CEffectMgr::GetInstance()->CreateEffect(L"DashTrail", vTrail, EFTMGR_IMAGE | EFTMGR_FIXED, i);
 		}
+	}
+}
+
+void CPlayer::AddExp(int iAmount)
+{
+	m_iExp += iAmount;
+	if (m_iExp >= m_iMaxExp)
+	{
+		m_iExp -= m_iMaxExp;
+		m_bCanLevelUp = true;
+		CEffectMgr::GetInstance()->CreateEffect(L"LevelUp_Effect", VEC{ m_tInfo.vPoint.fX, m_tInfo.vPoint.fY - m_tInfo.vSize.fY}, EFTMGR_IMAGE | EFTMGR_FOLLOW | EFTMGR_SCROLL, 0.f, 0.1f, this);
 	}
 }
 

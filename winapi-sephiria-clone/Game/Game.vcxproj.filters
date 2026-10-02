@@ -211,6 +211,21 @@
     <Filter Include="01. Obj\06. UI\06. Button">
       <UniqueIdentifier>{d1d16f5e-83a4-4c06-a145-5f15b3303fac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\09. DropItem">
+      <UniqueIdentifier>{d50b15cd-135c-4ff4-8a49-7bc0d4c31c80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\07. LevelUp">
+      <UniqueIdentifier>{8ed1138d-4b55-4d05-9d71-354cfbf72d18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\08. ItemSelectUI">
+      <UniqueIdentifier>{3c991e15-5fa0-4a54-bd5a-0ec6d9a5988e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\08. ItemSelectUI\00. ItemSelectUI">
+      <UniqueIdentifier>{93cdc7cb-f135-417c-8ebb-13d8d25a4c3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\08. ItemSelectUI\01. ItemSelectSlotUI">
+      <UniqueIdentifier>{756a94d0-1e99-4f37-9bb0-26dbd5930793}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -417,6 +432,15 @@
     <ClInclude Include="CButton.h">
       <Filter>01. Obj\06. UI\06. Button</Filter>
     </ClInclude>
+    <ClInclude Include="CLevelUp.h">
+      <Filter>01. Obj\06. UI\07. LevelUp</Filter>
+    </ClInclude>
+    <ClInclude Include="CItemSelectUI.h">
+      <Filter>01. Obj\06. UI\08. ItemSelectUI\00. ItemSelectUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CItemSelectSlotUI.h">
+      <Filter>01. Obj\06. UI\08. ItemSelectUI\01. ItemSelectSlotUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -607,6 +631,15 @@
     </ClCompile>
     <ClCompile Include="CButton.cpp">
       <Filter>01. Obj\06. UI\06. Button</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelUp.cpp">
+      <Filter>01. Obj\06. UI\07. LevelUp</Filter>
+    </ClCompile>
+    <ClCompile Include="CItemSelectUI.cpp">
+      <Filter>01. Obj\06. UI\08. ItemSelectUI\00. ItemSelectUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CItemSelectSlotUI.cpp">
+      <Filter>01. Obj\06. UI\08. ItemSelectUI\01. ItemSelectSlotUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

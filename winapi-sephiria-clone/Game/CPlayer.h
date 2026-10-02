@@ -40,13 +40,18 @@ public:
     const double&               GetDashRecoveryElapse()     const   { return m_dDashRecoveryElapseTime; }
     const int&                  GetLeaf()                   const { return m_iLeaf; }
     CInventory*                 GetInventory()              const { return m_pInventory; }
+    const int&                  GetMaxExp()                 const { return m_iMaxExp; }
+    const int&                  GetExp()                    const { return m_iExp; }
+    const bool&                 GetCanLevelUp()             const { return m_bCanLevelUp; }
 
 public:
     void                        SetPlayerBehaviorEnable(bool bEnable) { m_bPlayerBehaviorEnable = bEnable; }
     void                        SetLeaf(int iLeaf) { m_iLeaf = iLeaf; }
+    void                        SetCanLevelUp(bool bCan) { m_bCanLevelUp = bCan; }
 
 public:
     void                        AddLeaf(int iAmount) { m_iLeaf += iAmount; }
+    void                        AddExp(int iAmount);
 
 public:
     void SetDamage(int iDamage, CObj* pObj) override;
@@ -85,6 +90,11 @@ private:
     
     // 돈
     int                 m_iLeaf;
+
+    // 경험치
+    int                 m_iExp;
+    const int           m_iMaxExp;
+    bool                m_bCanLevelUp;
 #ifdef _DEBUG
 private:
     void    PrintInfo();

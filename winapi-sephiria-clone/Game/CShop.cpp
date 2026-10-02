@@ -142,7 +142,7 @@ void CShop::TryBuyItem(int iInventoryIdx, int iID)
 	// 돈이 있음
 	if (pPlayer->GetLeaf() >= iPrice)
 	{
-		wstring wstr = pItemInfo->strName + L"을(를) " + to_wstring(pItemInfo->iLeaf) + L" 리프로 구매하시겠습니까?";
+		wstring wstr = pItemInfo->strName + L"을(를) " + to_wstring(pItemInfo->iLeaf) + L" 리프로\n 구매하시겠습니까?";
 
 		m_pMsgBoxUI = CAbstractFactory<CMsgBox>::CreateMsgBox(
 			m_rcMsgBox,
@@ -206,7 +206,7 @@ void CShop::TrySellItem(int iInventoryIdx, int iID)
 {
 	const ITEM_INFO* pItemInfo = CItemData::GetInstance()->FindItemInfo(iID);
 
-	wstring wstr = pItemInfo->strName + L"을(를) " + to_wstring(static_cast<int>(pItemInfo->iLeaf * 0.5)) + L" 리프에 판매하시겠습니까?";
+	wstring wstr = pItemInfo->strName + L"을(를) " + to_wstring(static_cast<int>(pItemInfo->iLeaf * 0.5)) + L" 리프에\n 판매하시겠습니까?";
 
 	m_pMsgBoxUI = CAbstractFactory<CMsgBox>::CreateMsgBox(
 		m_rcMsgBox,

@@ -61,11 +61,10 @@ int CShopTable::Update()
 		vPoint += VEC{ 144 * 0.5f, 0.f } * m_fUIScale;
 		CUIMgr::GetInstance()->SetPos(UIID::ITEM_TOOLTIP, vPoint);
 	}
-	else
+	else if (m_pMouse->GetHoverReferItem().eItemSource == ITEM_SOURCE::SHOP)
 	{
-		// 왜냐면 지금 인벤토리 업데이트 - 상점 업데이트 순서가 종속적인데, 여기서 가려버리면
-		// 인벤토리에서 호버한 아이템의 툴팁이 나오지 않음
-		//CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
+		CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
+		m_pMouse->SetHoverReferItem({ -1, ITEM_SOURCE::END });
 	}
 
 	// 드래그 시작

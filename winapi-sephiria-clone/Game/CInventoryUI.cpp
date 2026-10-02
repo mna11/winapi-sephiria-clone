@@ -41,11 +41,11 @@ void CInventoryUI::Initialize()
 
 int CInventoryUI::Update()
 {
-	if (!m_bView)
-		return NOEVENT;
-
 	if (m_bDead)
 		return DEAD;
+
+	if (!m_bView)
+		return NOEVENT;
 
 	for (auto& slot : m_vecItemSlot)
 		slot->Update();
@@ -72,10 +72,10 @@ int CInventoryUI::Update()
 		CUIMgr::GetInstance()->ShowUI(UIID::ITEM_TOOLTIP);
 		CUIMgr::GetInstance()->SetPos(UIID::ITEM_TOOLTIP, VEC{ 210.f, 200.f });
 	}
-	else
+	else if (m_pMouse->GetHoverReferItem().eItemSource == ITEM_SOURCE::INVENTORY)
 	{
-		// 아이템이 없는 칸 혹은 아예 밖
 		CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
+		m_pMouse->SetHoverReferItem({ -1, ITEM_SOURCE::END });
 	}
 
 
@@ -145,8 +145,27 @@ int CInventoryUI::Update()
 				m_iStartSlot = -1;
 			}
 		}
-		// 레벨업 보상에서 인벤토리로 드래그
+		// 아이템 선택에서 인벤토리로 드래그
+		else if (ITEM_SOURCE::SELECT == m_pMouse->GetDragReferItem().eItemSource)
+		{
+			if (KEY_UP(VK_LBUTTON))
+			{
+				int iIdx = m_iMouseHoverSlot;
 
+				if (iIdx != -1 && CUIMgr::GetInstance()->GetUI(UIID::ITEM_SELECT)->GetView())
+				{
+					// 구매 시도 - 아이템 삽입
+					m_pInventory->InsertItem(iIdx, m_pMouse->GetDragReferItem().iID);
+					CUIMgr::GetInstance()->HideUI(UIID::ITEM_SELECT);
+				}
+
+				// SyncInventorySlot이 LateUpdate에서 Slot 동기화 해줘서 별도로 할 것 없음
+
+				// 초기화
+				m_pMouse->SetDragReferItem({ -1, ITEM_SOURCE::END });
+				m_iStartSlot = -1;
+			}
+		}
 	}
 
 

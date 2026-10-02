@@ -46,6 +46,9 @@ void CEffectMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Stage/ExclamationMark.png", L"Exclamation_Mark");
 	// 전투 벽
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Stage/BattleWall.png", L"Battle_Wall");
+	
+	// 레벨업 이펙트
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/LevelUp/LevelUp_Aura.png", L"LevelUp_Effect");
 }
 
 
@@ -130,7 +133,12 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 		pEffect->SetSize({ 16.f, 16.f });
 		pEffect->SetLoop(true);
 	}
-
+	// 레벨업
+	else if (!lstrcmpW(pFrameKey, L"LevelUp_Effect"))
+	{
+		pEffect->SetFrame(0, 16, 0, dFrameSpeed);
+		pEffect->SetSize({ 58.f, 60.f });
+	}
 
 	if (iOption & EFTMGR_IMAGE)
 	{

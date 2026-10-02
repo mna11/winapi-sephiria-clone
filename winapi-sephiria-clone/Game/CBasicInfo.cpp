@@ -20,13 +20,6 @@ void CBasicInfo::Initialize()
 {
 	m_tInfo = { 35, 30, 0.f, 0.f }; // 임시 
 
-	// 스프라이트 넣기 
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Frame.png", L"BasicInfo_Frame");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/HP_Bar_Fill.png", L"HP_Bar");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/MP_Bar_Fill.png", L"MP_Bar");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Dash_Fill.png", L"Dash_Fill");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Dash_Blank.png", L"Dash_Blank");
-	
 	// 렌더 정보 초기화 
 	m_eRender = RENDERID::UI;
 	m_iRenderLayer = 0;      // UI 중에 최약체
@@ -85,15 +78,32 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	if (nullptr == pDashBlank || nullptr == pDashFill)
 		return;
 
+	// 경험치바 이미지 가져오기
+	Image* pExpFrameImg = CImgMgr::GetInstance()->FindImg(L"Exp_Bar");
+	if (nullptr == pMpImg)
+		return;
+
+	// 경험치 이미지 가져오기
+	Image* pExpFillImg = CImgMgr::GetInstance()->FindImg(L"Exp_Bar_Fill");
+	if (nullptr == pMpImg)
+		return;
+
+	// 리프 이미지 가져오기
+	Image* pLeafImg = CImgMgr::GetInstance()->FindImg(L"HUD_Leaf");
+	if (nullptr == pLeafImg)
+		return;
+
 	///////////////////////////////////// 본격적인 출력 전 설정 (출력? 렌더?)
 
 	// 픽셀 갭 
 	int iGap = 1.5f * m_fUIScale;
 	// 프레임 사이즈
 	VEC vFrameSize = VEC{ 63.f, 13.5f } *m_fUIScale;
+	VEC vExpBarFrameSize = VEC{ WINCX, 2.f * m_fUIScale };
 	// 각 바들 사이즈
 	VEC vHpSize = VEC{ vFrameSize.fX - 2 * iGap, 5.f * m_fUIScale };
 	VEC vMpSize = VEC{ vFrameSize.fX - 2 * iGap, 4.f * m_fUIScale };
+	VEC vExpSize = VEC{ WINCX, 2.f * m_fUIScale };
 	// 대시 사이즈 
 	VEC vDashCellSize = { 11.f, 9.f };
 	VEC vDashSize = vDashCellSize * m_fUIScale * 0.6; // 대시만 조금 더 작게 함
@@ -107,7 +117,7 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	// to_wstring 안했더니 L"/"을 주소 이동한게 되서 이상한 한자 나오더라
 	wstring strHp = to_wstring(tPlayerStat.iHp) + L"/" + to_wstring(tPlayerStat.iMaxHp);
 	wstring strMp = to_wstring(tPlayerStat.iMp) + L"/" + to_wstring(tPlayerStat.iMaxMp);
-
+	wstring strLeaf = to_wstring(pPlayer->GetLeaf());
 	///////////////////////////////////// 그리기
 
 	// 프레임 그리기
@@ -178,6 +188,37 @@ void CBasicInfo::Render(Graphics* pGraphics)
 			);
 		}
 	}
+
+	// Exp 그리기
+	float fExpRatio = (float)pPlayer->GetExp() / (float)pPlayer->GetMaxExp();
+	rcDest = { 0, WINCY - vExpSize.fY,
+			   vExpSize.fX * fExpRatio, vExpSize.fY };
+	pGraphics->DrawImage(
+		pExpFillImg, rcDest, 0, 0, 1.f, 2.f, UnitPixel
+	);
+
+	// Exp 프레임 그리기
+	rcDest = { 0, WINCY - vExpBarFrameSize.fY, vExpBarFrameSize.fX, vExpBarFrameSize.fY };
+	VEC vCellSize{ 660.f, 2.f };
+	pGraphics->DrawImage(
+		pExpFrameImg, rcDest, 0, 0, vCellSize.fX, vCellSize.fY, UnitPixel
+	);
+
+	// 리프 그리기
+	vCellSize = { 11.f, 12.f };
+	VEC vImgSize = vCellSize * m_fUIScale * 0.5f;
+	rcDest = { WINCX - 50.f, WINCY - 50.f,
+			   vImgSize.fX, vImgSize.fY };
+
+	pGraphics->DrawImage(
+		pLeafImg, rcDest, 0, 0, vCellSize.fX, vCellSize.fY, UnitPixel
+	);
+
+#ifdef _DEBUG
+	SolidBrush blackBrush(Color(255, 0, 0, 0));
+	pGraphics->FillRectangle(&blackBrush, RectF{ WINCX - 150.f, WINCY - 50.f, 100.f, 30.f });
+#endif // _DEBUG
+	CFontMgr::GetInstance()->DrawString(pGraphics, strLeaf, FONT_TYPE::PIXEL_BIG, RectF{ WINCX - 150.f, WINCY - 50.f, 100.f, 30.f }, Color(255, 255, 255, 255), 24.f, StringAlignmentFar, StringAlignmentFar);
 }
 
 void CBasicInfo::Release()

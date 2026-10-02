@@ -164,8 +164,11 @@
     <ClInclude Include="CInventoryUI.h" />
     <ClInclude Include="CItem.h" />
     <ClInclude Include="CItemData.h" />
+    <ClInclude Include="CItemSelectSlotUI.h" />
+    <ClInclude Include="CItemSelectUI.h" />
     <ClInclude Include="CItemToolTip.h" />
     <ClInclude Include="CKeyMgr.h" />
+    <ClInclude Include="CLevelUp.h" />
     <ClInclude Include="CLibLoading.h" />
     <ClInclude Include="CLine.h" />
     <ClInclude Include="CLineMgr.h" />
@@ -232,8 +235,11 @@
     <ClCompile Include="CInventoryUI.cpp" />
     <ClCompile Include="CItem.cpp" />
     <ClCompile Include="CItemData.cpp" />
+    <ClCompile Include="CItemSelectSlotUI.cpp" />
+    <ClCompile Include="CItemSelectUI.cpp" />
     <ClCompile Include="CItemToolTip.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
+    <ClCompile Include="CLevelUp.cpp" />
     <ClCompile Include="CLibLoading.cpp" />
     <ClCompile Include="CLine.cpp" />
     <ClCompile Include="CLineMgr.cpp" />
