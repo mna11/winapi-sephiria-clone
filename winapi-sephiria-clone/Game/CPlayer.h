@@ -43,6 +43,7 @@ public:
     const int&                  GetMaxExp()                 const { return m_iMaxExp; }
     const int&                  GetExp()                    const { return m_iExp; }
     const bool&                 GetCanLevelUp()             const { return m_bCanLevelUp; }
+    const int&                  GetDice()                   const { return m_iDice; }
 
 public:
     void                        SetPlayerBehaviorEnable(bool bEnable) { m_bPlayerBehaviorEnable = bEnable; }
@@ -52,6 +53,7 @@ public:
 public:
     void                        AddLeaf(int iAmount) { m_iLeaf += iAmount; }
     void                        AddExp(int iAmount);
+    void                        AddDice(int iAmount); 
 
 public:
     void SetDamage(int iDamage, CObj* pObj) override;
@@ -95,6 +97,9 @@ private:
     int                 m_iExp;
     const int           m_iMaxExp;
     bool                m_bCanLevelUp;
+
+    // 주사위
+    int                 m_iDice;
 #ifdef _DEBUG
 private:
     void    PrintInfo();

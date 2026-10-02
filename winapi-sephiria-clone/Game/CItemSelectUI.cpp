@@ -78,7 +78,6 @@ void CItemSelectUI::LateUpdate()
 
     for (auto& itemSlot : m_vecItemSlot)
         itemSlot->LateUpdate();
-
 }
 
 void CItemSelectUI::Render(Graphics* pGraphics)
@@ -327,14 +326,31 @@ void CItemSelectUI::ReloadItems()
 
 void CItemSelectUI::CreateBtn()
 {
+    CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+    if (nullptr == pPlayer)
+        return;
+    int iDice = pPlayer->GetDice();
+
     // 버튼 정보 초기화
     if (nullptr == m_pRerollBtn)
     {
         RectF rcRerollBtn = { 210.f, WINCY - 175.f, 190.f, 70.f };
-        wstring strRerollBtn = L"리로드";
+        wstring strRerollBtn = L"리롤 (" + to_wstring(iDice) + L"회)";
         m_pRerollBtn = CAbstractFactory<CButton>::CreateButton(m_pMouse, rcRerollBtn, strRerollBtn);
-        m_pRerollBtn->SetOnClick([this]() {
+        m_pRerollBtn->SetOnClick([this, pPlayer]() {
             this->ReloadItems();
+            if (nullptr == pPlayer)
+                return;
+
+            pPlayer->AddDice(-1);
+            int iDice = pPlayer->GetDice();
+            if (iDice <= 0)
+                this->m_pRerollBtn->SetEnable(false);
+
+            if (nullptr == this->m_pRerollBtn)
+                return;
+
+            m_pRerollBtn->SetString(L"리롤 (" + to_wstring(iDice) + L"회)");
             });
         CObjMgr::GetInstance()->AddObject(OBJID::UI, m_pRerollBtn);
     }
@@ -352,6 +368,7 @@ void CItemSelectUI::CreateBtn()
 
     // 일단 숨기고, 
     m_pRerollBtn->Hide();
+    m_pRerollBtn->SetEnable(iDice >= 1);
     m_pSkipBtn->Hide();
 }
 

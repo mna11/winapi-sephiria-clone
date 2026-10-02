@@ -44,6 +44,8 @@ public:
     void SetPrintRect(RectF rcPrint)            { m_rcPrint = move(rcPrint); }
     // 이미지 Cell 크기 등록
     void SetCellSize(VEC vCellSize)             { m_vCellSize = move(vCellSize);}
+    // 버튼 사용 가능
+    void SetEnable(bool bEnable)                { m_bEnable = bEnable; }
 
 public:
     void Click();
@@ -55,5 +57,7 @@ private:
 
     VEC              m_vCellSize; // 버튼 이미지 사이즈 
     RectF            m_rcPrint;   // 버튼 출력 위치/크기
+
+    bool             m_bEnable;
 };
 

@@ -40,6 +40,7 @@ void CUIMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Exp_Bar.png", L"Exp_Bar");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Exp_Bar_Fill.png", L"Exp_Bar_Fill");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Leaf.png", L"HUD_Leaf");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Dice.png", L"HUD_Dice");
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventoryBase.png", L"Inventory_Base");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot_Blank.png", L"Inventory_Slot_Blank");

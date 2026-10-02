@@ -93,6 +93,11 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	if (nullptr == pLeafImg)
 		return;
 
+	// 주사위 이미지 가져오기
+	Image* pDiceImg = CImgMgr::GetInstance()->FindImg(L"HUD_Dice");
+	if (nullptr == pDiceImg)
+		return;
+
 	///////////////////////////////////// 본격적인 출력 전 설정 (출력? 렌더?)
 
 	// 픽셀 갭 
@@ -118,6 +123,7 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	wstring strHp = to_wstring(tPlayerStat.iHp) + L"/" + to_wstring(tPlayerStat.iMaxHp);
 	wstring strMp = to_wstring(tPlayerStat.iMp) + L"/" + to_wstring(tPlayerStat.iMaxMp);
 	wstring strLeaf = to_wstring(pPlayer->GetLeaf());
+	wstring strDice = to_wstring(pPlayer->GetDice());
 	///////////////////////////////////// 그리기
 
 	// 프레임 그리기
@@ -213,12 +219,28 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	pGraphics->DrawImage(
 		pLeafImg, rcDest, 0, 0, vCellSize.fX, vCellSize.fY, UnitPixel
 	);
-
+	RectF rcStrDest = rcDest;
+	rcStrDest.X -= 100; rcStrDest.Width = 100.f; rcStrDest.Height = 30.f;
 #ifdef _DEBUG
 	SolidBrush blackBrush(Color(255, 0, 0, 0));
-	pGraphics->FillRectangle(&blackBrush, RectF{ WINCX - 150.f, WINCY - 50.f, 100.f, 30.f });
+	pGraphics->FillRectangle(&blackBrush, rcStrDest);
 #endif // _DEBUG
-	CFontMgr::GetInstance()->DrawString(pGraphics, strLeaf, FONT_TYPE::PIXEL_BIG, RectF{ WINCX - 150.f, WINCY - 50.f, 100.f, 30.f }, Color(255, 255, 255, 255), 24.f, StringAlignmentFar, StringAlignmentFar);
+	CFontMgr::GetInstance()->DrawString(pGraphics, strLeaf, FONT_TYPE::PIXEL_BIG, rcStrDest, Color(255, 255, 255, 255), 24.f, StringAlignmentFar, StringAlignmentFar);
+
+	// 다이스 그리기
+	vCellSize = { 11.f, 12.f };
+	vImgSize = vCellSize * m_fUIScale * 0.5f;
+	rcDest = { WINCX - 50.f, WINCY - 80.f,
+			   vImgSize.fX, vImgSize.fY };
+
+	pGraphics->DrawImage(
+		pDiceImg, rcDest, 0, 0, vCellSize.fX, vCellSize.fY, UnitPixel
+	);
+	rcStrDest.Y -= 30;
+#ifdef _DEBUG
+	pGraphics->FillRectangle(&blackBrush, rcStrDest);
+#endif // _DEBUG
+	CFontMgr::GetInstance()->DrawString(pGraphics, strDice, FONT_TYPE::PIXEL_BIG, rcStrDest, Color(255, 255, 255, 255), 24.f, StringAlignmentFar, StringAlignmentFar);
 }
 
 void CBasicInfo::Release()

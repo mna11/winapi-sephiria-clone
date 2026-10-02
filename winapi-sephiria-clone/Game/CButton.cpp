@@ -10,7 +10,7 @@
 #include "CSceneMgr.h"
 
 CButton::CButton()
-	: m_onClick(nullptr), m_bCol(false), m_rcPrint{}, m_strBtn{}, m_vCellSize{}
+	: m_onClick(nullptr), m_bCol(false), m_rcPrint{}, m_strBtn{}, m_vCellSize{}, m_bEnable(true)
 {
 }
 
@@ -53,7 +53,7 @@ void CButton::LateUpdate()
 		return;
 
 	m_bCol = CCollisionMgr::CollisionMouse(m_pMouse->GetInfo().vPoint, m_tRect);
-	if (m_bCol && KEY_DOWN(VK_LBUTTON))
+	if (m_bCol && m_bEnable && KEY_DOWN(VK_LBUTTON))
 	{
 		// 콜백 함수 실행
 		Click();
@@ -78,7 +78,7 @@ void CButton::Render(Graphics* pGraphics)
 
 	pGraphics->DrawImage(
 		pImg, m_rcPrint,
-		(m_bCol ? m_vCellSize.fX : 0),
+		(m_bCol && m_bEnable ? m_vCellSize.fX : 0),
 		0,
 		m_vCellSize.fX,
 		m_vCellSize.fY,
@@ -101,7 +101,9 @@ void CButton::Render(Graphics* pGraphics)
 	pGraphics->FillRectangle(&magentaBrush, rcStringRect);
 #endif // _DEBUG
 
-	CFontMgr::GetInstance()->DrawString(pGraphics, m_strBtn, FONT_TYPE::NORMAL, rcStringRect, Color{ 255, 255, 255, 255 });
+	Color fontColor = m_bEnable ? Color{ 255, 255, 255, 255 } : Color{ 255, 120, 120, 120 };
+
+	CFontMgr::GetInstance()->DrawString(pGraphics, m_strBtn, FONT_TYPE::NORMAL, rcStringRect, fontColor);
 }
 
 void CButton::Release()
