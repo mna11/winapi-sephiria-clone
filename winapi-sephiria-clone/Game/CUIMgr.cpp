@@ -56,6 +56,7 @@ void CUIMgr::Initialize()
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Button/Button.png", L"Button");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Button/EscapeButton.png", L"EscapeButton");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Button/BlueButton.png", L"BlueButton");
 	
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/LevelUp/LevelUp.png", L"LevelUp");
 

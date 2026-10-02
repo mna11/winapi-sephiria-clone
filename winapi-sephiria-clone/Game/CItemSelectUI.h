@@ -3,6 +3,7 @@
 #include "CState.h"
 
 class CItemSelectSlotUI;
+class CButton;
 
 enum class ITEM_SELECT_UI_STATE
 {
@@ -28,6 +29,7 @@ public:
 
 public:
     void Show() override;
+    void Hide() override;
     void Toggle() override;
 
 public:
@@ -41,6 +43,10 @@ public:
 
 public:
     void GachaItems();
+    void ReloadItems();
+
+private:
+    void CreateBtn();
 
 private:
     double m_dStateTime;
@@ -49,5 +55,8 @@ private:
 
     const int   m_iItemNum;
     vector<CItemSelectSlotUI*> m_vecItemSlot;
+
+    CButton* m_pRerollBtn;
+    CButton* m_pSkipBtn;
 };
 

@@ -3,6 +3,9 @@
 
 #include "CMouse.h"
 
+#include "CButton.h"
+
+#include "CObjMgr.h"
 #include "CAbstractFactory.h"
 #include "CCollisionMgr.h"
 #include "CItemSelectSlotUI.h"
@@ -14,7 +17,8 @@
 
 CItemSelectUI::CItemSelectUI()
     : m_iItemNum(5), CState(ITEM_SELECT_UI_STATE::END, ITEM_SELECT_UI_STATE::READY),
-    m_dBrokenTime(3.0), m_dStateTime(0.), m_dSlotRenderTime(2.0)
+    m_dBrokenTime(3.0), m_dStateTime(0.), m_dSlotRenderTime(2.0),
+    m_pRerollBtn(nullptr), m_pSkipBtn(nullptr)
 {
     m_vecItemSlot.resize(5, nullptr);
 }
@@ -164,6 +168,17 @@ void CItemSelectUI::Release()
     for_each(m_vecItemSlot.begin(), m_vecItemSlot.end(), SafeDelete<CItemSelectSlotUI*>);
     m_vecItemSlot.clear();
     m_vecItemSlot.shrink_to_fit();
+
+    if (nullptr != m_pRerollBtn)
+    {
+        m_pRerollBtn->SetDead(true);
+        m_pRerollBtn = nullptr;
+    }
+    if (nullptr != m_pSkipBtn)
+    {
+        m_pSkipBtn->SetDead(true);
+        m_pSkipBtn = nullptr;
+    }
 }
 
 void CItemSelectUI::Show()
@@ -172,6 +187,17 @@ void CItemSelectUI::Show()
 
     Initialize();
     GachaItems();
+    CreateBtn();
+}
+
+void CItemSelectUI::Hide()
+{
+    m_bView = false;
+
+    if (nullptr != m_pRerollBtn)
+        m_pRerollBtn->Hide();
+    if (nullptr != m_pSkipBtn)
+        m_pSkipBtn->Hide();
 }
 
 void CItemSelectUI::Toggle()
@@ -180,6 +206,7 @@ void CItemSelectUI::Toggle()
 
     Initialize();
     GachaItems();
+    CreateBtn();
 }
 
 void CItemSelectUI::UpdateTime()
@@ -288,6 +315,46 @@ void CItemSelectUI::GachaItems()
     }
 }
 
+void CItemSelectUI::ReloadItems()
+{
+    for (size_t i = 0; i < m_vecItemSlot.size(); ++i)
+    {
+        auto& itemSlot = m_vecItemSlot[i];
+        if (nullptr != itemSlot)
+            itemSlot->SetItemID(uniform_int_distribution<int>(0, 8)(g_engine));
+    }
+}
+
+void CItemSelectUI::CreateBtn()
+{
+    // 버튼 정보 초기화
+    if (nullptr == m_pRerollBtn)
+    {
+        RectF rcRerollBtn = { 210.f, WINCY - 175.f, 190.f, 70.f };
+        wstring strRerollBtn = L"리로드";
+        m_pRerollBtn = CAbstractFactory<CButton>::CreateButton(m_pMouse, rcRerollBtn, strRerollBtn);
+        m_pRerollBtn->SetOnClick([this]() {
+            this->ReloadItems();
+            });
+        CObjMgr::GetInstance()->AddObject(OBJID::UI, m_pRerollBtn);
+    }
+    if (nullptr == m_pSkipBtn)
+    {
+        RectF rcSkipBtn = { 255.f, WINCY - 100.f, 100.f, 50.f };
+        wstring strSkipBtn = L"스킵";
+        m_pSkipBtn = CAbstractFactory<CButton>::CreateButton(m_pMouse, rcSkipBtn, strSkipBtn, L"BlueButton");
+        m_pSkipBtn->SetOnClick([this]() {
+            this->Hide();
+            CUIMgr::GetInstance()->HideUI(UIID::INVENTORY);
+            });
+        CObjMgr::GetInstance()->AddObject(OBJID::UI, m_pSkipBtn);
+    }
+
+    // 일단 숨기고, 
+    m_pRerollBtn->Hide();
+    m_pSkipBtn->Hide();
+}
+
 void CItemSelectUI::KeyInput()
 {
     if (KEY_DOWN(VK_SPACE) && ITEM_SELECT_UI_STATE::READY == m_eCurState)
@@ -318,7 +385,13 @@ void CItemSelectUI::ApplyChange()
                 itemSlot->SetPos(m_vPrePoint + VEC{ itemSlot->GetDirVector() * itemSlot->GetDistance() });
                 itemSlot->Show();
             }
+
             CUIMgr::GetInstance()->ShowUI(UIID::INVENTORY);
+            if (nullptr != m_pRerollBtn)
+                m_pRerollBtn->Show();
+            if (nullptr != m_pSkipBtn)
+                m_pSkipBtn->Show();
+
             break;
         default:
             break;
