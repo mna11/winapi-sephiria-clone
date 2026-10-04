@@ -177,6 +177,7 @@
     <ClInclude Include="CMouse.h" />
     <ClInclude Include="CObj.h" />
     <ClInclude Include="CObjMgr.h" />
+    <ClInclude Include="CDrop.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneMgr.h" />
@@ -248,6 +249,7 @@
     <ClCompile Include="CMouse.cpp" />
     <ClCompile Include="CObj.cpp" />
     <ClCompile Include="CObjMgr.cpp" />
+    <ClCompile Include="CDrop.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneMgr.cpp" />

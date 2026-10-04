@@ -31,6 +31,9 @@ protected:
 	void RemoveBattleWallEffects();
 
 protected:
+	void EndBattle();
+
+protected:
 	vector<ROOM_INFO> m_vecRooms;
 	vector<CObj*>	  m_vecBattleWallEffects;
 	int				  m_iCurBattleRoomIdx;

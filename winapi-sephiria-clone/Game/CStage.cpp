@@ -150,3 +150,15 @@ void CStage::RemoveBattleWallEffects()
 
     m_vecBattleWallEffects.clear();
 }
+
+void CStage::EndBattle()
+{
+    // 전투 중이 아니라면
+    if (-1 == m_iCurBattleRoomIdx)
+    {
+        // 드랍 아이템들이 자동으로 플레이어한테 다가가도록 함
+        auto DropList = CObjMgr::GetInstance()->GetObjList(OBJID::DROP);
+        for (auto& drop : DropList)
+            static_cast<CDrop*>(drop)->SetBattleEnd(true);
+    }
+}
