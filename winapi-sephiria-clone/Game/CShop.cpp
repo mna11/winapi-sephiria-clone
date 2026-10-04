@@ -55,6 +55,8 @@ void CShop::Update()
 	{
 		CObjMgr::GetInstance()->UpdateOnly({ OBJID::MOUSE });
 		m_pMsgBoxUI->Update();
+		for (auto btn : m_pMsgBoxUI->GetButtons())
+			btn->Update();
 	}
 }
 
@@ -142,7 +144,7 @@ void CShop::TryBuyItem(int iInventoryIdx, int iID)
 	// 돈이 있음
 	if (pPlayer->GetLeaf() >= iPrice)
 	{
-		wstring wstr = pItemInfo->strName + L"을(를) " + to_wstring(pItemInfo->iLeaf) + L" 리프로 구매하시겠습니까?";
+		wstring wstr = pItemInfo->strName + L"을(를) " + to_wstring(pItemInfo->iLeaf) + L" 리프로\n 구매하시겠습니까?";
 
 		m_pMsgBoxUI = CAbstractFactory<CMsgBox>::CreateMsgBox(
 			m_rcMsgBox,
@@ -156,15 +158,30 @@ void CShop::TryBuyItem(int iInventoryIdx, int iID)
 		auto vecButtons = m_pMsgBoxUI->GetButtons();
 		vecButtons[0]->SetOnClick([this, iInventoryIdx, iID, iPrice]()
 			{
-				this->BuyItem(iInventoryIdx, iID, iPrice);
-				m_pMsgBoxUI->SetDead(true);
+				CMsgBox* pConfirm = m_pMsgBoxUI;
+
+				// 일단 화면에서 안보이게
+				pConfirm->Hide();
+				for (auto btn : pConfirm->GetButtons())
+					btn->Hide();
+
+				// 삭제 예약
+				pConfirm->SetDead(true);
 				m_pMsgBoxUI = nullptr;
+
+				this->BuyItem(iInventoryIdx, iID, iPrice);
 			});
 		vecButtons[0]->SetString(L"Yes");
 
 		vecButtons[1]->SetOnClick([this]()
 			{
-				m_pMsgBoxUI->SetDead(true);
+				CMsgBox* pConfirm = m_pMsgBoxUI;
+				// 일단 화면에서 안보이게
+				pConfirm->Hide();
+				for (auto btn : pConfirm->GetButtons())
+					btn->Hide();
+
+				pConfirm->SetDead(true);
 				m_pMsgBoxUI = nullptr;
 			});
 		vecButtons[1]->SetString(L"No");
@@ -185,7 +202,13 @@ void CShop::TryBuyItem(int iInventoryIdx, int iID)
 		auto vecButtons = m_pMsgBoxUI->GetButtons();
 		vecButtons[0]->SetOnClick([this, iInventoryIdx, iID]()
 			{
-				m_pMsgBoxUI->SetDead(true);
+				CMsgBox* pConfirm = m_pMsgBoxUI;
+				// 일단 화면에서 안보이게
+				pConfirm->Hide();
+				for (auto btn : pConfirm->GetButtons())
+					btn->Hide();
+
+				pConfirm->SetDead(true);
 				m_pMsgBoxUI = nullptr;
 			});
 		vecButtons[0]->SetString(L"Close");
@@ -198,15 +221,41 @@ void CShop::BuyItem(int iInventoryIdx, int iID, int iPrice)
 	if (nullptr == pPlayer)
 		return;
 
-	pPlayer->GetInventory()->InsertItem(iInventoryIdx, iID);
-	pPlayer->AddLeaf(-iPrice);
+	if(pPlayer->GetInventory()->InsertItem(iInventoryIdx, iID))
+		pPlayer->AddLeaf(-iPrice);
+	else
+	{
+		wstring wstr = L"인벤토리 공간이 부족합니다.";
+		m_pMsgBoxUI = CAbstractFactory<CMsgBox>::CreateMsgBox(
+			m_rcMsgBox,
+			1,
+			MSG_BOX_LAYOUT::NORMAL,
+			wstr
+		);
+		CObjMgr::GetInstance()->AddObject(OBJID::UI, m_pMsgBoxUI);
+
+		// 버튼 콜백 함수 등록
+		auto vecButtons = m_pMsgBoxUI->GetButtons();
+		vecButtons[0]->SetOnClick([this, iInventoryIdx, iID]()
+			{
+				CMsgBox* pConfirm = m_pMsgBoxUI;
+				// 일단 화면에서 안보이게
+				pConfirm->Hide();
+				for (auto btn : pConfirm->GetButtons())
+					btn->Hide();
+
+				pConfirm->SetDead(true);
+				m_pMsgBoxUI = nullptr;
+			});
+		vecButtons[0]->SetString(L"Close");
+	}
 }
 
 void CShop::TrySellItem(int iInventoryIdx, int iID)
 {
 	const ITEM_INFO* pItemInfo = CItemData::GetInstance()->FindItemInfo(iID);
 
-	wstring wstr = pItemInfo->strName + L"을(를) " + to_wstring(static_cast<int>(pItemInfo->iLeaf * 0.5)) + L" 리프에 판매하시겠습니까?";
+	wstring wstr = pItemInfo->strName + L"을(를) " + to_wstring(static_cast<int>(pItemInfo->iLeaf * 0.5)) + L" 리프에\n 판매하시겠습니까?";
 
 	m_pMsgBoxUI = CAbstractFactory<CMsgBox>::CreateMsgBox(
 		m_rcMsgBox,
@@ -220,15 +269,28 @@ void CShop::TrySellItem(int iInventoryIdx, int iID)
 	auto vecButtons = m_pMsgBoxUI->GetButtons();
 	vecButtons[0]->SetOnClick([this, iInventoryIdx, iPrice]()
 		{
-			this->SellItem(iInventoryIdx, iPrice);
-			m_pMsgBoxUI->SetDead(true);
+			CMsgBox* pConfirm = m_pMsgBoxUI;
+			// 일단 화면에서 안보이게
+			pConfirm->Hide();
+			for (auto btn : pConfirm->GetButtons())
+				btn->Hide();
+
+			pConfirm->SetDead(true);
 			m_pMsgBoxUI = nullptr;
+
+			this->SellItem(iInventoryIdx, iPrice);
 		});
 	vecButtons[0]->SetString(L"Yes");
 
 	vecButtons[1]->SetOnClick([this]()
 		{
-			m_pMsgBoxUI->SetDead(true);
+			CMsgBox* pConfirm = m_pMsgBoxUI;
+			// 일단 화면에서 안보이게
+			pConfirm->Hide();
+			for (auto btn : pConfirm->GetButtons())
+				btn->Hide();
+
+			pConfirm->SetDead(true);
 			m_pMsgBoxUI = nullptr;
 		});
 	vecButtons[1]->SetString(L"No");

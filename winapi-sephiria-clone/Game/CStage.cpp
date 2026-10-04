@@ -2,10 +2,13 @@
 #include "CStage.h"
 
 #include "CPlayer.h"
+#include "CState.h"
 #include "CErma.h"
 #include "CFluffy.h"
 #include "CMonster.h"
 #include "CTile.h"
+
+#include "CItemSelectUI.h"
 
 #include "CAbstractFactory.h"
 #include "CEffectMgr.h"
@@ -50,10 +53,21 @@ void CStage::ClearCurRoom()
 
 void CStage::HotKey()
 {
-    if (KEY_DOWN('U'))
+    CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+    if (nullptr == pPlayer)
+        return;
+
+    // 아이템 셀렉트일 때는 맘대로 열고 닫기 못함
+    if (KEY_DOWN('U') && !CUIMgr::GetInstance()->GetUI(UIID::ITEM_SELECT)->GetView())
     {
         CUIMgr::GetInstance()->ToggleUI(UIID::INVENTORY);
         CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
+    }
+
+    // 이번 방에서 Exp가 다 찼고, 방을 클리어하면 띄운다.
+    if (0 < pPlayer->GetLevelUp() && CObjMgr::GetInstance()->ObjEmpty(OBJID::MONSTER))
+    {
+        CUIMgr::GetInstance()->ShowUI(UIID::LEVEL_UP);
     }
 }
 
@@ -135,4 +149,16 @@ void CStage::RemoveBattleWallEffects()
     }
 
     m_vecBattleWallEffects.clear();
+}
+
+void CStage::EndBattle()
+{
+    // 전투 중이 아니라면
+    if (-1 == m_iCurBattleRoomIdx)
+    {
+        // 드랍 아이템들이 자동으로 플레이어한테 다가가도록 함
+        auto DropList = CObjMgr::GetInstance()->GetObjList(OBJID::DROP);
+        for (auto& drop : DropList)
+            static_cast<CDrop*>(drop)->SetBattleEnd(true);
+    }
 }

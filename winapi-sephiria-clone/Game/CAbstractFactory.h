@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CObj.h"
+#include "CDrop.h"
 #include "CUI.h"
 #include "CWeapon.h"
 #include "CWeaponController.h"
@@ -144,6 +145,17 @@ public:
 		pMsgBox->Show();
 
 		return pMsgBox;
+	}
+
+	static CObj* CreateDrop(float fX, float fY, CObj* pTarget, DROP_TYPE eDropType, int iAmount)
+	{
+		CDrop* pDrop = new T;
+		pDrop->Initialize();
+		pDrop->SetPos(fX, fY);
+		pDrop->SetTarget(pTarget);
+		pDrop->SetDropType(eDropType);
+		pDrop->SetAmount(iAmount);
+		return pDrop;
 	}
 };
 

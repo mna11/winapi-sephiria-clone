@@ -40,15 +40,16 @@ void CInventory::Release()
 }
 
 
-void CInventory::InsertItem(int iIdx, int iID)
+bool CInventory::InsertItem(int iIdx, int iID)
 {
 	if (nullptr == m_pOwner)
-		return;
+		return false;
 
 	if (nullptr == m_vecItems[iIdx])
 	{
 		m_vecItems[iIdx] = CAbstractFactory<CItem>::CreateItem(iID, m_pOwner);
 		m_pOwner->AddStat(m_vecItems[iIdx]->GetStat());
+		return true;
 	}
 	else
 	{
@@ -59,10 +60,13 @@ void CInventory::InsertItem(int iIdx, int iID)
 			{
 				m_vecItems[i] = CAbstractFactory<CItem>::CreateItem(iID, m_pOwner);
 				m_pOwner->AddStat(m_vecItems[i]->GetStat());
-				break;
+				return true;
 			}
 		}
 	}
+
+	// 인벤토리가 꽉 찬 경우
+	return false; 
 }
 
 void CInventory::EraseItem(int iIdx)

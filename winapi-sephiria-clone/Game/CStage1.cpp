@@ -37,7 +37,8 @@ void CStage1::LateUpdate()
 
 	HotKey();
 
-	HandleCollision();
+	HandleCollision(); 
+	EndBattle();
 }
 
 void CStage1::Render(Graphics* pGraphics)

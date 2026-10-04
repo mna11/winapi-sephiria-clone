@@ -56,9 +56,9 @@
 /////////////////////////////////////////
 // 열거체
 
-enum class OBJID	{ PLAYER, MONSTER, MONSTER_BULLET, NPC, MOUSE, WEAPON, EFFECT, UI, CAMERA, END };
+enum class OBJID	{ PLAYER, MONSTER, MONSTER_BULLET, NPC, DROP, MOUSE, WEAPON, EFFECT, UI, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, MOUSE, END };
-enum class UIID		{ BASIC_INFO, BOSS_HP, STAT_INFO, INVENTORY, ITEM_TOOLTIP, SHOP_TABLE, MSG_BOX, BUTTON, REWARD, END };
+enum class UIID		{ BASIC_INFO, LEVEL_UP, BOSS_HP, INVENTORY, ITEM_TOOLTIP, SHOP_TABLE, MSG_BOX, BUTTON, ITEM_SELECT, STAT_INFO, END };
 enum class SCENEID	{ LIB_LOADING, SHOP, STAGE0, STAGE1, BOSS_STAGE, END };
 
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };
@@ -69,13 +69,16 @@ enum class TILE_LAYER { LAYER0, LAYER1, LAYER2, LAYER3, END };
 // 방 상태
 enum class ROOM_STATE { READY, BATTLE, CLEAR };
 
-enum class ITEM_SOURCE { INVENTORY, SHOP, END };
+enum class ITEM_SOURCE { INVENTORY, SHOP, SELECT, END };
 
 // 메세지 박스 종류
 // NORMAL이 상단 문구 하단 버튼 구조
 // HORIZONTAL은 버튼만 가로로 배치
 // VERTICAL은 버튼만 세로로 배치
 enum class MSG_BOX_LAYOUT { NORMAL, HORIZONTAL, VERTICAL, END };
+
+// Drop Item Type
+enum class DROP_TYPE { EXP, LEAF, END };
 
 // 아이템 카테고리
 enum class ITEM_CATEGORY 
@@ -128,6 +131,7 @@ typedef struct tagVector
 	tagVector	operator+(const tagVector& rhs) const	{ return tagVector{ fX + rhs.fX, fY + rhs.fY }; }
 	tagVector	operator-(const tagVector& rhs) const	{ return tagVector{ fX - rhs.fX, fY - rhs.fY }; }
 	tagVector	operator*(float fScalar) const			{ return tagVector{ fScalar * fX, fScalar * fY }; }
+	tagVector	operator/(float fScalar) const { return tagVector{ fX / fScalar, fY / fScalar }; }
 	tagVector	operator*(const tagVector& rhs) const	{ return tagVector{ fX * rhs.fX, fY * rhs.fY }; }
 	bool	    operator==(const tagVector& rhs) const  { return (fX == rhs.fX && fY == rhs.fY); }
 	bool	    operator!=(const tagVector& rhs) const  { return (fX != rhs.fX || fY != rhs.fY); }

@@ -1,6 +1,11 @@
 ﻿#include "pch.h"
 #include "CGargoyle.h"
 
+#include "CPlayer.h"
+#include "CDrop.h"
+
+#include "CAbstractFactory.h"
+#include "CObjMgr.h"
 #include "CImgMgr.h"
 #include "CCameraMgr.h"
 #include "CTimeMgr.h"
@@ -35,7 +40,7 @@ void CGargoyle::Initialize()
 	m_tInfo = { WINCX >> 1, WINCY >> 1, 100.f, 100.f };
 	m_eRender = RENDERID::GAMEOBJECT;
 	// 렌더 레이어 - 0 ~ 5 사이 플레이어는 중간인 3
-	m_iRenderLayer = 5;
+	m_iRenderLayer = 4;
 	m_fSpeed = 200.f;
 
 	// 스프라이트 시트 Insert 
@@ -173,6 +178,8 @@ void CGargoyle::SetDamage(int iDamage, CObj* pObj)
 	if (m_tStat.iHp <= 0)
 	{
 		m_eNextState = GARGOYLE_STATE::DOWN;
+		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX - m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::EXP, 35));
+		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX + m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::LEAF, 500));
 	}
 
 	CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{255, 255, 255, 255});

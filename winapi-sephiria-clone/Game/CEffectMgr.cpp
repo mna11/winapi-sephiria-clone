@@ -46,6 +46,15 @@ void CEffectMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Stage/ExclamationMark.png", L"Exclamation_Mark");
 	// 전투 벽
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Stage/BattleWall.png", L"Battle_Wall");
+	
+	// 레벨업 이펙트
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/LevelUp/LevelUp_Aura.png", L"LevelUp_Effect");
+	
+	// 경험치 획득 이펙트
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Drop/Exp.png", L"Exp_Effect");
+	// 리프 획득 이펙트
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Drop/Leaf.png", L"Leaf_Effect");
+
 }
 
 
@@ -130,7 +139,23 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 		pEffect->SetSize({ 16.f, 16.f });
 		pEffect->SetLoop(true);
 	}
-
+	// 레벨업
+	else if (!lstrcmpW(pFrameKey, L"LevelUp_Effect"))
+	{
+		pEffect->SetFrame(0, 16, 0, dFrameSpeed);
+		pEffect->SetSize({ 58.f, 60.f });
+	}
+	// 드랍 아이템 획득 
+	else if (!lstrcmpW(pFrameKey, L"Exp_Effect"))
+	{
+		pEffect->SetFrame(0, 7, 0, dFrameSpeed);
+		pEffect->SetSize({ 7.f, 15.f });
+	}
+	else if (!lstrcmpW(pFrameKey, L"Leaf_Effect"))
+	{
+		pEffect->SetFrame(0, 3, 0, dFrameSpeed);
+		pEffect->SetSize({ 13.f, 11.f });
+	}
 
 	if (iOption & EFTMGR_IMAGE)
 	{

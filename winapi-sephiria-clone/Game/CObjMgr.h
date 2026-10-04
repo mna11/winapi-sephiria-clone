@@ -52,6 +52,7 @@ public:
 
 		return static_cast<CMouse*>(m_ObjList[toUType(OBJID::MOUSE)].front());
 	}
+	list<CObj*>& GetObjList(OBJID eID) { return m_ObjList[toUType(eID)]; }
 
 
 public:

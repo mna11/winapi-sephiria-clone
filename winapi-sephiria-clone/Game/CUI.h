@@ -11,9 +11,9 @@ public:
     virtual ~CUI();
 
 public:
-    void    Show();
-    void    Hide();
-    void    Toggle();
+    virtual void    Show();
+    virtual void    Hide();
+    virtual void    Toggle();
 
 public:
     bool    GetView() const { return m_bView; }
