@@ -42,17 +42,17 @@ public:
     CInventory*                 GetInventory()              const { return m_pInventory; }
     const int&                  GetMaxExp()                 const { return m_iMaxExp; }
     const int&                  GetExp()                    const { return m_iExp; }
-    const bool&                 GetCanLevelUp()             const { return m_bCanLevelUp; }
+    const int&                  GetLevelUp()                const { return m_iLevelUp; }
     const int&                  GetDice()                   const { return m_iDice; }
 
 public:
     void                        SetPlayerBehaviorEnable(bool bEnable) { m_bPlayerBehaviorEnable = bEnable; }
     void                        SetLeaf(int iLeaf) { m_iLeaf = iLeaf; }
-    void                        SetCanLevelUp(bool bCan) { m_bCanLevelUp = bCan; }
 
 public:
     void                        AddLeaf(int iAmount) { m_iLeaf += iAmount; }
     void                        AddExp(int iAmount);
+    void                        AddLevelUp(int iAmount) { m_iLevelUp += iAmount; }
     void                        AddDice(int iAmount); 
 
 public:
@@ -93,10 +93,11 @@ private:
     // 돈
     int                 m_iLeaf;
 
+
     // 경험치
     int                 m_iExp;
     const int           m_iMaxExp;
-    bool                m_bCanLevelUp;
+    int                 m_iLevelUp; // 레벨업 횟수
 
     // 주사위
     int                 m_iDice;

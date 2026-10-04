@@ -19,7 +19,7 @@ CPlayer::CPlayer()
 	m_bPlayerBehaviorEnable(true),
 	m_pInventory(nullptr),
 	m_iLeaf(1000),
-	m_iMaxExp(100), m_iExp(50), m_bCanLevelUp(false),
+	m_iMaxExp(100), m_iExp(50), m_iLevelUp(0),
 	m_iDice(3)
 {
 }
@@ -350,7 +350,7 @@ void CPlayer::AddExp(int iAmount)
 	if (m_iExp >= m_iMaxExp)
 	{
 		m_iExp -= m_iMaxExp;
-		m_bCanLevelUp = true;
+		m_iLevelUp += 1;
 		CEffectMgr::GetInstance()->CreateEffect(L"LevelUp_Effect", VEC{ m_tInfo.vPoint.fX, m_tInfo.vPoint.fY - m_tInfo.vSize.fY}, EFTMGR_IMAGE | EFTMGR_FOLLOW | EFTMGR_SCROLL, 0.f, 0.1f, this);
 	}
 }
@@ -359,7 +359,7 @@ void CPlayer::AddDice(int iAmount)
 {
 	m_iDice += iAmount;
 	if (m_iDice <= 0)
-		m_iDice == 0;
+		m_iDice = 0;
 }
 
 void CPlayer::SetDamage(int iDamage, CObj* pObj)

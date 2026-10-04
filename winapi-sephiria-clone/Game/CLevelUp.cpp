@@ -129,11 +129,11 @@ void CLevelUp::KeyInput()
 	if (nullptr == pPlayer)
 		return;
 
-	if (KEY_DOWN('R'))
+	if (KEY_DOWN('R') && !CUIMgr::GetInstance()->GetUI(UIID::ITEM_SELECT)->GetView())
 	{
 		Hide();
 		CUIMgr::GetInstance()->ShowUI(UIID::ITEM_SELECT);
 		static_cast<CItemSelectUI*>(CUIMgr::GetInstance()->GetUI(UIID::ITEM_SELECT))->RequestChange(ITEM_SELECT_UI_STATE::SELECT);
-		pPlayer->SetCanLevelUp(false);
+		pPlayer->AddLevelUp(-1);
 	}
 }

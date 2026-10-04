@@ -65,7 +65,7 @@ void CStage::HotKey()
     }
 
     // 이번 방에서 Exp가 다 찼고, 방을 클리어하면 띄운다.
-    if (pPlayer->GetCanLevelUp() && CObjMgr::GetInstance()->ObjEmpty(OBJID::MONSTER))
+    if (0 < pPlayer->GetLevelUp() && CObjMgr::GetInstance()->ObjEmpty(OBJID::MONSTER))
     {
         CUIMgr::GetInstance()->ShowUI(UIID::LEVEL_UP);
     }

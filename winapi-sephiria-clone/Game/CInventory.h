@@ -14,7 +14,7 @@ public:
 	void Release();
 
 public:
-	void InsertItem(int iIdx, int iID);
+	bool InsertItem(int iIdx, int iID);
 	void EraseItem(int iIdx);
 	void MoveItem(int iStartIdx, int iEndIdx);
 

@@ -155,8 +155,8 @@ int CInventoryUI::Update()
 				if (iIdx != -1 && CUIMgr::GetInstance()->GetUI(UIID::ITEM_SELECT)->GetView())
 				{
 					// 구매 시도 - 아이템 삽입
-					m_pInventory->InsertItem(iIdx, m_pMouse->GetDragReferItem().iID);
-					CUIMgr::GetInstance()->HideUI(UIID::ITEM_SELECT);
+					if(m_pInventory->InsertItem(iIdx, m_pMouse->GetDragReferItem().iID))
+						CUIMgr::GetInstance()->HideUI(UIID::ITEM_SELECT);
 				}
 
 				// SyncInventorySlot이 LateUpdate에서 Slot 동기화 해줘서 별도로 할 것 없음
