@@ -17,7 +17,7 @@ CScene::~CScene()
 
 void CScene::Init_BGM(wstring wstr, float fVolume)
 {
-    CSoundMgr::GetInstance()->PlaySound(wstr.c_str(), CHANNEL_GROUPID::BGM,fVolume);
+    CSoundMgr::GetInstance()->PlaySound(wstr.c_str(), CHANNEL_GROUPID::BGM, fVolume);
 }
 
 void CScene::Init_LoadImg(wstring wstr)

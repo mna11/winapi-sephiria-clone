@@ -14,6 +14,7 @@
 #include "CUIMgr.h"
 #include "CKeyMgr.h"
 #include "CFontMgr.h"
+#include "CSoundMgr.h"
 
 CItemSelectUI::CItemSelectUI()
     : m_iItemNum(5), CState(ITEM_SELECT_UI_STATE::END, ITEM_SELECT_UI_STATE::READY),
@@ -40,7 +41,7 @@ void CItemSelectUI::Initialize()
 
     // 렌더 정보 초기화 
     m_eRender = RENDERID::UI;
-    m_iRenderLayer = 2;
+    m_iRenderLayer = 1;
 }
 
 int CItemSelectUI::Update()
@@ -226,6 +227,7 @@ void CItemSelectUI::UpdateTime()
                 if (false == itemSlot->GetView())
                 {
                     itemSlot->Show();
+                    CSoundMgr::GetInstance()->PlaySound(L"SephirateSelect.wav", CHANNEL_GROUPID::SFX, 1.f);
                     itemSlot->SetSpread(true);
                 }
             }
@@ -349,6 +351,8 @@ void CItemSelectUI::CreateBtn()
 
             if (nullptr == this->m_pRerollBtn)
                 return;
+
+            CSoundMgr::GetInstance()->PlaySound(L"Reroll.wav", CHANNEL_GROUPID::SFX, 1.f);
 
             m_pRerollBtn->SetString(L"리롤 (" + to_wstring(iDice) + L"회)");
             });

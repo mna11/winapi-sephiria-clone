@@ -10,6 +10,7 @@
 #include "CImgMgr.h"
 #include "CObjMgr.h"
 #include "CCameraMgr.h"
+#include "CSoundMgr.h"
 
 CSephirite::CSephirite()
 	: m_bCol(false)
@@ -152,6 +153,7 @@ void CSephirite::HandleInteraction()
 		if (KEY_DOWN('F'))
 		{
 			CUIMgr::GetInstance()->ShowUI(UIID::ITEM_SELECT);
+			CSoundMgr::GetInstance()->PlaySound(L"SephiriteOpen.wav", CHANNEL_GROUPID::SFX, 1.f);
 			m_bDead = true;
 		}
 		m_bCol = true;

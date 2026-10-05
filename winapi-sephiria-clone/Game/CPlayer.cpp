@@ -246,7 +246,6 @@ void CPlayer::Dash()
 		{
 			--m_tStat.iDash;
 			m_fSpeed = m_fRunSpeed * 20.f;
-			CSoundMgr::GetInstance()->PlaySound(L"Dash.wav", CHANNEL_GROUPID::SFX, 1.f);
 		}
 	}
 	else if (KEY_HOLD(VK_SPACE))
@@ -323,16 +322,12 @@ void CPlayer::CreateEffect()
 		if (m_fSpeed == m_fNormalSpeed)
 		{
 			CEffectMgr::GetInstance()->CreateEffect(L"RunDust", m_tInfo.vPoint, EFTMGR_IMAGE | EFTMGR_FIXED, 0.f);
-
-			CSoundMgr::GetInstance()->PlaySound(L"FootStep.wav", CHANNEL_GROUPID::SFX, 1.f);
 		}
 		// 대쉬 - 와다다
 		else if (m_fSpeed == m_fRunSpeed)
 		{
 			VEC vDir = m_tInfo.vPoint - m_vPrePoint;
 			CEffectMgr::GetInstance()->CreateEffect(L"DashDust", m_tInfo.vPoint, EFTMGR_IMAGE | EFTMGR_FIXED, atan2f(vDir.fY, vDir.fX));
-			
-			CSoundMgr::GetInstance()->PlaySound(L"FootStep.wav", CHANNEL_GROUPID::SFX, 1.f, 1.5f);
 		}
 		m_dDustElapseTime = 0.;
 	}
@@ -377,7 +372,8 @@ void CPlayer::SetDamage(int iDamage, CObj* pObj)
 	m_bHit = true;		// m_bHit은 final 객체의 Update에서 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
 	m_tStat.iHp -= iDamage;
 
-	CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 255, 255 });
+	CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 64, 64 });
+	CSoundMgr::GetInstance()->PlaySound(L"HitPlayer.wav", CHANNEL_GROUPID::SFX, 1.f);
 	CCameraMgr::GetInstance()->CameraShaking(5, 0.2);
 	if (m_tStat.iHp <= 0)
 		m_bDead = true;

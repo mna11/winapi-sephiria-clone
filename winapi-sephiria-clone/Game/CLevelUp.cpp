@@ -10,6 +10,7 @@
 #include "CUIMgr.h"
 #include "CKeyMgr.h"
 #include "CObjMgr.h"
+#include "CSoundMgr.h"
 
 CLevelUp::CLevelUp()
 {
@@ -133,5 +134,7 @@ void CLevelUp::KeyInput()
 		CUIMgr::GetInstance()->ShowUI(UIID::ITEM_SELECT);
 		static_cast<CItemSelectUI*>(CUIMgr::GetInstance()->GetUI(UIID::ITEM_SELECT))->RequestChange(ITEM_SELECT_UI_STATE::SELECT);
 		pPlayer->AddLevelUp(-1);
+
+		CSoundMgr::GetInstance()->PlaySound(L"LevelUpUIOpen.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 }

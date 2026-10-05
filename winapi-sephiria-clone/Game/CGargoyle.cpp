@@ -11,6 +11,7 @@
 #include "CTimeMgr.h"
 #include "CEffectMgr.h"
 #include "CFontMgr.h"
+#include "CSoundMgr.h"
 
 CGargoyle::CGargoyle()
 	: CState(GARGOYLE_STATE::END, GARGOYLE_STATE::SUMMON),
@@ -183,7 +184,7 @@ void CGargoyle::SetDamage(int iDamage, CObj* pObj)
 	}
 
 	CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{255, 255, 255, 255});
-
+	CSoundMgr::GetInstance()->PlaySound(L"HitSword02.wav", CHANNEL_GROUPID::SFX, 1.f);
 	// 경험치 pObj에게 넘기기 등을 하면 된다.
 }
 
@@ -287,7 +288,7 @@ void CGargoyle::UpdateTime()
 		else if (m_dStateTime >= m_dFlyAtkEndTime)
 		{
 			if (m_tFrame.iMotion != 7)
-				SetFrame(0, 3, 7, (m_dFlyAtkTime - m_dFlyAtkEndTime) / 4. );
+				SetFrame(0, 3, 7, (m_dFlyAtkTime - m_dFlyAtkEndTime) / 4.);
 		}
 		else if (m_dStateTime >= m_dFlyAtkDownTime)
 		{
@@ -300,7 +301,10 @@ void CGargoyle::UpdateTime()
 		else if (m_dStateTime >= m_dFlyAtkCycleTime)
 		{
 			if (m_tFrame.iMotion != 5)
+			{
 				SetFrame(0, 5, 5, (m_dFlyAtkDownTime - m_dFlyAtkCycleTime) / 6.);
+				CSoundMgr::GetInstance()->PlaySound(L"WhooshHeavy.wav", CHANNEL_GROUPID::SFX, 1.f);
+			}
 		}
 		break;
 	case GARGOYLE_STATE::AIR:

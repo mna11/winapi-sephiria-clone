@@ -129,19 +129,6 @@ void CSwordAndShield::Attack()
 
 		if (m_tAtk.iLevel != 0) // 첫 공격 입력이 아닐 경우에는 다음 연격 플래그를 true로 해줌
 			m_tAtk.bNextAtk = true;
-
-		switch (m_tAtk.iLevel)
-		{
-		case 0:
-			//CSoundMgr::Get_Instance()->PlayEffect(L"hitSword01.wav", 1.f);
-			break;
-		case 1:
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		}
 	}
 }
 

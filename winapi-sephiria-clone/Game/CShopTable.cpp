@@ -11,6 +11,7 @@
 #include "CCollisionMgr.h"
 #include "CObjMgr.h"
 #include "CFontMgr.h"
+#include "CSoundMgr.h"
 
 CShopTable::CShopTable()
 	: m_iItemSlotSize(4), m_iMouseHoverSlot(-1), m_eLastStage(SCENEID::END)
@@ -28,7 +29,7 @@ void CShopTable::Initialize()
 	m_tInfo = { 50.f, 14.f, 0.f, 0.f};
 
 	m_eRender = RENDERID::UI;
-	m_iRenderLayer = 3;
+	m_iRenderLayer = 1;
 	m_fUIScale = PIXEL_SCALE * 0.5f;
 }
 
@@ -72,6 +73,8 @@ int CShopTable::Update()
 	{
 		// 마우스가 현재 드래그 중인 아이템을 참조하게 해줌 - 렌더용
 		m_pMouse->SetDragReferItem({ m_vecItemSlot[m_iMouseHoverSlot]->GetItemID(), ITEM_SOURCE::SHOP });
+		// 사운드 
+		CSoundMgr::GetInstance()->PlaySound(L"InventoryPick.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 
 	return NOEVENT;

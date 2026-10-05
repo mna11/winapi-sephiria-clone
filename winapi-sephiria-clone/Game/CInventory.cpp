@@ -8,6 +8,7 @@
 #include "CUIMgr.h"
 #include "CInventoryUI.h"
 #include "CInventorySlotUI.h"
+#include "CSoundMgr.h"
 
 CInventory::CInventory()
 	: m_iInvenSize(24), m_pOwner(nullptr)

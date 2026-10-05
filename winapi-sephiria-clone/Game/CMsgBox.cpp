@@ -24,7 +24,7 @@ void CMsgBox::Initialize()
 
 	// 렌더 정보 초기화 
 	m_eRender = RENDERID::UI;
-	m_iRenderLayer = 5;
+	m_iRenderLayer = 4;
 }
 
 // 메세지 박스는 몇번째 버튼을 클릭했는지를 반환해줌 - 0은 아무것도 클릭 안함
@@ -105,6 +105,7 @@ void CMsgBox::SetButtonNumber(int iNum)
 	{
 		m_vecButton.push_back(CAbstractFactory<CButton>::CreateButton(pMouse, {}, {}));
 		CObjMgr::GetInstance()->AddObject(OBJID::UI, m_vecButton.back());
+		m_vecButton.back()->SetRenderLayer(m_iRenderLayer + 1);
 	}
 }
 
