@@ -6,6 +6,7 @@
 #include "CAbstractFactory.h"
 
 #include "CKeyMgr.h"
+#include "CSoundMgr.h"
 #include "CTimeMgr.h"
 #include "CCameraMgr.h"
 #include "CImgMgr.h"
@@ -35,8 +36,8 @@ void CPlayer::Initialize()
 	m_tInfo = { WINCX >> 1, WINCY >> 1, 30.f, 40.f };
 	m_eRender = RENDERID::GAMEOBJECT;
 	m_fSpeed = m_fNormalSpeed;
-	// 렌더 레이어 - 0 ~ 5 사이 플레이어는 중간인 3
-	m_iRenderLayer = 3;
+	// 렌더 레이어 - 0 ~ 5 사이 플레이어는 중간인 2
+	m_iRenderLayer = 2;
 
 	// 스프라이트 시트 Insert 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Player/Player_LEFTDOWN.png", L"Player_LD");
@@ -226,6 +227,7 @@ void CPlayer::Move()
 	{
 		m_tInfo.vPoint += vDir.Normalize() * m_fSpeed * DT;
 		m_eNextState = PLAYER_STATE::WALK;
+
 	}
 	else 
 	{
@@ -370,7 +372,8 @@ void CPlayer::SetDamage(int iDamage, CObj* pObj)
 	m_bHit = true;		// m_bHit은 final 객체의 Update에서 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
 	m_tStat.iHp -= iDamage;
 
-	CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 255, 255 });
+	CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 64, 64 });
+	CSoundMgr::GetInstance()->PlaySound(L"HitPlayer.wav", CHANNEL_GROUPID::SFX, 1.f);
 	CCameraMgr::GetInstance()->CameraShaking(5, 0.2);
 	if (m_tStat.iHp <= 0)
 		m_bDead = true;

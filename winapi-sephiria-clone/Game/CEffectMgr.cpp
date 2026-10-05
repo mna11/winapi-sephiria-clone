@@ -5,6 +5,7 @@
 #include "CImgMgr.h"
 #include "CAbstractFactory.h"
 #include "CObjMgr.h"
+#include "CSoundMgr.h"
 
 CEffectMgr* CEffectMgr::m_pInstance = nullptr;
 
@@ -66,6 +67,8 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 	{
 		pEffect->SetFrame(0, 8, 0, 0.2);
 		pEffect->SetSize({ 7.f, 7.f });
+		
+		CSoundMgr::GetInstance()->PlaySound(L"FootStep.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 	else if (!lstrcmpW(pFrameKey, L"DashDust"))
 	{
@@ -75,30 +78,40 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 		int iDirection = (int)(fFactor / (PI / 4));
 		pEffect->SetFrame(0, 5, iDirection, 0.2);
 		pEffect->SetSize({ 37, 23 });
+
+		CSoundMgr::GetInstance()->PlaySound(L"FootStep.wav", CHANNEL_GROUPID::SFX, 1.f, 2.f);
 	}
 	else if (!lstrcmpW(pFrameKey, L"DashTrail"))
 	{
 		pEffect->SetFrame(0, 5, 0, 0.05);
 		pEffect->SetSize({ 15.f, 16.f });
 		pEffect->SetAlpha(fFactor);
+
+		CSoundMgr::GetInstance()->PlaySound(L"Dash.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 	else if (!lstrcmpW(pFrameKey, L"SwordSwing1"))
 	{
 		pEffect->SetFrame(0, 1, 0, 0.1);
 		pEffect->SetSize({ 37.f, 22.f });
 		pEffect->SetAngle(fFactor);
+
+		CSoundMgr::GetInstance()->PlaySound(L"SwingSwish01.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 	else if (!lstrcmpW(pFrameKey, L"SwordSwing2"))
 	{
 		pEffect->SetFrame(0, 1, 0, 0.1);
 		pEffect->SetSize({ 30.f, 30.f });
 		pEffect->SetAngle(fFactor);
+
+		CSoundMgr::GetInstance()->PlaySound(L"SwingSwish01.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 	else if (!lstrcmpW(pFrameKey, L"SwordSwing3"))
 	{
 		pEffect->SetFrame(0, 3, 0, 0.1);
 		pEffect->SetSize({ 32.f, 43.f });
 		pEffect->SetAngle(fFactor);
+
+		CSoundMgr::GetInstance()->PlaySound(L"SwingSwish02.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 	else if (!lstrcmpW(pFrameKey, L"Shield"))
 	{
@@ -112,6 +125,8 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 		pEffect->SetFrame(0, 7, 0, 0.1);
 		pEffect->SetSize({ 142, 105 });
 		pEffect->SetAngle(fFactor);
+
+		CSoundMgr::GetInstance()->PlaySound(L"Cleave.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 	// 가고일
 	else if (!lstrcmpW(pFrameKey, L"Gargoyle_Attack"))
@@ -119,12 +134,16 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 		pEffect->SetFrame(0, 1, 0, dFrameSpeed);
 		pEffect->SetSize({ 43, 49 });
 		pEffect->SetAngle(fFactor);
+
+		CSoundMgr::GetInstance()->PlaySound(L"SwingSwish02.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 	else if (!lstrcmpW(pFrameKey, L"Gargoyle_Targeting"))
 	{
 		pEffect->SetFrame(0, 19, 0, dFrameSpeed);
 		pEffect->SetSize({ 96, 72 });
 		pEffect->SetRenderOption(RENDERID::GAMEOBJECT, 1);
+
+
 	}
 	// 전투
 	else if (!lstrcmpW(pFrameKey, L"Exclamation_Mark"))
@@ -132,6 +151,8 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 		pEffect->SetFrame(0, 5, 0, 0.1);
 		pEffect->SetSize({ 89, 82 });
 		pEffect->SetScale(0.5);
+
+		CSoundMgr::GetInstance()->PlaySound(L"BattleEntry.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 	else if (!lstrcmpW(pFrameKey, L"Battle_Wall"))
 	{
@@ -144,17 +165,23 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 	{
 		pEffect->SetFrame(0, 16, 0, dFrameSpeed);
 		pEffect->SetSize({ 58.f, 60.f });
+
+		CSoundMgr::GetInstance()->PlaySound(L"LevelUp.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 	// 드랍 아이템 획득 
 	else if (!lstrcmpW(pFrameKey, L"Exp_Effect"))
 	{
 		pEffect->SetFrame(0, 7, 0, dFrameSpeed);
 		pEffect->SetSize({ 7.f, 15.f });
+
+		CSoundMgr::GetInstance()->PlaySound(L"GetExp.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 	else if (!lstrcmpW(pFrameKey, L"Leaf_Effect"))
 	{
 		pEffect->SetFrame(0, 3, 0, dFrameSpeed);
 		pEffect->SetSize({ 13.f, 11.f });
+		
+		CSoundMgr::GetInstance()->PlaySound(L"GetLeaf.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 
 	if (iOption & EFTMGR_IMAGE)

@@ -15,6 +15,7 @@ public:
 
 public:
 	virtual void Init_CreateObj() PURE;
+	virtual void Init_BGM(wstring wstr, float fVolume);
 	virtual void Init_LoadImg(wstring wstr);
 
 protected:

@@ -19,6 +19,7 @@
 #include "CTileMgr.h"
 #include "CUIMgr.h"
 #include "CCollisionMgr.h"
+#include "CSoundMgr.h"
 
 
 CStage::CStage()
@@ -58,10 +59,17 @@ void CStage::HotKey()
         return;
 
     // 아이템 셀렉트일 때는 맘대로 열고 닫기 못함
-    if (KEY_DOWN('U') && !CUIMgr::GetInstance()->GetUI(UIID::ITEM_SELECT)->GetView())
+    if (KEY_DOWN('V') && !CUIMgr::GetInstance()->GetUI(UIID::ITEM_SELECT)->GetView())
     {
         CUIMgr::GetInstance()->ToggleUI(UIID::INVENTORY);
         CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
+
+        // 사운드
+        if (CUIMgr::GetInstance()->GetUI(UIID::INVENTORY)->GetView())
+            CSoundMgr::GetInstance()->PlaySound(L"InventoryOpen.wav", CHANNEL_GROUPID::SFX, 1.f);
+        else
+            CSoundMgr::GetInstance()->PlaySound(L"InventoryClose.wav", CHANNEL_GROUPID::SFX, 1.f);
+
     }
 
     // 이번 방에서 Exp가 다 찼고, 방을 클리어하면 띄운다.

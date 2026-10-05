@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "CScene.h"
 
+#include "CSoundMgr.h"
+
 CScene::CScene()
 	: m_hMapDC(0), m_hMapBitmap(0), m_hOldBitmap(0)
 {
@@ -11,6 +13,11 @@ CScene::~CScene()
 	SelectObject(m_hMapDC, m_hOldBitmap);
 	DeleteObject(m_hMapBitmap);
 	DeleteDC(m_hMapDC);
+}
+
+void CScene::Init_BGM(wstring wstr, float fVolume)
+{
+    CSoundMgr::GetInstance()->PlaySound(wstr.c_str(), CHANNEL_GROUPID::BGM, fVolume);
 }
 
 void CScene::Init_LoadImg(wstring wstr)

@@ -16,6 +16,7 @@
 #include "CSceneMgr.h"
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
+#include "CSoundMgr.h"
 
 CShop::CShop()
 	: m_pMsgBoxUI(nullptr), m_pEscapeButton(nullptr)
@@ -221,8 +222,12 @@ void CShop::BuyItem(int iInventoryIdx, int iID, int iPrice)
 	if (nullptr == pPlayer)
 		return;
 
-	if(pPlayer->GetInventory()->InsertItem(iInventoryIdx, iID))
+	if (pPlayer->GetInventory()->InsertItem(iInventoryIdx, iID))
+	{
 		pPlayer->AddLeaf(-iPrice);
+		// 사운드 
+		CSoundMgr::GetInstance()->PlaySound(L"ShopBuy.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
 	else
 	{
 		wstring wstr = L"인벤토리 공간이 부족합니다.";
@@ -305,4 +310,6 @@ void CShop::SellItem(int iInventoryIdx, int iPrice)
 	pPlayer->GetInventory()->EraseItem(iInventoryIdx);
 	static_cast<CInventoryUI*>(CUIMgr::GetInstance()->GetUI(UIID::INVENTORY))->SyncInventorySlot();
 	pPlayer->AddLeaf(iPrice * 0.5f);
+	// 사운드 
+	CSoundMgr::GetInstance()->PlaySound(L"ShopBuy.wav", CHANNEL_GROUPID::SFX, 1.f);
 }

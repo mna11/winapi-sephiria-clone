@@ -19,7 +19,7 @@ void CShield::Initialize()
 {
     m_tInfo = { 0.f, 0.f, 10.f, 10.f};
     m_eRender = RENDERID::GAMEOBJECT;
-    m_iRenderLayer = 4; 
+    m_iRenderLayer = 3; 
 }
 
 int CShield::Update()

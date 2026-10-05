@@ -1,12 +1,11 @@
 ﻿#pragma once
 #include "CObj.h"
-class CBaba :
+class CSephirite :
     public CObj
 {
 public:
-    CBaba();
-    ~CBaba();
-
+    CSephirite();
+    ~CSephirite();
 public:
     void Initialize() override;
     int Update() override;
@@ -16,8 +15,6 @@ public:
 
 public:
     void HandleInteraction();
-
-private:
     void UpdateInteractRect();
 
 private:

@@ -27,8 +27,20 @@
 #pragma comment(lib, "Msimg32.lib")
 #include "Define.h"
 
+#include <Vfw.h>
+#pragma comment(lib, "vfw32.lib")
+
+#include <io.h>
+
+#include "fmod.h"
+#include "fmod.hpp"
+
+#pragma comment(lib, "fmod_vc.lib")
+
+
 using namespace std;
 using namespace Gdiplus;
+using namespace FMOD;
 
 
 #ifdef _DEBUG

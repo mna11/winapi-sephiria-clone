@@ -33,6 +33,7 @@ public:
 	void				SetSpeed(float fSpeed)				{ m_fSpeed = fSpeed; }
 	void				SetSize(VEC vec)					{ m_tInfo.vSize = vec; }
 	void				SetFrame(int iStart, int iEnd, int iMotion, double dFrameSpeed);
+	void				SetRenderLayer(int iRenderLayer)	{ m_iRenderLayer = iRenderLayer; }
 	virtual void		SetTarget(CObj* pObj)				{ if (nullptr != pObj) m_pTarget = pObj; }
 	virtual	void		SetDamage(int iDamage, CObj* pObj = nullptr);
 

@@ -10,6 +10,7 @@
 #include "CCameraMgr.h"
 #include "CImgMgr.h"
 #include "CSceneMgr.h"
+#include "CSoundMgr.h"
 #include "CTileMgr.h"
 #include "CTimeMgr.h"
 #include "CEffectMgr.h"
@@ -72,6 +73,7 @@ void CMainGame::Update()
 	CTimeMgr::GetInstance()->Update();
 	CKeyMgr::GetInstance()->Update();
 	CCameraMgr::GetInstance()->Update();
+	CSoundMgr::GetInstance()->Update();
 
 	CSceneMgr::GetInstance()->Update();
 }
@@ -106,6 +108,7 @@ void CMainGame::Release()
 	CUIMgr::DestroyInstance();
 	CFontMgr::DestroyInstance();
 	CItemData::DestroyInstance();
+	CSoundMgr::DestroyInstance();
 
 	// 그래픽스 먼저 없애야 함
 	SafeDelete<Graphics*>(m_pBackGraphics);

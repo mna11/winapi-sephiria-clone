@@ -15,6 +15,7 @@
 #include "CSceneMgr.h"
 #include "CAbstractFactory.h"
 #include "CKeyMgr.h"
+#include "CSoundMgr.h"
 
 CInventoryUI::CInventoryUI()
 	: m_pInventory(nullptr), m_iStartSlot(-1), m_iMouseHoverSlot(-1)
@@ -36,7 +37,7 @@ void CInventoryUI::Initialize()
 
 	// 렌더 정보 초기화 
 	m_eRender = RENDERID::UI;
-	m_iRenderLayer = 3;    
+	m_iRenderLayer = 1;    
 }
 
 int CInventoryUI::Update()
@@ -88,6 +89,9 @@ int CInventoryUI::Update()
 
 		// 원래 슬롯은 안보이게 함
 		m_vecItemSlot[m_iStartSlot]->SetItem(nullptr);
+
+		// 사운드 
+		CSoundMgr::GetInstance()->PlaySound(L"InventoryPick.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 
 	if (KEY_DOWN(VK_RBUTTON) && m_pInventory->IsExistItem(m_iMouseHoverSlot))
@@ -116,6 +120,8 @@ int CInventoryUI::Update()
 				{
 					// 아이템 이동
 					m_pInventory->MoveItem(iStartIdx, iEndIdx);
+					// 사운드 
+					CSoundMgr::GetInstance()->PlaySound(L"InventoryDown.wav", CHANNEL_GROUPID::SFX, 1.f);
 				}
 
 				// SyncInventorySlot이 LateUpdate에서 Slot 동기화 해줘서 별도로 할 것 없음
@@ -155,8 +161,11 @@ int CInventoryUI::Update()
 				if (iIdx != -1 && CUIMgr::GetInstance()->GetUI(UIID::ITEM_SELECT)->GetView())
 				{
 					// 구매 시도 - 아이템 삽입
-					if(m_pInventory->InsertItem(iIdx, m_pMouse->GetDragReferItem().iID))
+					if (m_pInventory->InsertItem(iIdx, m_pMouse->GetDragReferItem().iID))
+					{
+						CSoundMgr::GetInstance()->PlaySound(L"AcquireItem.wav", CHANNEL_GROUPID::SFX, 1.f);
 						CUIMgr::GetInstance()->HideUI(UIID::ITEM_SELECT);
+					}
 				}
 
 				// SyncInventorySlot이 LateUpdate에서 Slot 동기화 해줘서 별도로 할 것 없음

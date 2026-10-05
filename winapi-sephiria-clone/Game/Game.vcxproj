@@ -109,10 +109,13 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\core\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\core\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -126,10 +129,13 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\core\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\core\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -181,11 +187,13 @@
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneMgr.h" />
+    <ClInclude Include="CSephirite.h" />
     <ClInclude Include="CShield.h" />
     <ClInclude Include="CShop.h" />
     <ClInclude Include="CMsgBox.h" />
     <ClInclude Include="CShopTable.h" />
     <ClInclude Include="CShopTableSlot.h" />
+    <ClInclude Include="CSoundMgr.h" />
     <ClInclude Include="CStage.h" />
     <ClInclude Include="CStage1.h" />
     <ClInclude Include="CState.h" />
@@ -253,11 +261,13 @@
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneMgr.cpp" />
+    <ClCompile Include="CSephirite.cpp" />
     <ClCompile Include="CShield.cpp" />
     <ClCompile Include="CShop.cpp" />
     <ClCompile Include="CMsgBox.cpp" />
     <ClCompile Include="CShopTable.cpp" />
     <ClCompile Include="CShopTableSlot.cpp" />
+    <ClCompile Include="CSoundMgr.cpp" />
     <ClCompile Include="CStage.cpp" />
     <ClCompile Include="CStage1.cpp" />
     <ClCompile Include="CState.cpp" />

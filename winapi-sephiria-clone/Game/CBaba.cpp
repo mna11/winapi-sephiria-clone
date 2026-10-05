@@ -7,6 +7,7 @@
 #include "CUIMgr.h"
 #include "CKeyMgr.h"
 #include "CSceneMgr.h"
+#include "CFontMgr.h"
 
 #include "CCollisionMgr.h"
 
@@ -96,6 +97,46 @@ void CBaba::Render(Graphics* pGraphics)
 		vCellSize.fY,
 		UnitPixel
 	);
+
+	if (m_bCol)
+	{
+		// 안내 그리기
+		pImg = CImgMgr::GetInstance()->FindImg(L"KeyUI");
+
+		float fKeyImgWidth = 15.f * PIXEL_SCALE;
+		float fTextWidth = 10.f * PIXEL_SCALE;
+		float fGap = 3.f * PIXEL_SCALE;
+		float fAllWidth = fKeyImgWidth + fTextWidth + fGap;
+		float fHeight = 10.f * PIXEL_SCALE;
+
+		wstring strShop = L"상점";
+		RectF rcShop = { m_tInfo.vPoint.fX - fAllWidth * 0.6f + vScroll.fX, m_tInfo.vPoint.fY - vImgSize.fY * 0.3f - fHeight + vScroll.fY,
+							fAllWidth, fHeight };
+		// rcShop 안에 포함되는 위치
+		RectF rcShopImg = rcShop;
+		rcShopImg.Width = fKeyImgWidth;
+
+#ifdef _DEBUG
+		SolidBrush BlackBrush(Color(255, 0, 0, 0));
+		pGraphics->FillRectangle(&BlackBrush, rcShop);
+		SolidBrush WhiteBrush(Color(255, 255, 255, 255));
+		pGraphics->FillRectangle(&WhiteBrush, rcShopImg);
+#endif // _DEBUG
+		vCellSize = { 13.f, 9.f };
+		pGraphics->DrawImage(
+			pImg, rcShopImg,
+			3 * vCellSize.fX,
+			3 * vCellSize.fY,
+			vCellSize.fX,
+			vCellSize.fY,
+			UnitPixel
+		);
+		RectF rcBgStr = rcShop;
+		rcBgStr.X += 2.f;
+		rcBgStr.Y += 2.f;
+		CFontMgr::GetInstance()->DrawString(pGraphics, strShop, FONT_TYPE::NORMAL, rcBgStr, Color{ 255, 0, 0, 0 }, 28.f, StringAlignmentFar);
+		CFontMgr::GetInstance()->DrawString(pGraphics, strShop, FONT_TYPE::NORMAL, rcShop, Color{ 255, 255, 255, 255 }, 28.f, StringAlignmentFar);
+	}
 }
 
 void CBaba::Release()
@@ -115,6 +156,11 @@ void CBaba::HandleInteraction()
 		{
 			CSceneMgr::GetInstance()->RequestChange(SCENEID::SHOP);
 		}
+		m_bCol = true;
+	}
+	else
+	{
+		m_bCol = false; 
 	}
 }
 

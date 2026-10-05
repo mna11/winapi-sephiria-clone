@@ -30,7 +30,7 @@ void CButton::Initialize()
 	m_tInfo.vSize = m_vCellSize * m_fUIScale;
 
 	m_eRender = RENDERID::UI;
-	m_iRenderLayer = 6;
+	m_iRenderLayer = 2;
 }
 
 int CButton::Update()

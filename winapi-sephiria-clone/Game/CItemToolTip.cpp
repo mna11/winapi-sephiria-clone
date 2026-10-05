@@ -25,7 +25,7 @@ void CItemToolTip::Initialize()
 
 	// 렌더 정보 초기화 
 	m_eRender = RENDERID::UI;
-	m_iRenderLayer = 6;
+	m_iRenderLayer = 3;
 }
 
 int CItemToolTip::Update()

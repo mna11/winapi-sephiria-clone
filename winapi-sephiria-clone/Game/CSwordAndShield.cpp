@@ -11,6 +11,7 @@
 #include "CObjMgr.h"
 #include "CKeyMgr.h"
 #include "CAbstractFactory.h"
+#include "CSoundMgr.h"
 #include "CEffectMgr.h"
 
 CSwordAndShield::CSwordAndShield()

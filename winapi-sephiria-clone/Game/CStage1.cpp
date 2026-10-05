@@ -4,6 +4,7 @@
 #include "CPlayer.h"
 #include "CBaba.h"
 #include "CGargoyle.h"
+#include "CSephirite.h"
 
 #include "CAbstractFactory.h"
 #include "CCollisionMgr.h"
@@ -14,6 +15,7 @@
 #include "CTileMgr.h"
 #include "CUIMgr.h"
 #include "CSceneMgr.h"
+#include "CSoundMgr.h"
 
 void CStage1::Initialize()
 {
@@ -24,6 +26,8 @@ void CStage1::Initialize()
 
 	InitializeRooms();
 	Init_LoadImg(L"../Resource/Image/Stage/Stage01.png");
+	
+	Init_BGM(L"DugeonLibrary_Field.wav", 0.1f);
 }
 
 void CStage1::Update()
@@ -119,6 +123,7 @@ void CStage1::Init_CreateObj()
 {
 	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(360.f, 7600.f));
 	CObjMgr::GetInstance()->AddObject(OBJID::NPC, CAbstractFactory<CBaba>::CreateObj(720.f, 7600.f));
+	CObjMgr::GetInstance()->AddObject(OBJID::FIELD_ITEM, CAbstractFactory<CSephirite>::CreateObj(1000.f, 7600.f));
 	
 	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
 }
