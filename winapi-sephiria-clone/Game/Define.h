@@ -59,12 +59,15 @@
 enum class OBJID	{ PLAYER, MONSTER, MONSTER_BULLET, NPC, FIELD_ITEM, DROP, MOUSE, WEAPON, EFFECT, UI, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, MOUSE, END };
 enum class UIID		{ BASIC_INFO, LEVEL_UP, BOSS_HP, INVENTORY, ITEM_TOOLTIP, SHOP_TABLE, MSG_BOX, BUTTON, ITEM_SELECT, STAT_INFO, END };
-enum class SCENEID	{ LIB_LOADING, SHOP, STAGE0, STAGE1, BOSS_STAGE, END };
+enum class SCENEID	{ LIB_LOADING, SHOP, FORGE, STAGE0, STAGE1, BOSS_STAGE, END };
 
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };
 
 enum class TILE_OPTION { FLOOR, WALL, AIR, INTERACTION, END };
 enum class TILE_LAYER { LAYER0, LAYER1, LAYER2, LAYER3, END };
+
+// 무기 타입
+enum class WEAPON_TYPE { NONE, SWORD_AND_SHIELD, GREAT_SWORD, DAGGER, CROSSBOW, KATANA, STAFF };
 
 // 방 상태
 enum class ROOM_STATE { READY, BATTLE, CLEAR };
@@ -331,6 +334,20 @@ typedef struct tagItemInfo
 	int				iLeaf;						// 가격
 } ITEM_INFO;
 
+
+typedef struct tagWeaponInfo
+{
+	int				iID;						// 무기 아이디
+
+	std::wstring	strIconImg;					// 무기 아이콘 이미지
+	std::wstring	strImg1;					// 무기 이미지 1
+	std::wstring	strImg2;					// 무기 이미지 2
+	
+	std::wstring	strName;					// 무기 이름
+	std::wstring	strDescription;				// 무기 설명
+
+	WEAPON_TYPE		eWeaponType;				// 무기 타입
+} WEAPON_INFO;
 
 // 스프라이트 애니메이션용
 // QueryPerfomanceCount 사용으로 변경

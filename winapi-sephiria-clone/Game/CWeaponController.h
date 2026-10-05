@@ -4,7 +4,7 @@
 #include "CWeapon.h"
 
 class CWeaponController
-	: public CWeapon, public CState<CWeapon::TYPE>
+	: public CWeapon, public CState<WEAPON_TYPE>
 {
 public:
 	CWeaponController();

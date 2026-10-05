@@ -163,6 +163,9 @@
     <ClInclude Include="CErmaPhase2.h" />
     <ClInclude Include="CFluffy.h" />
     <ClInclude Include="CFontMgr.h" />
+    <ClInclude Include="CAnvil.h" />
+    <ClInclude Include="CForge.h" />
+    <ClInclude Include="CForgeSlotUI.h" />
     <ClInclude Include="CGargoyle.h" />
     <ClInclude Include="CImgMgr.h" />
     <ClInclude Include="CInventory.h" />
@@ -206,6 +209,7 @@
     <ClInclude Include="CUIMgr.h" />
     <ClInclude Include="CWeapon.h" />
     <ClInclude Include="CWeaponController.h" />
+    <ClInclude Include="CWeaponData.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
@@ -237,6 +241,9 @@
     <ClCompile Include="CErmaPhase2.cpp" />
     <ClCompile Include="CFluffy.cpp" />
     <ClCompile Include="CFontMgr.cpp" />
+    <ClCompile Include="CAnvil.cpp" />
+    <ClCompile Include="CForge.cpp" />
+    <ClCompile Include="CForgeSlotUI.cpp" />
     <ClCompile Include="CGargoyle.cpp" />
     <ClCompile Include="CImgMgr.cpp" />
     <ClCompile Include="CInventory.cpp" />
@@ -280,6 +287,7 @@
     <ClCompile Include="CUIMgr.cpp" />
     <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="CWeaponController.cpp" />
+    <ClCompile Include="CWeaponData.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

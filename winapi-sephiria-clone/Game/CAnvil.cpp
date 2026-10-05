@@ -1,60 +1,54 @@
-ï»¿#include "pch.h"
-#include "CSephirite.h"
-
-#include "CPlayer.h"
+#include "pch.h"
+#include "CAnvil.h"
 
 #include "CCollisionMgr.h"
 #include "CKeyMgr.h"
-#include "CUIMgr.h"
-#include "CFontMgr.h"
 #include "CImgMgr.h"
 #include "CObjMgr.h"
-#include "CCameraMgr.h"
 #include "CSoundMgr.h"
+#include "CFontMgr.h"
+#include "CCameraMgr.h"
+#include "CSceneMgr.h"
+#include "CUIMgr.h"
 
-CSephirite::CSephirite()
-	: m_bCol(false)
+CAnvil::CAnvil()
+	: m_bCol(false), m_bUse(false)
 {
 	ZeroMemory(&m_tInteractRect, sizeof(RECT));
 }
 
-CSephirite::~CSephirite()
+CAnvil::~CAnvil()
 {
 	Release();
 }
 
-void CSephirite::Initialize()
+void CAnvil::Initialize()
 {
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Sephirite/Sephirite.png", L"Sephirite");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Anvil/Anvil.png", L"Anvil");
 
-	// ê¸°ì´ˆ ì •ë³´ ì´ˆê¸°í™”
-	m_tInfo = { 0.f, 0.f, 12.f * PIXEL_SCALE, 15.f * PIXEL_SCALE };
+	// ±âÃÊ Á¤º¸ ÃÊ±âÈ­
+	m_tInfo = { 0.f, 0.f, 13.f * PIXEL_SCALE, 12.f * PIXEL_SCALE };
 	m_eRender = RENDERID::GAMEOBJECT;
 	m_iRenderLayer = 0;
 
-	m_pFrameKey = L"Sephirite";
-	SetFrame(0, 19, 0, 0.2);
+	m_pFrameKey = L"Anvil";
 }
 
-int CSephirite::Update()
+int CAnvil::Update()
 {
-	if (m_bDead)
-		return DEAD;
-
 	HandleInteraction();
 
 	UpdateInteractRect();
 
 	__super::UpdateRect();
-	__super::UpdateFrame();
 	return NOEVENT;
 }
 
-void CSephirite::LateUpdate()
+void CAnvil::LateUpdate()
 {
 }
 
-void CSephirite::Render(Graphics* pGraphics)
+void CAnvil::Render(Graphics* pGraphics)
 {
 	Image* pImg = CImgMgr::GetInstance()->FindImg(m_pFrameKey);
 	if (nullptr == pImg)
@@ -63,14 +57,14 @@ void CSephirite::Render(Graphics* pGraphics)
 	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
 #ifdef _DEBUG
-	// ìƒí˜¸ìž‘ìš© ë ‰íŠ¸
+	// »óÈ£ÀÛ¿ë ·ºÆ®
 	SolidBrush blackBrush(Color(255, 0, 0, 0));
 	pGraphics->FillRectangle(&blackBrush, (int)(m_tInteractRect.left + vScroll.fX),
 		(int)(m_tInteractRect.top + vScroll.fY),
 		(int)(m_tInteractRect.right - m_tInteractRect.left),
 		(int)(m_tInteractRect.bottom - m_tInteractRect.top)
 	);
-	// ì¶©ëŒ ë ‰íŠ¸
+	// Ãæµ¹ ·ºÆ®
 	SolidBrush whiteBrush(Color(255, 255, 255, 255));
 	pGraphics->FillRectangle(&whiteBrush, (int)(m_tRect.left + vScroll.fX),
 		(int)(m_tRect.top + vScroll.fY),
@@ -92,7 +86,7 @@ void CSephirite::Render(Graphics* pGraphics)
 
 	if (m_bCol)
 	{
-		// ì•ˆë‚´ ê·¸ë¦¬ê¸°
+		// ¾È³» ±×¸®±â
 		pImg = CImgMgr::GetInstance()->FindImg(L"KeyUI");
 
 		float fKeyImgWidth = 15.f * PIXEL_SCALE;
@@ -101,49 +95,56 @@ void CSephirite::Render(Graphics* pGraphics)
 		float fAllWidth = fKeyImgWidth + fTextWidth + fGap;
 		float fHeight = 10.f * PIXEL_SCALE;
 
-		wstring strGet = L"ì¤ê¸°";
-		RectF rcGet = { m_tInfo.vPoint.fX - fAllWidth * 0.5f + vScroll.fX, m_tInfo.vPoint.fY - vImgSize.fY * 0.7f - fHeight + vScroll.fY,
+		wstring strAnvil = L"°­È­";
+		RectF rcAnvil = { m_tInfo.vPoint.fX - fAllWidth * 0.5f + vScroll.fX, m_tInfo.vPoint.fY - vImgSize.fY * 0.7f - fHeight + vScroll.fY,
 							fAllWidth, fHeight };
-		// rcGet ì•ˆì— í¬í•¨ë˜ëŠ” ìœ„ì¹˜
-		RectF rcGetImg = rcGet;
-		rcGetImg.Width = fKeyImgWidth;
+		// rcAnvil ¾È¿¡ Æ÷ÇÔµÇ´Â À§Ä¡
+		RectF rcAnvilImg = rcAnvil;
+		rcAnvilImg.Width = fKeyImgWidth;
 
-	#ifdef _DEBUG
+#ifdef _DEBUG
 		SolidBrush BlackBrush(Color(255, 0, 0, 0));
-		pGraphics->FillRectangle(&BlackBrush, rcGet);
+		pGraphics->FillRectangle(&BlackBrush, rcAnvil);
 		SolidBrush WhiteBrush(Color(255, 255, 255, 255));
-		pGraphics->FillRectangle(&WhiteBrush, rcGetImg);
-	#endif // _DEBUG
+		pGraphics->FillRectangle(&WhiteBrush, rcAnvilImg);
+#endif // _DEBUG
 		vCellSize = { 13.f, 9.f };
 		pGraphics->DrawImage(
-			pImg, rcGetImg,
+			pImg, rcAnvilImg,
 			3 * vCellSize.fX,
 			3 * vCellSize.fY,
 			vCellSize.fX,
 			vCellSize.fY,
 			UnitPixel
 		);
-		RectF rcBgStr = rcGet;
+		RectF rcBgStr = rcAnvil;
 		rcBgStr.X += 2.f;
 		rcBgStr.Y += 2.f;
-		CFontMgr::GetInstance()->DrawString(pGraphics, strGet, FONT_TYPE::NORMAL, rcBgStr, Color{ 255, 0, 0, 0 }, 28.f, StringAlignmentFar);
-		CFontMgr::GetInstance()->DrawString(pGraphics, strGet, FONT_TYPE::NORMAL, rcGet, Color{ 255, 255, 255, 255 }, 28.f, StringAlignmentFar);
+		CFontMgr::GetInstance()->DrawString(pGraphics, strAnvil, FONT_TYPE::NORMAL, rcBgStr, Color{ 255, 0, 0, 0 }, 28.f, StringAlignmentFar);
+		CFontMgr::GetInstance()->DrawString(pGraphics, strAnvil, FONT_TYPE::NORMAL, rcAnvil, Color{ 255, 255, 255, 255 }, 28.f, StringAlignmentFar);
 	}
+
 }
 
-void CSephirite::Release()
+void CAnvil::Release()
 {
 }
 
-void CSephirite::UpdateInteractRect()
+void CAnvil::UpdateInteractRect()
 {
 	VEC vSize{ 100.f, 100.f };
 	SetRect(&m_tInteractRect, m_tInfo.vPoint.fX - vSize.fX, m_tInfo.vPoint.fY - vSize.fY,
 		m_tInfo.vPoint.fX + vSize.fX, m_tInfo.vPoint.fY + vSize.fY);
 }
 
-void CSephirite::HandleInteraction()
+void CAnvil::HandleInteraction()
 {
+	if (m_bUse)
+	{
+		m_bCol = false;
+		return;
+	}
+
 	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer)
 		return;
@@ -152,8 +153,9 @@ void CSephirite::HandleInteraction()
 	{
 		if (KEY_DOWN('F'))
 		{
-			CUIMgr::GetInstance()->ShowUI(UIID::ITEM_SELECT);
-			m_bDead = true;
+			CSceneMgr::GetInstance()->RequestChange(SCENEID::FORGE);
+			//CSoundMgr::GetInstance()->PlaySound(L"SephiriteOpen.wav", CHANNEL_GROUPID::SFX, 1.f);
+			m_bUse = true;
 		}
 		m_bCol = true;
 	}

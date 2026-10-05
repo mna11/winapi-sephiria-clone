@@ -50,7 +50,7 @@ public:
 	const SCENEID& GetCurrentSceneID() const { return m_eCurScene; }
 
 private:
-	bool HandleChangeShop();
+	bool HandleChangeReturnScene();
 
 private:
 	static CSceneMgr* m_pInstance;

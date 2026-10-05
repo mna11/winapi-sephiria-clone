@@ -19,7 +19,7 @@
 #include "CSoundMgr.h"
 
 CShop::CShop()
-	: m_pMsgBoxUI(nullptr), m_pEscapeButton(nullptr)
+	: m_pMsgBoxUI(nullptr), m_pEscapeButton(nullptr), m_dFrameTime(0.0), m_iFrame(0)
 {
 }
 
@@ -30,7 +30,6 @@ CShop::~CShop()
 
 void CShop::Initialize()
 {
-	//CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Stage/ShopBackground.png", L"Shop_BG");
 	Init_LoadImg(L"../Resource/Image/Shop/ShopBackground.png");
 	Init_CreateObj();
 
@@ -40,13 +39,7 @@ void CShop::Initialize()
 
 void CShop::Update()
 {
-	m_dFrameTime += DT;
-
-	if (m_dFrameTime >= 0.05)
-	{
-		m_iFrame = (m_iFrame + 1) % 60;
-		m_dFrameTime -= 0.05;
-	}
+	UpdateTime();
 
 	if (nullptr == m_pMsgBoxUI)
 	{
@@ -76,12 +69,17 @@ void CShop::Render(Graphics* pGraphics)
 {
 	HDC hBackDC = pGraphics->GetHDC();
 
+	RECT rc{ 0, 0, WINCX, WINCY };
+	HBRUSH brush = CreateSolidBrush(RGB(0, 0, 0));
+	FillRect(hBackDC, &rc, brush);
+	DeleteObject(brush);
+
 	VEC vCellSize = {256.f, 90.f};
 	VEC vImgSize = vCellSize * PIXEL_SCALE;
 	TransparentBlt(
 		hBackDC,
 		0,
-		160,
+		WINCY / 6,
 		vImgSize.fX,
 		vImgSize.fY,
 		m_hMapDC,
@@ -109,6 +107,17 @@ void CShop::Release()
 	{
 		m_pMsgBoxUI->SetDead(true);
 		m_pMsgBoxUI = nullptr;
+	}
+}
+
+void CShop::UpdateTime()
+{
+	m_dFrameTime += DT;
+
+	if (m_dFrameTime >= 0.05)
+	{
+		m_iFrame = (m_iFrame + 1) % 60;
+		m_dFrameTime -= 0.05;
 	}
 }
 

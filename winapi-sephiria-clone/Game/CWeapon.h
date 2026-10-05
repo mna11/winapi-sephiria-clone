@@ -5,17 +5,6 @@ class CWeapon abstract :
     public CObj
 {
 public:
-    enum class TYPE {
-        NONE,
-        SwordAndShield,
-        Greatsword,
-        Dagger,
-        Crossbow,
-        Katana,
-        Staff
-    };
-
-public:
     CWeapon();
     virtual ~CWeapon();
 public:

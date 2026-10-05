@@ -8,7 +8,7 @@
 #include "CObjMgr.h"
 
 CWeaponController::CWeaponController()
-	: CState(CWeapon::TYPE::SwordAndShield, CWeapon::TYPE::NONE), m_pWeapon(nullptr)
+	: CState(WEAPON_TYPE::NONE, WEAPON_TYPE::SWORD_AND_SHIELD), m_pWeapon(nullptr)
 {
 }
 
@@ -19,10 +19,6 @@ CWeaponController::~CWeaponController()
 
 void CWeaponController::Initialize()
 {
-	// 한손검
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Weapon/Sword_Tier1.png", L"Sword_Tier1");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Weapon/Shield_Tier1.png", L"Shield_Tier1");
-
 }
 
 int CWeaponController::Update()
@@ -74,12 +70,12 @@ void CWeaponController::ApplyChange()
 	{
 		SafeDelete<CWeapon*>(m_pWeapon);
 
-		switch (m_eCurState)
+		switch (m_eNextState)
 		{
-		case CWeapon::TYPE::NONE:
+		case WEAPON_TYPE::NONE:
 			CObjMgr::GetInstance()->AddObject(OBJID::WEAPON, m_pWeapon);
 			break;
-		case CWeapon::TYPE::SwordAndShield:
+		case WEAPON_TYPE::SWORD_AND_SHIELD:
 			// 한손검만 따로 Initialize 끝나고 지정해주는 이유는, 한손검 내부에서
 			// Sword랑 Shield를 생성하고 있기 때문임
 			// 추가로 한손검은 CObjMgr에 안넣는데
@@ -88,19 +84,19 @@ void CWeaponController::ApplyChange()
 			m_pWeapon = CAbstractFactory<CSwordAndShield>::CreateWeapon();
 			m_pWeapon->SetTarget(m_pTarget);
 			break;
-		case CWeapon::TYPE::Greatsword:
+		case WEAPON_TYPE::GREAT_SWORD:
 			CObjMgr::GetInstance()->AddObject(OBJID::WEAPON, m_pWeapon);
 			break;
-		case CWeapon::TYPE::Dagger:
+		case WEAPON_TYPE::DAGGER:
 			CObjMgr::GetInstance()->AddObject(OBJID::WEAPON, m_pWeapon);
 			break;
-		case CWeapon::TYPE::Crossbow:
+		case WEAPON_TYPE::CROSSBOW:
 			CObjMgr::GetInstance()->AddObject(OBJID::WEAPON, m_pWeapon);
 			break;
-		case CWeapon::TYPE::Katana:
+		case WEAPON_TYPE::KATANA:
 			CObjMgr::GetInstance()->AddObject(OBJID::WEAPON, m_pWeapon);
 			break;
-		case CWeapon::TYPE::Staff:
+		case WEAPON_TYPE::STAFF:
 			CObjMgr::GetInstance()->AddObject(OBJID::WEAPON, m_pWeapon);
 			break;
 		}

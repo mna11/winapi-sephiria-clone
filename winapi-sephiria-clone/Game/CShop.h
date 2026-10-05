@@ -21,6 +21,9 @@ public:
     void Init_CreateObj() override;
 
 public:
+    void UpdateTime();
+
+public:
     // 상점에서 없어지는거 일단 고려하지 않고 구현
     // 인벤토리 어디에 넣을려고 하는가, 어떤 아이템을 살려고 하는가
     
@@ -33,8 +36,8 @@ public:
     void SellItem(int iInventoryIdx, int iPrice);
 
 private:
-    int     m_iFrame = 0;
-    double  m_dFrameTime = 0.0;
+    int     m_iFrame;
+    double  m_dFrameTime;
 
     CButton*    m_pEscapeButton;
     CMsgBox*    m_pMsgBoxUI;

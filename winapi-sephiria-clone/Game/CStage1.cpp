@@ -5,6 +5,7 @@
 #include "CBaba.h"
 #include "CGargoyle.h"
 #include "CSephirite.h"
+#include "CAnvil.h"
 
 #include "CAbstractFactory.h"
 #include "CCollisionMgr.h"
@@ -124,6 +125,7 @@ void CStage1::Init_CreateObj()
 	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(360.f, 7600.f));
 	CObjMgr::GetInstance()->AddObject(OBJID::NPC, CAbstractFactory<CBaba>::CreateObj(720.f, 7600.f));
 	CObjMgr::GetInstance()->AddObject(OBJID::FIELD_ITEM, CAbstractFactory<CSephirite>::CreateObj(1000.f, 7600.f));
+	CObjMgr::GetInstance()->AddObject(OBJID::FIELD_ITEM, CAbstractFactory<CAnvil>::CreateObj(1200.f, 7600.f));
 	
 	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
 }
