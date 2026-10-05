@@ -6,6 +6,7 @@
 #include "CAbstractFactory.h"
 
 #include "CKeyMgr.h"
+#include "CSoundMgr.h"
 #include "CTimeMgr.h"
 #include "CCameraMgr.h"
 #include "CImgMgr.h"
@@ -35,8 +36,8 @@ void CPlayer::Initialize()
 	m_tInfo = { WINCX >> 1, WINCY >> 1, 30.f, 40.f };
 	m_eRender = RENDERID::GAMEOBJECT;
 	m_fSpeed = m_fNormalSpeed;
-	// 렌더 레이어 - 0 ~ 5 사이 플레이어는 중간인 3
-	m_iRenderLayer = 3;
+	// 렌더 레이어 - 0 ~ 5 사이 플레이어는 중간인 2
+	m_iRenderLayer = 2;
 
 	// 스프라이트 시트 Insert 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Player/Player_LEFTDOWN.png", L"Player_LD");
@@ -226,6 +227,7 @@ void CPlayer::Move()
 	{
 		m_tInfo.vPoint += vDir.Normalize() * m_fSpeed * DT;
 		m_eNextState = PLAYER_STATE::WALK;
+
 	}
 	else 
 	{
@@ -244,6 +246,7 @@ void CPlayer::Dash()
 		{
 			--m_tStat.iDash;
 			m_fSpeed = m_fRunSpeed * 20.f;
+			CSoundMgr::GetInstance()->PlaySound(L"Dash.wav", CHANNEL_GROUPID::SFX, 1.f);
 		}
 	}
 	else if (KEY_HOLD(VK_SPACE))
@@ -320,12 +323,16 @@ void CPlayer::CreateEffect()
 		if (m_fSpeed == m_fNormalSpeed)
 		{
 			CEffectMgr::GetInstance()->CreateEffect(L"RunDust", m_tInfo.vPoint, EFTMGR_IMAGE | EFTMGR_FIXED, 0.f);
+
+			CSoundMgr::GetInstance()->PlaySound(L"FootStep.wav", CHANNEL_GROUPID::SFX, 1.f);
 		}
 		// 대쉬 - 와다다
 		else if (m_fSpeed == m_fRunSpeed)
 		{
 			VEC vDir = m_tInfo.vPoint - m_vPrePoint;
 			CEffectMgr::GetInstance()->CreateEffect(L"DashDust", m_tInfo.vPoint, EFTMGR_IMAGE | EFTMGR_FIXED, atan2f(vDir.fY, vDir.fX));
+			
+			CSoundMgr::GetInstance()->PlaySound(L"FootStep.wav", CHANNEL_GROUPID::SFX, 1.f, 1.5f);
 		}
 		m_dDustElapseTime = 0.;
 	}

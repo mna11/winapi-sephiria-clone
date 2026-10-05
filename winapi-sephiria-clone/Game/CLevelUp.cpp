@@ -95,8 +95,6 @@ void CLevelUp::Render(Graphics* pGraphics)
 	RectF rcKeyImg = rcLevelUp;
 	rcKeyImg.Width = fKeyImgWidth;
 
-
-
 #ifdef _DEBUG
 	SolidBrush BlackBrush(Color(255, 0, 0, 0));
 	pGraphics->FillRectangle(&BlackBrush, rcLevelUp);

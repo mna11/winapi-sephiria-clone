@@ -19,7 +19,7 @@ void CSword::Initialize()
 {
 	m_tInfo = { 0.f, 0.f, 25.f, 50.f };
 	m_eRender = RENDERID::GAMEOBJECT;
-	m_iRenderLayer = 2;
+	m_iRenderLayer = 1;
 }
 
 int CSword::Update()

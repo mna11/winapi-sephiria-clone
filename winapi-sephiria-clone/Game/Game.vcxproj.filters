@@ -226,6 +226,12 @@
     <Filter Include="01. Obj\09. Drop">
       <UniqueIdentifier>{d50b15cd-135c-4ff4-8a49-7bc0d4c31c80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Manager\13. SoundMgr">
+      <UniqueIdentifier>{9411c1ed-ffbd-4352-a680-73209462060b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\10. Sephirite">
+      <UniqueIdentifier>{798fd484-bdc7-4d6d-8db9-776e46fc80e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -444,6 +450,12 @@
     <ClInclude Include="CDrop.h">
       <Filter>01. Obj\09. Drop</Filter>
     </ClInclude>
+    <ClInclude Include="CSoundMgr.h">
+      <Filter>03. Manager\13. SoundMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CSephirite.h">
+      <Filter>01. Obj\10. Sephirite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -646,6 +658,12 @@
     </ClCompile>
     <ClCompile Include="CDrop.cpp">
       <Filter>01. Obj\09. Drop</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoundMgr.cpp">
+      <Filter>03. Manager\13. SoundMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CSephirite.cpp">
+      <Filter>01. Obj\10. Sephirite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

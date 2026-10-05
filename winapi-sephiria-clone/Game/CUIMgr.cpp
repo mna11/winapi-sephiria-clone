@@ -86,7 +86,7 @@ void CUIMgr::ShowUI(UIID eID)
 	else
 		(*iter).second->Show();
 
-	if (eID == UIID::INVENTORY)
+	if (eID == UIID::INVENTORY || eID == UIID::ITEM_SELECT)
 	{
 		pPlayer->SetPlayerBehaviorEnable(false);
 		m_pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
@@ -115,7 +115,7 @@ void CUIMgr::ShowUI(UIID eID, CObj* pTarget)
 		(*iter).second->SetTarget(pTarget);
 	}
 
-	if (eID == UIID::INVENTORY)
+	if (eID == UIID::INVENTORY || eID == UIID::ITEM_SELECT)
 	{
 		pPlayer->SetPlayerBehaviorEnable(false);
 		m_pMouse->RequestChange(MOUSE_STATE::UI_IDLE);

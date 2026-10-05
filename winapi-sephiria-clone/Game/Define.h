@@ -56,7 +56,7 @@
 /////////////////////////////////////////
 // 열거체
 
-enum class OBJID	{ PLAYER, MONSTER, MONSTER_BULLET, NPC, DROP, MOUSE, WEAPON, EFFECT, UI, CAMERA, END };
+enum class OBJID	{ PLAYER, MONSTER, MONSTER_BULLET, NPC, FIELD_ITEM, DROP, MOUSE, WEAPON, EFFECT, UI, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, MOUSE, END };
 enum class UIID		{ BASIC_INFO, LEVEL_UP, BOSS_HP, INVENTORY, ITEM_TOOLTIP, SHOP_TABLE, MSG_BOX, BUTTON, ITEM_SELECT, STAT_INFO, END };
 enum class SCENEID	{ LIB_LOADING, SHOP, STAGE0, STAGE1, BOSS_STAGE, END };
@@ -106,6 +106,8 @@ enum class ITEM_CATEGORY
 	WINDSONG,		// 바람노래
 	END
 };
+
+enum class CHANNEL_GROUPID { BGM, SFX, END };
 /////////////////////////////////////////
 // 구조체
 
