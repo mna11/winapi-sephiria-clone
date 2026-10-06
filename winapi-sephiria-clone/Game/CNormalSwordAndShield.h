@@ -13,7 +13,5 @@ public:
     void Render(Graphics*) override;
 public:
     void CreateEffect() override;
-
-    // CSwordAndShield을(를) 통해 상속됨
-    void CleaveUpdate() override;
+    void ApplyChange() override;
 };

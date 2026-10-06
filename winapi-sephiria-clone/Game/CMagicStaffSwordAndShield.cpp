@@ -71,8 +71,6 @@ void CMagicStaffSwordAndShield::CreateEffect()
 
 		vRenderPoint = m_tInfo.vPoint + vOffset;
 
-
-
 		switch (m_tAtk.iLevel)
 		{
 		case 0:
@@ -118,36 +116,39 @@ void CMagicStaffSwordAndShield::CreateEffect()
 	// 회전 베기
 	if (m_eCurState == SWORD_AND_SHIELD_STATE::CLEAVE)
 	{
-		vRenderPoint = m_tInfo.vPoint;
-		CEffectMgr::GetInstance()->CreateEffect(L"MagicWandCleave", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
-
-		for (int i = 0; i < 8; ++i)
-		{
-			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", 45 * i * PI / 180.f, 500.f, iFireAtk, m_pTarget ));
-		}
+		// ApplyChange로 이동했음
 	}
-}
+} 
 
-void CMagicStaffSwordAndShield::CleaveUpdate()
+void CMagicStaffSwordAndShield::ApplyChange()
 {
-	if (m_eCurState != SWORD_AND_SHIELD_STATE::CLEAVE_READY
-		&& m_eCurState != SWORD_AND_SHIELD_STATE::CLEAVE)
-		return;
-
-	m_tAtk.dElapseTime += DT;
-
-	if (m_eCurState == SWORD_AND_SHIELD_STATE::CLEAVE_READY)
+	// 상태 첫 진입
+	if (m_eCurState != m_eNextState)
 	{
-		m_tAtk.dElapseTime = 0;
-		m_eNextState = SWORD_AND_SHIELD_STATE::CLEAVE;
-	}
-	else
-	{
-		if (m_tAtk.dElapseTime > m_tAtk.dMaxTime)
+		switch (m_eNextState)
 		{
-			m_tAtk.dElapseTime = 0;
-			m_eNextState = SWORD_AND_SHIELD_STATE::IDLE;
-			static_cast<CPlayer*>(m_pTarget)->RequestChange(PLAYER_STATE::IDLE);
+		case SWORD_AND_SHIELD_STATE::IDLE:
+			SetAtk(0, 0, 0., 0., 0.);
+			break;
+		case SWORD_AND_SHIELD_STATE::ATTACK:
+			SetAtk(1, 3, 0., 0.2, 0.5); // 공격 처음 진입 시 초기화
+			break;
+		case SWORD_AND_SHIELD_STATE::DEFENSE:
+			break;
+		case SWORD_AND_SHIELD_STATE::CLEAVE_READY:
+			SetAtk(0, 0, 0., 0.0, 0.0);
+			break;
+		case SWORD_AND_SHIELD_STATE::CLEAVE:
+			SetAtk(0, 0, 0., 0.01, 0.01); // 나중에 CLEAVE 구현할 때 여기 변경할 것
+			for (int i = 0; i < 8; ++i)
+			{
+				CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(m_tInfo.vPoint, L"FireBullet", 45 * i * PI / 180.f, 500.f, m_pTarget->GetStat().iFireAtk, m_pTarget));
+			}
+			CEffectMgr::GetInstance()->CreateEffect(L"MagicWandCleave", m_tInfo.vPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
+			break;
+		default:
+			break;
 		}
+		m_eCurState = m_eNextState;
 	}
 }

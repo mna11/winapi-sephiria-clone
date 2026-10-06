@@ -47,17 +47,12 @@ public:
     void SpecialAttack() override;
 
 public:
-    void ApplyChange() override;
-
-public:
     virtual void CreateEffect() PURE;
 
 protected:
-    void AttackUpdate();
-    void DefenseUpdate();
-
-protected:
-    virtual void CleaveUpdate() PURE;
+    virtual void AttackUpdate();
+    virtual void DefenseUpdate();
+    virtual void CleaveUpdate();
 
 protected:
     CObj*   m_pSword;

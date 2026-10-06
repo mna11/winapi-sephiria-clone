@@ -143,35 +143,38 @@ void CSwordAndShield::DefenseUpdate()
 	}
 }
 
-void CSwordAndShield::ApplyChange()
+void CSwordAndShield::CleaveUpdate()
 {
-	// 상태 첫 진입
-	if (m_eCurState != m_eNextState)
+	if (m_eCurState != SWORD_AND_SHIELD_STATE::CLEAVE_READY
+		&& m_eCurState != SWORD_AND_SHIELD_STATE::CLEAVE)
+		return;
+
+	m_tAtk.dElapseTime += DT;
+
+	if (m_eCurState == SWORD_AND_SHIELD_STATE::CLEAVE_READY)
 	{
-		switch (m_eNextState)
+		if (m_tAtk.dElapseTime <= m_tAtk.dMaxTime)
 		{
-		case SWORD_AND_SHIELD_STATE::IDLE:
-			SetAtk(0, 0, 0., 0., 0.);
-			break;
-		case SWORD_AND_SHIELD_STATE::ATTACK:
-			SetAtk(1, 3, 0., 0.2, 0.5); // 공격 처음 진입 시 초기화
-			break;
-		case SWORD_AND_SHIELD_STATE::DEFENSE:
-			break;
-		case SWORD_AND_SHIELD_STATE::CLEAVE_READY:
-			SetAtk(0, 0, 0., 0.2, 0.5);
-			break;
-		case SWORD_AND_SHIELD_STATE::CLEAVE:
-			SetAtk(0, 0, 0., 0.01, 0.01); // 나중에 CLEAVE 구현할 때 여기 변경할 것
-			break;
-		default:
-			break;
+			float fSpeed = 1000.f;
+			VEC vOffset = { fSpeed * cosf(m_fAngle) * (float)DT, fSpeed * sinf(m_fAngle) * (float)DT };
+			m_pTarget->AddPos(vOffset);
 		}
-		m_eCurState = m_eNextState;
+		else
+		{
+			m_tAtk.dElapseTime = 0;
+			m_eNextState = SWORD_AND_SHIELD_STATE::CLEAVE;
+		}
+	}
+	else
+	{
+		if (m_tAtk.dElapseTime > m_tAtk.dMaxTime)
+		{
+			m_tAtk.dElapseTime = 0;
+			m_eNextState = SWORD_AND_SHIELD_STATE::IDLE;
+			static_cast<CPlayer*>(m_pTarget)->RequestChange(PLAYER_STATE::IDLE);
+		}
 	}
 }
-
-
 
 #ifdef _DEBUG
 void CSwordAndShield::PrintInfo()

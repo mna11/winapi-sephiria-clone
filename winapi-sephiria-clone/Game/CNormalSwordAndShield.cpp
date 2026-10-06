@@ -135,45 +135,39 @@ void CNormalSwordAndShield::CreateEffect()
 		float fTargetAngle = m_pTarget->GetAngle();
 		float fDistance = 60.f;
 		VEC vOffset{ fDistance * cosf(fTargetAngle), fDistance * sinf(fTargetAngle) };
-
 		vRenderPoint = m_tInfo.vPoint;
 		float fSizeFactor = 130.f;
 		vRectSize = { fSizeFactor + fSizeFactor * fabsf(cosf(m_fAngle)), fSizeFactor + fSizeFactor * fabsf(sinf(m_fAngle)) };
-
-		CEffectMgr::GetInstance()->CreateEffect(L"Cleave", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
 	}
 	SetRect(&m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::CLEAVE)], vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
 }
 
-void CNormalSwordAndShield::CleaveUpdate()
+
+void CNormalSwordAndShield::ApplyChange()
 {
-	if (m_eCurState != SWORD_AND_SHIELD_STATE::CLEAVE_READY
-		&& m_eCurState != SWORD_AND_SHIELD_STATE::CLEAVE)
-		return;
-
-	m_tAtk.dElapseTime += DT;
-
-	if (m_eCurState == SWORD_AND_SHIELD_STATE::CLEAVE_READY)
+	// 상태 첫 진입
+	if (m_eCurState != m_eNextState)
 	{
-		if (m_tAtk.dElapseTime <= m_tAtk.dMaxTime)
+		switch (m_eNextState)
 		{
-			float fSpeed = 1000.f;
-			VEC vOffset = { fSpeed * cosf(m_fAngle) * (float)DT, fSpeed * sinf(m_fAngle) * (float)DT};
-			m_pTarget->AddPos(vOffset);
+		case SWORD_AND_SHIELD_STATE::IDLE:
+			SetAtk(0, 0, 0., 0., 0.);
+			break;
+		case SWORD_AND_SHIELD_STATE::ATTACK:
+			SetAtk(1, 3, 0., 0.2, 0.5); // 공격 처음 진입 시 초기화
+			break;
+		case SWORD_AND_SHIELD_STATE::DEFENSE:
+			break;
+		case SWORD_AND_SHIELD_STATE::CLEAVE_READY:
+			SetAtk(0, 0, 0., 0.2, 0.5);
+			break;
+		case SWORD_AND_SHIELD_STATE::CLEAVE:
+			SetAtk(0, 0, 0., 0.01, 0.01); 
+			CEffectMgr::GetInstance()->CreateEffect(L"Cleave", m_tInfo.vPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
+			break;
+		default:
+			break;
 		}
-		else
-		{
-			m_tAtk.dElapseTime = 0;
-			m_eNextState = SWORD_AND_SHIELD_STATE::CLEAVE;
-		}
-	}
-	else
-	{
-		if (m_tAtk.dElapseTime > m_tAtk.dMaxTime)
-		{
-			m_tAtk.dElapseTime = 0;
-			m_eNextState = SWORD_AND_SHIELD_STATE::IDLE;
-			static_cast<CPlayer*>(m_pTarget)->RequestChange(PLAYER_STATE::IDLE);
-		}
+		m_eCurState = m_eNextState;
 	}
 }
