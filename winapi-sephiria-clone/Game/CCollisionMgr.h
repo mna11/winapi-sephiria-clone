@@ -10,13 +10,17 @@ class CCollisionMgr
 public:
 	static bool CollisionRect(const RECT& DstRect, const RECT& SrcRect);
 	static void CollisionRect(list<CObj*>& DstList, list<CObj*>& SrcList);
-	static void CollisionWall(list<CObj*>& DstList, TILE_LAYER eLayer);
+	static void CollisionWall(list<CObj*>& DstList);
 	static void CollisionPlayerAttack(list<CObj*>& DstList, list<CObj*>& SrcList);
 	static void CollisionPlayerDefense(list<CObj*>& DstList, list<CObj*>& SrcList);
 
 	static void CollisionMonsterAttack(list<CObj*>& DstList, list<CObj*>& SrcList);
 
 	static bool CollisionMouse(VEC vMousePoint, RECT& rc);
+
+	static void CollisionBulletWall(list<CObj*>& bullets);
+	static void CollisionBulletObj(list<CObj*>& DstList, list<CObj*>& SrcList);
+
 
 	template<typename T>
 	static int GetCollisionSlotIndex(VEC vMousePoint, vector<T*>& vecSlots)

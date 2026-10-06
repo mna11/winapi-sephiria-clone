@@ -88,12 +88,6 @@
     <Filter Include="01. Obj\03. Weapon\01. SwordAndShield">
       <UniqueIdentifier>{f754f576-92ab-40ea-b9d3-cf2ebc89bdd1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\00. Sword">
-      <UniqueIdentifier>{3e3af32b-c35c-47ac-a38e-74b71e6408b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\01. Shield">
-      <UniqueIdentifier>{c16a84dc-93ae-44f1-b27c-7be096224c08}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Obj\03. Weapon\00. WeaponController">
       <UniqueIdentifier>{93d0bea1-2ae2-48e6-9494-4de31152151c}</UniqueIdentifier>
     </Filter>
@@ -250,6 +244,33 @@
     <Filter Include="06. Data\01. WeaponData">
       <UniqueIdentifier>{6ad4c195-9177-4599-8431-30e762492376}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\00. Base">
+      <UniqueIdentifier>{595c0d80-aaf9-4adc-b2e8-81e405e90ec9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\00. Base\01. Shield">
+      <UniqueIdentifier>{c16a84dc-93ae-44f1-b27c-7be096224c08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\00. Base\00. Sword">
+      <UniqueIdentifier>{3e3af32b-c35c-47ac-a38e-74b71e6408b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\01. Normal">
+      <UniqueIdentifier>{d3fa1fb8-ddce-4ad2-82cd-465d82d85509}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\02. MagicStaff">
+      <UniqueIdentifier>{e6d3d1dd-d9c6-461c-83e5-6a67a7639110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\01. Normal\00. Sword">
+      <UniqueIdentifier>{9e39fb63-47b5-48d5-894e-b1a6b4e342f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\01. Normal\01. Shield">
+      <UniqueIdentifier>{edc8c0af-c28a-424b-8797-760371408422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\02. MagicStaff\00. Staff">
+      <UniqueIdentifier>{f4d0c394-e365-48dd-80bb-ad30751b0bc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\02. MagicStaff\01. Shield">
+      <UniqueIdentifier>{815e05f1-d516-4136-b455-27e414fd053f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -337,19 +358,16 @@
       <Filter>01. Obj\03. Weapon\00. WeaponController</Filter>
     </ClInclude>
     <ClInclude Include="CShield.h">
-      <Filter>01. Obj\03. Weapon\01. SwordAndShield\01. Shield</Filter>
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\00. Base\01. Shield</Filter>
     </ClInclude>
     <ClInclude Include="CSword.h">
-      <Filter>01. Obj\03. Weapon\01. SwordAndShield\00. Sword</Filter>
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\00. Base\00. Sword</Filter>
     </ClInclude>
     <ClInclude Include="CEffectMgr.h">
       <Filter>03. Manager\10. EffectMgr</Filter>
     </ClInclude>
     <ClInclude Include="CEffect.h">
       <Filter>01. Obj\04. Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="CSwordAndShield.h">
-      <Filter>01. Obj\03. Weapon\01. SwordAndShield</Filter>
     </ClInclude>
     <ClInclude Include="CFluffy.h">
       <Filter>01. Obj\02. Monster\01. Fluffy</Filter>
@@ -486,6 +504,27 @@
     <ClInclude Include="CWeaponData.h">
       <Filter>06. Data\01. WeaponData</Filter>
     </ClInclude>
+    <ClInclude Include="CSwordAndShield.h">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\00. Base</Filter>
+    </ClInclude>
+    <ClInclude Include="CNormalSwordAndShield.h">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="CNormalSword.h">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\01. Normal\00. Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="CNormalShield.h">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\01. Normal\01. Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="CMagicStaffSwordAndShield.h">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\02. MagicStaff</Filter>
+    </ClInclude>
+    <ClInclude Include="CMagicStaffSword.h">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\02. MagicStaff\00. Staff</Filter>
+    </ClInclude>
+    <ClInclude Include="CMagicStaffShield.h">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\02. MagicStaff\01. Shield</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -554,17 +593,14 @@
     <ClCompile Include="CWeapon.cpp">
       <Filter>01. Obj\03. Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="CSwordAndShield.cpp">
-      <Filter>01. Obj\03. Weapon\01. SwordAndShield</Filter>
-    </ClCompile>
     <ClCompile Include="CWeaponController.cpp">
       <Filter>01. Obj\03. Weapon\00. WeaponController</Filter>
     </ClCompile>
     <ClCompile Include="CShield.cpp">
-      <Filter>01. Obj\03. Weapon\01. SwordAndShield\01. Shield</Filter>
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\00. Base\01. Shield</Filter>
     </ClCompile>
     <ClCompile Include="CSword.cpp">
-      <Filter>01. Obj\03. Weapon\01. SwordAndShield\00. Sword</Filter>
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\00. Base\00. Sword</Filter>
     </ClCompile>
     <ClCompile Include="CEffectMgr.cpp">
       <Filter>03. Manager\10. EffectMgr</Filter>
@@ -706,6 +742,27 @@
     </ClCompile>
     <ClCompile Include="CWeaponData.cpp">
       <Filter>06. Data\01. WeaponData</Filter>
+    </ClCompile>
+    <ClCompile Include="CSwordAndShield.cpp">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\00. Base</Filter>
+    </ClCompile>
+    <ClCompile Include="CNormalSwordAndShield.cpp">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\01. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="CNormalSword.cpp">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\01. Normal\00. Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="CNormalShield.cpp">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\01. Normal\01. Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="CMagicStaffSwordAndShield.cpp">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\02. MagicStaff</Filter>
+    </ClCompile>
+    <ClCompile Include="CMagicStaffSword.cpp">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\02. MagicStaff\00. Staff</Filter>
+    </ClCompile>
+    <ClCompile Include="CMagicStaffShield.cpp">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\02. MagicStaff\01. Shield</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

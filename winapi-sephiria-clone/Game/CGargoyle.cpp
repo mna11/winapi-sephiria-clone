@@ -164,7 +164,7 @@ void CGargoyle::Release()
 {
 }
 
-void CGargoyle::SetDamage(int iDamage, CObj* pObj)
+void CGargoyle::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit)
 {
 	if (m_bHit)
 		return;
@@ -184,8 +184,17 @@ void CGargoyle::SetDamage(int iDamage, CObj* pObj)
 	}
 
 	CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{255, 255, 255, 255});
-	CSoundMgr::GetInstance()->PlaySound(L"HitSword02.wav", CHANNEL_GROUPID::SFX, 1.f);
-	// 경험치 pObj에게 넘기기 등을 하면 된다.
+	
+	// 사운드
+	switch (eHit)
+	{
+	case HIT_SOURCE::SLASH:
+		CSoundMgr::GetInstance()->PlaySound(L"HitSword02.wav", CHANNEL_GROUPID::SFX, 1.f);
+		break;
+	case HIT_SOURCE::BULLET:
+		CSoundMgr::GetInstance()->PlaySound(L"HitMagicFire02.wav", CHANNEL_GROUPID::SFX, 1.f);
+		break;
+	}
 }
 
 void CGargoyle::ApplyChange()

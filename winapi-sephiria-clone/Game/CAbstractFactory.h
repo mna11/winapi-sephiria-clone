@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CObj.h"
+#include "CBullet.h"
 #include "CDrop.h"
 #include "CUI.h"
 #include "CWeapon.h"
@@ -68,13 +69,17 @@ public:
 		return static_cast<CObj*>(pSwordOrShield);
 	}
 
-	static CObj* CreateBullet(VEC vPoint, const TCHAR* pFrameKey, CObj* pTarget)
+	static CObj* CreateBullet(VEC vPoint, const TCHAR* pFrameKey, float fAngle, float fSpeed, float fDamage, CObj* pOwner)
 	{
-		CObj* pObj = new T;
+		CBullet* pObj = new T;
 		pObj->Initialize();
 		pObj->SetPos(vPoint.fX, vPoint.fY);
-		pObj->SetTarget(pTarget);
 		pObj->SetFrameKey(pFrameKey);
+		pObj->UpdateInfo();
+		pObj->SetAngle(fAngle);
+		pObj->SetSpeed(fSpeed);
+		pObj->SetOwner(pOwner);
+		pObj->SetDamage(fDamage);
 		return pObj;
 	}
 

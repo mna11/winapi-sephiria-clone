@@ -155,7 +155,7 @@ void CAnvil::HandleInteraction()
 		{
 			CSceneMgr::GetInstance()->RequestChange(SCENEID::FORGE);
 			//CSoundMgr::GetInstance()->PlaySound(L"SephiriteOpen.wav", CHANNEL_GROUPID::SFX, 1.f);
-			m_bUse = true;
+			m_bUse = false;
 		}
 		m_bCol = true;
 	}

@@ -8,9 +8,9 @@ CTileMgr* CTileMgr::m_pInstance = nullptr;
 
 CTileMgr::CTileMgr()
 {
-	for (int l = 0; l < toUType(TILE_LAYER::END); ++l)
+	for (auto& tiles : m_arrVecTiles)
 	{
-		m_vecTile[l].reserve(TILEX * TILEY);
+		tiles.reserve(TILEX * TILEY);
 	}
 }
 
@@ -41,9 +41,9 @@ void CTileMgr::Render(Graphics* pGraphics)
 	float fViewRight = fViewLeft + WINCX;
 	float fViewBottom = fViewTop + WINCY;
 
-	for (int l = 0; l < toUType(TILE_LAYER::END); ++l)
+	for (const auto& tiles : m_arrVecTiles)
 	{
-		for (CObj* pTile : m_vecTile[l])
+		for (CObj* pTile : tiles)
 		{
 			const INFO& tInfo = pTile->GetInfo();
 
@@ -68,10 +68,10 @@ void CTileMgr::Render(Graphics* pGraphics)
 
 void CTileMgr::Release()
 {
-	for (int l = 0; l < toUType(TILE_LAYER::END); ++l)
+	for (auto& tiles : m_arrVecTiles)
 	{
-		for_each(m_vecTile[l].begin(), m_vecTile[l].end(), SafeDelete<CObj*>);
-		m_vecTile[l].clear();
+		for_each(tiles.begin(), tiles.end(), SafeDelete<CObj*>);
+		tiles.clear();
 	}
 }
 
@@ -136,8 +136,8 @@ void CTileMgr::LoadTile(SCENEID eSceneID)
 
 		static_cast<CTile*>(pTile)->SetTile(tTile);  
 
-		int iLayer = static_cast<int>(tTile.eTileLayer);
-		m_vecTile[iLayer].push_back(pTile);
+		int iLayer = static_cast<int>(tTile.eTileLayer); 
+		m_arrVecTiles[iLayer].push_back(pTile);
 	}
 
 	CloseHandle(hFile);

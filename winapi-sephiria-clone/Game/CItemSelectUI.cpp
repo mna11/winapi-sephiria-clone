@@ -41,7 +41,7 @@ void CItemSelectUI::Initialize()
 
     // 렌더 정보 초기화 
     m_eRender = RENDERID::UI;
-    m_iRenderLayer = 1;
+    m_iRenderLayer = 0;
 }
 
 int CItemSelectUI::Update()

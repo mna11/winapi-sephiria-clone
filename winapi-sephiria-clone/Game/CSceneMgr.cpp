@@ -146,7 +146,7 @@ bool CSceneMgr::HandleChangeReturnScene()
 	}
 
 	// 상점에서 나가는 경우
-	if (m_ePreScene == SCENEID::SHOP || m_eCurScene == SCENEID::FORGE)
+	if (m_ePreScene == SCENEID::SHOP || m_ePreScene == SCENEID::FORGE)
 	{
 		// 상점 씬을 삭제하고 원래 기억해둔 씬으로 바꾼다.
 		SafeDelete<CScene*>(m_pScene);

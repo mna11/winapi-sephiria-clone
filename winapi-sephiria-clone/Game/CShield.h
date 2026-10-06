@@ -24,15 +24,15 @@ public:
     void SetAtkInfo(ATK_INFO* pAtk)                     { m_pAtk = pAtk; }
 
 private:
-    void HandleIdleRender   (Graphics* pGraphics, Image* pImg, VEC& vScroll);
-    void HandleAttackRender (Graphics* pGraphics, Image* pImg, VEC& vScroll);
-    void HandleAttack1Render(Graphics* pGraphics, Image* pImg, VEC& vScroll);
-    void HandleAttack2Render(Graphics* pGraphics, Image* pImg, VEC& vScroll);
-    void HandleAttack3Render(Graphics* pGraphics, Image* pImg, VEC& vScroll);
-    void HandleShieldRender (Graphics* pGraphics, Image* pImg, VEC& vScroll);
-    void HandleCleaveRender (Graphics* pGraphics, Image* pImg, VEC& vScroll);
+    virtual void HandleIdleRender   (Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
+    virtual void HandleAttackRender (Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
+    virtual void HandleAttack1Render(Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
+    virtual void HandleAttack2Render(Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
+    virtual void HandleAttack3Render(Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
+    virtual void HandleShieldRender (Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
+    virtual void HandleCleaveRender (Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
 
-private:
+protected:
     VEC                     m_vCellSize;
     SWORD_AND_SHIELD_STATE* m_pWeaponState;
     ATK_INFO*               m_pAtk;

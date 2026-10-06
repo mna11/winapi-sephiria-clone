@@ -35,10 +35,8 @@ public:
     ~CSwordAndShield();
 
 public:
-    void Initialize() override;
     int Update() override;
     void LateUpdate() override;
-    void Render(Graphics*) override;
     void Release() override;
 
 public:
@@ -52,14 +50,16 @@ public:
     void ApplyChange() override;
 
 public:
-    void CreateEffect();
+    virtual void CreateEffect() PURE;
 
-private:
+protected:
     void AttackUpdate();
     void DefenseUpdate();
-    void CleaveUpdate();
 
-private:
+protected:
+    virtual void CleaveUpdate() PURE;
+
+protected:
     CObj*   m_pSword;
     CObj*   m_pShield;
 

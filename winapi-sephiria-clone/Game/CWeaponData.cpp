@@ -45,20 +45,20 @@ void CWeaponData::InitializeImg()
 {
 	// 한손검
 	// 0. 일반 한손검
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Weapon/ShieldSword/Normal/Icon.png", L"Normal_Sword_Icon");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Weapon/ShieldSword/Normal/Sword.png", L"Normal_Sword_Sword");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Weapon/ShieldSword/Normal/Shield.png", L"Normal_Sword_Shield");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Weapon/SwordShield/Normal/Icon.png", L"Normal_Sword_Shield_Icon");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Weapon/SwordShield/Normal/Sword.png", L"Normal_Sword_Shield_Sword");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Weapon/SwordShield/Normal/Shield.png", L"Normal_Sword_Shield_Shield");
 	// 1. 매직 완드 
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Weapon/ShieldSword/MagicWand/Icon.png", L"Magic_Wand_Icon");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Weapon/ShieldSword/MagicWand/Staff.png", L"Magic_Wand_Staff");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Weapon/ShieldSword/MagicWand/Shield.png", L"Magic_Wand_Shield");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Weapon/SwordShield/MagicWand/Icon.png", L"Magic_Wand_Icon");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Weapon/SwordShield/MagicWand/Staff.png", L"Magic_Wand_Staff");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Weapon/SwordShield/MagicWand/Shield.png", L"Magic_Wand_Shield");
 }
 
 void CWeaponData::InitializeItemInfo()
 {
 	// 한손검
 	// 0. 일반 한손검
-	EmplaceWeaponInfo(0, L"Normal_Sword_Icon", L"Normal_Sword_Sword", L"Normal_Sword_Shield", L"일반 한손검", L"일반적인 한손검입니다", WEAPON_TYPE::SWORD_AND_SHIELD);
+	EmplaceWeaponInfo(0, L"Normal_Sword_Shield_Icon", L"Normal_Sword_Shield_Sword", L"Normal_Sword_Shield_Shield", L"일반 한손검", L"일반적인 한손검입니다", WEAPON_TYPE::SWORD_AND_SHIELD);
 	// 1. 매직 완드
 	EmplaceWeaponInfo(1, L"Magic_Wand_Icon", L"Magic_Wand_Staff", L"Magic_Wand_Shield", L"매직 완드", L"무기 공격이 매직 미사일을 사용하는 형태로 변경됩니다.", WEAPON_TYPE::SWORD_AND_SHIELD);
 }

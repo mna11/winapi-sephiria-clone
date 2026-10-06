@@ -70,14 +70,12 @@ int CObjMgr::UpdateOnly(initializer_list<OBJID> ids)
 
 void CObjMgr::LateUpdate()
 {
-
-	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::PLAYER)], TILE_LAYER::LAYER0);
-	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::PLAYER)], TILE_LAYER::LAYER1);
-	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::PLAYER)], TILE_LAYER::LAYER2);
-
-	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::MONSTER)], TILE_LAYER::LAYER0);
-	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::MONSTER)], TILE_LAYER::LAYER1);
-	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::MONSTER)], TILE_LAYER::LAYER2);
+	// 벽 충돌
+	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::PLAYER)]);
+	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::MONSTER)]);
+	// 총알 벽 충돌
+	CCollisionMgr::CollisionBulletWall(m_ObjList[toUType(OBJID::PLAYER_BULLET)]);
+	CCollisionMgr::CollisionBulletWall(m_ObjList[toUType(OBJID::MONSTER_BULLET)]);
 
 	for (size_t i = 0; i < toUType(OBJID::END); ++i)
 	{
@@ -93,10 +91,16 @@ void CObjMgr::LateUpdate()
 		}
 	}
 
+	// 플레이어 공격, 방어 충돌
 	CCollisionMgr::CollisionPlayerAttack(m_ObjList[toUType(OBJID::PLAYER)], m_ObjList[toUType(OBJID::MONSTER)]);
-	//CCollisionMgr::CollisionCircle(m_ObjList[BULLET], m_ObjList[MONSTER]);
 	CCollisionMgr::CollisionPlayerDefense(m_ObjList[toUType(OBJID::PLAYER)], m_ObjList[toUType(OBJID::MONSTER_BULLET)]);
+	// 플레이어 총알 충돌
+	CCollisionMgr::CollisionBulletObj(m_ObjList[toUType(OBJID::PLAYER_BULLET)], m_ObjList[toUType(OBJID::MONSTER)]);
+
+	// 몬스터 공격 충돌
 	CCollisionMgr::CollisionMonsterAttack(m_ObjList[toUType(OBJID::PLAYER)], m_ObjList[toUType(OBJID::MONSTER)]);
+	// 몬스터 총알 충돌
+	CCollisionMgr::CollisionBulletObj(m_ObjList[toUType(OBJID::MONSTER_BULLET)], m_ObjList[toUType(OBJID::PLAYER)]);
 }
 
 void CObjMgr::LateUpdateOnly(initializer_list<OBJID> ids)

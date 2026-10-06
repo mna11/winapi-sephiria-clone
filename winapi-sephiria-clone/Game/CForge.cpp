@@ -48,6 +48,15 @@ void CForge::Update()
 		for (auto btn : m_pMsgBoxUI->GetButtons())
 			btn->Update();
 	}
+
+	if (KEY_DOWN('0'))
+	{
+		CObjMgr::GetInstance()->GetPlayer()->GetWeaponController()->RequestChange(0);
+	}
+	else if (KEY_DOWN('1'))
+	{
+		CObjMgr::GetInstance()->GetPlayer()->GetWeaponController()->RequestChange(1);
+	}
 }
 
 void CForge::LateUpdate()

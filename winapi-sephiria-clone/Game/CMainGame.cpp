@@ -63,6 +63,10 @@ void CMainGame::Initialize()
 	}
 #endif // _DEBUG
 
+	// 데이터 초기화
+	CItemData::GetInstance()->Initialize();
+	CWeaponData::GetInstance()->Initialize();
+
 	// 마우스 생성
 	CObj* pMouse = CAbstractFactory<CMouse>::CreateObj();
 	CObjMgr::GetInstance()->AddObject(OBJID::MOUSE, pMouse);

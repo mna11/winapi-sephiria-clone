@@ -16,7 +16,7 @@ public:
     void LateUpdate() override;
     void Render(Graphics*) override;
     void Release() override;
-    void SetDamage(int iDamage, CObj* pObj = nullptr) override;
+    void HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END) override;
 
 public:
     void SetOwner(CBossErma* pOwner) { m_pOwner = pOwner; }

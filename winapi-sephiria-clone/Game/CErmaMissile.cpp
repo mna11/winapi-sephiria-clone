@@ -189,7 +189,7 @@ void CErmaMissile::TryDamageTarget()
 
     RECT rcCollision{};
     if (IntersectRect(&rcCollision, &m_tRect, &pPlayer->GetRect()))
-        pPlayer->SetDamage(m_tStat.iPhysicalAtk, this);
+        pPlayer->HitDamage(m_tStat.iPhysicalAtk, this);
 }
 
 void CErmaMissile::RenderWarning(Graphics* pGraphics, const VEC& vScroll) const

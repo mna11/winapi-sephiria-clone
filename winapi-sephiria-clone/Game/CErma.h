@@ -32,7 +32,7 @@ public:
 
 public:
     void ApplyChange() override;
-    void SetDamage(int iDamage, CObj* pObj = nullptr) override;
+    void HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END) override;
 
 public:
     void SetAnchor(const VEC& vAnchor);
