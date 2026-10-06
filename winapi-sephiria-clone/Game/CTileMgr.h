@@ -43,7 +43,7 @@ public:
 	void	Release();
 
 public:
-	const vector<CObj*>& GetTile(TILE_LAYER eLayer) const { return m_vecTile[toUType(eLayer)]; }
+	const array<vector<CObj*>, toUType(TILE_LAYER::END)>& GetTiles() const { return m_arrVecTiles; }
 
 public:
 	void	LoadTile(SCENEID eSceneID);
@@ -51,7 +51,7 @@ public:
 private:
 	static CTileMgr* m_pInstance;
 
-	vector<CObj*>		m_vecTile[toUType(TILE_LAYER::END)];
-	bool				m_bInteractionBlocked;					// Interaction 블록 이동 불가 플래그
+	array<vector<CObj*>, toUType(TILE_LAYER::END)> m_arrVecTiles;
+	bool				m_bInteractionBlocked;						// Interaction 블록 이동 불가 플래그
 };
 

@@ -5,17 +5,6 @@ class CWeapon abstract :
     public CObj
 {
 public:
-    enum class TYPE {
-        NONE,
-        SwordAndShield,
-        Greatsword,
-        Dagger,
-        Crossbow,
-        Katana,
-        Staff
-    };
-
-public:
     CWeapon();
     virtual ~CWeapon();
 public:
@@ -27,8 +16,13 @@ public:
         // NextAtk 플래그는 시작은 false로 고정이니 함수 파라미터에서 제외
         m_tAtk = { iAtkLvl, iAtkMax, false, dAtkElapseTime, dAtkDuringTime, dComboTime };
     }
+public:
+    const WEAPON_TYPE&  GetWeaponType() const { return m_eWeaponType; }
+    const int&          GetWeaponID() const { return m_iID; }
 
 protected:
-    ATK_INFO   m_tAtk;
+    int         m_iID;
+    ATK_INFO    m_tAtk;
+    WEAPON_TYPE m_eWeaponType;
 };
 

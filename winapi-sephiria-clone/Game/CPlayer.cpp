@@ -364,7 +364,7 @@ void CPlayer::AddDice(int iAmount)
 		m_iDice = 0;
 }
 
-void CPlayer::SetDamage(int iDamage, CObj* pObj)
+void CPlayer::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit)
 {
 	if (m_bHit)
 		return;

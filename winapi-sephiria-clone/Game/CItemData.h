@@ -15,7 +15,6 @@ public:
 		if (!m_pInstance)
 		{
 			m_pInstance = new CItemData;
-			m_pInstance->Initialize();
 		}
 
 		return m_pInstance;

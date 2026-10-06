@@ -163,6 +163,10 @@
     <ClInclude Include="CErmaPhase2.h" />
     <ClInclude Include="CFluffy.h" />
     <ClInclude Include="CFontMgr.h" />
+    <ClInclude Include="CAnvil.h" />
+    <ClInclude Include="CForge.h" />
+    <ClInclude Include="CForgeSlotUI.h" />
+    <ClInclude Include="CForgeUI.h" />
     <ClInclude Include="CGargoyle.h" />
     <ClInclude Include="CImgMgr.h" />
     <ClInclude Include="CInventory.h" />
@@ -178,9 +182,15 @@
     <ClInclude Include="CLibLoading.h" />
     <ClInclude Include="CLine.h" />
     <ClInclude Include="CLineMgr.h" />
+    <ClInclude Include="CMagicStaffSwordAndShield.h" />
+    <ClInclude Include="CMagicStaffShield.h" />
+    <ClInclude Include="CMagicStaffSword.h" />
     <ClInclude Include="CMainGame.h" />
     <ClInclude Include="CMonster.h" />
     <ClInclude Include="CMouse.h" />
+    <ClInclude Include="CNormalShield.h" />
+    <ClInclude Include="CNormalSword.h" />
+    <ClInclude Include="CNormalSwordAndShield.h" />
     <ClInclude Include="CObj.h" />
     <ClInclude Include="CObjMgr.h" />
     <ClInclude Include="CDrop.h" />
@@ -206,6 +216,7 @@
     <ClInclude Include="CUIMgr.h" />
     <ClInclude Include="CWeapon.h" />
     <ClInclude Include="CWeaponController.h" />
+    <ClInclude Include="CWeaponData.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
@@ -237,6 +248,10 @@
     <ClCompile Include="CErmaPhase2.cpp" />
     <ClCompile Include="CFluffy.cpp" />
     <ClCompile Include="CFontMgr.cpp" />
+    <ClCompile Include="CAnvil.cpp" />
+    <ClCompile Include="CForge.cpp" />
+    <ClCompile Include="CForgeSlotUI.cpp" />
+    <ClCompile Include="CForgeUI.cpp" />
     <ClCompile Include="CGargoyle.cpp" />
     <ClCompile Include="CImgMgr.cpp" />
     <ClCompile Include="CInventory.cpp" />
@@ -252,9 +267,15 @@
     <ClCompile Include="CLibLoading.cpp" />
     <ClCompile Include="CLine.cpp" />
     <ClCompile Include="CLineMgr.cpp" />
+    <ClCompile Include="CMagicStaffSwordAndShield.cpp" />
+    <ClCompile Include="CMagicStaffShield.cpp" />
+    <ClCompile Include="CMagicStaffSword.cpp" />
     <ClCompile Include="CMainGame.cpp" />
     <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CMouse.cpp" />
+    <ClCompile Include="CNormalShield.cpp" />
+    <ClCompile Include="CNormalSword.cpp" />
+    <ClCompile Include="CNormalSwordAndShield.cpp" />
     <ClCompile Include="CObj.cpp" />
     <ClCompile Include="CObjMgr.cpp" />
     <ClCompile Include="CDrop.cpp" />
@@ -280,6 +301,7 @@
     <ClCompile Include="CUIMgr.cpp" />
     <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="CWeaponController.cpp" />
+    <ClCompile Include="CWeaponData.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

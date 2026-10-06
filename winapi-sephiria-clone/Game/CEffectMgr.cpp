@@ -23,15 +23,21 @@ void CEffectMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Run/RunDust.png", L"RunDust");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Dash/DashDust.png", L"DashDust");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Dash/DashTrail.png", L"DashTrail");
-	// 한손검 공격
+	// 기본 한손검 공격
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/Sword_1.png", L"SwordSwing1");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/Sword_2.png", L"SwordSwing2");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/Sword_3.png", L"SwordSwing3");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/Sword0_TurnSwing.png", L"SwordTurnSwing");
+	// 기본 한손검 회전베기
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/Sword_TurnSwin.png", L"Cleave");
+
+	// 매직 완드 공격
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/MagicWand/Wand_Swing.png", L"MagicWandSwing1");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/MagicWand/Wand_Swing_VerticalFlip.png", L"MagicWandSwing2");
+	// 매직 완드 회전베기
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/MagicWand/Wand_Cleave.png", L"MagicWandCleave");
+
 	// 한손검 방어
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/Shield.png", L"Shield");
-	// 한손검 회전베기
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/Sword_TurnSwin.png", L"Cleave");
 
 	// 보스 몬스터 에르마
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Alert_Square.png", L"Erma_Alert_Square");
@@ -56,6 +62,10 @@ void CEffectMgr::Initialize()
 	// 리프 획득 이펙트
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Drop/Leaf.png", L"Leaf_Effect");
 
+	// 총알 소멸 이펙트
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Bullet/MagicBall_Disapper.png", L"MagicBall_Disapper_Effect");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Bullet/MagicBallBig_Disapper.png", L"MagicBallBig_Disapper_Effect");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Bullet/FireBullet_Disapper.png", L"FireBullet_Disapper_Effect");
 }
 
 
@@ -112,6 +122,31 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 		pEffect->SetAngle(fFactor);
 
 		CSoundMgr::GetInstance()->PlaySound(L"SwingSwish02.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
+	else if (!lstrcmpW(pFrameKey, L"MagicWandSwing1"))
+	{
+		pEffect->SetFrame(0, 6, 0, 0.1);
+		pEffect->SetSize({ 28.f, 21.f });
+		pEffect->SetAngle(fFactor);
+
+		CSoundMgr::GetInstance()->PlaySound(L"SwingMagical01.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
+	else if (!lstrcmpW(pFrameKey, L"MagicWandSwing2"))
+	{
+		pEffect->SetFrame(0, 6, 0, 0.05);
+		pEffect->SetSize({ 28.f, 21.f });
+		pEffect->SetAngle(fFactor);
+
+		CSoundMgr::GetInstance()->PlaySound(L"SwingMagical02.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
+	else if (!lstrcmpW(pFrameKey, L"MagicWandCleave"))
+	{
+		pEffect->SetFrame(0, 6, 0, 0.04);
+		pEffect->SetSize({ 48, 38 });
+		pEffect->SetAngle(fFactor);
+
+		// 임시
+		CSoundMgr::GetInstance()->PlaySound(L"0687_attackMagicalIce.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 	else if (!lstrcmpW(pFrameKey, L"Shield"))
 	{
@@ -182,6 +217,22 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 		pEffect->SetSize({ 13.f, 11.f });
 		
 		CSoundMgr::GetInstance()->PlaySound(L"GetLeaf.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
+	// 총알 소멸 이펙트
+	else if (!lstrcmpW(pFrameKey, L"MagicBullet_Disapper_Effect"))
+	{
+		pEffect->SetFrame(0, 5, 0, dFrameSpeed);
+		pEffect->SetSize({ 7.f, 7.f });
+	}
+	else if (!lstrcmpW(pFrameKey, L"MagicBulletBig_Disapper_Effect"))
+	{
+		pEffect->SetFrame(0, 6, 0, dFrameSpeed);
+		pEffect->SetSize({ 13.f, 13.f });
+	}
+	else if (!lstrcmpW(pFrameKey, L"FireBullet_Disapper_Effect"))
+	{
+		pEffect->SetFrame(0, 7, 0, dFrameSpeed);
+		pEffect->SetSize({ 10.f, 10.f });
 	}
 
 	if (iOption & EFTMGR_IMAGE)

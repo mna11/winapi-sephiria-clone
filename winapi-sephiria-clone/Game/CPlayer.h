@@ -35,7 +35,7 @@ public:
     void Release() override;
 
 public:
-    const CWeaponController*    GetWeaponController()       const   { return m_pWeaponController; }
+    CWeaponController*    GetWeaponController() { return m_pWeaponController; }
     const double&               GetDashRecoveryInterval()   const   { return m_dDashRecorveyInterval; }
     const double&               GetDashRecoveryElapse()     const   { return m_dDashRecoveryElapseTime; }
     const int&                  GetLeaf()                   const { return m_iLeaf; }
@@ -56,7 +56,7 @@ public:
     void                        AddDice(int iAmount); 
 
 public:
-    void SetDamage(int iDamage, CObj* pObj) override;
+    void HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END) override;
 
 public:
     void ApplyChange() override;

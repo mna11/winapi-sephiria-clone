@@ -16,6 +16,7 @@
 #include "CMsgBox.h"
 #include "CLevelUp.h"
 #include "CItemSelectUI.h"
+#include "CForgeUI.h"
 
 CUIMgr* CUIMgr::m_pInstance = nullptr;
 
@@ -65,7 +66,9 @@ void CUIMgr::Initialize()
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemSelect/Sephirite_Broken.png", L"Sephirite_Broken");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemSelect/Sephirite_Slot.png", L"Sephirite_Slot");
-	
+
+
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ForgeSlot/Forge_Slot.png", L"Forge_Slot");
 }
 
 void CUIMgr::ShowUI(UIID eID)
@@ -232,6 +235,9 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		break;
 	case UIID::ITEM_SELECT:
 		pUI = CAbstractFactory<CItemSelectUI>::CreateUI(m_pMouse);
+		break;
+	case UIID::FORGE:
+		pUI = CAbstractFactory<CForgeUI>::CreateUI(m_pMouse);
 		break;
 	default:
 		break;

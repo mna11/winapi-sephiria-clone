@@ -5,8 +5,8 @@
 #include "CImgMgr.h"
 
 CShield::CShield()
-    : m_vCellSize{ 9.f, 10.f },
-	m_pWeaponState(nullptr)
+    : m_vCellSize{ 0.f, 0.f },
+	m_pWeaponState(nullptr), m_pAtk(nullptr)
 {
 }
 
@@ -33,10 +33,10 @@ int CShield::Update()
 
 	// 4사분면 - 여기서 분면 기준은 카테시안 좌표계 / 카테시안 좌표계 기준 마우스를 4사분면에 놓았을 때
 	if (fTargetAngle >= 0.f && fTargetAngle < PI * 0.5f)
-		this->SetPos(static_cast<float>(m_pTarget->GetRect().left), vTargetPoint.fY + vOffset.fY);
+		this->SetPos(static_cast<float>(m_pTarget->GetRect().left) - vOffset.fX, vTargetPoint.fY + vOffset.fY);
 	// 3사분면 
 	else if (fTargetAngle >= PI * 0.5f && fTargetAngle < PI)
-		this->SetPos(static_cast<float>(m_pTarget->GetRect().right), vTargetPoint.fY + vOffset.fY);
+		this->SetPos(static_cast<float>(m_pTarget->GetRect().right) + vOffset.fX, vTargetPoint.fY + vOffset.fY);
 	// 2사분면
 	else if (fTargetAngle >= -PI && fTargetAngle < -PI * 0.5f)
 		this->SetPos(static_cast<float>(m_pTarget->GetRect().right) - vOffset.fX, vTargetPoint.fY + vOffset.fY);
@@ -56,7 +56,7 @@ void CShield::LateUpdate()
 void CShield::Render(Graphics* pGraphics)
 {
 	VEC    vScroll = CCameraMgr::GetInstance()->GetScroll();
-	Image* pShieldImg = CImgMgr::GetInstance()->FindImg(L"Shield_Tier1");
+	Image* pShieldImg = CImgMgr::GetInstance()->FindImg(m_pFrameKey);
 	if (nullptr == pShieldImg)
 		return;
 
@@ -80,67 +80,3 @@ void CShield::Render(Graphics* pGraphics)
 void CShield::Release()
 {
 }
-
-#pragma region HandleRender
-void CShield::HandleIdleRender(Graphics* pGraphics, Image* pImg, VEC& vScroll)
-{
-	VEC vDrawSize = m_vCellSize * PIXEL_SCALE;
-	RectF DestRect = { m_tInfo.vPoint.fX - vDrawSize.fX * 0.5f + vScroll.fX,
-					   m_tInfo.vPoint.fY - vDrawSize.fY * 0.5f + vScroll.fY,
-					   vDrawSize.fX, vDrawSize.fY };
-
-	pGraphics->DrawImage(
-		pImg, DestRect,
-		0.f, 0.f, m_vCellSize.fX, m_vCellSize.fY, UnitPixel);
-}
-
-void CShield::HandleAttackRender(Graphics* pGraphics, Image* pImg, VEC& vScroll)
-{
-	switch (m_pAtk->iLevel)
-	{
-	case 1:
-		HandleAttack1Render(pGraphics, pImg, vScroll);
-		break;
-	case 2:
-		HandleAttack2Render(pGraphics, pImg, vScroll);
-		break;
-	case 3:
-		HandleAttack3Render(pGraphics, pImg, vScroll);
-		break;
-	}
-}
-
-void CShield::HandleAttack1Render(Graphics* pGraphics, Image* pImg, VEC& vScroll)
-{
-}
-
-void CShield::HandleAttack2Render(Graphics* pGraphics, Image* pImg, VEC& vScroll)
-{
-}
-
-void CShield::HandleAttack3Render(Graphics* pGraphics, Image* pImg, VEC& vScroll)
-{
-}
-
-void CShield::HandleShieldRender(Graphics* pGraphics, Image* pImg, VEC& vScroll)
-{
-	float fTargetAngle = m_pTarget->GetAngle();
-	float fDistance = 20.f;
-	VEC vOffset{ fDistance * cosf(fTargetAngle), fDistance * sinf(fTargetAngle) };
-	VEC vRenderPoint = m_tInfo.vPoint + vOffset;
-
-	VEC vDrawSize = m_vCellSize * PIXEL_SCALE;
-	RectF DestRect = { vRenderPoint.fX - vDrawSize.fX * 0.5f + vScroll.fX,
-					   vRenderPoint.fY - vDrawSize.fY * 0.5f + vScroll.fY,
-					   vDrawSize.fX, vDrawSize.fY };
-
-	pGraphics->DrawImage(
-		pImg, DestRect,
-		0.f, 0.f, m_vCellSize.fX, m_vCellSize.fY, UnitPixel);
-}
-
-void CShield::HandleCleaveRender(Graphics* pGraphics, Image* pImg, VEC& vScroll)
-{
-}
-
-#pragma endregion HandleRender

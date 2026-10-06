@@ -117,32 +117,17 @@ void CStage::HandleCollisionBattleRoom()
 
 void CStage::CreateBattleWallEffects()
 {
-    for (int i = 0; i < toUType(TILE_LAYER::END); ++i)
+    auto& arrTiles = CTileMgr::GetInstance()->GetTiles();
+    for (auto& vecLayer : arrTiles)
     {
-        TILE_LAYER eLayer =
-            static_cast<TILE_LAYER>(i);
-
-        const vector<CObj*>& vecTiles =
-            CTileMgr::GetInstance()->GetTile(eLayer);
-
-        for (CObj* pObj : vecTiles)
+        for (CObj* pTileObj : vecLayer)
         {
-            CTile* pTile =
-                static_cast<CTile*>(pObj);
-
-            if (pTile->GetTile().eTileOption !=
-                TILE_OPTION::INTERACTION)
-            {
+            CTile* pTile = static_cast<CTile*>(pTileObj);
+            
+            if (pTile->GetTile().eTileOption != TILE_OPTION::INTERACTION)
                 continue;
-            }
 
-            CObj* pEffect =
-                CEffectMgr::GetInstance()->CreateEffect(
-                    L"Battle_Wall",
-                    pTile->GetInfo().vPoint,
-                    EFTMGR_IMAGE | EFTMGR_FIXED
-                );
-
+            CObj* pEffect = CEffectMgr::GetInstance()->CreateEffect(L"Battle_Wall", pTile->GetInfo().vPoint, EFTMGR_IMAGE | EFTMGR_FIXED | EFTMGR_SCROLL);
             m_vecBattleWallEffects.push_back(pEffect);
         }
     }

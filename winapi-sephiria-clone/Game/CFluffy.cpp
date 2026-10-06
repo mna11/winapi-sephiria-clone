@@ -215,12 +215,12 @@ void CFluffy::Attack()
 			return;
 
 		m_eNextState = FLUFFY_STATE::ATTACK;
-		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER_BULLET, CAbstractFactory<CBullet>::CreateBullet(m_tInfo.vPoint, L"Fluffy_Bullet", m_pTarget));
+		//CObjMgr::GetInstance()->AddObject(OBJID::MONSTER_BULLET, CAbstractFactory<CBullet>::CreateBullet(m_tInfo.vPoint, L"Fluffy_Bullet", m_pTarget));
 		m_dAtkElapseTime = 0.;
 	}
 }
 
-void CFluffy::SetDamage(int iDamage, CObj* pObj)
+void CFluffy::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit)
 {
 	if (m_bHit)
 		return;

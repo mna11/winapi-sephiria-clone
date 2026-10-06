@@ -96,7 +96,7 @@ void CErmaHand::LateUpdate()
 
     RECT rcCollision{};
     if (IntersectRect(&rcCollision, &m_tRect, &m_pTarget->GetRect()))
-        m_pTarget->SetDamage(m_tStat.iPhysicalAtk, this);
+        m_pTarget->HitDamage(m_tStat.iPhysicalAtk, this);
 }
 
 void CErmaHand::Render(Graphics* pGraphics)
@@ -206,7 +206,7 @@ void CErmaHand::ApplyChange()
     }
 }
 
-void CErmaHand::SetDamage(int iDamage, CObj* pObj)
+void CErmaHand::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit)
 {
     if (m_eCurState == ERMA_HAND_STATE::BROKEN || m_bHit || m_pOwner == nullptr)
         return;

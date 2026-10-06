@@ -33,7 +33,7 @@ void CSephirite::Initialize()
 	m_iRenderLayer = 0;
 
 	m_pFrameKey = L"Sephirite";
-	SetFrame(0, 19, 0, 0.1);
+	SetFrame(0, 19, 0, 0.2);
 }
 
 int CSephirite::Update()
@@ -153,7 +153,6 @@ void CSephirite::HandleInteraction()
 		if (KEY_DOWN('F'))
 		{
 			CUIMgr::GetInstance()->ShowUI(UIID::ITEM_SELECT);
-			CSoundMgr::GetInstance()->PlaySound(L"SephiriteOpen.wav", CHANNEL_GROUPID::SFX, 1.f);
 			m_bDead = true;
 		}
 		m_bCol = true;

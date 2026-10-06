@@ -23,6 +23,7 @@ public:
 	const STAT&			GetStat()		const			{ return m_tStat; }
 	const vector<RECT>& GetAtkRectVec() const			{ return m_vecAtkRect; }
 	const vector<RECT>& GetDefRectVec() const			{ return m_vecDefRect; }
+	bool				GetDead() const { return m_bDead; }
 
 public:
 	void				SetPos(float _fX, float _fY)		{ m_tInfo.vPoint.fX = _fX; m_tInfo.vPoint.fY = _fY; }
@@ -33,9 +34,10 @@ public:
 	void				SetSpeed(float fSpeed)				{ m_fSpeed = fSpeed; }
 	void				SetSize(VEC vec)					{ m_tInfo.vSize = vec; }
 	void				SetFrame(int iStart, int iEnd, int iMotion, double dFrameSpeed);
+	void				SetFrame(FRAME tFrame)				{ m_tFrame = tFrame; }
 	void				SetRenderLayer(int iRenderLayer)	{ m_iRenderLayer = iRenderLayer; }
 	virtual void		SetTarget(CObj* pObj)				{ if (nullptr != pObj) m_pTarget = pObj; }
-	virtual	void		SetDamage(int iDamage, CObj* pObj = nullptr);
+	virtual	void		HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END);
 
 public:
 	void				AddPos(float fDx, float fDy)		{ m_tInfo.vPoint.fX += fDx; m_tInfo.vPoint.fY += fDy; }

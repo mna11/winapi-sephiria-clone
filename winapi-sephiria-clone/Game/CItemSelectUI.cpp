@@ -41,7 +41,7 @@ void CItemSelectUI::Initialize()
 
     // 렌더 정보 초기화 
     m_eRender = RENDERID::UI;
-    m_iRenderLayer = 1;
+    m_iRenderLayer = 0;
 }
 
 int CItemSelectUI::Update()
@@ -392,6 +392,7 @@ void CItemSelectUI::ApplyChange()
         {
         case ITEM_SELECT_UI_STATE::READY:
             SetFrame(0, 15, 0, 0.08);
+            CSoundMgr::GetInstance()->PlaySound(L"SephiriteOpen.wav", CHANNEL_GROUPID::SFX, 1.f);
             break;
         case ITEM_SELECT_UI_STATE::BROKEN:
             SetFrame(0, 79, 0, m_dBrokenTime / 79);

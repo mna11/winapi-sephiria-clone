@@ -8,6 +8,7 @@
 #include "CLibLoading.h"
 #include "CBossStage.h"
 #include "CShop.h"
+#include "CForge.h"
 
 #include "CShopTable.h"
 #include "CUIMgr.h"
@@ -56,8 +57,8 @@ void CSceneMgr::ApplyChange()
 {
 	if (m_ePreScene != m_eCurScene)
 	{
-		// 상점과 관련된 씬 전환이 아니라면 이전 씬 삭제
-		if(!HandleChangeShop())
+		// 상점, 대장간과 관련된 씬 전환이 아니라면 이전 씬 삭제
+		if(!HandleChangeReturnScene())
 			SafeDelete(m_pScene);
 
 		switch (m_eCurScene)
@@ -75,6 +76,13 @@ void CSceneMgr::ApplyChange()
 			CUIMgr::GetInstance()->ShowUI(UIID::INVENTORY);
 			CUIMgr::GetInstance()->ShowUI(UIID::SHOP_TABLE);
 			static_cast<CShopTable*>(CUIMgr::GetInstance()->GetUI(UIID::SHOP_TABLE))->SetSellingItem(m_eSaveScene);
+			break;
+		}
+		case SCENEID::FORGE:
+		{
+			if (nullptr == m_pScene)
+				m_pScene = CAbstractFactory<CForge>::CreateScene();
+			CUIMgr::GetInstance()->ShowUI(UIID::FORGE);
 			break;
 		}
 		case SCENEID::STAGE0:
@@ -123,10 +131,10 @@ void CSceneMgr::BackToSaveScene()
 	}
 }
 
-bool CSceneMgr::HandleChangeShop()
+bool CSceneMgr::HandleChangeReturnScene()
 {
 	// 상점에 진입하는 경우
-	if (m_eCurScene == SCENEID::SHOP)
+	if (m_eCurScene == SCENEID::SHOP || m_eCurScene == SCENEID::FORGE)
 	{
 		// 이전 스테이지 정보를 기억한다.
 		m_pSaveScene = m_pScene;
@@ -138,7 +146,7 @@ bool CSceneMgr::HandleChangeShop()
 	}
 
 	// 상점에서 나가는 경우
-	if (m_ePreScene == SCENEID::SHOP)
+	if (m_ePreScene == SCENEID::SHOP || m_ePreScene == SCENEID::FORGE)
 	{
 		// 상점 씬을 삭제하고 원래 기억해둔 씬으로 바꾼다.
 		SafeDelete<CScene*>(m_pScene);

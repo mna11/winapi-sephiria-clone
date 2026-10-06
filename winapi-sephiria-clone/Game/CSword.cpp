@@ -57,23 +57,23 @@ void CSword::LateUpdate()
 void CSword::Render(Graphics* pGraphics)
 {
 	VEC    vScroll = CCameraMgr::GetInstance()->GetScroll();
-	Image* pShieldImg = CImgMgr::GetInstance()->FindImg(L"Sword_Tier1");
-	if (nullptr == pShieldImg)
+	Image* pSwordImg = CImgMgr::GetInstance()->FindImg(m_pFrameKey);
+	if (nullptr == pSwordImg)
 		return;
 
 	switch (*m_pWeaponState)
 	{
 	case SWORD_AND_SHIELD_STATE::IDLE:
-		HandleIdleRender(pGraphics, pShieldImg, vScroll);
+		HandleIdleRender(pGraphics, pSwordImg, vScroll);
 		break;
 	case SWORD_AND_SHIELD_STATE::ATTACK:
-		HandleAttackRender(pGraphics, pShieldImg, vScroll);
+		HandleAttackRender(pGraphics, pSwordImg, vScroll);
 		break;
 	case SWORD_AND_SHIELD_STATE::DEFENSE:
-		HandleShieldRender(pGraphics, pShieldImg, vScroll);
+		HandleShieldRender(pGraphics, pSwordImg, vScroll);
 		break;
 	case SWORD_AND_SHIELD_STATE::CLEAVE:
-		HandleCleaveRender(pGraphics, pShieldImg, vScroll);
+		HandleCleaveRender(pGraphics, pSwordImg, vScroll);
 		break;
 	default:
 		break;
@@ -81,98 +81,6 @@ void CSword::Render(Graphics* pGraphics)
 }
 
 void CSword::Release()
-{
-}
-
-#pragma region HandleRender
-void CSword::HandleIdleRender(Graphics* pGraphics, Image* pImg, VEC& vScroll)
-{
-	float fTargetAngle = m_pTarget->GetAngle();
-
-	// 2사분면, 3사분면 - 여기서 분면 기준은 카테시안 좌표계
-	if (fabsf(fTargetAngle) > PI * 0.5f)
-	{
-		fTargetAngle = fTargetAngle - PI;
-	}
-	fTargetAngle *= 180 / PI;
-
-	DrawSword(pGraphics, pImg, vScroll, fTargetAngle);
-}
-
-void CSword::HandleAttackRender(Graphics* pGraphics, Image* pImg, VEC& vScroll)
-{
-	// 콤보 유지 기간 동안은 빙글빙글 안돌게!
-	/*if (m_pAtk->dElapseTime > m_pAtk->dMaxTime)
-	{
-		HandleIdleRender(pGraphics, pImg, vScroll);
-		return;
-	}*/
-
-	switch (m_pAtk->iLevel)
-	{
-	case 1:
-		HandleAttack1Render(pGraphics, pImg, vScroll);
-		break;
-	case 2:
-		HandleAttack2Render(pGraphics, pImg, vScroll);
-		break;
-	case 3:
-		HandleAttack3Render(pGraphics, pImg, vScroll);
-		break;
-	}
-}
-
-void CSword::HandleAttack1Render(Graphics* pGraphics, Image* pImg, VEC& vScroll)
-{
-	// PI만큼 아래로 회전시킬 건데, 현재 공격 클릭 후 걸린 시간 비율에 따라 다르게 한다.
-	float fTargetAngle = m_fAngle;
-	float fFactor = (m_pAtk->dElapseTime > m_pAtk->dMaxTime) ? 1.f : m_pAtk->dElapseTime / m_pAtk->dMaxTime;
-
-	if (fabsf(fTargetAngle) > PI * 0.5f)
-	{
-		fTargetAngle = fTargetAngle - PI;
-		fTargetAngle -= PI * fFactor;
-	}
-	else
-	{
-		fTargetAngle += PI * fFactor;
-	}
-	fTargetAngle *= 180.f / PI;
-
-	DrawSword(pGraphics, pImg, vScroll, fTargetAngle);
-}
-
-
-void CSword::HandleAttack2Render(Graphics* pGraphics, Image* pImg, VEC& vScroll)
-{
-	float fTargetAngle = m_fAngle;
-	float fFactor = (m_pAtk->dElapseTime > m_pAtk->dMaxTime) ? 1.f : m_pAtk->dElapseTime / m_pAtk->dMaxTime;
-	if (fabsf(fTargetAngle) > PI * 0.5f)
-	{
-		fTargetAngle = fTargetAngle - PI;
-		fTargetAngle -= PI * (1 - fFactor);
-	}
-	else
-	{
-		fTargetAngle += PI * (1 - fFactor);
-	}
-
-	fTargetAngle *= 180.f / PI;
-
-	DrawSword(pGraphics, pImg, vScroll, fTargetAngle);
-}
-
-void CSword::HandleAttack3Render(Graphics* pGraphics, Image* pImg, VEC& vScroll)
-{
-	HandleAttack1Render(pGraphics, pImg, vScroll);
-}
-
-void CSword::HandleShieldRender(Graphics* pGraphics, Image* pImg, VEC& vScroll)
-{
-	DrawSword(pGraphics, pImg, vScroll, 0.f);
-}
-
-void CSword::HandleCleaveRender(Graphics* pGraphics, Image* pImg, VEC& vScroll)
 {
 }
 
@@ -195,5 +103,3 @@ void CSword::DrawSword(Graphics* pGraphics, Image* pImg, VEC& vScroll, float fTa
 
 	pGraphics->ResetTransform();
 }
-
-#pragma endregion HandleRender

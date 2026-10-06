@@ -13,7 +13,7 @@ public:
     CSword();
     ~CSword();
 public:
-    void Initialize() override;
+    virtual void Initialize() override;
     int Update() override;
     void LateUpdate() override;
     void Render(Graphics*) override;
@@ -24,18 +24,18 @@ public:
     void SetAtkInfo(ATK_INFO* pAtk)                      { m_pAtk = pAtk; }
 
 private:
-    void HandleIdleRender   (Graphics* pGraphics, Image* pImg, VEC& vScroll);
-    void HandleAttackRender (Graphics* pGraphics, Image* pImg, VEC& vScroll);
-    void HandleAttack1Render(Graphics* pGraphics, Image* pImg, VEC& vScroll);
-    void HandleAttack2Render(Graphics* pGraphics, Image* pImg, VEC& vScroll);
-    void HandleAttack3Render(Graphics* pGraphics, Image* pImg, VEC& vScroll);
-    void HandleShieldRender (Graphics* pGraphics, Image* pImg, VEC& vScroll);
-    void HandleCleaveRender (Graphics* pGraphics, Image* pImg, VEC& vScroll);
+    virtual void HandleIdleRender   (Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
+    virtual void HandleAttackRender (Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
+    virtual void HandleAttack1Render(Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
+    virtual void HandleAttack2Render(Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
+    virtual void HandleAttack3Render(Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
+    virtual void HandleShieldRender (Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
+    virtual void HandleCleaveRender (Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
 
-private:
+protected:
     void DrawSword(Graphics* pGraphics, Image* pImg, VEC& vScroll, float fTargetAngle = 0);
 
-private:
+protected:
     VEC                     m_vCellSize;
 
     // Sword and Shield에서 참조

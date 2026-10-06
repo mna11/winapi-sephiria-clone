@@ -20,6 +20,7 @@
 
 // 데이터
 #include "CItemData.h"
+#include "CWeaponData.h"
 
 CMainGame::CMainGame()
 	: m_hDC(0), m_hBackDC(0), m_pBackGraphics(nullptr), m_hBackBit(0), m_hOldBit(0)
@@ -61,6 +62,10 @@ void CMainGame::Initialize()
 		std::ios::sync_with_stdio();
 	}
 #endif // _DEBUG
+
+	// 데이터 초기화
+	CItemData::GetInstance()->Initialize();
+	CWeaponData::GetInstance()->Initialize();
 
 	// 마우스 생성
 	CObj* pMouse = CAbstractFactory<CMouse>::CreateObj();
@@ -107,8 +112,10 @@ void CMainGame::Release()
 	CTimeMgr::DestroyInstance();
 	CUIMgr::DestroyInstance();
 	CFontMgr::DestroyInstance();
-	CItemData::DestroyInstance();
 	CSoundMgr::DestroyInstance();
+
+	CItemData::DestroyInstance();
+	CWeaponData::DestroyInstance();
 
 	// 그래픽스 먼저 없애야 함
 	SafeDelete<Graphics*>(m_pBackGraphics);
