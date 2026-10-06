@@ -55,24 +55,49 @@ int CShopTable::Update()
 	// 마우스 호버 아이템 세팅
 	if (-1 != m_iMouseHoverSlot)
 	{
-		m_pMouse->SetHoverReferItem({ m_vecItemSlot[m_iMouseHoverSlot]->GetItemID(), ITEM_SOURCE::SHOP });
-		CUIMgr::GetInstance()->ShowUI(UIID::ITEM_TOOLTIP);
+		int iID = m_vecItemSlot[m_iMouseHoverSlot]->GetItemID();
+		ITEM_TYPE eItemType = m_vecItemSlot[m_iMouseHoverSlot]->GetItemType();
+		m_pMouse->SetHoverReferItem({ iID, eItemType,ITEM_SOURCE::SHOP});
 
+		// 띄울 위치
 		VEC vPoint = m_vecItemSlot[m_iMouseHoverSlot]->GetInfo().vPoint;
-		vPoint += VEC{ 144 * 0.5f, 0.f } * m_fUIScale;
-		CUIMgr::GetInstance()->SetPos(UIID::ITEM_TOOLTIP, vPoint);
+		vPoint += VEC{ 144 * 0.5f, 0.f } *m_fUIScale;
+
+		switch (eItemType)
+		{
+		case ITEM_TYPE::ARTIFACT:
+			CUIMgr::GetInstance()->ShowUI(UIID::ARTIFACT_TOOLTIP);
+			CUIMgr::GetInstance()->SetPos(UIID::ARTIFACT_TOOLTIP, vPoint);
+			break;
+		case ITEM_TYPE::STONE_TABLET:
+			// 나중에 추가
+			break;
+		default:
+			break;
+		}
 	}
 	else if (m_pMouse->GetHoverReferItem().eItemSource == ITEM_SOURCE::SHOP)
 	{
-		CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
-		m_pMouse->SetHoverReferItem({ -1, ITEM_SOURCE::END });
+		switch (m_pMouse->GetHoverReferItem().eItemType)
+		{
+		case ITEM_TYPE::ARTIFACT:
+			CUIMgr::GetInstance()->HideUI(UIID::ARTIFACT_TOOLTIP);
+			break;
+		case ITEM_TYPE::STONE_TABLET:
+			// 나중에 추가
+			break;
+		default:
+			break;
+		}
+
+		m_pMouse->SetHoverReferItem({ -1, ITEM_TYPE::END, ITEM_SOURCE::END });
 	}
 
 	// 드래그 시작
 	if (KEY_DOWN(VK_LBUTTON) && -1 != m_iMouseHoverSlot)
 	{
 		// 마우스가 현재 드래그 중인 아이템을 참조하게 해줌 - 렌더용
-		m_pMouse->SetDragReferItem({ m_vecItemSlot[m_iMouseHoverSlot]->GetItemID(), ITEM_SOURCE::SHOP });
+		m_pMouse->SetDragReferItem({ m_vecItemSlot[m_iMouseHoverSlot]->GetItemID(), m_vecItemSlot[m_iMouseHoverSlot]->GetItemType(), ITEM_SOURCE::SHOP });
 		// 사운드 
 		CSoundMgr::GetInstance()->PlaySound(L"InventoryPick.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
@@ -172,6 +197,8 @@ void CShopTable::SetSellingItem(SCENEID eCurStage)
 			m_vecItemSlot.push_back(static_cast<CShopTableSlot*>(CAbstractFactory<CShopTableSlot>::CreateUI(vPoint.fX, vPoint.fY + fGap * i, m_pMouse)));
 		// 랜덤 뽑기
 		m_vecItemSlot[i]->SetItemID(uniform_int_distribution<int>(0, 8)(g_engine));
+		// 일단 아티팩트만 팔게
+		m_vecItemSlot[i]->SetItemType(ITEM_TYPE::ARTIFACT);
 	}
 	m_eLastStage = eCurStage;
 }

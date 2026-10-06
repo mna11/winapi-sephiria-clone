@@ -28,12 +28,12 @@ public:
     // 인벤토리 어디에 넣을려고 하는가, 어떤 아이템을 살려고 하는가
     
     // 인벤토리 UI에서 호출
-    void TryBuyItem(int iInventoryIdx, int iID);
-    void TrySellItem(int iInventoryIdx, int iID);
+    void TryBuyItem(int iInventoryIdx, int iID, ITEM_TYPE eItemType);
+    void TrySellItem(int iInventoryIdx, int iID, ITEM_TYPE eItemType);
 
     // ShopMsgBox에서 호출
-    void BuyItem(int iInventoryIdx, int iID, int iPrice);
-    void SellItem(int iInventoryIdx, int iPrice);
+    void BuyItem(int iInventoryIdx, ITEM_INFO tItemInfo);
+    void SellItem(int iInventoryIdx, ITEM_INFO tItemInfo);
 
 private:
     int     m_iFrame;

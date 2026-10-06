@@ -21,6 +21,9 @@
 #include "CCollisionMgr.h"
 #include "CSoundMgr.h"
 
+#include "CArtifactData.h"
+#include "CStoneTabletData.h"
+
 
 CStage::CStage()
 	: m_iCurBattleRoomIdx(-1)
@@ -62,7 +65,8 @@ void CStage::HotKey()
     if (KEY_DOWN('V') && !CUIMgr::GetInstance()->GetUI(UIID::ITEM_SELECT)->GetView())
     {
         CUIMgr::GetInstance()->ToggleUI(UIID::INVENTORY);
-        CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
+        CUIMgr::GetInstance()->HideUI(UIID::ARTIFACT_TOOLTIP);
+        CUIMgr::GetInstance()->HideUI(UIID::STONE_TABLET_TOOPTIP);
 
         // 사운드
         if (CUIMgr::GetInstance()->GetUI(UIID::INVENTORY)->GetView())

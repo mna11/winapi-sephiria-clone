@@ -9,7 +9,8 @@
 
 #include "CAbstractFactory.h"
 #include "CObjMgr.h"
-#include "CItemData.h"
+#include "CArtifactData.h"
+#include "CStoneTabletData.h"
 #include "CImgMgr.h"
 #include "CUIMgr.h"
 #include "CCameraMgr.h"
@@ -139,22 +140,33 @@ void CShop::Init_CreateObj()
 	CObjMgr::GetInstance()->AddObject(OBJID::UI, m_pEscapeButton);
 }
 
-void CShop::TryBuyItem(int iInventoryIdx, int iID)
+void CShop::TryBuyItem(int iInventoryIdx, int iID, ITEM_TYPE eItemType)
 {
 	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer)
 		return;
 
-	// 상품 가격
-	const ITEM_INFO* pItemInfo = CItemData::GetInstance()->FindItemInfo(iID);
-	if (nullptr == pItemInfo)
-		return;
-	int iPrice = CItemData::GetInstance()->FindItemInfo(iID)->iLeaf;
+	// 아이템 가격
+	ITEM_INFO tItemInfo{};
+	switch (eItemType)
+	{
+	case ITEM_TYPE::ARTIFACT:
+		tItemInfo = CArtifactData::GetInstance()->FindItemInfo(iID);
+		break;
+	case ITEM_TYPE::STONE_TABLET:
+		tItemInfo = CStoneTabletData::GetInstance()->FindItemInfo(iID);
+		break;
+	default:
+		break;
+	}
+	// 맞는 아이템이 없음
+	if (-1 == tItemInfo.iID)
+		return; 
 
 	// 돈이 있음
-	if (pPlayer->GetLeaf() >= iPrice)
+	if (pPlayer->GetLeaf() >= tItemInfo.iLeaf)
 	{
-		wstring wstr = pItemInfo->strName + L"을(를) " + to_wstring(pItemInfo->iLeaf) + L" 리프로\n 구매하시겠습니까?";
+		wstring wstr = tItemInfo.strName + L"을(를) " + to_wstring(tItemInfo.iLeaf) + L" 리프로\n 구매하시겠습니까?";
 
 		m_pMsgBoxUI = CAbstractFactory<CMsgBox>::CreateMsgBox(
 			m_rcMsgBox,
@@ -166,7 +178,7 @@ void CShop::TryBuyItem(int iInventoryIdx, int iID)
 
 		// 버튼 콜백 함수 등록
 		auto vecButtons = m_pMsgBoxUI->GetButtons();
-		vecButtons[0]->SetOnClick([this, iInventoryIdx, iID, iPrice]()
+		vecButtons[0]->SetOnClick([this, iInventoryIdx, tItemInfo]()
 			{
 				CMsgBox* pConfirm = m_pMsgBoxUI;
 
@@ -179,7 +191,7 @@ void CShop::TryBuyItem(int iInventoryIdx, int iID)
 				pConfirm->SetDead(true);
 				m_pMsgBoxUI = nullptr;
 
-				this->BuyItem(iInventoryIdx, iID, iPrice);
+				this->BuyItem(iInventoryIdx, tItemInfo);
 			});
 		vecButtons[0]->SetString(L"Yes");
 
@@ -225,15 +237,15 @@ void CShop::TryBuyItem(int iInventoryIdx, int iID)
 	}
 }
 
-void CShop::BuyItem(int iInventoryIdx, int iID, int iPrice)
+void CShop::BuyItem(int iInventoryIdx, ITEM_INFO tItemInfo)
 {
 	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer)
 		return;
 
-	if (pPlayer->GetInventory()->InsertItem(iInventoryIdx, iID))
+	if (pPlayer->GetInventory()->InsertItem(iInventoryIdx, tItemInfo.iID, tItemInfo.eItemType))
 	{
-		pPlayer->AddLeaf(-iPrice);
+		pPlayer->AddLeaf(-tItemInfo.iLeaf);
 		// 사운드 
 		CSoundMgr::GetInstance()->PlaySound(L"ShopBuy.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
@@ -250,7 +262,7 @@ void CShop::BuyItem(int iInventoryIdx, int iID, int iPrice)
 
 		// 버튼 콜백 함수 등록
 		auto vecButtons = m_pMsgBoxUI->GetButtons();
-		vecButtons[0]->SetOnClick([this, iInventoryIdx, iID]()
+		vecButtons[0]->SetOnClick([this]()
 			{
 				CMsgBox* pConfirm = m_pMsgBoxUI;
 				// 일단 화면에서 안보이게
@@ -265,11 +277,30 @@ void CShop::BuyItem(int iInventoryIdx, int iID, int iPrice)
 	}
 }
 
-void CShop::TrySellItem(int iInventoryIdx, int iID)
+void CShop::TrySellItem(int iInventoryIdx, int iID, ITEM_TYPE eItemType)
 {
-	const ITEM_INFO* pItemInfo = CItemData::GetInstance()->FindItemInfo(iID);
+	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+	if (nullptr == pPlayer)
+		return;
 
-	wstring wstr = pItemInfo->strName + L"을(를) " + to_wstring(static_cast<int>(pItemInfo->iLeaf * 0.5)) + L" 리프에\n 판매하시겠습니까?";
+	// 아이템 가격
+	ITEM_INFO tItemInfo{};
+	switch (eItemType)
+	{
+	case ITEM_TYPE::ARTIFACT:
+		tItemInfo = CArtifactData::GetInstance()->FindItemInfo(iID);
+		break;
+	case ITEM_TYPE::STONE_TABLET:
+		tItemInfo = CStoneTabletData::GetInstance()->FindItemInfo(iID);
+		break;
+	default:
+		break;
+	}
+	// 맞는 아이템이 없음
+	if (-1 == tItemInfo.iID)
+		return;
+
+	wstring wstr = tItemInfo.strName + L"을(를) " + to_wstring(static_cast<int>(tItemInfo.iLeaf * 0.5)) + L" 리프에\n 판매하시겠습니까?";
 
 	m_pMsgBoxUI = CAbstractFactory<CMsgBox>::CreateMsgBox(
 		m_rcMsgBox,
@@ -278,10 +309,9 @@ void CShop::TrySellItem(int iInventoryIdx, int iID)
 		wstr
 	);
 	CObjMgr::GetInstance()->AddObject(OBJID::UI, m_pMsgBoxUI);
-	int iPrice = pItemInfo->iLeaf;
 	// 버튼 콜백 함수 등록
 	auto vecButtons = m_pMsgBoxUI->GetButtons();
-	vecButtons[0]->SetOnClick([this, iInventoryIdx, iPrice]()
+	vecButtons[0]->SetOnClick([this, iInventoryIdx, tItemInfo]()
 		{
 			CMsgBox* pConfirm = m_pMsgBoxUI;
 			// 일단 화면에서 안보이게
@@ -292,7 +322,7 @@ void CShop::TrySellItem(int iInventoryIdx, int iID)
 			pConfirm->SetDead(true);
 			m_pMsgBoxUI = nullptr;
 
-			this->SellItem(iInventoryIdx, iPrice);
+			this->SellItem(iInventoryIdx, tItemInfo);
 		});
 	vecButtons[0]->SetString(L"Yes");
 
@@ -310,7 +340,7 @@ void CShop::TrySellItem(int iInventoryIdx, int iID)
 	vecButtons[1]->SetString(L"No");
 }
 
-void CShop::SellItem(int iInventoryIdx, int iPrice)
+void CShop::SellItem(int iInventoryIdx, ITEM_INFO tItemInfo)
 {
 	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer)
@@ -318,7 +348,7 @@ void CShop::SellItem(int iInventoryIdx, int iPrice)
 
 	pPlayer->GetInventory()->EraseItem(iInventoryIdx);
 	static_cast<CInventoryUI*>(CUIMgr::GetInstance()->GetUI(UIID::INVENTORY))->SyncInventorySlot();
-	pPlayer->AddLeaf(iPrice * 0.5f);
+	pPlayer->AddLeaf(tItemInfo.iLeaf * 0.5f);
 	// 사운드 
 	CSoundMgr::GetInstance()->PlaySound(L"ShopBuy.wav", CHANNEL_GROUPID::SFX, 1.f);
 }

@@ -3,10 +3,11 @@
 
 #include "CTimeMgr.h"
 #include "CImgMgr.h"
-#include "CItemData.h"
+#include "CArtifactData.h"
+#include "CStoneTabletData.h"
 
 CItemSelectSlotUI::CItemSelectSlotUI()
-	:m_iItemID(-1), m_bSpread(false), m_fDistance(0.f), m_bCol(false)
+	:m_iItemID(-1), m_bSpread(false), m_fDistance(0.f), m_bCol(false), m_eItemType(ITEM_TYPE::END)
 {
 }
 
@@ -72,12 +73,27 @@ void CItemSelectSlotUI::Render(Graphics* pGraphics)
 		UnitPixel
 	);
 
-	if (-1 == m_iItemID)
+	if (-1 == m_iItemID || ITEM_TYPE::END == m_eItemType)
 		return;
 
-	const ITEM_INFO* pItemInfo = CItemData::GetInstance()->FindItemInfo(m_iItemID);
+	ITEM_INFO tItemInfo{};
+	switch (m_eItemType)
+	{
+	case ITEM_TYPE::ARTIFACT:
+		tItemInfo = CArtifactData::GetInstance()->FindItemInfo(m_iItemID);
+		break;
+	case ITEM_TYPE::STONE_TABLET:
+		tItemInfo = CStoneTabletData::GetInstance()->FindItemInfo(m_iItemID);
+		break;
+	default:
+		break;
+	}
+
+	if (-1 == tItemInfo.iID)
+		return; 
+
 	// 아이템 그리기
-	Image* pItemImg = CImgMgr::GetInstance()->FindImg(pItemInfo->strImg.c_str());
+	Image* pItemImg = CImgMgr::GetInstance()->FindImg(tItemInfo.strImg.c_str());
 	vCellSize = { 32.f, 32.f };
 	vImgSize = VEC{ vCellSize.fX + 14.f, vCellSize.fY + 15.f } * m_fUIScale;
 	vImgSize = vCellSize * m_fUIScale;

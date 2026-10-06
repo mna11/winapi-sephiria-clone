@@ -1,11 +1,11 @@
 ﻿#pragma once
 #include "CUI.h"
-class CItemToolTip :
+class CArtifactToolTip :
     public CUI
 {
 public:
-    CItemToolTip();
-    ~CItemToolTip();
+    CArtifactToolTip();
+    ~CArtifactToolTip();
 public:
     void Initialize() override;
     int Update() override;

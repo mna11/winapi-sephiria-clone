@@ -11,7 +11,7 @@
 #include "CBasicInfo.h"
 #include "CBossHp.h"
 #include "CInventoryUI.h"
-#include "CItemToolTip.h"
+#include "CArtifactToolTip.h"
 #include "CShopTable.h"
 #include "CMsgBox.h"
 #include "CLevelUp.h"
@@ -221,8 +221,8 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		pUI = CAbstractFactory<CInventoryUI>::CreateUI(m_pMouse);
 		static_cast<CInventoryUI*>(pUI)->SetInventory(CObjMgr::GetInstance()->GetPlayer()->GetInventory());
 		break;
-	case UIID::ITEM_TOOLTIP:
-		pUI = CAbstractFactory<CItemToolTip>::CreateUI(m_pMouse);
+	case UIID::ARTIFACT_TOOLTIP:
+		pUI = CAbstractFactory<CArtifactToolTip>::CreateUI(m_pMouse);
 		break;
 	case UIID::SHOP_TABLE:
 		pUI = CAbstractFactory<CShopTable>::CreateUI(m_pMouse);

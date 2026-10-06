@@ -257,6 +257,7 @@ void CItemSelectUI::HandleCollisionMouse()
 {
     if (m_eCurState != ITEM_SELECT_UI_STATE::SELECT)
         return;
+
     // 마우스 포인터와 충돌하는 슬롯이 없는 경우에는 -1을 반환해줌
     int iMouseHoverSlot = CCollisionMgr::GetCollisionSlotIndex<CItemSelectSlotUI>(m_pMouse->GetInfo().vPoint, m_vecItemSlot);
     for (int i = 0; i < m_vecItemSlot.size(); ++i)
@@ -267,25 +268,50 @@ void CItemSelectUI::HandleCollisionMouse()
 
     if (-1 != iMouseHoverSlot)
     {
-        m_pMouse->SetHoverReferItem({ m_vecItemSlot[iMouseHoverSlot]->GetItemID(), ITEM_SOURCE::SELECT });
-        CUIMgr::GetInstance()->ShowUI(UIID::ITEM_TOOLTIP);
+        int iID = m_vecItemSlot[iMouseHoverSlot]->GetItemID();
+        ITEM_TYPE eItemType = m_vecItemSlot[iMouseHoverSlot]->GetItemType();
+        m_pMouse->SetHoverReferItem({ iID, eItemType,ITEM_SOURCE::SELECT });
 
+        // 띄울 위치
         VEC vPoint = m_vecItemSlot[iMouseHoverSlot]->GetInfo().vPoint;
         VEC vOffset = m_vecItemSlot[iMouseHoverSlot]->GetInfo().vSize;
         vPoint += VEC{ vOffset.fX * 0.5f, -vOffset.fY };
-        CUIMgr::GetInstance()->SetPos(UIID::ITEM_TOOLTIP, vPoint);
+
+        switch (eItemType)
+        {
+        case ITEM_TYPE::ARTIFACT:
+            CUIMgr::GetInstance()->ShowUI(UIID::ARTIFACT_TOOLTIP);
+            CUIMgr::GetInstance()->SetPos(UIID::ARTIFACT_TOOLTIP, vPoint);
+            break;
+        case ITEM_TYPE::STONE_TABLET:
+            // 나중에 추가
+            break;
+        default:
+            break;
+        }
     }
     else if (m_pMouse->GetHoverReferItem().eItemSource == ITEM_SOURCE::SELECT)
     {
-        CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
-        m_pMouse->SetHoverReferItem({ -1, ITEM_SOURCE::END });
+        switch (m_pMouse->GetHoverReferItem().eItemType)
+        {
+        case ITEM_TYPE::ARTIFACT:
+            CUIMgr::GetInstance()->HideUI(UIID::ARTIFACT_TOOLTIP);
+            break;
+        case ITEM_TYPE::STONE_TABLET:
+            // 나중에 추가
+            break;
+        default:
+            break;
+        }
+
+        m_pMouse->SetHoverReferItem({ -1, ITEM_TYPE::END, ITEM_SOURCE::END });
     }
 
     // 드래그 시작
     if (KEY_DOWN(VK_LBUTTON) && -1 != iMouseHoverSlot)
     {
         // 마우스가 현재 드래그 중인 아이템을 참조하게 해줌 - 렌더용
-        m_pMouse->SetDragReferItem({ m_vecItemSlot[iMouseHoverSlot]->GetItemID(), ITEM_SOURCE::SELECT });
+        m_pMouse->SetDragReferItem({ m_vecItemSlot[iMouseHoverSlot]->GetItemID(), m_vecItemSlot[iMouseHoverSlot]->GetItemType(), ITEM_SOURCE::SELECT });
     }
 }
 
@@ -313,6 +339,7 @@ void CItemSelectUI::GachaItems()
         itemSlot->SetSpread(false);
         itemSlot->Hide();
         itemSlot->SetItemID(uniform_int_distribution<int>(0, 8)(g_engine));
+        itemSlot->SetItemType(ITEM_TYPE::ARTIFACT);
     }
 }
 
@@ -322,7 +349,10 @@ void CItemSelectUI::ReloadItems()
     {
         auto& itemSlot = m_vecItemSlot[i];
         if (nullptr != itemSlot)
+        {
             itemSlot->SetItemID(uniform_int_distribution<int>(0, 8)(g_engine));
+            itemSlot->SetItemType(ITEM_TYPE::ARTIFACT);
+        }
     }
 }
 

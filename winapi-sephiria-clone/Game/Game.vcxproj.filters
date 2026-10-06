@@ -175,14 +175,8 @@
     <Filter Include="01. Obj\06. UI\02. Inventory\01. CInventorySlotUI">
       <UniqueIdentifier>{3c79e06d-e89d-4543-b482-bdda3eb28fd3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\06. UI\03. ItemToolTip">
-      <UniqueIdentifier>{79c9b0e5-680c-49db-a9bd-50262dfc4feb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="06. Data">
       <UniqueIdentifier>{6d97a5cd-a9ef-427b-997f-d3bb769e62ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="06. Data\00. ItemData">
-      <UniqueIdentifier>{a7e59f2a-5a36-4662-bcee-415067a04b1f}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Obj\08. BaBa">
       <UniqueIdentifier>{042df00f-f6c3-4748-a068-65819303cc87}</UniqueIdentifier>
@@ -270,6 +264,27 @@
     </Filter>
     <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\02. MagicStaff\01. Shield">
       <UniqueIdentifier>{815e05f1-d516-4136-b455-27e414fd053f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Data\00. ArtifactData">
+      <UniqueIdentifier>{a7e59f2a-5a36-4662-bcee-415067a04b1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\07. Item\00. Artifact">
+      <UniqueIdentifier>{87f742b4-52ab-4d27-8893-d6d29178462e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\07. Item\01. StoneTablet">
+      <UniqueIdentifier>{bf36c614-9fbc-49e7-bd0e-facaeeee673c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Data\02. StoneTabletData">
+      <UniqueIdentifier>{5f21be1a-ee3f-4ca8-b927-34c76e4df62d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\03. ToolTip">
+      <UniqueIdentifier>{79c9b0e5-680c-49db-a9bd-50262dfc4feb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\03. ToolTip\00. ArtifactToolTip">
+      <UniqueIdentifier>{991d3e9b-4868-4499-86fd-953588fc1366}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\03. ToolTip\01. StoneTableToolTip">
+      <UniqueIdentifier>{5f559dcc-d7c7-4f0b-9c61-8ab19f44c6e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -447,11 +462,8 @@
     <ClInclude Include="CInventory.h">
       <Filter>05. Inventory</Filter>
     </ClInclude>
-    <ClInclude Include="CItemToolTip.h">
-      <Filter>01. Obj\06. UI\03. ItemToolTip</Filter>
-    </ClInclude>
-    <ClInclude Include="CItemData.h">
-      <Filter>06. Data\00. ItemData</Filter>
+    <ClInclude Include="CArtifactData.h">
+      <Filter>06. Data\00. ArtifactData</Filter>
     </ClInclude>
     <ClInclude Include="CBaba.h">
       <Filter>01. Obj\08. BaBa</Filter>
@@ -527,6 +539,18 @@
     </ClInclude>
     <ClInclude Include="CForgeUI.h">
       <Filter>01. Obj\06. UI\09. ForgeUI\00. ForgeUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CArtifact.h">
+      <Filter>01. Obj\07. Item\00. Artifact</Filter>
+    </ClInclude>
+    <ClInclude Include="CStoneTablet.h">
+      <Filter>01. Obj\07. Item\01. StoneTablet</Filter>
+    </ClInclude>
+    <ClInclude Include="CStoneTabletData.h">
+      <Filter>06. Data\02. StoneTabletData</Filter>
+    </ClInclude>
+    <ClInclude Include="CArtifactToolTip.h">
+      <Filter>01. Obj\06. UI\03. ToolTip\00. ArtifactToolTip</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -689,11 +713,8 @@
     <ClCompile Include="CMouse.cpp">
       <Filter>01. Obj\01. Mouse</Filter>
     </ClCompile>
-    <ClCompile Include="CItemToolTip.cpp">
-      <Filter>01. Obj\06. UI\03. ItemToolTip</Filter>
-    </ClCompile>
-    <ClCompile Include="CItemData.cpp">
-      <Filter>06. Data\00. ItemData</Filter>
+    <ClCompile Include="CArtifactData.cpp">
+      <Filter>06. Data\00. ArtifactData</Filter>
     </ClCompile>
     <ClCompile Include="CBaba.cpp">
       <Filter>01. Obj\08. BaBa</Filter>
@@ -769,6 +790,18 @@
     </ClCompile>
     <ClCompile Include="CForgeUI.cpp">
       <Filter>01. Obj\06. UI\09. ForgeUI\00. ForgeUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CArtifact.cpp">
+      <Filter>01. Obj\07. Item\00. Artifact</Filter>
+    </ClCompile>
+    <ClCompile Include="CStoneTablet.cpp">
+      <Filter>01. Obj\07. Item\01. StoneTablet</Filter>
+    </ClCompile>
+    <ClCompile Include="CStoneTabletData.cpp">
+      <Filter>06. Data\02. StoneTabletData</Filter>
+    </ClCompile>
+    <ClCompile Include="CArtifactToolTip.cpp">
+      <Filter>01. Obj\06. UI\03. ToolTip\00. ArtifactToolTip</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

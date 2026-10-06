@@ -2,8 +2,12 @@
 #include "CInventorySlotUI.h"
 #include "CItem.h"
 
+#include "CArtifact.h"
+
 #include "CImgMgr.h"
 #include "CFontMgr.h"
+#include "CArtifactData.h"
+#include "CStoneTabletData.h"
 
 CInventorySlotUI::CInventorySlotUI()
 	: m_pItem(nullptr), m_bCol(false)
@@ -64,7 +68,7 @@ void CInventorySlotUI::Render(Graphics* pGraphics)
 		return;
 
 	// 아이템 그리기
-	Image* pItemImg = CImgMgr::GetInstance()->FindImg(m_pItem->GetItemInfo()->strImg.c_str());
+	Image* pItemImg = CImgMgr::GetInstance()->FindImg(m_pItem->GetItemInfo().strImg.c_str());
 	vCellSize = { 32.f, 32.f };
 	vImgSize = vCellSize * m_fUIScale;
 	rcDest = {	m_tInfo.vPoint.fX - vImgSize.fX * 0.5f,
@@ -81,25 +85,29 @@ void CInventorySlotUI::Render(Graphics* pGraphics)
 		UnitPixel
 	);
 
-	// 아이템 레벨 그리기
-	int iMaxLevel = m_pItem->GetItemInfo()->vecStat.size();
-	int iLevel = m_pItem->GetLevel();
-	wstring strLevel = to_wstring(iLevel) + L"/" + to_wstring(iMaxLevel);
-	VEC vOffset{ 5.f * m_fUIScale, 5.f * m_fUIScale };
-	RectF DestRect{	m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + vOffset.fX, 
-					m_tInfo.vPoint.fY - vImgSize.fX * 0.5f + vOffset.fY, 
-					50.f, 50.f};
-	Color levelColor{};
-	if (iLevel < 0)
-		levelColor = { 255, 255, 0, 0 };
-	else if (iLevel == iMaxLevel)
-		levelColor = { 255, 0, 255, 0 };
-	else if (iLevel > iMaxLevel)
-		levelColor = { 255, 255, 255, 0 };
-	else
-		levelColor = { 255, 255, 255, 255 };
+	// 레벨 그리기
+	if (m_pItem->GetItemType() == ITEM_TYPE::ARTIFACT)
+	{
+		// 아이템 레벨 그리기
+		int iMaxLevel = static_cast<CArtifact*>(m_pItem)->GetArtifactInfo()->vecStat.size();
+		int iLevel = m_pItem->GetLevel();
+		wstring strLevel = to_wstring(iLevel) + L"/" + to_wstring(iMaxLevel);
+		VEC vOffset{ 5.f * m_fUIScale, 5.f * m_fUIScale };
+		RectF DestRect{ m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + vOffset.fX,
+						m_tInfo.vPoint.fY - vImgSize.fX * 0.5f + vOffset.fY,
+						50.f, 50.f };
+		Color levelColor{};
+		if (iLevel < 0)
+			levelColor = { 255, 255, 0, 0 };
+		else if (iLevel == iMaxLevel)
+			levelColor = { 255, 0, 255, 0 };
+		else if (iLevel > iMaxLevel)
+			levelColor = { 255, 255, 255, 0 };
+		else
+			levelColor = { 255, 255, 255, 255 };
 
-	CFontMgr::GetInstance()->DrawString(pGraphics, strLevel, FONT_TYPE::PIXEL_SMALL, DestRect, levelColor, 12.f, StringAlignmentNear, StringAlignmentNear);
+		CFontMgr::GetInstance()->DrawString(pGraphics, strLevel, FONT_TYPE::PIXEL_SMALL, DestRect, levelColor, 12.f, StringAlignmentNear, StringAlignmentNear);
+	}
 }
 
 void CInventorySlotUI::Release()

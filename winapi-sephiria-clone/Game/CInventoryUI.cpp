@@ -6,7 +6,13 @@
 #include "CShop.h"
 
 #include "CUIMgr.h"
-#include "CItemData.h"
+
+#include "CArtifact.h"
+#include "CStoneTablet.h"
+
+#include "CArtifactData.h"
+#include "CStoneTabletData.h"
+
 #include "CImgMgr.h"
 #include "CObjMgr.h"
 #include "CInventory.h"
@@ -69,14 +75,22 @@ int CInventoryUI::Update()
 	// 마우스 호버 아이템 세팅
 	if (m_pInventory->IsExistItem(m_iMouseHoverSlot))
 	{
-		m_pMouse->SetHoverReferItem({ m_pInventory->GetItem(m_iMouseHoverSlot)->GetItemInfo()->iID, ITEM_SOURCE::INVENTORY });
-		CUIMgr::GetInstance()->ShowUI(UIID::ITEM_TOOLTIP);
-		CUIMgr::GetInstance()->SetPos(UIID::ITEM_TOOLTIP, VEC{ 210.f, 200.f });
+		ITEM_INFO pItemInfo = m_pInventory->GetItem(m_iMouseHoverSlot)->GetItemInfo();
+		m_pMouse->SetHoverReferItem({ pItemInfo.iID, pItemInfo.eItemType, ITEM_SOURCE::INVENTORY});
+
+		if (pItemInfo.eItemType == ITEM_TYPE::ARTIFACT)
+		{
+			CUIMgr::GetInstance()->ShowUI(UIID::ARTIFACT_TOOLTIP);
+			CUIMgr::GetInstance()->SetPos(UIID::ARTIFACT_TOOLTIP, VEC{ 210.f, 200.f });
+		}
 	}
 	else if (m_pMouse->GetHoverReferItem().eItemSource == ITEM_SOURCE::INVENTORY)
 	{
-		CUIMgr::GetInstance()->HideUI(UIID::ITEM_TOOLTIP);
-		m_pMouse->SetHoverReferItem({ -1, ITEM_SOURCE::END });
+		if (m_pMouse->GetHoverReferItem().eItemType == ITEM_TYPE::ARTIFACT)
+		{
+			CUIMgr::GetInstance()->HideUI(UIID::ARTIFACT_TOOLTIP);
+		}
+		m_pMouse->SetHoverReferItem({ -1, ITEM_TYPE::END, ITEM_SOURCE::END });
 	}
 
 
@@ -84,7 +98,8 @@ int CInventoryUI::Update()
 	if (KEY_DOWN(VK_LBUTTON) && m_pInventory->IsExistItem(m_iMouseHoverSlot))
 	{
 		// 마우스가 현재 드래그 중인 아이템의 아이디를 참조하게 해줌 - 렌더용
-		m_pMouse->SetDragReferItem({ m_pInventory->GetItem(m_iMouseHoverSlot)->GetItemInfo()->iID, ITEM_SOURCE::INVENTORY });
+		ITEM_INFO pItemInfo = m_pInventory->GetItem(m_iMouseHoverSlot)->GetItemInfo();
+		m_pMouse->SetDragReferItem({ pItemInfo.iID, pItemInfo.eItemType, ITEM_SOURCE::INVENTORY });
 		m_iStartSlot = m_iMouseHoverSlot;
 
 		// 원래 슬롯은 안보이게 함
@@ -99,7 +114,7 @@ int CInventoryUI::Update()
 		if (SCENEID::SHOP == CSceneMgr::GetInstance()->GetCurrentSceneID())
 		{
 			// 판매 시도
-			static_cast<CShop*>(CSceneMgr::GetInstance()->GetCurrentScene())->TrySellItem(m_iMouseHoverSlot, m_pMouse->GetHoverReferItem().iID);
+			static_cast<CShop*>(CSceneMgr::GetInstance()->GetCurrentScene())->TrySellItem(m_iMouseHoverSlot, m_pMouse->GetHoverReferItem().iID, m_pMouse->GetHoverReferItem().eItemType);
 		}
 	}
 
@@ -127,7 +142,7 @@ int CInventoryUI::Update()
 				// SyncInventorySlot이 LateUpdate에서 Slot 동기화 해줘서 별도로 할 것 없음
 
 				// 초기화
-				m_pMouse->SetDragReferItem({ -1, ITEM_SOURCE::END });
+				m_pMouse->SetDragReferItem({ -1, ITEM_TYPE::END, ITEM_SOURCE::END });
 				m_iStartSlot = -1;
 			}
 		}
@@ -141,13 +156,13 @@ int CInventoryUI::Update()
 				if (iIdx != -1 && SCENEID::SHOP == CSceneMgr::GetInstance()->GetCurrentSceneID())
 				{
 					// 구매 시도 - 아이템 삽입
-					static_cast<CShop*>(CSceneMgr::GetInstance()->GetCurrentScene())->TryBuyItem(iIdx, m_pMouse->GetDragReferItem().iID);
+					static_cast<CShop*>(CSceneMgr::GetInstance()->GetCurrentScene())->TryBuyItem(iIdx, m_pMouse->GetDragReferItem().iID, m_pMouse->GetDragReferItem().eItemType);
 				}
 
 				// SyncInventorySlot이 LateUpdate에서 Slot 동기화 해줘서 별도로 할 것 없음
 
 				// 초기화
-				m_pMouse->SetDragReferItem({ -1, ITEM_SOURCE::END });
+				m_pMouse->SetDragReferItem({ -1, ITEM_TYPE::END, ITEM_SOURCE::END });
 				m_iStartSlot = -1;
 			}
 		}
@@ -161,7 +176,7 @@ int CInventoryUI::Update()
 				if (iIdx != -1 && CUIMgr::GetInstance()->GetUI(UIID::ITEM_SELECT)->GetView())
 				{
 					// 구매 시도 - 아이템 삽입
-					if (m_pInventory->InsertItem(iIdx, m_pMouse->GetDragReferItem().iID))
+					if (m_pInventory->InsertItem(iIdx, m_pMouse->GetDragReferItem().iID, m_pMouse->GetDragReferItem().eItemType))
 					{
 						CSoundMgr::GetInstance()->PlaySound(L"AcquireItem.wav", CHANNEL_GROUPID::SFX, 1.f);
 						CUIMgr::GetInstance()->HideUI(UIID::ITEM_SELECT);
@@ -171,7 +186,7 @@ int CInventoryUI::Update()
 				// SyncInventorySlot이 LateUpdate에서 Slot 동기화 해줘서 별도로 할 것 없음
 
 				// 초기화
-				m_pMouse->SetDragReferItem({ -1, ITEM_SOURCE::END });
+				m_pMouse->SetDragReferItem({ -1, ITEM_TYPE::END, ITEM_SOURCE::END });
 				m_iStartSlot = -1;
 			}
 		}

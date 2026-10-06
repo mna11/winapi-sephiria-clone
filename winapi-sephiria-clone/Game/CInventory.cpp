@@ -3,6 +3,9 @@
 #include "CItem.h"
 #include "CPlayer.h"
 
+#include "CArtifact.h"
+#include "CStoneTablet.h"
+
 #include "CAbstractFactory.h"
 #include "CImgMgr.h"
 #include "CUIMgr.h"
@@ -11,7 +14,7 @@
 #include "CSoundMgr.h"
 
 CInventory::CInventory()
-	: m_iInvenSize(24), m_pOwner(nullptr)
+	: m_iInvenSize(INVEN_SIZE), m_pOwner(nullptr)
 {
 	m_vecItems.resize(m_iInvenSize, nullptr);
 }
@@ -28,7 +31,7 @@ void CInventory::Initialize()
 	{
 		if (i < 9)
 		{
-			InsertItem(i, i);
+			InsertItem(i, i, ITEM_TYPE::ARTIFACT);
 		}
 	}
 }
@@ -41,15 +44,27 @@ void CInventory::Release()
 }
 
 
-bool CInventory::InsertItem(int iIdx, int iID)
+bool CInventory::InsertItem(int iIdx, int iID, ITEM_TYPE eItemType)
 {
 	if (nullptr == m_pOwner)
 		return false;
 
 	if (nullptr == m_vecItems[iIdx])
 	{
-		m_vecItems[iIdx] = CAbstractFactory<CItem>::CreateItem(iID, m_pOwner);
-		m_pOwner->AddStat(m_vecItems[iIdx]->GetStat());
+		switch (eItemType)
+		{
+		case ITEM_TYPE::ARTIFACT:
+			m_vecItems[iIdx] = CAbstractFactory<CArtifact>::CreateItem(iID, m_pOwner, eItemType);
+			m_pOwner->AddStat(m_vecItems[iIdx]->GetStat());
+			break;
+		case ITEM_TYPE::STONE_TABLET:
+			m_vecItems[iIdx] = CAbstractFactory<CStoneTablet>::CreateItem(iID, m_pOwner, eItemType);
+			break;
+		default:
+			return false;
+			break;
+		}
+		
 		return true;
 	}
 	else
@@ -59,8 +74,20 @@ bool CInventory::InsertItem(int iIdx, int iID)
 		{
 			if (nullptr == m_vecItems[i])
 			{
-				m_vecItems[i] = CAbstractFactory<CItem>::CreateItem(iID, m_pOwner);
-				m_pOwner->AddStat(m_vecItems[i]->GetStat());
+				switch (eItemType)
+				{
+				case ITEM_TYPE::ARTIFACT:
+					m_vecItems[i] = CAbstractFactory<CArtifact>::CreateItem(iID, m_pOwner, eItemType);
+					m_pOwner->AddStat(m_vecItems[i]->GetStat());
+					break;
+				case ITEM_TYPE::STONE_TABLET:
+					m_vecItems[i] = CAbstractFactory<CStoneTablet>::CreateItem(iID, m_pOwner, eItemType);
+					break;
+				default:
+					return false;
+					break;
+				}
+
 				return true;
 			}
 		}
@@ -72,6 +99,8 @@ bool CInventory::InsertItem(int iIdx, int iID)
 
 void CInventory::EraseItem(int iIdx)
 {
+	if (nullptr != m_vecItems[iIdx])
+		m_pOwner->AddStat(m_vecItems[iIdx]->GetStat() * -1);
 	SafeDelete<CItem*>(m_vecItems[iIdx]);
 	m_vecItems[iIdx] = nullptr;
 }

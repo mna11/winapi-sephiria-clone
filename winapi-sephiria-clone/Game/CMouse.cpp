@@ -7,14 +7,16 @@
 #include "CImgMgr.h"
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
-#include "CItemData.h"
+
+#include "CArtifactData.h"
+#include "CStoneTabletData.h"
 
 CMouse::CMouse()
 	: CState(MOUSE_STATE::END, MOUSE_STATE::COMBAT),
 	m_dStateTime(0.), m_dClickTime(0.)
 {
-	m_tHoverReferItem = { -1, ITEM_SOURCE::END };
-	m_tDragReferItem = { -1, ITEM_SOURCE::END };
+	m_tHoverReferItem = { -1, ITEM_TYPE::END, ITEM_SOURCE::END };
+	m_tDragReferItem = { -1, ITEM_TYPE::END, ITEM_SOURCE::END };
 }
 
 CMouse::~CMouse()
@@ -69,10 +71,26 @@ void CMouse::Render(Graphics* pGraphics)
 	VEC vImgSize{};
 	RectF DestRect{};
 
-	if (-1 != m_tDragReferItem.iID)
+	if (-1 != m_tDragReferItem.iID && ITEM_TYPE::END != m_tDragReferItem.eItemType)
 	{
-		const ITEM_INFO* pItemInfo = CItemData::GetInstance()->FindItemInfo(m_tDragReferItem.iID);
-		pImg = CImgMgr::GetInstance()->FindImg(pItemInfo->strImg.c_str());
+		ITEM_INFO tItemInfo{};
+
+		switch (m_tDragReferItem.eItemType)
+		{
+		case ITEM_TYPE::ARTIFACT:
+			tItemInfo = CArtifactData::GetInstance()->FindItemInfo(m_tDragReferItem.iID);
+			break;
+		case ITEM_TYPE::STONE_TABLET:
+			tItemInfo = CStoneTabletData::GetInstance()->FindItemInfo(m_tDragReferItem.iID);
+			break;
+		default:
+			break;
+		}
+
+		if (-1 == tItemInfo.iID)
+			return;
+
+		pImg = CImgMgr::GetInstance()->FindImg(tItemInfo.strImg.c_str());
 		vCellSize = { 32.f, 32.f };
 		vImgSize = vCellSize * PIXEL_SCALE * 0.5f;
 
