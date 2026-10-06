@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 class CWeaponData
@@ -34,10 +34,13 @@ public:
 	void Release();
 
 private:
-	void EmplaceWeaponInfo(int iID, wstring strIconImg, wstring strImg1, wstring strImg2, wstring strName, wstring strDescription, WEAPON_TYPE eWeaponType);
+	void EmplaceWeaponInfo(int iID, wstring strIconImg, wstring strName, wstring strDescription, WEAPON_TYPE eWeaponType);
 
 	void InitializeImg();
 	void InitializeItemInfo();
+
+public:
+	int	GetMapSize() { return m_mapWeaponInfo.size(); }
 
 public:
 	const WEAPON_INFO* FindWeaponInfo(int iID) const;

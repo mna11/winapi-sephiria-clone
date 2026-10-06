@@ -82,7 +82,7 @@ void CSceneMgr::ApplyChange()
 		{
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CForge>::CreateScene();
-			//CUIMgr::GetInstance()->ShowUI(UIID::FORGEUI);
+			CUIMgr::GetInstance()->ShowUI(UIID::FORGE);
 			break;
 		}
 		case SCENEID::STAGE0:

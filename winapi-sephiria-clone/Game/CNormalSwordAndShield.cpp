@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CNormalSwordAndShield.h"
 
 #include "CNormalSword.h"
@@ -26,44 +26,47 @@ CNormalSwordAndShield::~CNormalSwordAndShield()
 void CNormalSwordAndShield::Initialize()
 {
 	m_eRender = RENDERID::GAMEOBJECT;
-	m_iRenderLayer = 0; // ¾Æ¹«°Å³ª Áàµµ µÊ, ¾îÂ÷ÇÇ ÇÑ¼Õ°ËÀº Á÷Á¢ ·»´õ ¾ÈÇÔ
-	// ½Çµå´Â ÇÃ·¹ÀÌ¾î ¾Õ¿¡ ÀÖ¾î¾ß ÇÏ°í, °ËÀº µÚ¿¡ ÀÖ¾î¾ß ÇØ¼­
-	// ½Çµå¶û ¼Òµå¸¦ µû·Î »ı¼ºÇØ¼­ ObjMgr¿¡ ³ÖÀ»°ÅÀÓ
+	m_iRenderLayer = 0; // ì•„ë¬´ê±°ë‚˜ ì¤˜ë„ ë¨, ì–´ì°¨í”¼ í•œì†ê²€ì€ ì§ì ‘ ë Œë” ì•ˆí•¨
+	// ì‹¤ë“œëŠ” í”Œë ˆì´ì–´ ì•ì— ìˆì–´ì•¼ í•˜ê³ , ê²€ì€ ë’¤ì— ìˆì–´ì•¼ í•´ì„œ
+	// ì‹¤ë“œë‘ ì†Œë“œë¥¼ ë”°ë¡œ ìƒì„±í•´ì„œ ObjMgrì— ë„£ì„ê±°ì„
 
-	// °Ë°ú ¹æÆĞ »ı¼º ÈÄ ÃÊ±âÈ­ ÀÛ¾÷
-	// ÀÌÈÄ ObjMgr¿¡ ³Ö¾îÁÖ±â
+	// ê²€ê³¼ ë°©íŒ¨ ìƒì„± í›„ ì´ˆê¸°í™” ì‘ì—…
+	// ì´í›„ ObjMgrì— ë„£ì–´ì£¼ê¸°
 	m_pSword = CAbstractFactory<CNormalSword>::CreateSwordAndShield(&m_eCurState, &m_tAtk);
 	m_pShield = CAbstractFactory<CNormalShield>::CreateSwordAndShield(&m_eCurState, &m_tAtk);
 	CObjMgr::GetInstance()->AddObject(OBJID::WEAPON, m_pSword);
 	CObjMgr::GetInstance()->AddObject(OBJID::WEAPON, m_pShield);
 
-	// °ø°İ Á¤º¸ ÃÊ±âÈ­
-	// ÃÖ´ë 3¿¬°İ °¡´É, °ø°İ °É¸®´Â ½Ã°£ 1ÃÊ
-	// °ø°İ »óÅÂ Ã³À½ ÁøÀÔ ½Ã ÃÊ±âÈ­ÇÏ±ä ÇÏÁö¸¸, ¹æ¾îÀûÀ¸·Î ÄÚµå ÀÛ¼º
+	// ê³µê²© ì •ë³´ ì´ˆê¸°í™”
+	// ìµœëŒ€ 3ì—°ê²© ê°€ëŠ¥, ê³µê²© ê±¸ë¦¬ëŠ” ì‹œê°„ 1ì´ˆ
+	// ê³µê²© ìƒíƒœ ì²˜ìŒ ì§„ì… ì‹œ ì´ˆê¸°í™”í•˜ê¸´ í•˜ì§€ë§Œ, ë°©ì–´ì ìœ¼ë¡œ ì½”ë“œ ì‘ì„±
 	SetAtk(0, 3, 0., 0.2, 1.0);
+
+	m_eWeaponType = WEAPON_TYPE::SWORD_AND_SHIELD;
+	m_iID = 0;
 }
 
 void CNormalSwordAndShield::Render(Graphics* pGraphics)
 {
-	// ¼Òµå, ½Çµå¿¡¼­ °¢ÀÚ ·»´õ¸µÇÔ
+	// ì†Œë“œ, ì‹¤ë“œì—ì„œ ê°ì ë Œë”ë§í•¨
 
 #ifdef _DEBUG
 	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 	SolidBrush blackBrush(Color(255, 0, 0, 0));
 
-	// °ø°İ Ãæµ¹ RECT
+	// ê³µê²© ì¶©ëŒ RECT
 	pGraphics->FillRectangle(&blackBrush, (int)(m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::ATTACK)].left + vScroll.fX),
 		(int)(m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::ATTACK)].top + vScroll.fY),
 		(int)m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::ATTACK)].right - m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::ATTACK)].left,
 		(int)m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::ATTACK)].bottom - m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::ATTACK)].top);
 
-	// ¹æ¾î Ãæµ¹ RECT
+	// ë°©ì–´ ì¶©ëŒ RECT
 	pGraphics->FillRectangle(&blackBrush, (int)(m_vecDefRect[toUType(SWORD_AND_SHIELD_DEF_RECT::DEFENSE)].left + vScroll.fX),
 		(int)(m_vecDefRect[toUType(SWORD_AND_SHIELD_DEF_RECT::DEFENSE)].top + vScroll.fY),
 		(int)m_vecDefRect[toUType(SWORD_AND_SHIELD_DEF_RECT::DEFENSE)].right - m_vecDefRect[toUType(SWORD_AND_SHIELD_DEF_RECT::DEFENSE)].left,
 		(int)m_vecDefRect[toUType(SWORD_AND_SHIELD_DEF_RECT::DEFENSE)].bottom - m_vecDefRect[toUType(SWORD_AND_SHIELD_DEF_RECT::DEFENSE)].top);
 
-	// È¸Àü Ãæµ¹ RECT
+	// íšŒì „ ì¶©ëŒ RECT
 	pGraphics->FillRectangle(&blackBrush, (int)(m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::CLEAVE)].left + vScroll.fX),
 		(int)(m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::CLEAVE)].top + vScroll.fY),
 		(int)m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::CLEAVE)].right - m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::CLEAVE)].left,
@@ -81,7 +84,7 @@ void CNormalSwordAndShield::CreateEffect()
 	float fDistance = 50.f;
 	VEC vOffset{ fDistance * cosf(fTargetAngle), fDistance * sinf(fTargetAngle) };
 
-	// °ø°İ
+	// ê³µê²©
 	if (KEY_DOWN(VK_LBUTTON) && m_eCurState != SWORD_AND_SHIELD_STATE::DEFENSE)
 	{
 		float fTargetAngle = m_pTarget->GetAngle();
@@ -108,7 +111,7 @@ void CNormalSwordAndShield::CreateEffect()
 	}
 	SetRect(&m_vecAtkRect[toUType(SWORD_AND_SHIELD_ATK_RECT::ATTACK)], vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
 
-	// ¹æ¾î
+	// ë°©ì–´
 	vRenderPoint = { 0.f, 0.f };
 	vRectSize = { 0.f, 0.f };
 	if (m_eCurState == SWORD_AND_SHIELD_STATE::DEFENSE)
@@ -127,7 +130,7 @@ void CNormalSwordAndShield::CreateEffect()
 	}
 	SetRect(&m_vecDefRect[toUType(SWORD_AND_SHIELD_DEF_RECT::DEFENSE)], vRenderPoint.fX - vRectSize.fX, vRenderPoint.fY - vRectSize.fY, vRenderPoint.fX + vRectSize.fX, vRenderPoint.fY + vRectSize.fY);
 
-	// È¸Àü º£±â
+	// íšŒì „ ë² ê¸°
 	vRenderPoint = { 0.f, 0.f };
 	vRectSize = { 0.f, 0.f };
 	if (m_eCurState == SWORD_AND_SHIELD_STATE::CLEAVE)
@@ -145,7 +148,7 @@ void CNormalSwordAndShield::CreateEffect()
 
 void CNormalSwordAndShield::ApplyChange()
 {
-	// »óÅÂ Ã¹ ÁøÀÔ
+	// ìƒíƒœ ì²« ì§„ì…
 	if (m_eCurState != m_eNextState)
 	{
 		switch (m_eNextState)
@@ -154,7 +157,7 @@ void CNormalSwordAndShield::ApplyChange()
 			SetAtk(0, 0, 0., 0., 0.);
 			break;
 		case SWORD_AND_SHIELD_STATE::ATTACK:
-			SetAtk(1, 3, 0., 0.2, 0.5); // °ø°İ Ã³À½ ÁøÀÔ ½Ã ÃÊ±âÈ­
+			SetAtk(1, 3, 0., 0.2, 0.5); // ê³µê²© ì²˜ìŒ ì§„ì… ì‹œ ì´ˆê¸°í™”
 			break;
 		case SWORD_AND_SHIELD_STATE::DEFENSE:
 			break;

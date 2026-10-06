@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 #include "CSword.h"
 
-// Ãæµ¹ °ü·ÃÇØ¼­´Â Sword And Shield
-// ÃÊ±âÈ­(Initialize), À§Ä¡(Update)´Â CSword¿¡¼­ °ü¸®
-// ÇÏÀ§ Sword¿¡¼­´Â ·»´õ¸¸ ½Å°æ¾²¸é µÈ´Ù.
+// ì¶©ëŒ ê´€ë ¨í•´ì„œëŠ” Sword And Shield
+// ì´ˆê¸°í™”(Initialize), ìœ„ì¹˜(Update)ëŠ” CSwordì—ì„œ ê´€ë¦¬
+// í•˜ìœ„ Swordì—ì„œëŠ” ë Œë”ë§Œ ì‹ ê²½ì“°ë©´ ëœë‹¤.
 
 class CNormalSword :
     public CSword

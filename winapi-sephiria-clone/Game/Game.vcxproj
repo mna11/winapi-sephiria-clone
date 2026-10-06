@@ -166,6 +166,7 @@
     <ClInclude Include="CAnvil.h" />
     <ClInclude Include="CForge.h" />
     <ClInclude Include="CForgeSlotUI.h" />
+    <ClInclude Include="CForgeUI.h" />
     <ClInclude Include="CGargoyle.h" />
     <ClInclude Include="CImgMgr.h" />
     <ClInclude Include="CInventory.h" />
@@ -250,6 +251,7 @@
     <ClCompile Include="CAnvil.cpp" />
     <ClCompile Include="CForge.cpp" />
     <ClCompile Include="CForgeSlotUI.cpp" />
+    <ClCompile Include="CForgeUI.cpp" />
     <ClCompile Include="CGargoyle.cpp" />
     <ClCompile Include="CImgMgr.cpp" />
     <ClCompile Include="CInventory.cpp" />

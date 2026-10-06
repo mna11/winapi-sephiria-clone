@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CScene.h"
 
 class CButton;
@@ -20,6 +20,10 @@ public:
     void Init_CreateObj() override;
 public:
     void UpdateTime();
+
+public:
+    void TryChangeWeapon(int iID);
+    void ChangeWeapon(int iID);
 
 private:
     int     m_iFrame;

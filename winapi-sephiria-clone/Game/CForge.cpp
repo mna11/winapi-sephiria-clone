@@ -1,9 +1,9 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CForge.h"
 
 #include "CAbstractFactory.h"
 #include "CObjMgr.h"
-#include "CItemData.h"
+#include "CWeaponData.h"
 #include "CImgMgr.h"
 #include "CUIMgr.h"
 #include "CCameraMgr.h"
@@ -29,7 +29,7 @@ void CForge::Initialize()
 	Init_LoadImg(L"../Resource/Image/Forge/ForgeBackground.png");
 	Init_CreateObj();
 
-	// ¸Ş¼¼Áö ¹Ú½º ·ºÆ®
+	// ë©”ì„¸ì§€ ë°•ìŠ¤ ë ‰íŠ¸
 	m_rcMsgBox = { (WINCX >> 1) - 200.f , (WINCY >> 1) - 100.f, 400.f, 200.f };
 }
 
@@ -47,15 +47,6 @@ void CForge::Update()
 		m_pMsgBoxUI->Update();
 		for (auto btn : m_pMsgBoxUI->GetButtons())
 			btn->Update();
-	}
-
-	if (KEY_DOWN('0'))
-	{
-		CObjMgr::GetInstance()->GetPlayer()->GetWeaponController()->RequestChange(0);
-	}
-	else if (KEY_DOWN('1'))
-	{
-		CObjMgr::GetInstance()->GetPlayer()->GetWeaponController()->RequestChange(1);
 	}
 }
 
@@ -98,8 +89,8 @@ void CForge::Render(Graphics* pGraphics)
 	pGraphics->ReleaseHDC(hBackDC);
 
 
-	wstring strTitle = L"¹«±â °­È­";
-	wstring strSubTitle = L"¹«±â¿¡ ÈûÀ» ºÎ¿©ÇÏ¿© »õ·Ó°Ô Åº»ı½ÃÅµ´Ï´Ù.";
+	wstring strTitle = L"ë¬´ê¸° ê°•í™”";
+	wstring strSubTitle = L"ë¬´ê¸°ì— í˜ì„ ë¶€ì—¬í•˜ì—¬ ìƒˆë¡­ê²Œ íƒ„ìƒì‹œí‚µë‹ˆë‹¤.";
 	
 	float fTitleHeight = 50.f;
 	RectF rcTitle{ 0, 30.f, WINCX, fTitleHeight };
@@ -123,7 +114,7 @@ void CForge::Render(Graphics* pGraphics)
 
 void CForge::Release()
 {
-	// ¹öÆ° »èÁ¦ ±ÔÄ¢
+	// ë²„íŠ¼ ì‚­ì œ ê·œì¹™
 	if (nullptr != m_pEscapeButton)
 	{
 		m_pEscapeButton->SetDead(true);
@@ -138,7 +129,7 @@ void CForge::Release()
 
 void CForge::Init_CreateObj()
 {
-	// ¹öÆ° µî·Ï
+	// ë²„íŠ¼ ë“±ë¡
 	m_pEscapeButton = CAbstractFactory<CButton>::CreateButton(
 		CObjMgr::GetInstance()->GetMouse(),
 		RectF{ WINCX - 70.f, 10.f, 21.f * PIXEL_SCALE * 0.5f, 33.f * PIXEL_SCALE * 0.5f },
@@ -147,10 +138,10 @@ void CForge::Init_CreateObj()
 		VEC{ 21.f, 33.f }
 	);
 
-	// ¹öÆ° ÇÔ¼ö µî·Ï
+	// ë²„íŠ¼ í•¨ìˆ˜ ë“±ë¡
 	m_pEscapeButton->SetOnClick([this]() {
 		CSceneMgr::GetInstance()->BackToSaveScene();
-		});
+	});
 	CObjMgr::GetInstance()->AddObject(OBJID::UI, m_pEscapeButton);
 }
 
@@ -163,4 +154,63 @@ void CForge::UpdateTime()
 		m_iFrame = (m_iFrame + 1) % 60;
 		m_dFrameTime -= 0.05;
 	}
+}
+
+void CForge::TryChangeWeapon(int iID)
+{
+	const WEAPON_INFO* pWeaponInfo = CWeaponData::GetInstance()->FindWeaponInfo(iID);
+	if (nullptr == pWeaponInfo)
+		return;
+
+	wstring wstr = pWeaponInfo->strName + L"ë¡œ ê°•í™”í•˜ì‹œê² ìŠµë‹ˆê¹Œ?";
+
+	m_pMsgBoxUI = CAbstractFactory<CMsgBox>::CreateMsgBox(
+		m_rcMsgBox,
+		2,
+		MSG_BOX_LAYOUT::NORMAL,
+		wstr
+	);
+	CObjMgr::GetInstance()->AddObject(OBJID::UI, m_pMsgBoxUI);
+
+	// ë²„íŠ¼ ì½œë°± í•¨ìˆ˜ ë“±ë¡ 
+	auto vecButtons = m_pMsgBoxUI->GetButtons();
+	vecButtons[0]->SetOnClick([this, iID]()
+		{
+			CMsgBox* pConfirm = m_pMsgBoxUI;
+
+			// ì¼ë‹¨ í™”ë©´ì—ì„œ ì•ˆë³´ì´ê²Œ
+			pConfirm->Hide();
+			for (auto btn : pConfirm->GetButtons())
+				btn->Hide();
+
+			// ì‚­ì œ ì˜ˆì•½
+			pConfirm->SetDead(true);
+			m_pMsgBoxUI = nullptr;
+
+			this->ChangeWeapon(iID);
+		});
+	vecButtons[0]->SetString(L"Yes");
+
+	vecButtons[1]->SetOnClick([this]()
+		{
+			CMsgBox* pConfirm = m_pMsgBoxUI;
+			// ì¼ë‹¨ í™”ë©´ì—ì„œ ì•ˆë³´ì´ê²Œ
+			pConfirm->Hide();
+			for (auto btn : pConfirm->GetButtons())
+				btn->Hide();
+
+			pConfirm->SetDead(true);
+			m_pMsgBoxUI = nullptr;
+		});
+	vecButtons[1]->SetString(L"No");
+}
+
+void CForge::ChangeWeapon(int iID)
+{
+	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+	if (nullptr == pPlayer)
+		return;
+
+	pPlayer->GetWeaponController()->RequestChange(iID);
+	CSceneMgr::GetInstance()->BackToSaveScene();
 }

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CAnvil.h"
 
 #include "CCollisionMgr.h"
@@ -26,7 +26,7 @@ void CAnvil::Initialize()
 {
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Anvil/Anvil.png", L"Anvil");
 
-	// ±âÃÊ Á¤º¸ ÃÊ±âÈ­
+	// ê¸°ì´ˆ ì •ë³´ ì´ˆê¸°í™”
 	m_tInfo = { 0.f, 0.f, 13.f * PIXEL_SCALE, 12.f * PIXEL_SCALE };
 	m_eRender = RENDERID::GAMEOBJECT;
 	m_iRenderLayer = 0;
@@ -57,14 +57,14 @@ void CAnvil::Render(Graphics* pGraphics)
 	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
 #ifdef _DEBUG
-	// »óÈ£ÀÛ¿ë ·ºÆ®
+	// ìƒí˜¸ì‘ìš© ë ‰íŠ¸
 	SolidBrush blackBrush(Color(255, 0, 0, 0));
 	pGraphics->FillRectangle(&blackBrush, (int)(m_tInteractRect.left + vScroll.fX),
 		(int)(m_tInteractRect.top + vScroll.fY),
 		(int)(m_tInteractRect.right - m_tInteractRect.left),
 		(int)(m_tInteractRect.bottom - m_tInteractRect.top)
 	);
-	// Ãæµ¹ ·ºÆ®
+	// ì¶©ëŒ ë ‰íŠ¸
 	SolidBrush whiteBrush(Color(255, 255, 255, 255));
 	pGraphics->FillRectangle(&whiteBrush, (int)(m_tRect.left + vScroll.fX),
 		(int)(m_tRect.top + vScroll.fY),
@@ -86,7 +86,7 @@ void CAnvil::Render(Graphics* pGraphics)
 
 	if (m_bCol)
 	{
-		// ¾È³» ±×¸®±â
+		// ì•ˆë‚´ ê·¸ë¦¬ê¸°
 		pImg = CImgMgr::GetInstance()->FindImg(L"KeyUI");
 
 		float fKeyImgWidth = 15.f * PIXEL_SCALE;
@@ -95,10 +95,10 @@ void CAnvil::Render(Graphics* pGraphics)
 		float fAllWidth = fKeyImgWidth + fTextWidth + fGap;
 		float fHeight = 10.f * PIXEL_SCALE;
 
-		wstring strAnvil = L"°­È­";
+		wstring strAnvil = L"ê°•í™”";
 		RectF rcAnvil = { m_tInfo.vPoint.fX - fAllWidth * 0.5f + vScroll.fX, m_tInfo.vPoint.fY - vImgSize.fY * 0.7f - fHeight + vScroll.fY,
 							fAllWidth, fHeight };
-		// rcAnvil ¾È¿¡ Æ÷ÇÔµÇ´Â À§Ä¡
+		// rcAnvil ì•ˆì— í¬í•¨ë˜ëŠ” ìœ„ì¹˜
 		RectF rcAnvilImg = rcAnvil;
 		rcAnvilImg.Width = fKeyImgWidth;
 

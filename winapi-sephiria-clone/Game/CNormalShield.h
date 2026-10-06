@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CShield.h"
 class CNormalShield :
     public CShield

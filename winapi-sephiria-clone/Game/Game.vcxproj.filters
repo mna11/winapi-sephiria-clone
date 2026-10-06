@@ -498,9 +498,6 @@
     <ClInclude Include="CForge.h">
       <Filter>04. Scene\03. Forge</Filter>
     </ClInclude>
-    <ClInclude Include="CForgeSlotUI.h">
-      <Filter>01. Obj\06. UI\09. ForgeUI</Filter>
-    </ClInclude>
     <ClInclude Include="CWeaponData.h">
       <Filter>06. Data\01. WeaponData</Filter>
     </ClInclude>
@@ -524,6 +521,12 @@
     </ClInclude>
     <ClInclude Include="CMagicStaffShield.h">
       <Filter>01. Obj\03. Weapon\01. SwordAndShield\02. MagicStaff\01. Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="CForgeSlotUI.h">
+      <Filter>01. Obj\06. UI\09. ForgeUI\01. ForgeSlotUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CForgeUI.h">
+      <Filter>01. Obj\06. UI\09. ForgeUI\00. ForgeUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -737,9 +740,6 @@
     <ClCompile Include="CForge.cpp">
       <Filter>04. Scene\03. Forge</Filter>
     </ClCompile>
-    <ClCompile Include="CForgeSlotUI.cpp">
-      <Filter>01. Obj\06. UI\09. ForgeUI</Filter>
-    </ClCompile>
     <ClCompile Include="CWeaponData.cpp">
       <Filter>06. Data\01. WeaponData</Filter>
     </ClCompile>
@@ -763,6 +763,12 @@
     </ClCompile>
     <ClCompile Include="CMagicStaffShield.cpp">
       <Filter>01. Obj\03. Weapon\01. SwordAndShield\02. MagicStaff\01. Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="CForgeSlotUI.cpp">
+      <Filter>01. Obj\06. UI\09. ForgeUI\01. ForgeSlotUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CForgeUI.cpp">
+      <Filter>01. Obj\06. UI\09. ForgeUI\00. ForgeUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CNormalSword.h"
 
 #include "CImgMgr.h"
@@ -18,7 +18,7 @@ void CNormalSword::HandleIdleRender(Graphics* pGraphics, Image* pImg, VEC& vScro
 {
 	float fTargetAngle = m_pTarget->GetAngle();
 
-	// 2»çºÐ¸é, 3»çºÐ¸é - ¿©±â¼­ ºÐ¸é ±âÁØÀº Ä«Å×½Ã¾È ÁÂÇ¥°è
+	// 2ì‚¬ë¶„ë©´, 3ì‚¬ë¶„ë©´ - ì—¬ê¸°ì„œ ë¶„ë©´ ê¸°ì¤€ì€ ì¹´í…Œì‹œì•ˆ ì¢Œí‘œê³„
 	if (fabsf(fTargetAngle) > PI * 0.5f)
 	{
 		fTargetAngle = fTargetAngle - PI;
@@ -46,7 +46,7 @@ void CNormalSword::HandleAttackRender(Graphics* pGraphics, Image* pImg, VEC& vSc
 
 void CNormalSword::HandleAttack1Render(Graphics* pGraphics, Image* pImg, VEC& vScroll)
 {
-	// PI¸¸Å­ ¾Æ·¡·Î È¸Àü½ÃÅ³ °Çµ¥, ÇöÀç °ø°Ý Å¬¸¯ ÈÄ °É¸° ½Ã°£ ºñÀ²¿¡ µû¶ó ´Ù¸£°Ô ÇÑ´Ù.
+	// PIë§Œí¼ ì•„ëž˜ë¡œ íšŒì „ì‹œí‚¬ ê±´ë°, í˜„ìž¬ ê³µê²© í´ë¦­ í›„ ê±¸ë¦° ì‹œê°„ ë¹„ìœ¨ì— ë”°ë¼ ë‹¤ë¥´ê²Œ í•œë‹¤.
 	float fTargetAngle = m_fAngle;
 	float fFactor = (m_pAtk->dElapseTime > m_pAtk->dMaxTime) ? 1.f : m_pAtk->dElapseTime / m_pAtk->dMaxTime;
 
