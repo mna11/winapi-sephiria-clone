@@ -21,5 +21,8 @@ public:
 
 public:
     void ChangeLevel(int iLevel);
+
+    // CItem을(를) 통해 상속됨
+    void InitializeData(int m_iID, ITEM_TYPE eType) override;
 };
 

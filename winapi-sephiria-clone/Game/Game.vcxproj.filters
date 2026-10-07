@@ -283,7 +283,7 @@
     <Filter Include="01. Obj\06. UI\03. ToolTip\00. ArtifactToolTip">
       <UniqueIdentifier>{991d3e9b-4868-4499-86fd-953588fc1366}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\06. UI\03. ToolTip\01. StoneTableToolTip">
+    <Filter Include="01. Obj\06. UI\03. ToolTip\01. StoneTabletToolTip">
       <UniqueIdentifier>{5f559dcc-d7c7-4f0b-9c61-8ab19f44c6e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -552,6 +552,9 @@
     <ClInclude Include="CArtifactToolTip.h">
       <Filter>01. Obj\06. UI\03. ToolTip\00. ArtifactToolTip</Filter>
     </ClInclude>
+    <ClInclude Include="CStoneTabletToolTIp.h">
+      <Filter>01. Obj\06. UI\03. ToolTip\01. StoneTabletToolTip</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -802,6 +805,9 @@
     </ClCompile>
     <ClCompile Include="CArtifactToolTip.cpp">
       <Filter>01. Obj\06. UI\03. ToolTip\00. ArtifactToolTip</Filter>
+    </ClCompile>
+    <ClCompile Include="CStoneTabletToolTIp.cpp">
+      <Filter>01. Obj\06. UI\03. ToolTip\01. StoneTabletToolTip</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

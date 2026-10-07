@@ -66,7 +66,7 @@ void CStage::HotKey()
     {
         CUIMgr::GetInstance()->ToggleUI(UIID::INVENTORY);
         CUIMgr::GetInstance()->HideUI(UIID::ARTIFACT_TOOLTIP);
-        CUIMgr::GetInstance()->HideUI(UIID::STONE_TABLET_TOOPTIP);
+        CUIMgr::GetInstance()->HideUI(UIID::STONE_TABLET_TOOLTIP);
 
         // 사운드
         if (CUIMgr::GetInstance()->GetUI(UIID::INVENTORY)->GetView())

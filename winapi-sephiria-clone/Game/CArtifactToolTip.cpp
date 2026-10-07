@@ -30,11 +30,11 @@ void CArtifactToolTip::Initialize()
 
 int CArtifactToolTip::Update()
 {
-	if (!m_bView)
-		return NOEVENT;
-
 	if (m_bDead)
 		return DEAD;
+
+	if (!m_bView)
+		return NOEVENT;
 
 	return NOEVENT;
 }
@@ -65,7 +65,7 @@ void CArtifactToolTip::Render(Graphics* pGraphics)
 	RectF DestRect{};
 
 	// 베이스 그리기
-	pImg = CImgMgr::GetInstance()->FindImg(L"ItemToolTip_Base");
+	pImg = CImgMgr::GetInstance()->FindImg(L"ArtifactToolTip_Base");
 	if (nullptr == pImg)
 		return; 
 
@@ -77,6 +77,15 @@ void CArtifactToolTip::Render(Graphics* pGraphics)
 	float fCellMiddleEnd	= 51.f;
 
 	float fMiddleSize = 10.f + pArtifactInfo->vecStrDescription.size() * 10.f;
+
+	float fMiddleEnd = fCellTopEnd + fMiddleSize;
+	// 만약 바닥 밑으로 내려간다면 그 만큼 위로 올리기 - 화면 상에 다 보이게 보정하기
+	float fScreenHeight = (fMiddleEnd + fCellBottomSize) * m_fUIScale;
+	float fEndY = m_tInfo.vPoint.fY + fScreenHeight;
+	if (fEndY > WINCY)
+	{
+		m_tInfo.vPoint.fY -= fEndY - WINCY;
+	}
 
 	// 상
 	vCellSize = {160.f, fCellTopSize}; // 총 67.f
@@ -110,7 +119,7 @@ void CArtifactToolTip::Render(Graphics* pGraphics)
 		0, fCellMiddleEnd, vCellSize.fX, vCellSize.fY, UnitPixel
 	);
 
-	/////////////////////////////// 아이템 그리기 //////////////////////////////////
+	/////////////////////////////// 아티팩트 그리기 //////////////////////////////////
 
 	VEC vOffset{};
 	VEC vRectSize{};

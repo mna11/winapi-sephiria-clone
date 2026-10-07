@@ -69,19 +69,26 @@ int CInventoryUI::Update()
 		m_vecItemSlot[i]->SetCollide(i == m_iMouseHoverSlot);
 	}
 
-	// 인벤토리 업데이트하고 -> 상점 테이블 업데이트하는 이 순서가 현재 종속적인 상태
-	// 만약 순서가 뒤바뀐다면 로직 작동안함
-	// 
 	// 마우스 호버 아이템 세팅
 	if (m_pInventory->IsExistItem(m_iMouseHoverSlot))
 	{
 		ITEM_INFO pItemInfo = m_pInventory->GetItem(m_iMouseHoverSlot)->GetItemInfo();
 		m_pMouse->SetHoverReferItem({ pItemInfo.iID, pItemInfo.eItemType, ITEM_SOURCE::INVENTORY});
+		m_pMouse->SetHoverItem(m_pInventory->GetItem(m_iMouseHoverSlot)); // 석판 조종용 세팅
 
 		if (pItemInfo.eItemType == ITEM_TYPE::ARTIFACT)
 		{
+			CUIMgr::GetInstance()->HideUI(UIID::STONE_TABLET_TOOLTIP);
+
 			CUIMgr::GetInstance()->ShowUI(UIID::ARTIFACT_TOOLTIP);
 			CUIMgr::GetInstance()->SetPos(UIID::ARTIFACT_TOOLTIP, VEC{ 210.f, 200.f });
+		}
+		else if (pItemInfo.eItemType == ITEM_TYPE::STONE_TABLET)
+		{
+			CUIMgr::GetInstance()->HideUI(UIID::ARTIFACT_TOOLTIP);
+
+			CUIMgr::GetInstance()->ShowUI(UIID::STONE_TABLET_TOOLTIP);
+			CUIMgr::GetInstance()->SetPos(UIID::STONE_TABLET_TOOLTIP, VEC{ 210.f, 200.f });
 		}
 	}
 	else if (m_pMouse->GetHoverReferItem().eItemSource == ITEM_SOURCE::INVENTORY)
@@ -90,7 +97,13 @@ int CInventoryUI::Update()
 		{
 			CUIMgr::GetInstance()->HideUI(UIID::ARTIFACT_TOOLTIP);
 		}
+		else if (m_pMouse->GetHoverReferItem().eItemType == ITEM_TYPE::STONE_TABLET)
+		{
+			CUIMgr::GetInstance()->HideUI(UIID::STONE_TABLET_TOOLTIP);
+		}
+
 		m_pMouse->SetHoverReferItem({ -1, ITEM_TYPE::END, ITEM_SOURCE::END });
+		m_pMouse->SetHoverItem(nullptr);
 	}
 
 
@@ -267,6 +280,7 @@ void CInventoryUI::SyncInventorySlot()
 	for (int i = 0; i < m_vecItemSlot.size(); ++i)
 	{
 		m_vecItemSlot[i]->SetItem(m_pInventory->GetItem(i));
+		m_vecItemSlot[i]->SetLevel(m_pInventory->GetLevels()[i]);
 	}
 }
 

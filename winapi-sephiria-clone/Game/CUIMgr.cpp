@@ -12,6 +12,7 @@
 #include "CBossHp.h"
 #include "CInventoryUI.h"
 #include "CArtifactToolTip.h"
+#include "CStoneTabletToolTip.h"
 #include "CShopTable.h"
 #include "CMsgBox.h"
 #include "CLevelUp.h"
@@ -45,9 +46,12 @@ void CUIMgr::Initialize()
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventoryBase.png", L"Inventory_Base");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot_Blank.png", L"Inventory_Slot_Blank");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot_Item.png", L"Inventory_Slot_Item");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot_Artifact.png", L"Inventory_Slot_Artifact");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot_StoneTablet.png", L"Inventory_Slot_StoneTablet");
 
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/ItemToolTip_Base.png", L"ItemToolTip_Base");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/ArtifactToolTip/ArtifactToolTip_Base.png", L"ArtifactToolTip_Base");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/StoneTabletToolTip/StoneTabletToolTip_Base.png", L"StoneTabletToolTip_Base");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/StoneTabletToolTip/StoneTabletToolTip_Slot.png", L"StoneTabletToolTip_Slot");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Shop/ShopListBase.png", L"ShopList");
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Shop/ShopListSlot.png", L"ShopListSlot");
@@ -223,6 +227,9 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		break;
 	case UIID::ARTIFACT_TOOLTIP:
 		pUI = CAbstractFactory<CArtifactToolTip>::CreateUI(m_pMouse);
+		break;
+	case UIID::STONE_TABLET_TOOLTIP:
+		pUI = CAbstractFactory<CStoneTabletToolTIp>::CreateUI(m_pMouse);
 		break;
 	case UIID::SHOP_TABLE:
 		pUI = CAbstractFactory<CShopTable>::CreateUI(m_pMouse);

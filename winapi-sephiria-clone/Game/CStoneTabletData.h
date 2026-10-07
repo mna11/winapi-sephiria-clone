@@ -33,8 +33,9 @@ public:
 	void Release();
 
 private:
-	void EmplaceStoneTabletInfo(int iID, wstring strImg, wstring strName, array<int, INVEN_SIZE> arrApplyLevel, int iLeaf);
-	array<int, INVEN_SIZE> CreateApplyLevel(int iID);
+	void EmplaceStoneTabletInfo(int iID, wstring strImg, wstring strName, array <vector<pair<int, int>>, 4> vecRelativePos, vector<int> vecApplyLevel, int iLeaf);
+	array<vector<pair<int, int>>, 4> CreateRelativePos(int iID);
+	vector<int>			   CreatApplyLevel(int iID);
 
 private:
 	void InitializeImg();

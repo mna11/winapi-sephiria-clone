@@ -53,3 +53,13 @@ void CArtifact::ChangeLevel(int iLevel)
 
 	m_pTarget->AddStat(m_tStat);
 }
+
+void CArtifact::InitializeData(int iID, ITEM_TYPE eType)
+{
+	m_iLevel = 0;
+	m_iID = iID;
+	m_eItemType = eType;
+
+	const ARTIFACT_INFO* pArtifactInfo = CArtifactData::GetInstance()->FindArtifactInfo(m_iID);
+	m_tStat = pArtifactInfo->vecStat[m_iLevel];
+}

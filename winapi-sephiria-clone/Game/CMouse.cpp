@@ -13,7 +13,7 @@
 
 CMouse::CMouse()
 	: CState(MOUSE_STATE::END, MOUSE_STATE::COMBAT),
-	m_dStateTime(0.), m_dClickTime(0.)
+	m_dStateTime(0.), m_dClickTime(0.), m_pHoverItem(nullptr)
 {
 	m_tHoverReferItem = { -1, ITEM_TYPE::END, ITEM_SOURCE::END };
 	m_tDragReferItem = { -1, ITEM_TYPE::END, ITEM_SOURCE::END };

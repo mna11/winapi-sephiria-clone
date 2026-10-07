@@ -17,6 +17,7 @@ CInventory::CInventory()
 	: m_iInvenSize(INVEN_SIZE), m_pOwner(nullptr)
 {
 	m_vecItems.resize(m_iInvenSize, nullptr);
+	m_vecLevels.resize(m_iInvenSize, 0);
 }
 
 CInventory::~CInventory()
@@ -29,11 +30,21 @@ void CInventory::Initialize()
 	// 테스트용
 	for (int i = 0; i < m_vecItems.size(); ++i)
 	{
-		if (i < 9)
+		if (i < 3)
 		{
 			InsertItem(i, i, ITEM_TYPE::ARTIFACT);
 		}
+
+		if (i < 5)
+		{
+			InsertItem(i, i, ITEM_TYPE::STONE_TABLET);
+		}
 	}
+}
+
+void CInventory::Update()
+{
+	UpdateLevel();
 }
 
 void CInventory::Release()
@@ -108,4 +119,55 @@ void CInventory::EraseItem(int iIdx)
 void CInventory::MoveItem(int iStartIdx, int iEndIdx)
 {
 	std::swap(m_vecItems[iStartIdx], m_vecItems[iEndIdx]);
+}
+
+void CInventory::UpdateLevel()
+{
+	// 레벨을 일단 다 0으로 초기화
+	m_vecLevels.assign(INVEN_SIZE, 0);
+
+	// 레벨 업데이트
+	for (int iIdx = 0; iIdx < m_vecItems.size(); ++iIdx)
+	{
+		CItem* pItem = m_vecItems[iIdx];
+
+		// 빈칸이거나, 석판이 아니라면 패스
+		if (nullptr == pItem || ITEM_TYPE::STONE_TABLET != pItem->GetItemType())
+			continue;
+
+		// 석판
+		const STONE_TABLET_INFO* pStoneTabletInfo = static_cast<CStoneTablet*>(pItem)->GetStoneTabletInfo();
+		int iAngle = static_cast<int>(pItem->GetAngle() / (PI * 0.5f));
+
+		for (int i = 0; i < pStoneTabletInfo->arrRelativePos[iAngle].size(); ++i)
+		{
+			pair<int, int> prItemCord = make_pair<int, int>(iIdx % INVEN_COL, iIdx / INVEN_COL);
+			pair<int, int> prRelativeCord = pStoneTabletInfo->arrRelativePos[iAngle][i];
+			pair<int, int> prResultCord = { prItemCord.first + prRelativeCord.first, prItemCord.second + prRelativeCord.second };
+
+			// 인벤토리에서 벗어난 위치는 패스
+			if (prResultCord.first < 0 || prResultCord.first >= INVEN_COL)
+				continue;
+			if (prResultCord.second < 0 || prResultCord.second >= INVEN_SIZE / INVEN_COL)
+				continue;
+
+			// 업데이트할 인벤토리 인덱스
+			int iUpdateIdx = prResultCord.first + prResultCord.second * INVEN_COL;
+
+			// 해당 위치에 레벨 증감량을 더해주기
+			m_vecLevels[iUpdateIdx] += pStoneTabletInfo->vecApplyLevel[i];
+		}
+	}
+
+	// 레벨에 맞게 아이템 스탯 변경
+	for (int iIdx = 0; iIdx < m_vecItems.size(); ++iIdx)
+	{
+		CItem* pItem = m_vecItems[iIdx];
+
+		// 아이템이 없거니, 아티팩트가 아니라면 패스
+		if (nullptr == pItem || ITEM_TYPE::ARTIFACT != pItem->GetItemType())
+			continue; 
+
+		static_cast<CArtifact*>(pItem)->ChangeLevel(m_vecLevels[iIdx]);
+	}
 }

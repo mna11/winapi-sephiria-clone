@@ -2,6 +2,9 @@
 
 #include <random>
 #include <string>
+#include <array>
+#include <vector>
+#include <utility>
 
 /////////////////////////////////////////
 
@@ -59,7 +62,7 @@
 
 enum class OBJID	{ PLAYER, PLAYER_BULLET, MONSTER, MONSTER_BULLET, NPC, FIELD_ITEM, DROP, MOUSE, WEAPON, EFFECT, UI, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, MOUSE, END };
-enum class UIID		{ BASIC_INFO, LEVEL_UP, BOSS_HP, INVENTORY, ARTIFACT_TOOLTIP, STONE_TABLET_TOOPTIP, SHOP_TABLE, MSG_BOX, BUTTON, ITEM_SELECT, FORGE, STAT_INFO, END };
+enum class UIID		{ BASIC_INFO, LEVEL_UP, BOSS_HP, INVENTORY, ARTIFACT_TOOLTIP, STONE_TABLET_TOOLTIP, SHOP_TABLE, MSG_BOX, BUTTON, ITEM_SELECT, FORGE, STAT_INFO, END };
 enum class SCENEID	{ LIB_LOADING, SHOP, FORGE, STAGE0, STAGE1, BOSS_STAGE, END };
 
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };
@@ -346,11 +349,12 @@ typedef struct tagArtifactInfo
 // 석판 정보
 typedef struct tagStoneTabletInfo
 {
-	int							iID;			// 아이템 아이디
-	std::wstring				strImg;			// 석판 이미지 프레임 키
-	std::wstring				strName;		// 석판 이름
-	std::array<int, INVEN_SIZE> arrApplyLevel;	// 인벤토리에 영향을 주는 값들
-	int							iLeaf;			// 가격
+	int											iID;			// 아이템 아이디
+	std::wstring								strImg;			// 석판 이미지 프레임 키
+	std::wstring								strName;		// 석판 이름 
+	std::array<std::vector<std::pair<int, int>>, 4>	arrRelativePos;	// 현재 석판 위치 기준 상대 위치
+	std::vector<int>							vecApplyLevel;  // 상대 위치 순서대로 적용할 레벨 값들
+	int											iLeaf;			// 가격
 } STONE_TABLET_INFO;
 
 

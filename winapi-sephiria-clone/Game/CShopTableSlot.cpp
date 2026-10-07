@@ -84,7 +84,7 @@ void CShopTableSlot::Render(Graphics* pGraphics)
 	VEC vRectSize{};
 
 	// 아이템 프레임 씌우기
-	m_pFrameKey = L"Inventory_Slot_Item";
+	m_pFrameKey = L"Inventory_Slot_Artifact";
 	pImg = CImgMgr::GetInstance()->FindImg(m_pFrameKey);
 	if (nullptr == pImg)
 		return;

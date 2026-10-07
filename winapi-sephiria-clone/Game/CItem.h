@@ -19,7 +19,7 @@ public:
     virtual void AddLevel() {}
 
 public:
-    void InitializeData(int m_iID, ITEM_TYPE eType);
+    virtual void InitializeData(int iID, ITEM_TYPE eType) PURE;
 
 protected:
     int         m_iID;

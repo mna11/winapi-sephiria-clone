@@ -70,6 +70,8 @@ int CShopTable::Update()
 			CUIMgr::GetInstance()->SetPos(UIID::ARTIFACT_TOOLTIP, vPoint);
 			break;
 		case ITEM_TYPE::STONE_TABLET:
+			CUIMgr::GetInstance()->ShowUI(UIID::STONE_TABLET_TOOLTIP);
+			CUIMgr::GetInstance()->SetPos(UIID::STONE_TABLET_TOOLTIP, vPoint);
 			// 나중에 추가
 			break;
 		default:
@@ -84,6 +86,7 @@ int CShopTable::Update()
 			CUIMgr::GetInstance()->HideUI(UIID::ARTIFACT_TOOLTIP);
 			break;
 		case ITEM_TYPE::STONE_TABLET:
+			CUIMgr::GetInstance()->HideUI(UIID::STONE_TABLET_TOOLTIP);
 			// 나중에 추가
 			break;
 		default:

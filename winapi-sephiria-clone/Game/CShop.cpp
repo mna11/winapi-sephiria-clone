@@ -45,6 +45,12 @@ void CShop::Update()
 	if (nullptr == m_pMsgBoxUI)
 	{
 		CObjMgr::GetInstance()->UpdateOnly({ OBJID::UI, OBJID::MOUSE });
+
+		// 인벤토리 업데이트
+		CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+		if (nullptr == pPlayer || nullptr == pPlayer->GetInventory())
+			return;
+		pPlayer->GetInventory()->Update();
 	}
 	else
 	{

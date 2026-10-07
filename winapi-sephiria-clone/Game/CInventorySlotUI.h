@@ -19,10 +19,12 @@ public:
 
 public:
     void SetItem(CItem* pItem) { m_pItem = pItem; }
+    void SetLevel(int iLevel)  { m_iSlotLevel = iLevel; }
     void SetCollide(bool bCol) { m_bCol = bCol; }
 
 private:
     CItem*  m_pItem;
+    int     m_iSlotLevel;
     bool    m_bCol;
 };
 
