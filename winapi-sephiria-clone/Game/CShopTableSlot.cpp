@@ -2,11 +2,12 @@
 #include "CShopTableSlot.h"
 
 #include "CImgMgr.h"
-#include "CItemData.h"
+#include "CArtifactData.h"
+#include "CStoneTabletData.h"
 #include "CFontMgr.h"
 
 CShopTableSlot::CShopTableSlot()
-	: m_iItemID(-1), m_bCol(false)
+	: m_iItemID(-1), m_bCol(false), m_eItemType(ITEM_TYPE::END)
 {
 }
 
@@ -61,17 +62,29 @@ void CShopTableSlot::Render(Graphics* pGraphics)
 	);
 
 
-	if (-1 == m_iItemID)
+	if (-1 == m_iItemID || ITEM_TYPE::END == m_eItemType)
 		return;
 
+	ITEM_INFO tItemInfo{};
+
 	// 아이템 그리기
-	const ITEM_INFO* pItemInfo = CItemData::GetInstance()->FindItemInfo(m_iItemID);
+	switch (m_eItemType)
+	{
+	case ITEM_TYPE::ARTIFACT:
+		tItemInfo = CArtifactData::GetInstance()->FindItemInfo(m_iItemID);
+		break;
+	case ITEM_TYPE::STONE_TABLET:
+		tItemInfo = CStoneTabletData::GetInstance()->FindItemInfo(m_iItemID);
+		break;
+	default:
+		break;
+	}
+
 	VEC vOffset{};
 	VEC vRectSize{};
-	
 
 	// 아이템 프레임 씌우기
-	m_pFrameKey = L"Inventory_Slot_Item";
+	m_pFrameKey = L"Inventory_Slot_Artifact";
 	pImg = CImgMgr::GetInstance()->FindImg(m_pFrameKey);
 	if (nullptr == pImg)
 		return;
@@ -93,8 +106,7 @@ void CShopTableSlot::Render(Graphics* pGraphics)
 	);
 
 
-	// 아이템 이미지 그리기 - 나중에 살짝 작게 조정하자
-	Image* pItemImg = CImgMgr::GetInstance()->FindImg(pItemInfo->strImg.c_str());
+	Image* pItemImg = CImgMgr::GetInstance()->FindImg(tItemInfo.strImg.c_str());
 
 	pGraphics->DrawImage(
 		pItemImg, rcDest,
@@ -115,7 +127,7 @@ void CShopTableSlot::Render(Graphics* pGraphics)
 	SolidBrush GreenBrush(Color{ 255, 0, 128, 0 });
 	pGraphics->FillRectangle(&GreenBrush, rcDest);
 #endif // _DEBUG
-	CFontMgr::GetInstance()->DrawString(pGraphics, pItemInfo->strName, FONT_TYPE::NORMAL, rcDest, Color { 255, 255, 255, 255 }, 24.f, StringAlignmentNear, StringAlignmentNear);
+	CFontMgr::GetInstance()->DrawString(pGraphics, tItemInfo.strName, FONT_TYPE::NORMAL, rcDest, Color { 255, 255, 255, 255 }, 24.f, StringAlignmentNear, StringAlignmentNear);
 
 	// 아이템 가격 텍스트 그리기
 	vOffset = VEC{ 15.f, 2.f } * m_fUIScale;
@@ -128,8 +140,8 @@ void CShopTableSlot::Render(Graphics* pGraphics)
 	RectF rcBackStringDest = rcDest;
 	rcBackStringDest.X += 2.5f;
 	rcBackStringDest.Y += 2.5f;
-	CFontMgr::GetInstance()->DrawString(pGraphics, to_wstring(pItemInfo->iLeaf), FONT_TYPE::PIXEL_BIG, rcBackStringDest, Color{ 255, 0, 0, 0 }, 22.f, StringAlignmentFar, StringAlignmentFar);
-	CFontMgr::GetInstance()->DrawString(pGraphics, to_wstring(pItemInfo->iLeaf), FONT_TYPE::PIXEL_BIG, rcDest, Color{ 255, 238, 207, 116 }, 22.f, StringAlignmentFar, StringAlignmentFar);
+	CFontMgr::GetInstance()->DrawString(pGraphics, to_wstring(tItemInfo.iLeaf), FONT_TYPE::PIXEL_BIG, rcBackStringDest, Color{ 255, 0, 0, 0 }, 22.f, StringAlignmentFar, StringAlignmentFar);
+	CFontMgr::GetInstance()->DrawString(pGraphics, to_wstring(tItemInfo.iLeaf), FONT_TYPE::PIXEL_BIG, rcDest, Color{ 255, 238, 207, 116 }, 22.f, StringAlignmentFar, StringAlignmentFar);
 
 	// 리프 아이콘 그리기
 	pImg = CImgMgr::GetInstance()->FindImg(L"Leaf");

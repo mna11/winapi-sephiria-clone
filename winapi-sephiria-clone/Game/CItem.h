@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "CObj.h"
-#include "CItemData.h"
 
 class CItem :
     public CObj
@@ -8,27 +7,22 @@ class CItem :
 public:
     CItem();
     ~CItem();
-public:
-    void Initialize() override;
-    int  Update() override;
-    void LateUpdate() override;
-    void Render(Graphics*) override;
-    void Release() override;
 
 public:
-    void InitializeData(int m_iID);
+    const int&                  GetLevel() const  { return m_iLevel; }
+    const int&                  GetItemID() const { return m_iID; }
+    const   ITEM_TYPE&          GetItemType() const { return m_eItemType; }
+    virtual ITEM_INFO           GetItemInfo() PURE;
 
 public:
-    const int& GetLevel() const { return m_iLevel; }
+    virtual void SetLevel() {}
+    virtual void AddLevel() {}
 
 public:
-    void ChangeLevel(int iLevel);
+    virtual void InitializeData(int iID, ITEM_TYPE eType) PURE;
 
-public:
-    const ITEM_INFO* GetItemInfo() const { return CItemData::GetInstance()->FindItemInfo(m_iID); }
-
-private:
-    int m_iID;
-    int m_iLevel;
+protected:
+    int         m_iID;
+    ITEM_TYPE   m_eItemType;
+    int         m_iLevel;
 };
-

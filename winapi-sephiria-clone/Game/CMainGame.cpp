@@ -19,7 +19,8 @@
 #include "CAbstractFactory.h"
 
 // 데이터
-#include "CItemData.h"
+#include "CArtifactData.h"
+#include "CStoneTabletData.h"
 #include "CWeaponData.h"
 
 CMainGame::CMainGame()
@@ -64,7 +65,8 @@ void CMainGame::Initialize()
 #endif // _DEBUG
 
 	// 데이터 초기화
-	CItemData::GetInstance()->Initialize();
+	CArtifactData::GetInstance()->Initialize();
+	CStoneTabletData::GetInstance()->Initialize();
 	CWeaponData::GetInstance()->Initialize();
 
 	// 마우스 생성
@@ -114,7 +116,8 @@ void CMainGame::Release()
 	CFontMgr::DestroyInstance();
 	CSoundMgr::DestroyInstance();
 
-	CItemData::DestroyInstance();
+	CArtifactData::DestroyInstance();
+	CStoneTabletData::DestroyInstance();
 	CWeaponData::DestroyInstance();
 
 	// 그래픽스 먼저 없애야 함

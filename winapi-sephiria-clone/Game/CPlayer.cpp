@@ -123,6 +123,9 @@ int CPlayer::Update()
 		Attack();
 	}
 
+	// 인벤토리 업데이트 
+	m_pInventory->Update();
+
 	// 충돌 박스 & 애니메이션 프레임 업데이트
 	__super::UpdateRect();
 	__super::UpdateFrame();

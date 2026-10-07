@@ -1,21 +1,21 @@
 ﻿#include "pch.h"
-#include "CItemToolTip.h"
+#include "CArtifactToolTip.h"
 #include "CImgMgr.h"
 #include "CItem.h"
 #include "CMouse.h"
 #include "CFontMgr.h"
-#include "CItemData.h"
+#include "CArtifactData.h"
 
-CItemToolTip::CItemToolTip()
+CArtifactToolTip::CArtifactToolTip()
 {
 }
 
-CItemToolTip::~CItemToolTip()
+CArtifactToolTip::~CArtifactToolTip()
 {
 	Release();
 }
 
-void CItemToolTip::Initialize()
+void CArtifactToolTip::Initialize()
 {
 	m_fUIScale = PIXEL_SCALE * 0.5f;
 
@@ -28,37 +28,36 @@ void CItemToolTip::Initialize()
 	m_iRenderLayer = 3;
 }
 
-int CItemToolTip::Update()
+int CArtifactToolTip::Update()
 {
-	if (!m_bView)
-		return NOEVENT;
-
 	if (m_bDead)
 		return DEAD;
+
+	if (!m_bView)
+		return NOEVENT;
 
 	return NOEVENT;
 }
 
-void CItemToolTip::LateUpdate()
+void CArtifactToolTip::LateUpdate()
 {
 	if (!m_bView)
 		return;
 }
 
-void CItemToolTip::Render(Graphics* pGraphics)
+void CArtifactToolTip::Render(Graphics* pGraphics)
 {
 	if (!m_bView)
 		return;
 
-	/*const CItem* pItem = m_pMouse->GetHoverItem();
-	if (nullptr == pItem)
-		return;*/
-
 	const int& iHoverItemID = m_pMouse->GetHoverReferItem().iID;
-	if (-1 == iHoverItemID)
+	if (-1 == iHoverItemID || m_pMouse->GetHoverReferItem().eItemType != ITEM_TYPE::ARTIFACT)
 		return;
 
-	const ITEM_INFO* pItemInfo = CItemData::GetInstance()->FindItemInfo(iHoverItemID);
+	const ARTIFACT_INFO* pArtifactInfo = CArtifactData::GetInstance()->FindArtifactInfo(iHoverItemID);
+
+	if (nullptr == pArtifactInfo)
+		return;
 
 	Image* pImg(nullptr);
 	VEC vCellSize{};
@@ -66,7 +65,7 @@ void CItemToolTip::Render(Graphics* pGraphics)
 	RectF DestRect{};
 
 	// 베이스 그리기
-	pImg = CImgMgr::GetInstance()->FindImg(L"ItemToolTip_Base");
+	pImg = CImgMgr::GetInstance()->FindImg(L"ArtifactToolTip_Base");
 	if (nullptr == pImg)
 		return; 
 
@@ -77,7 +76,16 @@ void CItemToolTip::Render(Graphics* pGraphics)
 	float fCellTopEnd		= 43.f;
 	float fCellMiddleEnd	= 51.f;
 
-	float fMiddleSize = 10.f + pItemInfo->vecStrDescription.size() * 10.f;
+	float fMiddleSize = 10.f + pArtifactInfo->vecStrDescription.size() * 10.f;
+
+	float fMiddleEnd = fCellTopEnd + fMiddleSize;
+	// 만약 바닥 밑으로 내려간다면 그 만큼 위로 올리기 - 화면 상에 다 보이게 보정하기
+	float fScreenHeight = (fMiddleEnd + fCellBottomSize) * m_fUIScale;
+	float fEndY = m_tInfo.vPoint.fY + fScreenHeight;
+	if (fEndY > WINCY)
+	{
+		m_tInfo.vPoint.fY -= fEndY - WINCY;
+	}
 
 	// 상
 	vCellSize = {160.f, fCellTopSize}; // 총 67.f
@@ -111,13 +119,13 @@ void CItemToolTip::Render(Graphics* pGraphics)
 		0, fCellMiddleEnd, vCellSize.fX, vCellSize.fY, UnitPixel
 	);
 
-	/////////////////////////////// 아이템 그리기 //////////////////////////////////
+	/////////////////////////////// 아티팩트 그리기 //////////////////////////////////
 
 	VEC vOffset{};
 	VEC vRectSize{};
 
 	// 아이템 아이콘 그리기
-	pImg = CImgMgr::GetInstance()->FindImg(pItemInfo->strImg.c_str());
+	pImg = CImgMgr::GetInstance()->FindImg(pArtifactInfo->strImg.c_str());
 	if (nullptr == pImg)
 		return;
 
@@ -142,11 +150,11 @@ void CItemToolTip::Render(Graphics* pGraphics)
 	SolidBrush GreenBrush(Color{ 255, 0, 128, 0 });
 	pGraphics->FillRectangle(&GreenBrush, DestRect);
 #endif // _DEBUG
-	CFontMgr::GetInstance()->DrawString(pGraphics, pItemInfo->strName, FONT_TYPE::NORMAL, DestRect, Color{255, 255, 255, 255}, 24.f, StringAlignmentCenter, StringAlignmentFar);
+	CFontMgr::GetInstance()->DrawString(pGraphics, pArtifactInfo->strName, FONT_TYPE::NORMAL, DestRect, Color{255, 255, 255, 255}, 24.f, StringAlignmentCenter, StringAlignmentFar);
 
 	// 아이템 시너지 그리기
 	// 1. 시너지 아이콘
-	pImg = CImgMgr::GetInstance()->FindImg(pItemInfo->strCategoryImg.c_str());
+	pImg = CImgMgr::GetInstance()->FindImg(pArtifactInfo->strCategoryImg.c_str());
 	if (nullptr == pImg)
 		return;
 
@@ -172,7 +180,7 @@ void CItemToolTip::Render(Graphics* pGraphics)
 	SolidBrush RedBrush(Color{ 255, 128, 0, 0 });
 	pGraphics->FillRectangle(&RedBrush, DestRect);
 #endif // _DEBUG
-	CFontMgr::GetInstance()->DrawString(pGraphics, pItemInfo->strCategoryName, FONT_TYPE::NORMAL, DestRect, Color{ 255, 105, 159, 139 }, 18.f, StringAlignmentNear, StringAlignmentNear);
+	CFontMgr::GetInstance()->DrawString(pGraphics, pArtifactInfo->strCategoryName, FONT_TYPE::NORMAL, DestRect, Color{ 255, 105, 159, 139 }, 18.f, StringAlignmentNear, StringAlignmentNear);
 
 	// 고유 텍스트 그리기
 	vOffset = VEC{ 12.f, fCellTopEnd + 5.f } *m_fUIScale;
@@ -186,7 +194,7 @@ void CItemToolTip::Render(Graphics* pGraphics)
 	CFontMgr::GetInstance()->DrawString(pGraphics, strUnique, FONT_TYPE::NORMAL, DestRect, Color { 255, 200, 158, 121 }, 18.f, StringAlignmentNear, StringAlignmentNear);
 
 	// 아이템 효과 텍스트 그리기
-	vector<wstring> vecStrDescription = pItemInfo->vecStrDescription;
+	vector<wstring> vecStrDescription = pArtifactInfo->vecStrDescription;
 	VEC vDashOffset{};
 	VEC vDashRectSize{};
 	RectF DashRect{};
@@ -216,6 +224,6 @@ void CItemToolTip::Render(Graphics* pGraphics)
 	}
 }
 
-void CItemToolTip::Release()
+void CArtifactToolTip::Release()
 {
 }

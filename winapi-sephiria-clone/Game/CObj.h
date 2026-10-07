@@ -43,6 +43,7 @@ public:
 	void				AddPos(float fDx, float fDy)		{ m_tInfo.vPoint.fX += fDx; m_tInfo.vPoint.fY += fDy; }
 	void				AddPos(VEC vec)						{ m_tInfo.vPoint += vec; }
 	void				AddStat(STAT tStat)					{ m_tStat = m_tStat + tStat; }
+	void				AddAngle(float fAngle)				{ m_fAngle = fmodf(m_fAngle + fAngle, 2 * PI); }
 
 public:
 	void				RefreshRect()					{ UpdateRect(); }

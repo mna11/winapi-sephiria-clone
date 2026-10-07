@@ -2,6 +2,9 @@
 
 #include <random>
 #include <string>
+#include <array>
+#include <vector>
+#include <utility>
 
 /////////////////////////////////////////
 
@@ -21,7 +24,8 @@
 #define     TILECX  (16 * PIXEL_SCALE)
 #define     TILECY  (16 * PIXEL_SCALE)
 
-#define		INVEN_COL 6 // 인벤토리 7열
+#define		INVEN_SIZE 24 // 인벤토리 사이즈 24
+#define		INVEN_COL	6 // 인벤토리 6열
 
 #define		VK_MAX	0xff
 
@@ -58,7 +62,7 @@
 
 enum class OBJID	{ PLAYER, PLAYER_BULLET, MONSTER, MONSTER_BULLET, NPC, FIELD_ITEM, DROP, MOUSE, WEAPON, EFFECT, UI, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, MOUSE, END };
-enum class UIID		{ BASIC_INFO, LEVEL_UP, BOSS_HP, INVENTORY, ITEM_TOOLTIP, SHOP_TABLE, MSG_BOX, BUTTON, ITEM_SELECT, FORGE, STAT_INFO, END };
+enum class UIID		{ BASIC_INFO, LEVEL_UP, BOSS_HP, INVENTORY, ARTIFACT_TOOLTIP, STONE_TABLET_TOOLTIP, SHOP_TABLE, MSG_BOX, BUTTON, ITEM_SELECT, FORGE, STAT_INFO, END };
 enum class SCENEID	{ LIB_LOADING, SHOP, FORGE, STAGE0, STAGE1, BOSS_STAGE, END };
 
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };
@@ -72,6 +76,7 @@ enum class WEAPON_TYPE { NONE, SWORD_AND_SHIELD, GREAT_SWORD, DAGGER, CROSSBOW, 
 // 방 상태
 enum class ROOM_STATE { READY, BATTLE, CLEAR };
 
+enum class ITEM_TYPE   { POTION, ARTIFACT, STONE_TABLET, END};
 enum class ITEM_SOURCE { INVENTORY, SHOP, SELECT, END };
 
 // 메세지 박스 종류
@@ -84,7 +89,7 @@ enum class MSG_BOX_LAYOUT { NORMAL, HORIZONTAL, VERTICAL, END };
 enum class DROP_TYPE { EXP, LEAF, END };
 
 // 아이템 카테고리
-enum class ITEM_CATEGORY 
+enum class ARTIFACT_CATEGORY
 {
 	NONE,			// 없음
 	ACADEMY,		// 아카데미
@@ -317,24 +322,40 @@ typedef struct tagAttackInfo
 								// 끝나기 전 클릭, 끝나기 전 클릭 -> Attack1 - Attack2 - Attack3
 } ATK_INFO;
 
-
 // 아이템 정보
 typedef struct tagItemInfo
 {
-	int				iID;						// 아이템 아이디
-
-	std::wstring	strImg;						// 아이템 이미지 프레임 키
-	std::wstring	strCategoryImg;				// 카테고리 이미지 프레임 키
-
-	std::wstring	strName;					// 아이템 이름
-	std::wstring	strCategoryName;			// 카테고리 이름
-	std::vector<std::wstring>	vecStrDescription;	// 아이템 설명
-	std::vector<tagStat>	vecStat;			// 아이템 스탯 (레벨별 다르게)
-	
-	ITEM_CATEGORY	eCategory;					// 카테고리
-
-	int				iLeaf;						// 가격
+	int iID;			  // 아이템 아이디
+	ITEM_TYPE eItemType;  // 아이템 타입 - 아티팩트 / 석판 / 포션
+	std::wstring strName; // 아이템 이름
+	std::wstring strImg;  // 아이템 이미지
+	int iLeaf;			  // 가격
 } ITEM_INFO;
+
+// 아티팩트 정보
+typedef struct tagArtifactInfo
+{
+	int							iID;				// 아이템 아이디
+	std::wstring				strImg;				// 아티팩트 이미지 프레임 키
+	std::wstring				strCategoryImg;		// 카테고리 이미지 프레임 키
+	std::wstring				strName;			// 아티팩트 이름
+	std::wstring				strCategoryName;	// 카테고리 이름
+	std::vector<std::wstring>	vecStrDescription;	// 아티팩트 설명
+	std::vector<tagStat>		vecStat;			// 아티팩트 스탯 (레벨별 다르게)
+	ARTIFACT_CATEGORY			eCategory;			// 카테고리
+	int							iLeaf;				// 가격
+} ARTIFACT_INFO;
+
+// 석판 정보
+typedef struct tagStoneTabletInfo
+{
+	int											iID;			// 아이템 아이디
+	std::wstring								strImg;			// 석판 이미지 프레임 키
+	std::wstring								strName;		// 석판 이름 
+	std::array<std::vector<std::pair<int, int>>, 4>	arrRelativePos;	// 현재 석판 위치 기준 상대 위치
+	std::vector<int>							vecApplyLevel;  // 상대 위치 순서대로 적용할 레벨 값들
+	int											iLeaf;			// 가격
+} STONE_TABLET_INFO;
 
 
 typedef struct tagWeaponInfo
@@ -389,6 +410,7 @@ typedef struct tagTileInfo
 typedef struct tagMouseReferItem
 {
 	int			iID;
+	ITEM_TYPE	eItemType;
 	ITEM_SOURCE eItemSource;
 } MOUSE_REFER_ITEM;
 

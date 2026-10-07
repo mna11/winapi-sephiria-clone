@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAbstractFactory.h" />
+    <ClInclude Include="CArtifact.h" />
     <ClInclude Include="CBaba.h" />
     <ClInclude Include="CBasicInfo.h" />
     <ClInclude Include="CBossErma.h" />
@@ -173,10 +174,10 @@
     <ClInclude Include="CInventorySlotUI.h" />
     <ClInclude Include="CInventoryUI.h" />
     <ClInclude Include="CItem.h" />
-    <ClInclude Include="CItemData.h" />
+    <ClInclude Include="CArtifactData.h" />
     <ClInclude Include="CItemSelectSlotUI.h" />
     <ClInclude Include="CItemSelectUI.h" />
-    <ClInclude Include="CItemToolTip.h" />
+    <ClInclude Include="CArtifactToolTip.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CLevelUp.h" />
     <ClInclude Include="CLibLoading.h" />
@@ -207,6 +208,8 @@
     <ClInclude Include="CStage.h" />
     <ClInclude Include="CStage1.h" />
     <ClInclude Include="CState.h" />
+    <ClInclude Include="CStoneTablet.h" />
+    <ClInclude Include="CStoneTabletData.h" />
     <ClInclude Include="CSword.h" />
     <ClInclude Include="CSwordAndShield.h" />
     <ClInclude Include="CTile.h" />
@@ -222,9 +225,11 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="CStoneTabletToolTIp.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CArtifact.cpp" />
     <ClCompile Include="CBaba.cpp" />
     <ClCompile Include="CBasicInfo.cpp" />
     <ClCompile Include="CBossErma.cpp" />
@@ -258,10 +263,10 @@
     <ClCompile Include="CInventorySlotUI.cpp" />
     <ClCompile Include="CInventoryUI.cpp" />
     <ClCompile Include="CItem.cpp" />
-    <ClCompile Include="CItemData.cpp" />
+    <ClCompile Include="CArtifactData.cpp" />
     <ClCompile Include="CItemSelectSlotUI.cpp" />
     <ClCompile Include="CItemSelectUI.cpp" />
-    <ClCompile Include="CItemToolTip.cpp" />
+    <ClCompile Include="CArtifactToolTip.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLevelUp.cpp" />
     <ClCompile Include="CLibLoading.cpp" />
@@ -292,6 +297,8 @@
     <ClCompile Include="CStage.cpp" />
     <ClCompile Include="CStage1.cpp" />
     <ClCompile Include="CState.cpp" />
+    <ClCompile Include="CStoneTablet.cpp" />
+    <ClCompile Include="CStoneTabletData.cpp" />
     <ClCompile Include="CSword.cpp" />
     <ClCompile Include="CSwordAndShield.cpp" />
     <ClCompile Include="CTile.cpp" />
@@ -309,6 +316,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="CStoneTabletToolTIp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

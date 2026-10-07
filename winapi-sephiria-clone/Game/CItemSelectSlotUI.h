@@ -14,6 +14,7 @@ public:
     void Release() override;
 public:
     void SetItemID(int iID) { m_iItemID = iID; }
+    void SetItemType(ITEM_TYPE eItemType) { m_eItemType = eItemType; }
     void SetSpread(bool bSpread) { m_bSpread = bSpread; }
     void SetDirVector(VEC vDir) { m_vDir = vDir; }
     void SetDistance(float fDistance) { m_fDistance = fDistance; }
@@ -21,6 +22,7 @@ public:
 
 public:
     const int& GetItemID() const { return m_iItemID; }
+    const ITEM_TYPE& GetItemType() const { return m_eItemType; }
     const VEC& GetDirVector() const { return m_vDir; }
     const float& GetDistance() const { return m_fDistance; }
 
@@ -28,7 +30,9 @@ public:
     void Move();
 
 private:
-    int     m_iItemID;      // 현재 슬롯에 나타낼 아이템
+    int         m_iItemID;      // 현재 슬롯에 나타낼 아이템
+    ITEM_TYPE   m_eItemType;    // 아이템 타입
+
     bool    m_bSpread;      // 퍼지기 가능?
     float   m_fDistance;    // SelectSlotUI의 vPoint와의 최대 거리
     VEC     m_vDir;         // SelectSlotUI의 vPoint에서의 각도
