@@ -13,7 +13,7 @@
 
 CGolemCow::CGolemCow()
     : CState(GOLEM_COW_STATE::END, GOLEM_COW_STATE::SUMMON),
-	m_dChargeInterval(0.), m_dChargeReadyTime(0.), m_dDownTime(0.), m_dStateTime(0.), m_dSummonTime(0.), m_dDustInterval(0.)
+	m_dChargeInterval(0.), m_dChargeReadyTime(0.), m_dDownTime(0.), m_dStateTime(0.), m_dSummonTime(0.), m_dDustInterval(0.), m_dDustElapsedTime(0.)
 {
     m_vecAtkRect.resize(toUType(GOLEM_COW_ATK_RECT::END));
 	ZeroMemory(&m_vDir, sizeof(VEC));
