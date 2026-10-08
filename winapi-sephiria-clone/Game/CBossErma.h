@@ -54,7 +54,7 @@ public:
     bool IsHit() const { return m_bHit; }
 
 private:
-    void UpdateTime();
+    void UpdateTime() override;
     void ChangePhase(CErmaPhase* pNextPhase);
     bool IsTargetInArena() const;
     void StartMissileVolley();
@@ -79,4 +79,8 @@ private:
     bool m_bEnding;
 
     friend class CErmaPhase1;
+
+    // CMonster을(를) 통해 상속됨
+    void Move() override;
+    void Attack() override;
 };

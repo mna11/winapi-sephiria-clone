@@ -47,8 +47,8 @@ public:
     bool IsReturnComplete() const { return m_bReturnComplete; }
 
 private:
-    void UpdateTime();
-    void Move();
+    void UpdateTime() override;
+    void Move() override;
 
 private:
     VEC m_vAnchor;
@@ -67,4 +67,7 @@ private:
     bool m_bFinalStone;
     bool m_bDefeated;
     bool m_bRemoveRequested;
+
+    // CMonster을(를) 통해 상속됨
+    void Attack() override;
 };

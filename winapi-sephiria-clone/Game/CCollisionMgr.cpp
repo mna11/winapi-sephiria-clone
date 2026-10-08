@@ -85,6 +85,8 @@ void CCollisionMgr::CollisionWall(list<CObj*>& DstList)
                 if (vOverlap.fX <= 0.f || vOverlap.fY <= 0.f)
                     continue;
 
+                pObj->OnWallCollision();
+
                 // 더 적게 겹친 축만 밀어낼꺼임 - 둘 다 밀어내니깐 안되는건 아닌데 뭔가 뭔가였음
                 if (vOverlap.fX < vOverlap.fY)
                 {

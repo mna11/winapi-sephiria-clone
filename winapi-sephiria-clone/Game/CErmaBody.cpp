@@ -87,3 +87,15 @@ void CErmaBody::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit)
     if (m_pOwner != nullptr)
         m_pOwner->AddStaggerDamage(iDamage);
 }
+
+void CErmaBody::UpdateTime()
+{
+}
+
+void CErmaBody::Move()
+{
+}
+
+void CErmaBody::Attack()
+{
+}

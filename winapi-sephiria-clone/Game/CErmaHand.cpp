@@ -475,3 +475,7 @@ void CErmaHand::RenderAttackEffect(Graphics* pGraphics, const VEC& vScroll)
         UnitPixel,
         &alertAttribute);
 }
+
+void CErmaHand::Attack()
+{
+}

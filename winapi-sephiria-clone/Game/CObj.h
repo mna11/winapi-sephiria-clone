@@ -46,6 +46,8 @@ public:
 	void				AddAngle(float fAngle)				{ m_fAngle = fmodf(m_fAngle + fAngle, 2 * PI); }
 
 public:
+	virtual void		OnWallCollision() {}
+public:
 	void				RefreshRect()					{ UpdateRect(); }
 
 protected:

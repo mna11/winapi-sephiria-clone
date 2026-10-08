@@ -4,6 +4,7 @@
 #include "CPlayer.h"
 #include "CBaba.h"
 #include "CGargoyle.h"
+#include "CGolemCow.h"
 #include "CSephirite.h"
 #include "CAnvil.h"
 
@@ -122,8 +123,8 @@ void CStage1::Release()
 
 void CStage1::Init_CreateObj()
 {
-	//CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(360.f, 7600.f));
-	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(4700.f, 7600.f));
+	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(360.f, 7600.f));
+	//CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(4700.f, 7600.f));
 	CObjMgr::GetInstance()->AddObject(OBJID::NPC, CAbstractFactory<CBaba>::CreateObj(720.f, 7600.f));
 	CObjMgr::GetInstance()->AddObject(OBJID::FIELD_ITEM, CAbstractFactory<CSephirite>::CreateObj(1000.f, 7600.f));
 	CObjMgr::GetInstance()->AddObject(OBJID::FIELD_ITEM, CAbstractFactory<CAnvil>::CreateObj(1200.f, 7600.f));
@@ -152,6 +153,7 @@ void CStage1::SpawnMonster(int iRoomIdx)
 	case 0:
 		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(600, 4279));
 		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(1000, 4279));
+		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGolemCow>::CreateObj(1300, 4279));
 		break;
 	case 1:
 		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(2300, 3900));

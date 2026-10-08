@@ -51,11 +51,6 @@ void CGargoyle::Initialize()
 	// 스프라이트 시트 선택
 	m_pFrameKey = L"Gargoyle_L";
 
-	// iframe 세팅 
-	m_dHitElapseTime = 0.;
-	m_dIframeTime = 0.3;   // 피격 후 무적시간 0.3초
-	m_bHit = false;
-
 	// 스탯 초기화
 	m_tStat = {
 		100,			// HP
@@ -89,10 +84,10 @@ int CGargoyle::Update()
 
 	m_vPrePoint = m_tInfo.vPoint;
 
-	// 시간 업데이트
-	UpdateTime();
 	// 상태 변경
 	ApplyChange();
+	// 시간 업데이트
+	UpdateTime();
 	// 이동
 	Move();
 	// 공격

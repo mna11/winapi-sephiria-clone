@@ -290,6 +290,10 @@ void CErma::Move()
     }
 }
 
+void CErma::Attack()
+{
+}
+
 void CErma::SetAnchor(const VEC& vAnchor)
 {
     m_vAnchor = vAnchor;
