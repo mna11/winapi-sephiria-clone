@@ -10,8 +10,9 @@
 #include "CSceneMgr.h"
 
 CButton::CButton()
-	: m_onClick(nullptr), m_bCol(false), m_rcPrint{}, m_strBtn{}, m_vCellSize{}, m_bEnable(true)
+	: m_onClick(nullptr), m_bCol(false), m_rcPrint{}, m_rcScreen{}, m_strBtn{}, m_vCellSize{}, m_bEnable(true)
 {
+	ZeroMemory(&m_vScrollOffset, sizeof(VEC));
 }
 
 CButton::~CButton()
@@ -39,6 +40,11 @@ int CButton::Update()
 		return DEAD;
 	if (!m_bView)
 		return NOEVENT;
+
+	// 스크린 렉트 업데이트 
+	m_rcScreen = m_rcPrint;
+	m_rcScreen.X += m_vScrollOffset.fX;
+	m_rcScreen.Y += m_vScrollOffset.fY;
 
 	UpdateRect();
 	return NOEVENT;
@@ -72,13 +78,18 @@ void CButton::Render(Graphics* pGraphics)
 
 #ifdef _DEBUG
 	SolidBrush whiteBrush(Color(255, 255, 255, 255));
-	pGraphics->FillRectangle(&whiteBrush, m_rcPrint);
+	pGraphics->FillRectangle(&whiteBrush, m_rcScreen);
 #endif // _DEBUG
 
+	int iFrame(0);
+	if (m_bCol)
+		iFrame = 1;
+	if (!m_bEnable)
+		iFrame = 2;
 
 	pGraphics->DrawImage(
-		pImg, m_rcPrint,
-		(m_bCol && m_bEnable ? m_vCellSize.fX : 0),
+		pImg, m_rcScreen,
+		m_vCellSize.fX * iFrame,
 		0,
 		m_vCellSize.fX,
 		m_vCellSize.fY,
@@ -90,10 +101,10 @@ void CButton::Render(Graphics* pGraphics)
 
 	
 	RectF rcStringRect = {
-		m_rcPrint.X + m_rcPrint.Width / 10.f,
-		m_rcPrint.Y + m_rcPrint.Height / 10.f,
-		m_rcPrint.Width - m_rcPrint.Width / 5.f,
-		m_rcPrint.Height - m_rcPrint.Height / 5.f
+		m_rcScreen.X + m_rcScreen.Width / 10.f,
+		m_rcScreen.Y + m_rcScreen.Height / 10.f,
+		m_rcScreen.Width - m_rcScreen.Width / 5.f,
+		m_rcScreen.Height - m_rcScreen.Height / 5.f
 	};
 
 #ifdef _DEBUG
@@ -112,12 +123,12 @@ void CButton::Release()
 
 void CButton::UpdateRect()
 {
-	m_tRect = { static_cast<LONG>(m_rcPrint.X), 
-				static_cast<LONG>(m_rcPrint.Y), 
-				static_cast<LONG>(m_rcPrint.X + m_rcPrint.Width), 
-				static_cast<LONG>(m_rcPrint.Y + m_rcPrint.Height) };
-
-	m_tInfo.vSize = { m_rcPrint.Width, m_rcPrint.Height };
+	m_tRect = { static_cast<LONG>(m_rcScreen.X), 
+				static_cast<LONG>(m_rcScreen.Y), 
+				static_cast<LONG>(m_rcScreen.X + m_rcScreen.Width), 
+				static_cast<LONG>(m_rcScreen.Y + m_rcScreen.Height) };
+	m_tInfo.vPoint = { m_rcScreen.X + m_rcScreen.Width * 0.5f, m_rcScreen.Y + m_rcScreen.Height * 0.5f };
+	m_tInfo.vSize = { m_rcScreen.Width, m_rcScreen.Height };
 }
 
 void CButton::Click()

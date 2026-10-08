@@ -16,7 +16,6 @@ public:
 		if (!m_pInstance)
 		{
 			m_pInstance = new CEffectMgr;
-			m_pInstance->Initialize();
 		}
 
 		return m_pInstance;

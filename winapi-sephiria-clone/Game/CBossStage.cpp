@@ -108,3 +108,7 @@ void CBossStage::InitializeRooms()
 void CBossStage::SpawnMonster(int iRoomIdx)
 {
 }
+
+void CBossStage::HandleCollision()
+{
+}

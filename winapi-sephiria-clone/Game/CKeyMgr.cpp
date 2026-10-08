@@ -4,6 +4,7 @@
 CKeyMgr* CKeyMgr::m_pInstance = nullptr;
 
 CKeyMgr::CKeyMgr()
+	: m_iWheelScroll(0)
 {
 	m_arrKeyState.fill(KEY_STATE::NONE);
 }
@@ -53,6 +54,11 @@ void CKeyMgr::Update()
 					eKeyState = KEY_STATE::NONE;
 			});
 	}
+}
+
+void CKeyMgr::LateUpdate()
+{
+	ResetWheelScroll();
 }
 
 void CKeyMgr::Release()

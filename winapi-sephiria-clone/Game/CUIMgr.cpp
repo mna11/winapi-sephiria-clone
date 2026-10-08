@@ -18,6 +18,8 @@
 #include "CLevelUp.h"
 #include "CItemSelectUI.h"
 #include "CForgeUI.h"
+#include "CStageChange.h"
+#include "CFade.h"
 
 CUIMgr* CUIMgr::m_pInstance = nullptr;
 
@@ -73,6 +75,19 @@ void CUIMgr::Initialize()
 
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ForgeSlot/Forge_Slot.png", L"Forge_Slot");
+
+
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/StageChange/StageChangeBG.png", L"StageChange_Background");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/StageChange/Label.png", L"StageChange_Label");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/StageChange/Lib_Node01.png", L"StageChange_Node01");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/StageChange/Lib_Node02.png", L"StageChange_Node02");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/StageChange/Lib_Node03.png", L"StageChange_Node03");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/StageChange/Lib_NodeBoss.png", L"StageChange_NodeBoss");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/StageChange/Map_PlayerIcon.png", L"StageChange_PlayerIcon");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/StageChange/Map_Line.png", L"StageChange_Line");
+
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fade/FadeAnimation.png", L"Fade");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fade/FadeAnimation.gif", L"Fade_Gif");
 }
 
 void CUIMgr::ShowUI(UIID eID)
@@ -93,7 +108,7 @@ void CUIMgr::ShowUI(UIID eID)
 	else
 		(*iter).second->Show();
 
-	if (eID == UIID::INVENTORY || eID == UIID::ITEM_SELECT)
+	if (eID == UIID::INVENTORY || eID == UIID::ITEM_SELECT || eID == UIID::STAGE_CHANGE)
 	{
 		pPlayer->SetPlayerBehaviorEnable(false);
 		m_pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
@@ -122,7 +137,7 @@ void CUIMgr::ShowUI(UIID eID, CObj* pTarget)
 		(*iter).second->SetTarget(pTarget);
 	}
 
-	if (eID == UIID::INVENTORY || eID == UIID::ITEM_SELECT)
+	if (eID == UIID::INVENTORY || eID == UIID::ITEM_SELECT || eID == UIID::STAGE_CHANGE)
 	{
 		pPlayer->SetPlayerBehaviorEnable(false);
 		m_pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
@@ -141,7 +156,7 @@ void CUIMgr::HideUI(UIID eID)
 
 	(*iter).second->Hide();
 
-	if (eID == UIID::INVENTORY)
+	if (eID == UIID::INVENTORY || eID == UIID::STAGE_CHANGE)
 	{
 		pPlayer->SetPlayerBehaviorEnable(true);
 		m_pMouse->RequestChange(MOUSE_STATE::COMBAT);
@@ -175,7 +190,7 @@ void CUIMgr::ToggleUI(UIID eID)
 		(*iter).second->Toggle();
 
 
-	if (eID == UIID::INVENTORY || eID == UIID::ITEM_SELECT)
+	if (eID == UIID::INVENTORY || eID == UIID::ITEM_SELECT || eID == UIID::STAGE_CHANGE)
 	{
 		bool bView = m_mapUI[eID]->GetView();
 		pPlayer->SetPlayerBehaviorEnable(!bView);
@@ -245,6 +260,12 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		break;
 	case UIID::FORGE:
 		pUI = CAbstractFactory<CForgeUI>::CreateUI(m_pMouse);
+		break;
+	case UIID::STAGE_CHANGE:
+		pUI = CAbstractFactory<CStageChange>::CreateUI(m_pMouse);
+		break;
+	case UIID::FADE:
+		pUI = CAbstractFactory<CFade>::CreateUI(m_pMouse);
 		break;
 	default:
 		break;

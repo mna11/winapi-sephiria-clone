@@ -286,6 +286,18 @@
     <Filter Include="01. Obj\06. UI\03. ToolTip\01. StoneTabletToolTip">
       <UniqueIdentifier>{5f559dcc-d7c7-4f0b-9c61-8ab19f44c6e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\06. UI\10. StageChange">
+      <UniqueIdentifier>{a37dca06-d38b-4022-9c32-2c9574d64338}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\10. StageChange\00. StageChangePlayerIcon">
+      <UniqueIdentifier>{8c68a675-2240-4289-8cb4-d600b3986466}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\00. Stage\00. StageTest">
+      <UniqueIdentifier>{ab371628-cac9-4dce-83b8-d44f61a0b2c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\11. Fade">
+      <UniqueIdentifier>{cd03d126-fe76-4e65-aee4-22c41bdb0529}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -555,6 +567,18 @@
     <ClInclude Include="CStoneTabletToolTIp.h">
       <Filter>01. Obj\06. UI\03. ToolTip\01. StoneTabletToolTip</Filter>
     </ClInclude>
+    <ClInclude Include="CStageChange.h">
+      <Filter>01. Obj\06. UI\10. StageChange</Filter>
+    </ClInclude>
+    <ClInclude Include="CStageChangePlayerIcon.h">
+      <Filter>01. Obj\06. UI\10. StageChange\00. StageChangePlayerIcon</Filter>
+    </ClInclude>
+    <ClInclude Include="CStageTest.h">
+      <Filter>04. Scene\00. Stage\00. StageTest</Filter>
+    </ClInclude>
+    <ClInclude Include="CFade.h">
+      <Filter>01. Obj\06. UI\11. Fade</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -808,6 +832,18 @@
     </ClCompile>
     <ClCompile Include="CStoneTabletToolTIp.cpp">
       <Filter>01. Obj\06. UI\03. ToolTip\01. StoneTabletToolTip</Filter>
+    </ClCompile>
+    <ClCompile Include="CStageChange.cpp">
+      <Filter>01. Obj\06. UI\10. StageChange</Filter>
+    </ClCompile>
+    <ClCompile Include="CStageChangePlayerIcon.cpp">
+      <Filter>01. Obj\06. UI\10. StageChange\00. StageChangePlayerIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="CStageTest.cpp">
+      <Filter>04. Scene\00. Stage\00. StageTest</Filter>
+    </ClCompile>
+    <ClCompile Include="CFade.cpp">
+      <Filter>01. Obj\06. UI\11. Fade</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

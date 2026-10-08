@@ -18,7 +18,6 @@ public:
 		if (!m_pInstance)
 		{
 			m_pInstance = new CUIMgr;
-			m_pInstance->Initialize();
 		}
 
 		return m_pInstance;

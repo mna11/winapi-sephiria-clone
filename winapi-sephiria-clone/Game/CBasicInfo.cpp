@@ -22,7 +22,7 @@ void CBasicInfo::Initialize()
 
 	// 렌더 정보 초기화 
 	m_eRender = RENDERID::UI;
-	m_iRenderLayer = 0;      // UI 중에 최약체
+	m_iRenderLayer = 1;      // UI 중에 최약체
 
 
 	m_fUIScale = PIXEL_SCALE;

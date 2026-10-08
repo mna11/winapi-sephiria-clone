@@ -1,5 +1,5 @@
 ﻿#include "pch.h"
-#include "CStage1.h"
+#include "CStageTest.h"
 
 #include "CPlayer.h"
 #include "CBaba.h"
@@ -18,35 +18,44 @@
 #include "CSceneMgr.h"
 #include "CSoundMgr.h"
 
-void CStage1::Initialize()
+CStageTest::CStageTest()
 {
-	CTileMgr::GetInstance()->LoadTile(SCENEID::STAGE1);
+}
+
+CStageTest::~CStageTest()
+{
+	Release();
+}
+
+void CStageTest::Initialize()
+{
+	CTileMgr::GetInstance()->LoadTile(SCENEID::STAGE_TEST);
 	CTileMgr::GetInstance()->SetInteractionBlocked(false);
 
 	Init_CreateObj();
 
 	InitializeRooms();
-	Init_LoadImg(L"../Resource/Image/Stage/Stage01.png");
-	
+	Init_LoadImg(L"../Resource/Image/Stage/StageTest.png");
+
 	Init_BGM(L"DugeonLibrary_Field.wav", 0.1f);
 }
 
-void CStage1::Update()
+void CStageTest::Update()
 {
 	CObjMgr::GetInstance()->Update();
 }
 
-void CStage1::LateUpdate()
+void CStageTest::LateUpdate()
 {
 	CObjMgr::GetInstance()->LateUpdate();
 
 	HotKey();
 
-	HandleCollision(); 
+	HandleCollision();
 	EndBattle();
 }
 
-void CStage1::Render(Graphics* pGraphics)
+void CStageTest::Render(Graphics* pGraphics)
 {
 	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 	VEC vViewStart = vScroll * -1;
@@ -116,53 +125,29 @@ void CStage1::Render(Graphics* pGraphics)
 #endif // _DEBUG
 }
 
-void CStage1::Release()
+void CStageTest::Release()
 {
 }
 
-void CStage1::Init_CreateObj()
+void CStageTest::Init_CreateObj()
 {
-	//CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(360.f, 7600.f));
-	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(4700.f, 7600.f));
-	CObjMgr::GetInstance()->AddObject(OBJID::NPC, CAbstractFactory<CBaba>::CreateObj(720.f, 7600.f));
-	CObjMgr::GetInstance()->AddObject(OBJID::FIELD_ITEM, CAbstractFactory<CSephirite>::CreateObj(1000.f, 7600.f));
-	CObjMgr::GetInstance()->AddObject(OBJID::FIELD_ITEM, CAbstractFactory<CAnvil>::CreateObj(1200.f, 7600.f));
-	
-	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
+	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+	if (nullptr == pPlayer)
+		CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(300.f, 500.f));
+	else
+		pPlayer->SetPos(300.f, 500.f);
 }
 
-void CStage1::InitializeRooms()
+void CStageTest::InitializeRooms()
 {
-	ROOM_INFO room1, room2, room3;
-	room1.rcTrigger = { 200, 4000, 1400, 4600 };
-	room2.rcTrigger = { 2300, 2500, 3500, 4800 };
-	room3.rcTrigger = { 3150, 5200, 5600, 7250 };
-
-	m_vecRooms.push_back(room1);
-	m_vecRooms.push_back(room2);
-	m_vecRooms.push_back(room3);
-
-	SetRect(&m_rcStair, 4700, 6700, 5000, 7000);
+	SetRect(&m_rcStair, 750, 360, 300 * PIXEL_SCALE, 300 * PIXEL_SCALE);
 }
 
-void CStage1::SpawnMonster(int iRoomIdx)
+void CStageTest::SpawnMonster(int iRoomIdx)
 {
-	switch (iRoomIdx)
-	{
-	case 0:
-		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(600, 4279));
-		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(1000, 4279));
-		break;
-	case 1:
-		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(2300, 3900));
-		break;
-	case 2:
-		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(4600, 5700));
-		break;
-	}
 }
 
-void CStage1::HandleCollision()
+void CStageTest::HandleCollision()
 {
 	// 전투 방
 	HandleCollisionBattleRoom();

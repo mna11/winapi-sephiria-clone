@@ -87,6 +87,9 @@ void CTileMgr::LoadTile(SCENEID eSceneID)
 	case SCENEID::STAGE1:
 		strFile = L"../Data/Stage01/Tile_Client_Stage01.dat";
 		break;
+	case SCENEID::STAGE_TEST:
+		strFile = L"../Data/Tile_Client_StageTest.dat";
+		break;
 	case SCENEID::BOSS_STAGE:
 		strFile = L"../Data/BossStage/Tile_Client_BossStage.dat";
 		break;

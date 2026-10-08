@@ -162,6 +162,7 @@
     <ClInclude Include="CErmaPhase.h" />
     <ClInclude Include="CErmaPhase1.h" />
     <ClInclude Include="CErmaPhase2.h" />
+    <ClInclude Include="CFade.h" />
     <ClInclude Include="CFluffy.h" />
     <ClInclude Include="CFontMgr.h" />
     <ClInclude Include="CAnvil.h" />
@@ -207,6 +208,9 @@
     <ClInclude Include="CSoundMgr.h" />
     <ClInclude Include="CStage.h" />
     <ClInclude Include="CStage1.h" />
+    <ClInclude Include="CStageChange.h" />
+    <ClInclude Include="CStageChangePlayerIcon.h" />
+    <ClInclude Include="CStageTest.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="CStoneTablet.h" />
     <ClInclude Include="CStoneTabletData.h" />
@@ -251,6 +255,7 @@
     <ClCompile Include="CErmaPhase.cpp" />
     <ClCompile Include="CErmaPhase1.cpp" />
     <ClCompile Include="CErmaPhase2.cpp" />
+    <ClCompile Include="CFade.cpp" />
     <ClCompile Include="CFluffy.cpp" />
     <ClCompile Include="CFontMgr.cpp" />
     <ClCompile Include="CAnvil.cpp" />
@@ -296,6 +301,9 @@
     <ClCompile Include="CSoundMgr.cpp" />
     <ClCompile Include="CStage.cpp" />
     <ClCompile Include="CStage1.cpp" />
+    <ClCompile Include="CStageChange.cpp" />
+    <ClCompile Include="CStageChangePlayerIcon.cpp" />
+    <ClCompile Include="CStageTest.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CStoneTablet.cpp" />
     <ClCompile Include="CStoneTabletData.cpp" />

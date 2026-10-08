@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "Game.h"
 #include "CMainGame.h"
+#include "CKeyMgr.h"
 
 #define MAX_LOADSTRING 100
 
@@ -228,6 +229,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_DESTROY:
         PostQuitMessage(0);
+        break;
+    case WM_MOUSEWHEEL:
+        CKeyMgr::GetInstance()->AddWheelScroll(GET_WHEEL_DELTA_WPARAM(wParam));
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);

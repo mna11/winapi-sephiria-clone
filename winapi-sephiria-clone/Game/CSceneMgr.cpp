@@ -9,6 +9,7 @@
 #include "CBossStage.h"
 #include "CShop.h"
 #include "CForge.h"
+#include "CStageTest.h"
 
 #include "CShopTable.h"
 #include "CUIMgr.h"
@@ -21,7 +22,8 @@ CSceneMgr::CSceneMgr()
 	m_eCurScene(SCENEID::END), 
 	m_ePreScene(SCENEID::END),
 	m_eSaveScene(SCENEID::END),
-	m_pScene(nullptr), m_pSaveScene(nullptr)
+	m_pScene(nullptr), m_pSaveScene(nullptr),
+	m_iCurrentNodeID(0), m_iRequestNodeID(-1)
 {
 }
 
@@ -55,8 +57,12 @@ void CSceneMgr::Release()
 
 void CSceneMgr::ApplyChange()
 {
-	if (m_ePreScene != m_eCurScene)
+	if (m_ePreScene != m_eCurScene || m_iRequestNodeID != -1)
 	{
+
+		// 씬 전환할 때, UI를 다 닫음
+		CUIMgr::GetInstance()->HideAllUI();
+
 		// 상점, 대장간과 관련된 씬 전환이 아니라면 이전 씬 삭제
 		if(!HandleChangeReturnScene())
 			SafeDelete(m_pScene);
@@ -98,6 +104,16 @@ void CSceneMgr::ApplyChange()
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CStage1>::CreateScene();
 			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
+			CUIMgr::GetInstance()->ShowUI(UIID::FADE);
+			break;
+		}
+		case SCENEID::STAGE_TEST:
+		{
+
+			if (nullptr == m_pScene)
+				m_pScene = CAbstractFactory<CStageTest>::CreateScene();
+			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
+			CUIMgr::GetInstance()->ShowUI(UIID::FADE);
 			break;
 		}
 		case SCENEID::BOSS_STAGE:
@@ -105,6 +121,7 @@ void CSceneMgr::ApplyChange()
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CBossStage>::CreateScene();
 			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
+			CUIMgr::GetInstance()->ShowUI(UIID::FADE);
 
 			break;
 		}
@@ -113,14 +130,24 @@ void CSceneMgr::ApplyChange()
 		}
 
 		m_ePreScene = m_eCurScene;
+
+		if (m_iRequestNodeID != -1)
+		{
+			m_iCurrentNodeID = m_iRequestNodeID;
+			m_iRequestNodeID = -1;
+		}
 	}
 }
 
 void CSceneMgr::RequestChange(SCENEID eScene)
 {
-	// 씬 전환할 때, UI를 다 닫음
-	CUIMgr::GetInstance()->HideAllUI();
 	m_eCurScene = eScene;
+}
+
+void CSceneMgr::RequestNodeChange(int iNodeID, SCENEID eSceneID)
+{
+	m_iRequestNodeID = iNodeID;
+	RequestChange(eSceneID);
 }
 
 void CSceneMgr::BackToSaveScene()

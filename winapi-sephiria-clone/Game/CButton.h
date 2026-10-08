@@ -46,6 +46,8 @@ public:
     void SetCellSize(VEC vCellSize)             { m_vCellSize = move(vCellSize);}
     // 버튼 사용 가능
     void SetEnable(bool bEnable)                { m_bEnable = bEnable; }
+    // 스크롤 오프셋 적용
+    void SetScrollOffset(VEC vScrollOffset)     { m_vScrollOffset = vScrollOffset; }
 
 public:
     void Click();
@@ -57,7 +59,10 @@ private:
 
     VEC              m_vCellSize; // 버튼 이미지 사이즈 
     RectF            m_rcPrint;   // 버튼 출력 위치/크기
+    RectF            m_rcScreen;  // 실제로 출력하는 위치 (rcPrint에 Offset 더한 것)
 
-    bool             m_bEnable;
+    bool             m_bEnable;   // 버튼 사용 가능 여부
+
+    VEC              m_vScrollOffset; // 스크롤 오프셋 - 휠 이동에 따른 오프셋이 될 수도 있고, 카메라 오프셋이 될 수도 있다.
 };
 
