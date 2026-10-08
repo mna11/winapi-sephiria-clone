@@ -122,7 +122,8 @@ void CStage1::Release()
 
 void CStage1::Init_CreateObj()
 {
-	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(360.f, 7600.f));
+	//CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(360.f, 7600.f));
+	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(4700.f, 7600.f));
 	CObjMgr::GetInstance()->AddObject(OBJID::NPC, CAbstractFactory<CBaba>::CreateObj(720.f, 7600.f));
 	CObjMgr::GetInstance()->AddObject(OBJID::FIELD_ITEM, CAbstractFactory<CSephirite>::CreateObj(1000.f, 7600.f));
 	CObjMgr::GetInstance()->AddObject(OBJID::FIELD_ITEM, CAbstractFactory<CAnvil>::CreateObj(1200.f, 7600.f));
@@ -169,6 +170,7 @@ void CStage1::HandleCollision()
 	// 계단
 	if (CCollisionMgr::CollisionRect(CObjMgr::GetInstance()->GetPlayer()->GetRect(), m_rcStair) && KEY_DOWN('F'))
 	{
-		CSceneMgr::GetInstance()->RequestChange(SCENEID::LIB_LOADING);
+		CUIMgr::GetInstance()->ShowUI(UIID::STAGE_CHANGE);
+		//CSceneMgr::GetInstance()->RequestChange(SCENEID::LIB_LOADING);
 	}
 }

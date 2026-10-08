@@ -13,6 +13,7 @@ public:
 public:
 	virtual void InitializeRooms()				PURE;
 	virtual void SpawnMonster(int iRoomIdx)		PURE;
+	virtual void HandleCollision()				PURE;
 	void StartBattleRoom(int iRoomIdx);
 	void ClearCurRoom();
 

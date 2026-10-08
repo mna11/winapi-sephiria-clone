@@ -30,6 +30,7 @@ public:
 public:
 	void Initialize();
 	void Update();
+	void LateUpdate();
 	void Release();
 
 public:
@@ -38,7 +39,14 @@ public:
 	bool KeyHold(int iKey) const	{ return KEY_STATE::HOLD == m_arrKeyState[iKey]; }
 	bool KeyPress(int iKey) const	{ return (KeyDown(iKey) || KeyHold(iKey)); }
 
+public:
+	void AddWheelScroll(int iScroll) { m_iWheelScroll += iScroll; }
+	const int& GetWheelScroll() const { return m_iWheelScroll; }
+	void ResetWheelScroll() { m_iWheelScroll = 0; }
+
 private:
 	static CKeyMgr* m_pInstance;
 	array<KEY_STATE, VK_MAX> m_arrKeyState;
+
+	int m_iWheelScroll;
 };

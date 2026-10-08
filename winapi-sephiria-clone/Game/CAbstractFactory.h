@@ -103,8 +103,8 @@ public:
 	static CUI* CreateUI(CMouse* pMouse)
 	{
 		CUI* pUI = new T;
-		pUI->Initialize();
 		pUI->SetMouse(pMouse);
+		pUI->Initialize();
 		return pUI;
 	}
 

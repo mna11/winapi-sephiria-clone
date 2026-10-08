@@ -69,6 +69,10 @@ void CMainGame::Initialize()
 	CStoneTabletData::GetInstance()->Initialize();
 	CWeaponData::GetInstance()->Initialize();
 
+	// 이미지가 많은 매니저들 따로 Initialize
+	CUIMgr::GetInstance()->Initialize();
+	CEffectMgr::GetInstance()->Initialize();
+
 	// 마우스 생성
 	CObj* pMouse = CAbstractFactory<CMouse>::CreateObj();
 	CObjMgr::GetInstance()->AddObject(OBJID::MOUSE, pMouse);
@@ -88,8 +92,8 @@ void CMainGame::Update()
 void CMainGame::LateUpdate()
 {
 	CSceneMgr::GetInstance()->LateUpdate();
-
 	CCameraMgr::GetInstance()->LateUpdate();
+	CKeyMgr::GetInstance()->LateUpdate();
 }
 
 void CMainGame::Render()

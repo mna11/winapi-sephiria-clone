@@ -16,8 +16,6 @@ public:
 public:
     void InitializeRooms() override;
     void SpawnMonster(int iRoomIdx) override;
-
-private:
-    void HandleCollision();
+    void HandleCollision() override;
 };
 

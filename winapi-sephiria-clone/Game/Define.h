@@ -6,6 +6,8 @@
 #include <vector>
 #include <utility>
 
+class CButton;
+
 /////////////////////////////////////////
 
 #define		PURE =0
@@ -62,8 +64,8 @@
 
 enum class OBJID	{ PLAYER, PLAYER_BULLET, MONSTER, MONSTER_BULLET, NPC, FIELD_ITEM, DROP, MOUSE, WEAPON, EFFECT, UI, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, MOUSE, END };
-enum class UIID		{ BASIC_INFO, LEVEL_UP, BOSS_HP, INVENTORY, ARTIFACT_TOOLTIP, STONE_TABLET_TOOLTIP, SHOP_TABLE, MSG_BOX, BUTTON, ITEM_SELECT, FORGE, STAT_INFO, END };
-enum class SCENEID	{ LIB_LOADING, SHOP, FORGE, STAGE0, STAGE1, BOSS_STAGE, END };
+enum class UIID		{ BASIC_INFO, LEVEL_UP, BOSS_HP, INVENTORY, ARTIFACT_TOOLTIP, STONE_TABLET_TOOLTIP, SHOP_TABLE, MSG_BOX, BUTTON, ITEM_SELECT, FORGE, STAGE_CHANGE, STAT_INFO, FADE, END };
+enum class SCENEID	{ LIB_LOADING, SHOP, FORGE, STAGE_TEST, STAGE0, STAGE1, BOSS_STAGE, END };
 
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };
 
@@ -369,6 +371,16 @@ typedef struct tagWeaponInfo
 
 	WEAPON_TYPE		eWeaponType;				// 무기 타입
 } WEAPON_INFO;
+
+// StageChange Node 정보 
+typedef struct tagNodeInfo
+{
+	int			iNodeID;  // 노드 ID
+	int			iStep;	  // 현재 단계 (노드 진행)
+	SCENEID		eSceneID; // 바꿀 씬
+	CButton*	pButton;  // 버튼
+} NODE_INFO;
+
 
 // 스프라이트 애니메이션용
 // QueryPerfomanceCount 사용으로 변경

@@ -81,6 +81,11 @@ void CStage::HotKey()
     {
         CUIMgr::GetInstance()->ShowUI(UIID::LEVEL_UP);
     }
+
+    if (KEY_DOWN(VK_ESCAPE) && CUIMgr::GetInstance()->GetUI(UIID::STAGE_CHANGE)->GetView())
+    {
+        CUIMgr::GetInstance()->HideUI(UIID::STAGE_CHANGE);
+    }
 }
 
 void CStage::HandleCollisionBattleRoom()
