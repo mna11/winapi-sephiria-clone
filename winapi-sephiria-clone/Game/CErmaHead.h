@@ -24,4 +24,9 @@ public:
 private:
     CBossErma* m_pOwner;
     bool m_bRemoveRequested;
+
+    // CMonster을(를) 통해 상속됨
+    void UpdateTime() override;
+    void Move() override;
+    void Attack() override;
 };

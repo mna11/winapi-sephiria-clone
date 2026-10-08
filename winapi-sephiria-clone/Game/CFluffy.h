@@ -34,9 +34,9 @@ public:
     void HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END) override;
 
 private:
-    void UpdateTime();
-    void Move();
-    void Attack();
+    void UpdateTime() override;
+    void Move() override;
+    void Attack() override;
 
 private:
     double m_dAtkInterval;

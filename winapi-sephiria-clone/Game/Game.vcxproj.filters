@@ -298,6 +298,9 @@
     <Filter Include="01. Obj\06. UI\11. Fade">
       <UniqueIdentifier>{cd03d126-fe76-4e65-aee4-22c41bdb0529}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\02. Monster\03. GolemCow">
+      <UniqueIdentifier>{c05eedba-d85c-4113-8b0f-c163c1f9e250}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -579,6 +582,9 @@
     <ClInclude Include="CFade.h">
       <Filter>01. Obj\06. UI\11. Fade</Filter>
     </ClInclude>
+    <ClInclude Include="CGolemCow.h">
+      <Filter>01. Obj\02. Monster\03. GolemCow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -844,6 +850,9 @@
     </ClCompile>
     <ClCompile Include="CFade.cpp">
       <Filter>01. Obj\06. UI\11. Fade</Filter>
+    </ClCompile>
+    <ClCompile Include="CGolemCow.cpp">
+      <Filter>01. Obj\02. Monster\03. GolemCow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

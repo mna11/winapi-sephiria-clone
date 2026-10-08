@@ -28,6 +28,11 @@ CMonster::CMonster()
 
 	m_imgAttrHit.SetColorMatrix(&colorHitMatrix, ColorMatrixFlagsDefault, ColorAdjustTypeBitmap);
 	m_imgAttrDown.SetColorMatrix(&colorDownMatrix, ColorMatrixFlagsDefault, ColorAdjustTypeBitmap);
+
+	// iframe 세팅 
+	m_dHitElapseTime = 0.;
+	m_dIframeTime = 0.3;   // 피격 후 무적시간 0.3초
+	m_bHit = false;
 }
 
 CMonster::~CMonster()

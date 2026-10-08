@@ -372,3 +372,11 @@ void CBossErma::BeginEnding()
 
     m_bEnding = true;
 }
+
+void CBossErma::Move()
+{
+}
+
+void CBossErma::Attack()
+{
+}

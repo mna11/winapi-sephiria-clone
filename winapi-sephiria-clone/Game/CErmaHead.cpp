@@ -73,3 +73,15 @@ void CErmaHead::Render(Graphics* pGraphics)
 void CErmaHead::Release()
 {
 }
+
+void CErmaHead::UpdateTime()
+{
+}
+
+void CErmaHead::Move()
+{
+}
+
+void CErmaHead::Attack()
+{
+}
