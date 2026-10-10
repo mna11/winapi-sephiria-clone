@@ -2,6 +2,9 @@
 #include "CSceneMgr.h"
 #include "CScene.h"
 
+#include "CFade.h"
+
+#include "CStart.h"
 #include "CStage.h"
 #include "CObjMgr.h"
 #include "CStage1.h"
@@ -69,6 +72,12 @@ void CSceneMgr::ApplyChange()
 
 		switch (m_eCurScene)
 		{
+		case SCENEID::START:
+		{
+			if (nullptr == m_pScene)
+				m_pScene = CAbstractFactory<CStart>::CreateScene();
+			break;
+		}
 		case SCENEID::LIB_LOADING:
 		{
 			if (nullptr == m_pScene)
@@ -104,7 +113,10 @@ void CSceneMgr::ApplyChange()
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CStage1>::CreateScene();
 			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
-			CUIMgr::GetInstance()->ShowUI(UIID::FADE);
+			CUI* pFade = CUIMgr::GetInstance()->ShowUI(UIID::FADE);
+			if (nullptr != pFade)
+				static_cast<CFade*>(pFade)->SetFadeType(FADE_TYPE::RECTANGLE);
+
 			break;
 		}
 		case SCENEID::STAGE_TEST:
@@ -113,7 +125,9 @@ void CSceneMgr::ApplyChange()
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CStageTest>::CreateScene();
 			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
-			CUIMgr::GetInstance()->ShowUI(UIID::FADE);
+			CUI* pFade = CUIMgr::GetInstance()->ShowUI(UIID::FADE);
+			if (nullptr != pFade)
+				static_cast<CFade*>(pFade)->SetFadeType(FADE_TYPE::RECTANGLE);
 			break;
 		}
 		case SCENEID::BOSS_STAGE:
@@ -121,7 +135,10 @@ void CSceneMgr::ApplyChange()
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CBossStage>::CreateScene();
 			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
-			CUIMgr::GetInstance()->ShowUI(UIID::FADE);
+
+			CUI* pFade = CUIMgr::GetInstance()->ShowUI(UIID::FADE);
+			if (nullptr != pFade)
+				static_cast<CFade*>(pFade)->SetFadeType(FADE_TYPE::RECTANGLE);
 
 			break;
 		}

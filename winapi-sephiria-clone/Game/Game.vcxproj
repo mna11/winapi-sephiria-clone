@@ -212,6 +212,7 @@
     <ClInclude Include="CStageChange.h" />
     <ClInclude Include="CStageChangePlayerIcon.h" />
     <ClInclude Include="CStageTest.h" />
+    <ClInclude Include="CStart.h" />
     <ClInclude Include="CStat.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="CStoneTablet.h" />
@@ -307,6 +308,7 @@
     <ClCompile Include="CStageChange.cpp" />
     <ClCompile Include="CStageChangePlayerIcon.cpp" />
     <ClCompile Include="CStageTest.cpp" />
+    <ClCompile Include="CStart.cpp" />
     <ClCompile Include="CStat.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CStoneTablet.cpp" />

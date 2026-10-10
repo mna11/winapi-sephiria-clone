@@ -29,7 +29,7 @@ void CStage1::Initialize()
 	InitializeRooms();
 	Init_LoadImg(L"../Resource/Image/Stage/Stage01.png");
 	
-	Init_BGM(L"DugeonLibrary_Field.wav", 0.1f);
+	Init_BGM(L"DugeonLibrary_Field.wav", 0.3f);
 }
 
 void CStage1::Update()

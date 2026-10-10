@@ -37,7 +37,7 @@ void CStageTest::Initialize()
 	InitializeRooms();
 	Init_LoadImg(L"../Resource/Image/Stage/StageTest.png");
 
-	Init_BGM(L"DugeonLibrary_Field.wav", 0.1f);
+	Init_BGM(L"DugeonLibrary_Field.wav", 0.3f);
 }
 
 void CStageTest::Update()

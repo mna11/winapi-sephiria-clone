@@ -66,6 +66,8 @@ void CUIMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Button/Button.png", L"Button");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Button/EscapeButton.png", L"EscapeButton");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Button/BlueButton.png", L"BlueButton");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Button/StartButton.png", L"GameStartButton");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Button/ExitButton.png", L"GameExitButton");
 	
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/LevelUp/LevelUp.png", L"LevelUp");
 
@@ -96,77 +98,66 @@ void CUIMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/KeywordUI.png", L"KeywordUI");
 }
 
-void CUIMgr::ShowUI(UIID eID)
+CUI* CUIMgr::ShowUI(UIID eID)
 {
-	auto iter = m_mapUI.find(eID);
-
-	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
-	if (nullptr == pPlayer || nullptr == m_pMouse)
-		return;
-
-	if (iter == m_mapUI.end())
-	{
-		CUI* pUI = CreateUI(eID);
-		if (nullptr == pUI)
-			return;
-		pUI->Show();
-	}
-	else
-		(*iter).second->Show();
+	CUI* pUI = GetUI(eID);
+	if (nullptr == pUI)
+		return nullptr;
 
 	if (eID == UIID::INVENTORY || eID == UIID::ITEM_SELECT || eID == UIID::STAGE_CHANGE)
 	{
+		CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+		if (nullptr == pPlayer)
+			return nullptr;
+
 		pPlayer->SetPlayerBehaviorEnable(false);
 		m_pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
 	}
+
+	pUI->Show();
+	return pUI;
 }
 
-void CUIMgr::ShowUI(UIID eID, CObj* pTarget)
+CUI* CUIMgr::ShowUI(UIID eID, CObj* pTarget)
 {
-	auto iter = m_mapUI.find(eID);
-
-	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
-	if (nullptr == pPlayer)
-		return;
-
-	if (iter == m_mapUI.end())
-	{
-		CUI* pUI = CreateUI(eID);
-		if (nullptr == pUI)
-			return;
-		pUI->Show();
-		pUI->SetTarget(pTarget);
-	}
-	else
-	{
-		(*iter).second->Show();
-		(*iter).second->SetTarget(pTarget);
-	}
+	CUI* pUI = GetUI(eID);
+	if (nullptr == pUI)
+		return nullptr;
 
 	if (eID == UIID::INVENTORY || eID == UIID::ITEM_SELECT || eID == UIID::STAGE_CHANGE)
 	{
+		CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+		if (nullptr == pPlayer)
+			return nullptr;
+
 		pPlayer->SetPlayerBehaviorEnable(false);
 		m_pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
 	}
+
+	pUI->Show();
+	pUI->SetTarget(pTarget);
+	return pUI;
 }
 
-void CUIMgr::HideUI(UIID eID)
+CUI* CUIMgr::HideUI(UIID eID)
 {
 	auto iter = m_mapUI.find(eID);
 	if (iter == m_mapUI.end())
-		return;
-
-	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
-	if (nullptr == pPlayer)
-		return;
+		return nullptr;
 
 	(*iter).second->Hide();
 
 	if (eID == UIID::INVENTORY || eID == UIID::STAGE_CHANGE)
 	{
+		CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+		if (nullptr == pPlayer)
+			return nullptr;
+
 		pPlayer->SetPlayerBehaviorEnable(true);
 		m_pMouse->RequestChange(MOUSE_STATE::COMBAT);
 	}
+
+	return (*iter).second;
 }
 
 void CUIMgr::HideAllUI()
@@ -177,34 +168,29 @@ void CUIMgr::HideAllUI()
 	}
 }
 
-void CUIMgr::ToggleUI(UIID eID)
+CUI* CUIMgr::ToggleUI(UIID eID)
 {
-	auto iter = m_mapUI.find(eID);
-
-	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
-	if (nullptr == pPlayer)
-		return;
-
-	if (iter == m_mapUI.end())
-	{
-		CUI* pUI = CreateUI(eID);
-		if (nullptr == pUI)
-			return;
-		pUI->Toggle();
-	}
-	else
-		(*iter).second->Toggle();
-
+	CUI* pUI = GetUI(eID); 
+	if (nullptr == pUI)
+		return nullptr;
 
 	if (eID == UIID::INVENTORY || eID == UIID::ITEM_SELECT || eID == UIID::STAGE_CHANGE)
 	{
+		CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+		if (nullptr == pPlayer || nullptr == m_pMouse)
+			return nullptr;
+
 		bool bView = m_mapUI[eID]->GetView();
-		pPlayer->SetPlayerBehaviorEnable(!bView);
-		if (bView)
+
+		pPlayer->SetPlayerBehaviorEnable(bView);
+		if (!bView)
 			m_pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
-		else 
+		else
 			m_pMouse->RequestChange(MOUSE_STATE::COMBAT);
 	}
+
+	pUI->Toggle();
+	return pUI;
 }
 
 CUI* CUIMgr::GetUI(UIID eID)
@@ -242,10 +228,16 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		pUI = CAbstractFactory<CBossHp>::CreateUI(m_pMouse);
 		break;
 	case UIID::INVENTORY:
+	{
 		// 인벤토리UI를 생성할 때, 플레이어의 인벤토리를 연결해줌
+		CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+		if (nullptr == pPlayer || nullptr == m_pMouse)
+			return nullptr;
+
 		pUI = CAbstractFactory<CInventoryUI>::CreateUI(m_pMouse);
-		static_cast<CInventoryUI*>(pUI)->SetInventory(CObjMgr::GetInstance()->GetPlayer()->GetInventory());
+		static_cast<CInventoryUI*>(pUI)->SetInventory(pPlayer->GetInventory());
 		break;
+	}
 	case UIID::ARTIFACT_TOOLTIP:
 		pUI = CAbstractFactory<CArtifactToolTip>::CreateUI(m_pMouse);
 		break;

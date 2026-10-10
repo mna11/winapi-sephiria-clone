@@ -5,6 +5,7 @@
 #include "CImgMgr.h"
 
 CFade::CFade()
+	: m_eFadeType(FADE_TYPE::END), m_iAlpha(255), m_dFadeDuration(1.5), m_dFadeElapsed(0.)
 {
 }
 
@@ -25,8 +26,14 @@ void CFade::Initialize()
 
 int CFade::Update()
 {
-	if (!m_bView)
+	if (!m_bView || m_eFadeType == FADE_TYPE::END)
 		return NOEVENT;
+
+	m_dFadeElapsed += DT;
+	float fRatio = m_dFadeElapsed / m_dFadeDuration;
+	m_iAlpha = static_cast<int>(255. * (1. - fRatio));
+	if (fRatio >= 1.)
+		m_bView = false;
 
 	UpdateFrame();
 	return NOEVENT;
@@ -34,7 +41,7 @@ int CFade::Update()
 
 void CFade::LateUpdate()
 {
-	if (!m_bView)
+	if (!m_bView || m_eFadeType == FADE_TYPE::END)
 		return;
 }
 
@@ -44,16 +51,24 @@ void CFade::LateUpdate()
 // 나중에 Shop이랑 Forge도 한번 바꿔볼 생각
 void CFade::Render(Graphics* pGraphics)
 {
-	if (!m_bView)
+	if (!m_bView || m_eFadeType == FADE_TYPE::END)
 		return;
 
 	Image* pImg = CImgMgr::GetInstance()->FindImg(m_pFrameKey);
 	if (nullptr == pImg)
 		return;
 
-	// 현재 그릴 프레임 정하기 - 원래는 이전에 GetFrameCount로 프레임 몇개 있는지 확인해야되는데, 이미 60개 있다는거 알아서 패스함 
-	pImg->SelectActiveFrame(&FrameDimensionTime, m_tFrame.iStart);
-	pGraphics->DrawImage(pImg, 0, 0, WINCX, WINCY);
+	if (m_eFadeType == FADE_TYPE::CIRCLE)
+	{
+		// 현재 그릴 프레임 정하기 - 원래는 이전에 GetFrameCount로 프레임 몇개 있는지 확인해야되는데, 이미 60개 있다는거 알아서 패스함 
+		pImg->SelectActiveFrame(&FrameDimensionTime, m_tFrame.iStart);
+		pGraphics->DrawImage(pImg, 0, 0, WINCX, WINCY);
+	}
+	else
+	{
+		SolidBrush brush(Color(m_iAlpha, 0, 0, 0));
+		pGraphics->FillRectangle(&brush, 0, 0, WINCX, WINCY);
+	}
 }
 
 void CFade::Release()
@@ -63,6 +78,9 @@ void CFade::Release()
 void CFade::Show()
 {
 	m_bView = true;
+	
+	m_dFadeElapsed = 0.;
+	m_iAlpha = 255;
 	SetFrame(0, 59, 0, 0.001);
 }
 
@@ -77,6 +95,9 @@ void CFade::UpdateFrame()
 		m_tFrame.dFrameElapsedTime -= m_tFrame.dFrameSpeed;
 
 		if (m_tFrame.iStart > m_tFrame.iEnd)
-			m_bView = false;
+		{
+			if (m_eFadeType == FADE_TYPE::CIRCLE)
+				m_bView = false;
+		}
 	}
 }
