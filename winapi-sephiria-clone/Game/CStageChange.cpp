@@ -3,6 +3,7 @@
 
 #include "CButton.h"
 #include "CStageChangePlayerIcon.h"
+#include "CFade.h"
 
 #include "CAbstractFactory.h"
 #include "CImgMgr.h"
@@ -191,7 +192,9 @@ void CStageChange::Show()
 		}
 	}
 
-	CUIMgr::GetInstance()->ShowUI(UIID::FADE);
+	CUI* pFade = CUIMgr::GetInstance()->ShowUI(UIID::FADE);
+	if (nullptr != pFade)
+		static_cast<CFade*>(pFade)->SetFadeType(FADE_TYPE::CIRCLE);
 }
 
 void CStageChange::Hide()

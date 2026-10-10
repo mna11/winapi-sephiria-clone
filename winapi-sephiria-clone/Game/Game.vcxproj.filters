@@ -148,18 +148,6 @@
     <Filter Include="01. Obj\02. Monster\02. Gargoyle">
       <UniqueIdentifier>{7c41fed8-58b9-4fff-ba98-becaa1d5ff0d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Scene\00. Stage">
-      <UniqueIdentifier>{e00739a8-abf4-4dbc-8042-e0a59b299a12}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Scene\00. Stage\01. Stage1">
-      <UniqueIdentifier>{f229f306-9d3a-442a-beac-069f0526866a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Scene\00. Stage\99. BossStage">
-      <UniqueIdentifier>{e4e5358a-060c-4e59-a9f4-e90aaf197077}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Scene\01. LibLoading">
-      <UniqueIdentifier>{331bf089-6b7c-4458-813a-bf5506012622}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Obj\06. UI\02. Inventory">
       <UniqueIdentifier>{70589247-b01e-4ed0-811f-f5813648347f}</UniqueIdentifier>
     </Filter>
@@ -177,9 +165,6 @@
     </Filter>
     <Filter Include="06. Data">
       <UniqueIdentifier>{6d97a5cd-a9ef-427b-997f-d3bb769e62ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Scene\02. Shop">
-      <UniqueIdentifier>{cb1a33f3-4dd4-47dd-a46a-1ae1aaded3a2}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Obj\06. UI\04. ShopTable">
       <UniqueIdentifier>{ad368fd1-3700-46aa-8895-9fa69e50a71a}</UniqueIdentifier>
@@ -219,9 +204,6 @@
     </Filter>
     <Filter Include="01. Obj\11. Anvil">
       <UniqueIdentifier>{2c08eb7c-627d-4fc9-85ce-abeb8b806673}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Scene\03. Forge">
-      <UniqueIdentifier>{743ebe37-e22d-481c-9266-4c68989ec636}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Obj\06. UI\09. ForgeUI">
       <UniqueIdentifier>{5224f266-8478-4ea2-842e-618ee0b49051}</UniqueIdentifier>
@@ -289,9 +271,6 @@
     <Filter Include="01. Obj\06. UI\10. StageChange\00. StageChangePlayerIcon">
       <UniqueIdentifier>{8c68a675-2240-4289-8cb4-d600b3986466}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Scene\00. Stage\00. StageTest">
-      <UniqueIdentifier>{ab371628-cac9-4dce-83b8-d44f61a0b2c9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Obj\06. UI\11. Fade">
       <UniqueIdentifier>{cd03d126-fe76-4e65-aee4-22c41bdb0529}</UniqueIdentifier>
     </Filter>
@@ -303,6 +282,30 @@
     </Filter>
     <Filter Include="01. Obj\08. Baba">
       <UniqueIdentifier>{042df00f-f6c3-4748-a068-65819303cc87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\01. Stage">
+      <UniqueIdentifier>{e00739a8-abf4-4dbc-8042-e0a59b299a12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\01. Stage\01. Stage1">
+      <UniqueIdentifier>{f229f306-9d3a-442a-beac-069f0526866a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\01. Stage\99. BossStage">
+      <UniqueIdentifier>{e4e5358a-060c-4e59-a9f4-e90aaf197077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\01. Stage\00. StageTest">
+      <UniqueIdentifier>{ab371628-cac9-4dce-83b8-d44f61a0b2c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\02. LibLoading">
+      <UniqueIdentifier>{331bf089-6b7c-4458-813a-bf5506012622}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\03. Shop">
+      <UniqueIdentifier>{cb1a33f3-4dd4-47dd-a46a-1ae1aaded3a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\04. Forge">
+      <UniqueIdentifier>{743ebe37-e22d-481c-9266-4c68989ec636}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\00. Start">
+      <UniqueIdentifier>{1c56b057-4442-4120-a9e2-e28704c285b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -373,7 +376,7 @@
       <Filter>01. Obj\00. Player</Filter>
     </ClInclude>
     <ClInclude Include="CStage.h">
-      <Filter>04. Scene\00. Stage</Filter>
+      <Filter>04. Scene\01. Stage</Filter>
     </ClInclude>
     <ClInclude Include="CCamera.h">
       <Filter>03. Manager\05. CameraMgr\00. Camera</Filter>
@@ -421,7 +424,7 @@
       <Filter>03. Manager\12. FontMgr</Filter>
     </ClInclude>
     <ClInclude Include="CBossStage.h">
-      <Filter>04. Scene\00. Stage\99. BossStage</Filter>
+      <Filter>04. Scene\01. Stage\99. BossStage</Filter>
     </ClInclude>
     <ClInclude Include="CBossHp.h">
       <Filter>01. Obj\06. UI\01. BossHp</Filter>
@@ -457,13 +460,13 @@
       <Filter>01. Obj\02. Monster\00. BossErma\03. ErmaLaser</Filter>
     </ClInclude>
     <ClInclude Include="CStage1.h">
-      <Filter>04. Scene\00. Stage\01. Stage1</Filter>
+      <Filter>04. Scene\01. Stage\01. Stage1</Filter>
     </ClInclude>
     <ClInclude Include="CGargoyle.h">
       <Filter>01. Obj\02. Monster\02. Gargoyle</Filter>
     </ClInclude>
     <ClInclude Include="CLibLoading.h">
-      <Filter>04. Scene\01. LibLoading</Filter>
+      <Filter>04. Scene\02. LibLoading</Filter>
     </ClInclude>
     <ClInclude Include="CInventoryUI.h">
       <Filter>01. Obj\06. UI\02. Inventory\00. CInventoryUI</Filter>
@@ -490,7 +493,7 @@
       <Filter>01. Obj\06. UI\04. ShopTable</Filter>
     </ClInclude>
     <ClInclude Include="CShop.h">
-      <Filter>04. Scene\02. Shop</Filter>
+      <Filter>04. Scene\03. Shop</Filter>
     </ClInclude>
     <ClInclude Include="CShopTable.h">
       <Filter>01. Obj\06. UI\04. ShopTable\00. ShopTable</Filter>
@@ -526,7 +529,7 @@
       <Filter>01. Obj\11. Anvil</Filter>
     </ClInclude>
     <ClInclude Include="CForge.h">
-      <Filter>04. Scene\03. Forge</Filter>
+      <Filter>04. Scene\04. Forge</Filter>
     </ClInclude>
     <ClInclude Include="CWeaponData.h">
       <Filter>06. Data\01. WeaponData</Filter>
@@ -580,7 +583,7 @@
       <Filter>01. Obj\06. UI\10. StageChange\00. StageChangePlayerIcon</Filter>
     </ClInclude>
     <ClInclude Include="CStageTest.h">
-      <Filter>04. Scene\00. Stage\00. StageTest</Filter>
+      <Filter>04. Scene\01. Stage\00. StageTest</Filter>
     </ClInclude>
     <ClInclude Include="CFade.h">
       <Filter>01. Obj\06. UI\11. Fade</Filter>
@@ -590,6 +593,9 @@
     </ClInclude>
     <ClInclude Include="CStat.h">
       <Filter>01. Obj\06. UI\12. Stat</Filter>
+    </ClInclude>
+    <ClInclude Include="CStart.h">
+      <Filter>04. Scene\00. Start</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -645,7 +651,7 @@
       <Filter>01. Obj\00. Player</Filter>
     </ClCompile>
     <ClCompile Include="CStage.cpp">
-      <Filter>04. Scene\00. Stage</Filter>
+      <Filter>04. Scene\01. Stage</Filter>
     </ClCompile>
     <ClCompile Include="CCamera.cpp">
       <Filter>03. Manager\05. CameraMgr\00. Camera</Filter>
@@ -693,7 +699,7 @@
       <Filter>03. Manager\12. FontMgr</Filter>
     </ClCompile>
     <ClCompile Include="CBossStage.cpp">
-      <Filter>04. Scene\00. Stage\99. BossStage</Filter>
+      <Filter>04. Scene\01. Stage\99. BossStage</Filter>
     </ClCompile>
     <ClCompile Include="CBossHp.cpp">
       <Filter>01. Obj\06. UI\01. BossHp</Filter>
@@ -729,13 +735,13 @@
       <Filter>01. Obj\02. Monster\00. BossErma\03. ErmaLaser</Filter>
     </ClCompile>
     <ClCompile Include="CStage1.cpp">
-      <Filter>04. Scene\00. Stage\01. Stage1</Filter>
+      <Filter>04. Scene\01. Stage\01. Stage1</Filter>
     </ClCompile>
     <ClCompile Include="CGargoyle.cpp">
       <Filter>01. Obj\02. Monster\02. Gargoyle</Filter>
     </ClCompile>
     <ClCompile Include="CLibLoading.cpp">
-      <Filter>04. Scene\01. LibLoading</Filter>
+      <Filter>04. Scene\02. LibLoading</Filter>
     </ClCompile>
     <ClCompile Include="CInventory.cpp">
       <Filter>05. Inventory</Filter>
@@ -762,7 +768,7 @@
       <Filter>01. Obj\06. UI\04. ShopTable</Filter>
     </ClCompile>
     <ClCompile Include="CShop.cpp">
-      <Filter>04. Scene\02. Shop</Filter>
+      <Filter>04. Scene\03. Shop</Filter>
     </ClCompile>
     <ClCompile Include="CShopTable.cpp">
       <Filter>01. Obj\06. UI\04. ShopTable\00. ShopTable</Filter>
@@ -798,7 +804,7 @@
       <Filter>01. Obj\11. Anvil</Filter>
     </ClCompile>
     <ClCompile Include="CForge.cpp">
-      <Filter>04. Scene\03. Forge</Filter>
+      <Filter>04. Scene\04. Forge</Filter>
     </ClCompile>
     <ClCompile Include="CWeaponData.cpp">
       <Filter>06. Data\01. WeaponData</Filter>
@@ -852,7 +858,7 @@
       <Filter>01. Obj\06. UI\10. StageChange\00. StageChangePlayerIcon</Filter>
     </ClCompile>
     <ClCompile Include="CStageTest.cpp">
-      <Filter>04. Scene\00. Stage\00. StageTest</Filter>
+      <Filter>04. Scene\01. Stage\00. StageTest</Filter>
     </ClCompile>
     <ClCompile Include="CFade.cpp">
       <Filter>01. Obj\06. UI\11. Fade</Filter>
@@ -862,6 +868,9 @@
     </ClCompile>
     <ClCompile Include="CStat.cpp">
       <Filter>01. Obj\06. UI\12. Stat</Filter>
+    </ClCompile>
+    <ClCompile Include="CStart.cpp">
+      <Filter>04. Scene\00. Start</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

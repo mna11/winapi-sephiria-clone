@@ -47,11 +47,7 @@ void CEffectMgr::Initialize()
 	// 가고일
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Monster/Gargoyle/Gargoyle_Attack.png", L"Gargoyle_Attack");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Monster/Gargoyle/Gargoyle_ShockWave.png", L"Gargoyle_ShockWave");
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Monster/GolemCow/Gargoyle_ShockWave_Targeting.png", L"Gargoyle_Targeting");
-
-	// 소 골렘 
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Monster/Gargoyle/Golem_Cow_Targeting.png", L"GolemCow_Targeting");
-
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Monster/Gargoyle/Gargoyle_ShockWave_Targeting.png", L"Gargoyle_Targeting");
 
 	// 전투 알람
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Stage/ExclamationMark.png", L"Exclamation_Mark");
@@ -181,8 +177,6 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 		pEffect->SetFrame(0, 19, 0, dFrameSpeed);
 		pEffect->SetSize({ 96, 72 });
 		pEffect->SetRenderOption(RENDERID::GAMEOBJECT, 1);
-
-
 	}
 	// 전투
 	else if (!lstrcmpW(pFrameKey, L"Exclamation_Mark"))

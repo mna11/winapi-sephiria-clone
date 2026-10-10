@@ -15,5 +15,16 @@ public:
 public:
     void Show() override;
     void UpdateFrame() override;
+
+public:
+    void SetFadeType(FADE_TYPE eType) { m_eFadeType = eType; }
+
+private:
+    FADE_TYPE m_eFadeType; 
+    
+    // RECTANGLE¿ë
+    double  m_dFadeElapsed;
+    double  m_dFadeDuration;
+    int     m_iAlpha;
 };
 

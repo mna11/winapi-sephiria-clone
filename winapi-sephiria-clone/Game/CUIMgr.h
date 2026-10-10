@@ -35,11 +35,11 @@ public:
 	void Initialize();
 
 public:
-	void ShowUI(UIID eID);
-	void ShowUI(UIID eID, CObj* pTarget);
-	void HideUI(UIID eID);
+	CUI* ShowUI(UIID eID);
+	CUI* ShowUI(UIID eID, CObj* pTarget);
+	CUI* HideUI(UIID eID);
 	void HideAllUI();
-	void ToggleUI(UIID eID);
+	CUI* ToggleUI(UIID eID);
 
 public:
 	CUI* GetUI(UIID eID);
