@@ -37,7 +37,7 @@ public:
 	void				SetFrame(FRAME tFrame)				{ m_tFrame = tFrame; }
 	void				SetRenderLayer(int iRenderLayer)	{ m_iRenderLayer = iRenderLayer; }
 	virtual void		SetTarget(CObj* pObj)				{ if (nullptr != pObj) m_pTarget = pObj; }
-	virtual	void		HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END);
+	virtual	void		HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END, bool bCritical = false);
 
 public:
 	void				AddPos(float fDx, float fDy)		{ m_tInfo.vPoint.fX += fDx; m_tInfo.vPoint.fY += fDy; }

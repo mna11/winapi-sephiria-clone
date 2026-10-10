@@ -62,7 +62,9 @@ void CWeaponController::Attack()
 void CWeaponController::SpecialAttack()
 {
 	if (nullptr != m_pWeapon)
+	{
 		m_pWeapon->SpecialAttack();
+	}
 }
 
 void CWeaponController::ApplyChange()

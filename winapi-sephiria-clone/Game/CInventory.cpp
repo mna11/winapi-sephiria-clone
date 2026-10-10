@@ -30,7 +30,7 @@ void CInventory::Initialize()
 	// 테스트용
 	for (int i = 0; i < m_vecItems.size(); ++i)
 	{
-		if (i < 3)
+		if (i < 9)
 		{
 			InsertItem(i, i, ITEM_TYPE::ARTIFACT);
 		}

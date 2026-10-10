@@ -59,45 +59,45 @@ vector<STAT> CArtifactData::CreateStatVec(int iID)
 		break;
 	case 1: // 열망의 부적
 		vecStat.resize(5);
-		vecStat[0].fCriticalChange = 3.f;
-		vecStat[1].fCriticalChange = 6.f;
-		vecStat[2].fCriticalChange = 10.f;
-		vecStat[3].fCriticalChange = 14.f;
-		vecStat[4].fCriticalChange = 20.f;
+		vecStat[0].fCriticalChange = 0.03f;
+		vecStat[1].fCriticalChange = 0.06f;
+		vecStat[2].fCriticalChange = 0.1f;
+		vecStat[3].fCriticalChange = 0.14f;
+		vecStat[4].fCriticalChange = 0.2f;
 		break;
 	case 2: // 뾰족한 방망이
 		vecStat.resize(3);
-		vecStat[0].fCriticalDamage = 20.f;
-		vecStat[1].fCriticalDamage = 40.f;
-		vecStat[2].fCriticalDamage = 60.f;
+		vecStat[0].fCriticalDamage = 0.2f;
+		vecStat[1].fCriticalDamage = 0.4f;
+		vecStat[2].fCriticalDamage = 0.6f;
 		break;
 	case 3: // 부서진 사파이어
 		vecStat.resize(4);
 		vecStat[0].iEvasion = 2;
-		vecStat[0].fMoveSpeed = 5.f;
+		vecStat[0].fMoveSpeed = 0.05f;
 
 		vecStat[1].iEvasion = 3;
-		vecStat[1].fMoveSpeed = 7.f;
+		vecStat[1].fMoveSpeed = 0.07f;
 
 		vecStat[2].iEvasion = 4;
-		vecStat[2].fMoveSpeed = 9.f;
+		vecStat[2].fMoveSpeed = 0.09f;
 
 		vecStat[3].iEvasion = 5;
-		vecStat[3].fMoveSpeed = 12.f;
+		vecStat[3].fMoveSpeed = 0.12f;
 		break;
 	case 4: // 환락의 망토
 		vecStat.resize(3);
 		vecStat[0].iMaxDash = 0;
 		vecStat[0].iEvasion = 4;
-		vecStat[0].fCriticalChange = 1.f;
+		vecStat[0].fCriticalChange = 0.01f;
 
 		vecStat[1].iMaxDash = 1;
 		vecStat[1].iEvasion = 6;
-		vecStat[1].fCriticalChange = 2.f;
+		vecStat[1].fCriticalChange = 0.02f;
 
 		vecStat[2].iMaxDash = 1;
 		vecStat[2].iEvasion = 8;
-		vecStat[2].fCriticalChange = 4.f;
+		vecStat[2].fCriticalChange = 0.04f;
 		break;
 	case 5: // 모형 부리
 		vecStat.resize(5);

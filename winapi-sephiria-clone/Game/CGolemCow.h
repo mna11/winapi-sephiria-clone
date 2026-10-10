@@ -34,7 +34,7 @@ public:
     void Release() override;
 
 public:
-    void HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit) override;
+    void HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit = HIT_SOURCE::END, bool bCritical = false) override;
     void OnWallCollision() override;
 
 private:

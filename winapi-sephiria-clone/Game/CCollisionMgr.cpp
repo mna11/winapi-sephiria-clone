@@ -112,15 +112,21 @@ void CCollisionMgr::CollisionPlayerAttack(list<CObj*>& DstList, list<CObj*>& Src
 
     for (auto& Dst : DstList)
     {
-        const vector<RECT>& vecWeaponRect = static_cast<CPlayer*>(Dst)->GetWeaponController()->GetWeapon()->GetAtkRectVec();
-       
+        CPlayer* pPlayer = static_cast<CPlayer*>(Dst);
+        const vector<RECT>& vecWeaponRect = pPlayer->GetWeaponController()->GetWeapon()->GetAtkRectVec();
+
         for (auto& Src : SrcList)
         {
             for (auto& ColRect : vecWeaponRect)
             {
                 if (IntersectRect(&rc, &ColRect, &Src->GetRect()))
                 {
-                    Src->HitDamage(Dst->GetStat().iPhysicalAtk, Dst, HIT_SOURCE::SLASH);
+                    int iDamage = Dst->GetStat().iPhysicalAtk;
+                    bool bCritical = (uniform_real_distribution<float>(0.f, 1.f)(g_engine) < pPlayer->GetStat().fCriticalChange);
+                    if (bCritical)
+                        iDamage =  static_cast<int>(iDamage * (1.f + pPlayer->GetStat().fCriticalDamage));
+
+                    Src->HitDamage(iDamage, Dst, HIT_SOURCE::SLASH, bCritical);
                 }
             }
         }
@@ -227,7 +233,12 @@ void CCollisionMgr::CollisionBulletObj(list<CObj*>& DstList, list<CObj*>& SrcLis
 
             CBullet* pBullet = static_cast<CBullet*>(pDst);
 
-            pSrc->HitDamage(pBullet->GetDamage(), pBullet->GetOwner(), HIT_SOURCE::BULLET);
+            int iDamage = pBullet->GetDamage();
+            bool bCritical = (uniform_real_distribution<float>(0.f, 1.f)(g_engine) < pBullet->GetOwner()->GetStat().fCriticalChange);
+            if (bCritical)
+                iDamage = static_cast<int>(iDamage * (1.f + pBullet->GetOwner()->GetStat().fCriticalDamage));
+
+            pSrc->HitDamage(iDamage, pBullet->GetOwner(), HIT_SOURCE::BULLET, bCritical);
             pBullet->SetDead(true);
             break;
         }

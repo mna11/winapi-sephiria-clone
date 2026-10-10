@@ -133,7 +133,7 @@ void CLevelUp::KeyInput()
 		Hide();
 		CUIMgr::GetInstance()->ShowUI(UIID::ITEM_SELECT);
 		static_cast<CItemSelectUI*>(CUIMgr::GetInstance()->GetUI(UIID::ITEM_SELECT))->RequestChange(ITEM_SELECT_UI_STATE::SELECT);
-		pPlayer->AddLevelUp(-1);
+		pPlayer->LevelUp();
 
 		CSoundMgr::GetInstance()->PlaySound(L"LevelUpUIOpen.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}

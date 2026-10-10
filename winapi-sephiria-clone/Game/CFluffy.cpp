@@ -220,7 +220,7 @@ void CFluffy::Attack()
 	}
 }
 
-void CFluffy::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit)
+void CFluffy::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
 	if (m_bHit)
 		return;

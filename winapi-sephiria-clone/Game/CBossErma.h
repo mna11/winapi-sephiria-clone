@@ -39,7 +39,7 @@ public:
 
 public:
     void ApplyChange() override;
-    void HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END) override;
+    void HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END, bool bCritical = false) override;
 
 public:
     void InitializeParts();

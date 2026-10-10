@@ -104,7 +104,7 @@ void CInventorySlotUI::Render(Graphics* pGraphics)
 		if (m_pItem->GetItemType() == ITEM_TYPE::ARTIFACT)
 		{
 			// 아이템 레벨 그리기
-			int iMaxLevel = static_cast<CArtifact*>(m_pItem)->GetArtifactInfo()->vecStat.size();
+			int iMaxLevel = static_cast<CArtifact*>(m_pItem)->GetArtifactInfo()->vecStat.size() - 1;
 			int iLevel = m_pItem->GetLevel();
 			wstring strLevel = to_wstring(iLevel) + L"/" + to_wstring(iMaxLevel);
 			VEC vOffset{ 5.f * m_fUIScale, 5.f * m_fUIScale };

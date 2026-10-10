@@ -178,9 +178,6 @@
     <Filter Include="06. Data">
       <UniqueIdentifier>{6d97a5cd-a9ef-427b-997f-d3bb769e62ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\08. BaBa">
-      <UniqueIdentifier>{042df00f-f6c3-4748-a068-65819303cc87}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Scene\02. Shop">
       <UniqueIdentifier>{cb1a33f3-4dd4-47dd-a46a-1ae1aaded3a2}</UniqueIdentifier>
     </Filter>
@@ -300,6 +297,12 @@
     </Filter>
     <Filter Include="01. Obj\02. Monster\03. GolemCow">
       <UniqueIdentifier>{c05eedba-d85c-4113-8b0f-c163c1f9e250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\12. Stat">
+      <UniqueIdentifier>{8f2e3299-b0d3-4df3-9675-5aefb308f489}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\08. Baba">
+      <UniqueIdentifier>{042df00f-f6c3-4748-a068-65819303cc87}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -481,7 +484,7 @@
       <Filter>06. Data\00. ArtifactData</Filter>
     </ClInclude>
     <ClInclude Include="CBaba.h">
-      <Filter>01. Obj\08. BaBa</Filter>
+      <Filter>01. Obj\08. Baba</Filter>
     </ClInclude>
     <ClInclude Include="CShopTable.h">
       <Filter>01. Obj\06. UI\04. ShopTable</Filter>
@@ -584,6 +587,9 @@
     </ClInclude>
     <ClInclude Include="CGolemCow.h">
       <Filter>01. Obj\02. Monster\03. GolemCow</Filter>
+    </ClInclude>
+    <ClInclude Include="CStat.h">
+      <Filter>01. Obj\06. UI\12. Stat</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -750,7 +756,7 @@
       <Filter>06. Data\00. ArtifactData</Filter>
     </ClCompile>
     <ClCompile Include="CBaba.cpp">
-      <Filter>01. Obj\08. BaBa</Filter>
+      <Filter>01. Obj\08. Baba</Filter>
     </ClCompile>
     <ClCompile Include="CShopTable.cpp">
       <Filter>01. Obj\06. UI\04. ShopTable</Filter>
@@ -853,6 +859,9 @@
     </ClCompile>
     <ClCompile Include="CGolemCow.cpp">
       <Filter>01. Obj\02. Monster\03. GolemCow</Filter>
+    </ClCompile>
+    <ClCompile Include="CStat.cpp">
+      <Filter>01. Obj\06. UI\12. Stat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -44,7 +44,9 @@ void CStageChange::Initialize()
 	m_iRenderLayer = -2;
 
 	InitializeNode();
-	InitializePlayerIcon();
+	InitializePlayerIcon(); 
+	
+	Hide();
 }
 
 int CStageChange::Update()
