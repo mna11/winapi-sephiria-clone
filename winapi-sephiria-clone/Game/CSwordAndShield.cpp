@@ -67,6 +67,12 @@ void CSwordAndShield::Attack()
 {
 	if (m_eCurState == SWORD_AND_SHIELD_STATE::DEFENSE)
 	{
+		// 사용할 수 있는 마나량이 아니면 Cleave 불가
+		int iMpCost = GetMpCost();
+		if (m_pTarget->GetStat().iMp < iMpCost)
+			return;
+		static_cast<CPlayer*>(m_pTarget)->AddMp(iMpCost * -1);
+
 		m_eNextState = SWORD_AND_SHIELD_STATE::CLEAVE_READY; // 한손검 특수 기능 회전베기
 		m_fAngle = m_pTarget->GetAngle();
 		static_cast<CPlayer*>(m_pTarget)->RequestChange(PLAYER_STATE::HEAVY_ATTACK);
@@ -150,6 +156,7 @@ void CSwordAndShield::CleaveUpdate()
 		return;
 
 	m_tAtk.dElapseTime += DT;
+
 
 	if (m_eCurState == SWORD_AND_SHIELD_STATE::CLEAVE_READY)
 	{

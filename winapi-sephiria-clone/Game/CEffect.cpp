@@ -65,7 +65,9 @@ void CEffect::Render(Graphics* pGraphics)
 	if (!m_strPhrase.empty())
 	{
 		RectF rc{m_tInfo.vPoint.fX + vScroll.fX, m_tInfo.vPoint.fY + vScroll.fY, 200.f, 200.f };
-		CFontMgr::GetInstance()->DrawString(pGraphics, m_strPhrase, FONT_TYPE::PIXEL_BOLD, rc, Color{ 255, 0, 0, 0 }, 35.f, StringAlignmentNear, StringAlignmentNear);
+		RectF rcBgStr = rc;
+		rcBgStr.X += 3.f; rcBgStr.Y += 3.f;
+		CFontMgr::GetInstance()->DrawString(pGraphics, m_strPhrase, FONT_TYPE::PIXEL_BIG, rcBgStr, Color{ 255, 0, 0, 0 }, 30.f, StringAlignmentNear, StringAlignmentNear);
 		CFontMgr::GetInstance()->DrawString(pGraphics, m_strPhrase, FONT_TYPE::PIXEL_BIG, rc, m_tColor, 30.f, StringAlignmentNear, StringAlignmentNear);
 	}
 	else

@@ -206,7 +206,7 @@ void CErmaHand::ApplyChange()
     }
 }
 
-void CErmaHand::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit)
+void CErmaHand::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
     if (m_eCurState == ERMA_HAND_STATE::BROKEN || m_bHit || m_pOwner == nullptr)
         return;

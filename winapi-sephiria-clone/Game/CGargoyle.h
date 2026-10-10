@@ -34,7 +34,7 @@ public:
     void Render(Graphics*) override;
     void Release() override;
 public:
-    void HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END) override;
+    void HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END, bool bCritical = false) override;
     void ApplyChange() override;
 
 private:

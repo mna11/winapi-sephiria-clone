@@ -162,7 +162,7 @@ void CBossErma::ApplyChange()
     }
 }
 
-void CBossErma::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit)
+void CBossErma::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
     AddStaggerDamage(iDamage);
 }

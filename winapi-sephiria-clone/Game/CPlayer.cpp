@@ -16,12 +16,15 @@
 CPlayer::CPlayer()
 	: CState(PLAYER_STATE::END, PLAYER_STATE::IDLE), m_pWeaponController(nullptr),
 	m_dDustInterval(0.5), m_dDustElapseTime(0.), m_fNormalSpeed(300.f), m_fRunSpeed(400.f),
-	m_dDashRecorveyInterval(1.), m_dDashRecoveryElapseTime(0.),
+	m_dDashRecoveryInterval(1.), m_dDashRecoveryElapseTime(0.),
+	m_dMpRecoveryInterval(0.5), m_dMpRecoveryElapseTime(0.),
 	m_bPlayerBehaviorEnable(true),
 	m_pInventory(nullptr),
 	m_iLeaf(1000),
 	m_iMaxExp(100), m_iExp(50), m_iLevelUp(0),
-	m_iDice(3)
+	m_iDice(3),
+	m_iLevel(1),
+	m_strName{}
 {
 }
 
@@ -38,6 +41,7 @@ void CPlayer::Initialize()
 	m_fSpeed = m_fNormalSpeed;
 	// 렌더 레이어 - 0 ~ 5 사이 플레이어는 중간인 2
 	m_iRenderLayer = 2;
+	m_strName = L"토끼";
 
 	// 스프라이트 시트 Insert 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Player/Player_LEFTDOWN.png", L"Player_LD");
@@ -60,7 +64,7 @@ void CPlayer::Initialize()
 		70,				// HP
 		70,			    // MAX HP
 
-		100,			// 물리 공격력
+		10,			    // 물리 공격력
 		20,				// 불 공격력
 		20,				// 얼음 공격력
 		20,				// 번개 공격력
@@ -70,23 +74,24 @@ void CPlayer::Initialize()
 		1,				// MP 재생력
 
 		0,				// 방어력
-		0,				// 회피
+		100,			// 회피
 
 		3,				// 대시 횟수
 		3,				// 대시 최대 횟수
 
-		100.f,			// 치확
-		100.f,			// 치뎀
-		100.f,			// 공속
-		100.f,			// 이속
-		100.f,			// 대시 회복 속도
+		0.5f,			// 치확
+		0.5f,			// 치피
+
+		1.f,			// 공속
+		1.f,			// 이속
+		1.f,			// 대시 회복 속도
 
 		0,				// 교섭력
 		0,				// 행운
 
-		100.f,			// 경험치 드랍율
-		100.f,			// 돈(리프) 드랍율
-		100.f			// 레벨업시 체력 회복률
+		1.f,			// 경험치 드랍율
+		1.f,			// 돈(리프) 드랍율
+		0.1f			// 레벨업시 체력 회복률 - 최대 체력 대비
 	};
 
 	// 무기 컨트롤러 초기화 - 무기는 누가 사용하는지 참조 시켜야 함
@@ -197,7 +202,30 @@ void CPlayer::UpdateTime()
 
 	// 대시 회복 근거용 시간
 	if (m_tStat.iDash < m_tStat.iMaxDash)
+	{
 		m_dDashRecoveryElapseTime += DT;
+
+		if (m_dDashRecoveryInterval <= m_dDashRecoveryElapseTime * m_tStat.fDashRecoverySpeed)
+		{
+			m_tStat.iDash += 1;
+			m_tStat.iDash = clamp(m_tStat.iDash, 0, m_tStat.iMaxDash);
+			m_dDashRecoveryElapseTime = 0.;
+		}
+	}
+
+	// 마나 회복 근거용 시간
+	if (m_tStat.iMp < m_tStat.iMaxMp)
+	{
+		m_dMpRecoveryElapseTime += DT;
+
+		if (m_dMpRecoveryInterval <= m_dMpRecoveryElapseTime)
+		{
+			m_tStat.iMp += m_tStat.iMpRegeneration;
+			m_tStat.iMp = clamp(m_tStat.iMp, 0, m_tStat.iMaxMp);
+			m_dMpRecoveryElapseTime = 0.;
+		}
+	}
+
 
 	// 피해 유효 근거용 시간
 	if (m_bHit)
@@ -228,7 +256,7 @@ void CPlayer::Move()
 
 	if (vDir != VEC{ 0.f, 0.f })
 	{
-		m_tInfo.vPoint += vDir.Normalize() * m_fSpeed * DT;
+		m_tInfo.vPoint += vDir.Normalize() * m_fSpeed * DT * m_tStat.fMoveSpeed;
 		m_eNextState = PLAYER_STATE::WALK;
 
 	}
@@ -260,12 +288,6 @@ void CPlayer::Dash()
 	{
 		m_fSpeed = m_fNormalSpeed;
 		m_tFrame.dFrameSpeed = 0.2f;
-	}
-
-	if (m_dDashRecorveyInterval <= m_dDashRecoveryElapseTime)
-	{
-		m_tStat.iDash = (m_tStat.iDash + 1 >= m_tStat.iMaxDash) ? m_tStat.iMaxDash : m_tStat.iDash + 1;
-		m_dDashRecoveryElapseTime = 0.;
 	}
 }
 
@@ -360,6 +382,17 @@ void CPlayer::AddExp(int iAmount)
 	}
 }
 
+void CPlayer::LevelUp()
+{
+	if (m_iLevelUp <= 0)
+		return;
+
+	--m_iLevelUp;
+	++m_iLevel;
+
+	AddHp(m_tStat.iMaxHp * m_tStat.fHpRestoredOnLevelUp);
+}
+
 void CPlayer::AddDice(int iAmount)
 {
 	m_iDice += iAmount;
@@ -367,15 +400,49 @@ void CPlayer::AddDice(int iAmount)
 		m_iDice = 0;
 }
 
-void CPlayer::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit)
+void CPlayer::AddHp(int iAmount)
+{
+	m_tStat.iHp += iAmount;
+	m_tStat.iHp = clamp(m_tStat.iHp, 0, m_tStat.iMaxHp);
+}
+
+void CPlayer::AddMp(int iAmount)
+{
+	m_tStat.iMp += iAmount;
+	m_tStat.iMp = clamp(m_tStat.iMp, 0, m_tStat.iMaxMp);
+}
+
+void CPlayer::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
 	if (m_bHit)
 		return;
 
-	m_bHit = true;		// m_bHit은 final 객체의 Update에서 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
-	m_tStat.iHp -= iDamage;
+	// 세피리아에서는 회피율 하드캡 - 100까지만 가능함
+	// 방어력은 위키에 있었는데, 회피는 없어서 회피스탯 100일 때, 회피율 76퍼 되게 세팅함
+	float fEvasion = static_cast<float>(std::clamp(m_tStat.iEvasion, 0, 100));
+	float fEvadeRate = fEvasion / (fEvasion + 30.f);
 
-	CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 64, 64 });
+	bool bEvade = (uniform_real_distribution<float>(0.f, 1.f)(g_engine) < fEvadeRate);
+	
+	// 회피 성공
+	if (bEvade)
+	{
+		CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), L"EVADE", Color{255, 136, 232, 201});
+		m_bHit = true; // 일단 맞은걸로 치고 무적 시간 줌
+		CSoundMgr::GetInstance()->PlaySound(L"Evade.wav", CHANNEL_GROUPID::SFX, 1.f);
+		return;
+	}
+
+
+	// 세피리아 공식
+	int iHitDamage = iDamage - static_cast<int>(iDamage * log(m_tStat.iDefense / 40.f + 1) * 0.445);
+	iHitDamage = clamp(iHitDamage, 1, iDamage);
+
+	m_bHit = true;		// m_bHit은 final 객체의 Update에서 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
+	m_tStat.iHp -= iHitDamage;
+
+
+	CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iHitDamage), Color{ 255, 255, 64, 64 });
 	CSoundMgr::GetInstance()->PlaySound(L"HitPlayer.wav", CHANNEL_GROUPID::SFX, 1.f);
 	CCameraMgr::GetInstance()->CameraShaking(5, 0.2);
 	if (m_tStat.iHp <= 0)

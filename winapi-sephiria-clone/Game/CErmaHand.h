@@ -40,7 +40,7 @@ public:
 
 public:
     void ApplyChange() override;
-    void HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END) override;
+    void HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END, bool bCritical = false) override;
 
 public:
     void SetSide(ERMA_HAND_SIDE eSide) { m_eSide = eSide; }

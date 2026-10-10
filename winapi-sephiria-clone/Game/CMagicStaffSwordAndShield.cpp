@@ -25,6 +25,8 @@ CMagicStaffSwordAndShield::~CMagicStaffSwordAndShield()
 
 void CMagicStaffSwordAndShield::Initialize()
 {
+	m_iID = 1;
+
 	m_eRender = RENDERID::GAMEOBJECT;
 	m_iRenderLayer = 0; // 아무거나 줘도 됨, 어차피 한손검은 직접 렌더 안함
 	// 실드는 플레이어 앞에 있어야 하고, 검은 뒤에 있어야 해서
@@ -44,6 +46,8 @@ void CMagicStaffSwordAndShield::Initialize()
 
 	m_eWeaponType = WEAPON_TYPE::SWORD_AND_SHIELD;
 	m_iID = 1;
+
+	m_iMpCost = 40;
 }
 
 void CMagicStaffSwordAndShield::Render(Graphics* pGraphics)
@@ -125,6 +129,12 @@ void CMagicStaffSwordAndShield::CreateEffect()
 
 void CMagicStaffSwordAndShield::ApplyChange()
 {
+	if (nullptr == m_pTarget)
+		return;
+	double dAtkSpeed = m_pTarget->GetStat().fAttackSpeed;
+	dAtkSpeed = clamp(dAtkSpeed, 0.1, 5.0);
+	double dComboTime = max(0.5, 0.2 / dAtkSpeed + 0.15);
+
 	// 상태 첫 진입
 	if (m_eCurState != m_eNextState)
 	{
@@ -134,7 +144,7 @@ void CMagicStaffSwordAndShield::ApplyChange()
 			SetAtk(0, 0, 0., 0., 0.);
 			break;
 		case SWORD_AND_SHIELD_STATE::ATTACK:
-			SetAtk(1, 3, 0., 0.2, 0.5); // 공격 처음 진입 시 초기화
+			SetAtk(1, 3, 0., 0.2 / dAtkSpeed, dComboTime); // 공격 처음 진입 시 초기화
 			break;
 		case SWORD_AND_SHIELD_STATE::DEFENSE:
 			break;

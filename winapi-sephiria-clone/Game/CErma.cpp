@@ -203,7 +203,7 @@ void CErma::ApplyChange()
     }
 }
 
-void CErma::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit)
+void CErma::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
     if (m_bDefeated || m_bHit)
         return;

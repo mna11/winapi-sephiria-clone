@@ -19,9 +19,11 @@ public:
 public:
     const WEAPON_TYPE&  GetWeaponType() const { return m_eWeaponType; }
     const int&          GetWeaponID() const { return m_iID; }
+    const int&          GetMpCost() const { return m_iMpCost; }
 
 protected:
     int         m_iID;
+    int         m_iMpCost;
     ATK_INFO    m_tAtk;
     WEAPON_TYPE m_eWeaponType;
 };

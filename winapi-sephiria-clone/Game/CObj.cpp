@@ -33,7 +33,7 @@ void CObj::SetFrame(int iStart, int iEnd, int iMotion, double dFrameSpeed)
 	m_tFrame = { iStart, iEnd, iMotion, dFrameSpeed, 0.};
 }
 
-void CObj::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit)
+void CObj::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
 	if (m_bHit)
 		return;
