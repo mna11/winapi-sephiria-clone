@@ -143,6 +143,7 @@
     <ClInclude Include="CArtifact.h" />
     <ClInclude Include="CBaba.h" />
     <ClInclude Include="CBasicInfo.h" />
+    <ClInclude Include="CEnd.h" />
     <ClInclude Include="CGolem.h" />
     <ClInclude Include="CGolemHand.h" />
     <ClInclude Include="CGolemHead.h" />
@@ -206,6 +207,7 @@
     <ClInclude Include="CSpeechBubble.h" />
     <ClInclude Include="CStage.h" />
     <ClInclude Include="CStage1.h" />
+    <ClInclude Include="CStage2.h" />
     <ClInclude Include="CStageChange.h" />
     <ClInclude Include="CStageChangePlayerIcon.h" />
     <ClInclude Include="CStageTest.h" />
@@ -236,6 +238,7 @@
     <ClCompile Include="CArtifact.cpp" />
     <ClCompile Include="CBaba.cpp" />
     <ClCompile Include="CBasicInfo.cpp" />
+    <ClCompile Include="CEnd.cpp" />
     <ClCompile Include="CGolem.cpp" />
     <ClCompile Include="CGolemHand.cpp" />
     <ClCompile Include="CGolemHead.cpp" />
@@ -299,6 +302,7 @@
     <ClCompile Include="CSpeechBubble.cpp" />
     <ClCompile Include="CStage.cpp" />
     <ClCompile Include="CStage1.cpp" />
+    <ClCompile Include="CStage2.cpp" />
     <ClCompile Include="CStageChange.cpp" />
     <ClCompile Include="CStageChangePlayerIcon.cpp" />
     <ClCompile Include="CStageTest.cpp" />

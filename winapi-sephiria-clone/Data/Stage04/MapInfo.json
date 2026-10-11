@@ -1,0 +1,161 @@
+{
+  "grid": [
+    100,
+    100
+  ],
+  "tile_size": 80,
+  "world_size": [
+    8000,
+    8000
+  ],
+  "player_start": [
+    760,
+    1080
+  ],
+  "suggested_exit": [
+    5800,
+    3960
+  ],
+  "exit_trigger": [
+    5680,
+    3840,
+    5920,
+    4080
+  ],
+  "rooms": [
+    {
+      "bounds": [
+        480,
+        400,
+        2160,
+        2160
+      ],
+      "shape_rectangles": [
+        [
+          480,
+          640,
+          1920,
+          1920
+        ],
+        [
+          800,
+          400,
+          1520,
+          960
+        ],
+        [
+          1520,
+          1520,
+          2160,
+          2160
+        ]
+      ],
+      "trigger_rect": [
+        640,
+        960,
+        1760,
+        1760
+      ]
+    },
+    {
+      "bounds": [
+        2640,
+        1360,
+        4320,
+        3360
+      ],
+      "shape_rectangles": [
+        [
+          2640,
+          1600,
+          4320,
+          3120
+        ],
+        [
+          3040,
+          1360,
+          3840,
+          1920
+        ],
+        [
+          3040,
+          2880,
+          3840,
+          3360
+        ]
+      ],
+      "trigger_rect": [
+        2800,
+        1920,
+        4160,
+        2960
+      ]
+    },
+    {
+      "bounds": [
+        5040,
+        560,
+        6480,
+        2720
+      ],
+      "shape_rectangles": [
+        [
+          5040,
+          800,
+          6480,
+          2240
+        ],
+        [
+          5440,
+          560,
+          6080,
+          1120
+        ],
+        [
+          5840,
+          2000,
+          6480,
+          2720
+        ]
+      ],
+      "trigger_rect": [
+        5200,
+        1120,
+        6320,
+        2080
+      ]
+    },
+    {
+      "bounds": [
+        5200,
+        3040,
+        6560,
+        4160
+      ],
+      "shape_rectangles": [
+        [
+          5200,
+          3040,
+          6560,
+          4000
+        ],
+        [
+          5440,
+          3760,
+          6160,
+          4160
+        ]
+      ],
+      "trigger_rect": [
+        5360,
+        3360,
+        6400,
+        3840
+      ]
+    }
+  ],
+  "connected_walkable_tiles": 997,
+  "map_image": "Resource/Image/Stage/Stage04_Revised.png",
+  "reference": "Stage01 original tiles and Map library references",
+  "room_trigger_note": "trigger_rect is inset from each main room rectangle: left/right/bottom 160px, top 320px to account for the upper wall depth. bounds describes the full room geometry."
+}

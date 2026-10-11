@@ -149,8 +149,8 @@ void CStart::Init_CreateObj()
 
 	// 버튼 함수 등록
 	m_pStartBtn->SetOnClick([this]() {
-		CSceneMgr::GetInstance()->RequestChange(SCENEID::STAGE1);
-		m_pMouse->RequestChange(MOUSE_STATE::COMBAT);
+		CSceneMgr::GetInstance()->RequestChange(SCENEID::LIB_LOADING);
+		m_pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
 	});
 
 	m_pExitBtn->SetOnClick([this]() {

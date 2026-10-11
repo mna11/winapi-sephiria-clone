@@ -17,7 +17,9 @@
 #include "CKeyMgr.h"
 #include "CTileMgr.h"
 #include "CUIMgr.h"
+#include "CSceneMgr.h"
 #include "CEffectMgr.h"
+#include "CSoundMgr.h"
 
 CBossStage::CBossStage()
 	: CState(BOSS_STAGE_STATE::END, BOSS_STAGE_STATE::WAIT),
@@ -56,7 +58,7 @@ void CBossStage::LateUpdate()
 	CObjMgr::GetInstance()->LateUpdate();
 
 	if (m_eCurState == BOSS_STAGE_STATE::WAIT ||
-		m_eCurState == BOSS_STAGE_STATE::BATTLE)
+		m_eCurState == BOSS_STAGE_STATE::CLEAR)
 	{
 		HotKey();
 	}
@@ -165,6 +167,8 @@ void CBossStage::InitializeRooms()
 	tBossRoom.rcTrigger = { 3500, 1200, 4500, 2000 };
 
 	m_vecRooms.push_back(tBossRoom);
+
+	SetRect(&m_rcStair, 5100, 4300, 5700, 4700);
 }
 
 void CBossStage::SpawnMonster(int iRoomIdx)
@@ -173,9 +177,6 @@ void CBossStage::SpawnMonster(int iRoomIdx)
 
 void CBossStage::HandleCollision()
 {
-	if (m_eCurState != BOSS_STAGE_STATE::WAIT)
-		return;
-
 	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer)
 		return;
@@ -207,6 +208,13 @@ void CBossStage::HandleCollision()
 		// 전투 중인 상황인데, 현재 몬스터를 다 죽였다면 방을 클리어 상태로 변경한다.
 		if (CObjMgr::GetInstance()->ObjEmpty(OBJID::MONSTER))
 			ClearCurRoom();
+	}
+
+
+	// 계단
+	if (CCollisionMgr::CollisionRect(CObjMgr::GetInstance()->GetPlayer()->GetRect(), m_rcStair) && KEY_DOWN('F'))
+	{
+		CSceneMgr::GetInstance()->RequestChange(SCENEID::END);
 	}
 }
 
@@ -328,22 +336,22 @@ void CBossStage::UpdateIntroTime()
 		break;
 	case BOSS_STAGE_INTRO_STATE::DIALOG1:
 		// 2초 지나면 다음 상태
-		if (m_dIntroTime >= 2.f)
+		if (m_dIntroTime >= 0.f)
 			ChangeIntroState(BOSS_STAGE_INTRO_STATE::EXCLAMTION);
 		break;
 	case BOSS_STAGE_INTRO_STATE::EXCLAMTION:
 		// 1초 지나면 다음 상태
-		if (m_dIntroTime >= 1.f)
+		if (m_dIntroTime >= 0.f)
 			ChangeIntroState(BOSS_STAGE_INTRO_STATE::DIALOG2);
 		break;
 	case BOSS_STAGE_INTRO_STATE::DIALOG2:
 		// 2초 지나면 다음 상태
-		if (m_dIntroTime >= 2.f)
+		if (m_dIntroTime >= 0.f)
 			ChangeIntroState(BOSS_STAGE_INTRO_STATE::DIALOG3);
 		break;
 	case BOSS_STAGE_INTRO_STATE::DIALOG3:
 		// 2초 지나면 다음 상태
-		if (m_dIntroTime >= 2.f)
+		if (m_dIntroTime >= 0.f)
 			ChangeIntroState(BOSS_STAGE_INTRO_STATE::ENTER_GOLEM);
 		break;
 	case BOSS_STAGE_INTRO_STATE::ENTER_GOLEM:
@@ -354,7 +362,7 @@ void CBossStage::UpdateIntroTime()
 		break;
 	}
 	case BOSS_STAGE_INTRO_STATE::FINISH:
-		if (m_dIntroTime >= 1.f)
+		if (m_dIntroTime >= 2.f)
 			RequestChange(BOSS_STAGE_STATE::BATTLE);
 		break;
 	}
@@ -373,7 +381,7 @@ void CBossStage::UpdateFinalTime()
 		break;
 	case BOSS_STAGE_FINAL_STATE::DIALOG1:
 		// 2초 지나면 다음 상태
-		if (m_dFinalTime >= 2.f)
+		if (m_dFinalTime >= 0.f)
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::ENTER_GOLEM);
 		break;
 	case BOSS_STAGE_FINAL_STATE::ENTER_GOLEM:
@@ -381,11 +389,11 @@ void CBossStage::UpdateFinalTime()
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::DIALOG2);
 		break;
 	case BOSS_STAGE_FINAL_STATE::DIALOG2:
-		if (m_dFinalTime >= 2.f)
+		if (m_dFinalTime >= 0.f)
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::DIALOG3);
 		break;
 	case BOSS_STAGE_FINAL_STATE::DIALOG3:
-		if (m_dFinalTime >= 2.f)
+		if (m_dFinalTime >= 0.f)
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::BROKEN1);
 		break;
 	case BOSS_STAGE_FINAL_STATE::BROKEN1:
@@ -397,7 +405,7 @@ void CBossStage::UpdateFinalTime()
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::DOWN);
 		break;
 	case BOSS_STAGE_FINAL_STATE::DOWN:
-		if (m_dFinalTime >= 2.f)
+		if (m_dFinalTime >= 1.f)
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::CAMERA_MOVE2);
 		break;
 	case BOSS_STAGE_FINAL_STATE::CAMERA_MOVE2:
@@ -406,7 +414,7 @@ void CBossStage::UpdateFinalTime()
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::DIALOG4);
 		break;
 	case BOSS_STAGE_FINAL_STATE::DIALOG4:
-		if (m_dFinalTime >= 2.f)
+		if (m_dFinalTime >= 1.f)
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::FINISH);
 		break;
 	case BOSS_STAGE_FINAL_STATE::FINISH:
@@ -455,6 +463,7 @@ void CBossStage::ChangeIntroState(BOSS_STAGE_INTRO_STATE eState)
 		break;
 	}
 	case BOSS_STAGE_INTRO_STATE::FINISH:
+		CSoundMgr::GetInstance()->PlaySound(L"DungeonLibrary_Boss.wav", CHANNEL_GROUPID::BGM, 0.5f);
 		break;
 	}
 }
@@ -470,6 +479,7 @@ void CBossStage::ChangeFinalState(BOSS_STAGE_FINAL_STATE eState)
 	switch (m_eFinalState)
 	{
 	case BOSS_STAGE_FINAL_STATE::CAMERA_MOVE1:
+		CSoundMgr::GetInstance()->StopAll();
 		break;
 	case BOSS_STAGE_FINAL_STATE::DIALOG1:
 		break;
@@ -503,6 +513,7 @@ void CBossStage::ChangeFinalState(BOSS_STAGE_FINAL_STATE eState)
 		pFade->SetFadeType(FADE_TYPE::RECTANGLE);
 		m_pErma->SetDead(true);
 
+		CSoundMgr::GetInstance()->PlaySound(L"DugeonLibrary_Field.wav", CHANNEL_GROUPID::BGM, 0.5f);
 		RequestChange(BOSS_STAGE_STATE::CLEAR);
 		break;
 	}

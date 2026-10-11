@@ -1,0 +1,202 @@
+{
+  "grid": [
+    100,
+    100
+  ],
+  "tile_size": 80,
+  "world_size": [
+    8000,
+    8000
+  ],
+  "player_start": [
+    1240,
+    4760
+  ],
+  "suggested_exit": [
+    5560,
+    3640
+  ],
+  "rooms": [
+    {
+      "bounds": [
+        640,
+        3520,
+        2080,
+        4960
+      ],
+      "center": [
+        1320,
+        4360
+      ],
+      "shape_rectangles": [
+        [
+          640,
+          3760,
+          1920,
+          4960
+        ],
+        [
+          960,
+          3520,
+          1600,
+          4000
+        ],
+        [
+          1600,
+          4400,
+          2080,
+          4960
+        ]
+      ]
+    },
+    {
+      "bounds": [
+        640,
+        1680,
+        2080,
+        3200
+      ],
+      "center": [
+        1320,
+        2440
+      ],
+      "shape_rectangles": [
+        [
+          640,
+          1920,
+          1920,
+          3040
+        ],
+        [
+          960,
+          1680,
+          1600,
+          2160
+        ],
+        [
+          1520,
+          2720,
+          2080,
+          3200
+        ]
+      ]
+    },
+    {
+      "bounds": [
+        2640,
+        1600,
+        3840,
+        3280
+      ],
+      "center": [
+        3240,
+        2440
+      ],
+      "shape_rectangles": [
+        [
+          2640,
+          1840,
+          3840,
+          3040
+        ],
+        [
+          3040,
+          1600,
+          3600,
+          2080
+        ],
+        [
+          3120,
+          2800,
+          3680,
+          3280
+        ]
+      ]
+    },
+    {
+      "bounds": [
+        4720,
+        1600,
+        5840,
+        3920
+      ],
+      "center": [
+        5240,
+        2360
+      ],
+      "shape_rectangles": [
+        [
+          4720,
+          1840,
+          5840,
+          3040
+        ],
+        [
+          5040,
+          1600,
+          5600,
+          2080
+        ],
+        [
+          5280,
+          2720,
+          5840,
+          3920
+        ]
+      ]
+    },
+    {
+      "bounds": [
+        640,
+        160,
+        2080,
+        1440
+      ],
+      "center": [
+        1320,
+        760
+      ],
+      "shape_rectangles": [
+        [
+          640,
+          320,
+          1920,
+          1280
+        ],
+        [
+          960,
+          160,
+          1520,
+          560
+        ],
+        [
+          1600,
+          960,
+          2080,
+          1440
+        ]
+      ]
+    }
+  ],
+  "connected_walkable_tiles": 1043,
+  "source_sha256": {
+    "winapi-sephiria-clone\\Data\\Stage01\\Tile_Stage01.dat": "49976399f72160fb13bbef05cb963d0f871545d69c3c228dc413b1a7b1de17d3",
+    "winapi-sephiria-clone\\Data\\Stage01\\Tile_Client_Stage01.dat": "dfde328203329549367969cee6aa367ef858c7ed5f8e922e729f128bc482f2a9",
+    "winapi-sephiria-clone\\Data\\BossStage\\Tile_BossStage.dat": "b8c4e9e375097eac9c67bcd72da2fd70a86e3259f46b4aab4239844f74de3a33",
+    "winapi-sephiria-clone\\Data\\BossStage\\Tile_Client_BossStage.dat": "1b663bf4be4189307c4ec32fca297eb5a692ae1059a08551ceb7226aac098c5a"
+  },
+  "interior_voids": [],
+  "style_reference": "User-edited Stage02",
+  "map_image": "Resource/Image/Stage/Stage03_Revised.png",
+  "backup": "winapi-sephiria-clone\\Data\\Stage03\\Backup_Before_Balanced_20261012_025056",
+  "protected_reference_sha256": {
+    "winapi-sephiria-clone\\Data\\Stage02\\Tile_Stage02.dat": "ea6bc775da3abaaff19431ea402a5afa840f21c3ca6cb0b458d4dd0add9708f6",
+    "winapi-sephiria-clone\\Data\\Stage02\\Tile_Client_Stage02.dat": "d709d42bc1bc7c997f7675d3a1784dccf55a99a04a1d38e9c78e8438b1045cb5"
+  },
+  "exit_trigger": [
+    5440,
+    3520,
+    5680,
+    3760
+  ]
+}

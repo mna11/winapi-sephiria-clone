@@ -304,22 +304,22 @@ NODE_INFO CStageChange::CreateNode(int iID)
 		tNodeInfo = { 0, 0, SCENEID::STAGE1, CreateButton(iID) };
 		break;
 	case 1:
-		tNodeInfo = { 1, 1, SCENEID::STAGE_TEST, CreateButton(iID) };
+		tNodeInfo = { 1, 1, SCENEID::STAGE2, CreateButton(iID) };
 		break;
 	case 2:
-		tNodeInfo = { 2, 1, SCENEID::STAGE_TEST, CreateButton(iID) };
+		tNodeInfo = { 2, 1, SCENEID::STAGE2, CreateButton(iID) };
 		break;
 	case 3:
-		tNodeInfo = { 3, 1, SCENEID::STAGE_TEST, CreateButton(iID) };
+		tNodeInfo = { 3, 1, SCENEID::STAGE2, CreateButton(iID) };
 		break;
 	case 4:
-		tNodeInfo = { 4, 2, SCENEID::STAGE_TEST, CreateButton(iID) };
+		tNodeInfo = { 4, 2, SCENEID::STAGE2, CreateButton(iID) };
 		break;
 	case 5:
-		tNodeInfo = { 5, 2, SCENEID::STAGE_TEST, CreateButton(iID) };
+		tNodeInfo = { 5, 2, SCENEID::STAGE2, CreateButton(iID) };
 		break;
 	case 6:
-		tNodeInfo = { 6, 2, SCENEID::STAGE_TEST, CreateButton(iID) };
+		tNodeInfo = { 6, 2, SCENEID::STAGE2, CreateButton(iID) };
 		break;
 	case 7:
 		tNodeInfo = { 7, 3, SCENEID::BOSS_STAGE, CreateButton(iID) };

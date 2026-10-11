@@ -298,6 +298,15 @@
     <Filter Include="01. Obj\06. UI\14. SpeechBubble">
       <UniqueIdentifier>{a72e8d92-2937-43a9-bad7-7df870077ea2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Scene\01. Stage\02. Stage2">
+      <UniqueIdentifier>{200009e9-431c-4662-8043-7f37e7f4d599}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\01. Stage\03. Stage3">
+      <UniqueIdentifier>{3a4524a4-9bb8-4c1c-accd-1370d529f54d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene\05. End">
+      <UniqueIdentifier>{0bd92a36-923c-48e6-b67a-c72ced0dbae0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -579,6 +588,12 @@
     <ClInclude Include="CSpeechBubble.h">
       <Filter>01. Obj\06. UI\14. SpeechBubble</Filter>
     </ClInclude>
+    <ClInclude Include="CStage2.h">
+      <Filter>04. Scene\01. Stage\02. Stage2</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnd.h">
+      <Filter>04. Scene\05. End</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -844,6 +859,12 @@
     </ClCompile>
     <ClCompile Include="CSpeechBubble.cpp">
       <Filter>01. Obj\06. UI\14. SpeechBubble</Filter>
+    </ClCompile>
+    <ClCompile Include="CStage2.cpp">
+      <Filter>04. Scene\01. Stage\02. Stage2</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnd.cpp">
+      <Filter>04. Scene\05. End</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
