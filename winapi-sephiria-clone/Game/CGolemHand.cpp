@@ -332,6 +332,14 @@ void CGolemHand::SetDirection(bool bLeft)
 
 void CGolemHand::StartSlam()
 {
+    // 리턴 상태일 때는 상관없는데, 슬램 중일 때는 또 요청받아도 변화없게 함
+    if (m_eCurState == GOLEM_HAND_STATE::SLAM_READY || m_eCurState == GOLEM_HAND_STATE::SLAM)
+        return; 
+
+    // 레이저 상태일 때는 슬램 불가능
+    if (m_eCurState == GOLEM_HAND_STATE::LASER_READY || m_eCurState == GOLEM_HAND_STATE::LASER_CREATE || m_eCurState == GOLEM_HAND_STATE::LASER || m_eCurState == GOLEM_HAND_STATE::LASER_END)
+        return;
+
     RequestChange(GOLEM_HAND_STATE::SLAM_READY);
     
     m_vSlamReadyStartPoint = m_tInfo.vPoint;

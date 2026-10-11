@@ -23,6 +23,9 @@ public:
     void SetState(STATE eState) { m_eCurState = eState; }
     void SetTargetPoint(VEC vTargetPoint) { m_vTargetPoint = vTargetPoint; }
 
+public:
+    const STATE& GetState() const { return m_eCurState; }
+
 public: // 상태별 Update에서 수행할 함수
     void HandleBehavior(); 
     void HandleNormal();

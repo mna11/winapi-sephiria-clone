@@ -48,6 +48,8 @@ void CEffectMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Alert_Missile.png", L"Golem_Alert_Missle");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Missile_UP.png", L"Golem_Missile_U");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Missile_Down.png", L"Golem_Missile_D");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Golem_Core_Broken.png", L"Golem_Core_Broken");
+	
 
 	// 가고일
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Monster/Gargoyle/Gargoyle_Attack.png", L"Gargoyle_Attack");
@@ -71,6 +73,9 @@ void CEffectMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Bullet/MagicBall_Disapper.png", L"MagicBall_Disapper_Effect");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Bullet/MagicBallBig_Disapper.png", L"MagicBallBig_Disapper_Effect");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Bullet/FireBullet_Disapper.png", L"FireBullet_Disapper_Effect");
+
+	// 이모지 느낌표
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Emoj/Exclamation/Exclamation.png", L"Emoj_Exclamation");
 }
 
 
@@ -269,6 +274,21 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 		pEffect->SetSize({ 51.f, 103.f });
 
 		CSoundMgr::GetInstance()->PlaySound(L"GolemMissileDown.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
+	else if (!lstrcmpW(pFrameKey, L"Golem_Core_Broken"))
+	{
+		pEffect->SetFrame(0, 7, 0, dFrameSpeed);
+		pEffect->SetSize({ 128.f, 128.f });
+
+		CSoundMgr::GetInstance()->PlaySound(L"0588_clangSword0.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
+	// 느낌표 이모지
+	else if (!lstrcmpW(pFrameKey, L"Emoj_Exclamation"))
+	{
+		pEffect->SetFrame(0, 5, 0, dFrameSpeed);
+		pEffect->SetSize({ 5.f, 11.f });
+
+		CSoundMgr::GetInstance()->PlaySound(L"EmojiSurprise.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 
 	if (iOption & EFTMGR_IMAGE)

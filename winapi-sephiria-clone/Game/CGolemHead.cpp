@@ -1,15 +1,18 @@
 ﻿#include "pch.h"
 #include "CGolemHead.h"
 
+#include "CGolem.h"
+
 #include "CAbstractFactory.h"
 #include "CCameraMgr.h"
 #include "CImgMgr.h"
 #include "CObjMgr.h"
 #include "CTimeMgr.h"
 #include "CUIMgr.h"
+#include "CEffectMgr.h"
 
 CGolemHead::CGolemHead()
-    : CState(GOLEM_HEAD_STATE::END, GOLEM_HEAD_STATE::IDLE),
+    : CState(GOLEM_HEAD_STATE::END, GOLEM_HEAD_STATE::EXPOSE),
     m_pOwner(nullptr),
     m_dStateTime(0.0)
 {
@@ -22,7 +25,7 @@ CGolemHead::~CGolemHead()
 
 void CGolemHead::Initialize()
 {
-    m_tInfo = { 0.f, 0.f, 0.f, 0.f };
+    m_tInfo = { 0.f, 0.f, 300.f, 300.f };
 
     m_eRender = RENDERID::GAMEOBJECT;
     m_iRenderLayer = 1;
@@ -33,8 +36,11 @@ int CGolemHead::Update()
     if (m_bDead)
         return DEAD;
 
+    ApplyChange();
+    UpdateTime();
+
+    UpdateFrame();
     __super::UpdateRect();
-    __super::UpdateFrame();
     return NOEVENT;
 }
 
@@ -45,6 +51,15 @@ void CGolemHead::LateUpdate()
 void CGolemHead::Render(Graphics* pGraphics)
 {
     VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
+
+#ifdef _DEBUG
+    // 피격 충돌 박스 렌더링
+    SolidBrush WhiteBrush(Color(255, 255, 255, 255));
+    pGraphics->FillRectangle(&WhiteBrush, (int)(m_tRect.left + vScroll.fX),
+        (int)(m_tRect.top + vScroll.fY),
+        (int)m_tInfo.vSize.fX,
+        (int)m_tInfo.vSize.fY);
+#endif // _DEBUG
 
     // 머리
     Image* pHeadImg = CImgMgr::GetInstance()->FindImg(L"GolemHead");
@@ -57,13 +72,36 @@ void CGolemHead::Render(Graphics* pGraphics)
     RectF DestRect = { m_tInfo.vPoint.fX + vOffset.fX - vImgSize.fX * 0.5f, m_tInfo.vPoint.fY + vOffset.fY - vImgSize.fY * 0.5f, vImgSize.fX, vImgSize.fY };
     pGraphics->DrawImage(
         pHeadImg, DestRect,
-        0, 0, vCellSize.fX, vCellSize.fY,
+        vCellSize.fX * m_tFrame.iStart, vCellSize.fY * m_tFrame.iMotion, vCellSize.fX, vCellSize.fY,
         UnitPixel
     );
 }
 
 void CGolemHead::Release()
 {
+}
+
+void CGolemHead::UpdateFrame()
+{
+    m_tFrame.dFrameElapsedTime += DT;
+    if (m_tFrame.dFrameSpeed <= m_tFrame.dFrameElapsedTime)
+    {
+        ++m_tFrame.iStart;
+        m_tFrame.dFrameElapsedTime -= m_tFrame.dFrameSpeed;
+
+        if (m_tFrame.iStart > m_tFrame.iEnd)
+        {
+            if (m_eCurState == GOLEM_HEAD_STATE::RECOVER)
+            {
+                m_tFrame.iStart = m_tFrame.iEnd;
+                RequestChange(GOLEM_HEAD_STATE::IDLE);
+            }
+            else
+            {
+                m_tFrame.iStart = 0;
+            }
+        }
+    }
 }
 
 void CGolemHead::UpdateTime()
@@ -86,11 +124,19 @@ void CGolemHead::ApplyChange()
         switch (m_eNextState)
         {
         case GOLEM_HEAD_STATE::IDLE:
-
+            SetFrame(0, 0, 0, INT_MAX);
             break;
-
         case GOLEM_HEAD_STATE::SHOOT:
-
+            SetFrame(0, 7, 1, 0.2);
+            break;
+        case GOLEM_HEAD_STATE::EXPOSE:
+            SetFrame(0, 0, 4, INT_MAX);
+            break;
+        case GOLEM_HEAD_STATE::RECOVER:
+            SetFrame(0, 4, 2, 0.2);
+            break;
+        case GOLEM_HEAD_STATE::DOWN:
+            SetFrame(0, 0, 5, INT_MAX);
             break;
 
         default:
@@ -100,4 +146,17 @@ void CGolemHead::ApplyChange()
         m_eCurState = m_eNextState;
         m_dStateTime = 0.;
     }
+}
+
+void CGolemHead::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
+{
+    if (nullptr == m_pOwner)
+        return;
+
+    if (bCritical)
+        CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 210, 60 });
+    else
+        CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 255, 255 });
+
+    m_pOwner->HitDamage(iDamage, pObj, eHit, bCritical);
 }

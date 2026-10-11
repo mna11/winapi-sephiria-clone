@@ -1,19 +1,29 @@
 ﻿#include "pch.h"
 #include "CBossStage.h"
 
+#include "CCamera.h"
 #include "CPlayer.h"
-#include "CBossErma.h"
+#include "CGolem.h"
+#include "CErma.h"
 #include "CMonster.h"
+#include "CFade.h"
 
 #include "CAbstractFactory.h"
+#include "CCollisionMgr.h"
 #include "CObjMgr.h"
+#include "CTimeMgr.h"
 #include "CCameraMgr.h"
 #include "CImgMgr.h"
 #include "CKeyMgr.h"
 #include "CTileMgr.h"
 #include "CUIMgr.h"
+#include "CEffectMgr.h"
 
 CBossStage::CBossStage()
+	: CState(BOSS_STAGE_STATE::END, BOSS_STAGE_STATE::WAIT),
+	m_pErma(nullptr), m_pGolem(nullptr),
+	m_dIntroTime(0.), m_eIntroState(BOSS_STAGE_INTRO_STATE::END),
+	m_dFinalTime(0.), m_eFinalState(BOSS_STAGE_FINAL_STATE::END)
 {
 }
 
@@ -27,18 +37,32 @@ void CBossStage::Initialize()
 	CTileMgr::GetInstance()->LoadTile(SCENEID::BOSS_STAGE);
 	CTileMgr::GetInstance()->SetInteractionBlocked(false);
 
+	InitializeRooms();
 	Init_CreateObj();
     Init_LoadImg(L"../Resource/Image/Stage/BossStage.png");
+	Init_BGM(L"DugeonLibrary_Field.wav", 0.3f);
 }
 
 void CBossStage::Update()
 {
+	ApplyChange();
+	UpdateTime();
+
 	CObjMgr::GetInstance()->Update();
 }
 
 void CBossStage::LateUpdate()
 {
 	CObjMgr::GetInstance()->LateUpdate();
+
+	if (m_eCurState == BOSS_STAGE_STATE::WAIT ||
+		m_eCurState == BOSS_STAGE_STATE::BATTLE)
+	{
+		HotKey();
+	}
+
+	HandleCollision();
+	EndBattle();
 }
 
 void CBossStage::Render(Graphics* pGraphics)
@@ -75,6 +99,36 @@ void CBossStage::Render(Graphics* pGraphics)
 
 	pGraphics->ReleaseHDC(hBackDC);
 
+#ifdef _DEBUG
+
+	Pen roomPen(Color(255, 255, 0, 0), 2.f);
+
+	for (const ROOM_INFO& room : m_vecRooms)
+	{
+		const RECT& rc = room.rcTrigger;
+
+		pGraphics->DrawRectangle(
+			&roomPen,
+			RectF(
+				rc.left + vScroll.fX,
+				rc.top + vScroll.fY,
+				static_cast<float>(rc.right - rc.left),
+				static_cast<float>(rc.bottom - rc.top)
+			)
+		);
+	}
+
+	pGraphics->DrawRectangle(
+		&roomPen,
+		RectF(
+			m_rcStair.left + vScroll.fX,
+			m_rcStair.top + vScroll.fY,
+			static_cast<float>(m_rcStair.right - m_rcStair.left),
+			static_cast<float>(m_rcStair.bottom - m_rcStair.top)
+		)
+	);
+#endif // _DEBUG
+
 
     // ReleaseHDC 이후부터 GDI+ 사용
     CTileMgr::GetInstance()->Render(pGraphics);
@@ -88,27 +142,368 @@ void CBossStage::Release()
 void CBossStage::Init_CreateObj()
 {
 	if (nullptr == CObjMgr::GetInstance()->GetPlayer())
-		CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(412.f, 1024.f));
+		CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(3000.f, 1300.f));
 	else
 		CObjMgr::GetInstance()->GetPlayer()->SetPos({412.f, 1024.f});
 
 	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
 
 	// 보스 추가하기
-	CBossErma* pBoss = static_cast<CBossErma*>(
-		CAbstractFactory<CBossErma>::CreateObj(3960.f, 1100.f));
-
-	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, pBoss);
-	pBoss->InitializeParts();
+	m_pGolem = static_cast<CGolem*>(CAbstractFactory<CGolem>::CreateObj(3960.f, 1050.f));
+	m_pErma = static_cast<CErma*>(CAbstractFactory<CErma>::CreateObj(3950.f, 1605.f));
+	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, m_pGolem);
+	CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, m_pErma);
+	m_pGolem->InitializeParts();
+	m_pGolem->SetErma(m_pErma);
 }
 
 void CBossStage::InitializeRooms()
 {
+	m_vecRooms.clear();
+
+	ROOM_INFO tBossRoom;
+	tBossRoom.rcTrigger = { 3500, 1200, 4500, 2000 };
+
+	m_vecRooms.push_back(tBossRoom);
 }
+
 void CBossStage::SpawnMonster(int iRoomIdx)
 {
 }
 
 void CBossStage::HandleCollision()
 {
+	if (m_eCurState != BOSS_STAGE_STATE::WAIT)
+		return;
+
+	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+	if (nullptr == pPlayer)
+		return;
+
+	// 현재 싸우고 있는 상태가 아니라면
+	if (-1 == m_iCurBattleRoomIdx)
+	{
+		// 방을 순회한다.
+		for (int i = 0; i < m_vecRooms.size(); ++i)
+		{
+			ROOM_INFO& room = m_vecRooms[i];
+
+			// 이미 클리어 한 방이라면 다른 방 순회
+			if (room.eState == ROOM_STATE::CLEAR)
+				continue;
+
+			// 만약 준비중인 방과 트리거가 충돌이 된다면
+			if (CCollisionMgr::CollisionRect(pPlayer->GetRect(), room.rcTrigger))
+			{
+				// 현재 방을 전투 상태로 변환
+				StartBattleRoom(i);
+				RequestChange(BOSS_STAGE_STATE::INTRO);
+				break;
+			}
+		}
+	}
+	else
+	{
+		// 전투 중인 상황인데, 현재 몬스터를 다 죽였다면 방을 클리어 상태로 변경한다.
+		if (CObjMgr::GetInstance()->ObjEmpty(OBJID::MONSTER))
+			ClearCurRoom();
+	}
+}
+
+void CBossStage::ApplyChange()
+{
+	if (m_eCurState != m_eNextState)
+	{
+		switch (m_eNextState)
+		{
+		case BOSS_STAGE_STATE::WAIT:
+			break;
+		case BOSS_STAGE_STATE::INTRO:
+		{
+			CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+			if (pPlayer != nullptr)
+			{
+				// 플레이어 조작 불가
+				pPlayer->RequestChange(PLAYER_STATE::IDLE);
+				pPlayer->SetPlayerBehaviorEnable(false);
+
+				// 카메라 이동 및 인트로 상태 변경
+				CCameraMgr::GetInstance()->MoveCamera({3950.f, 1605.f});
+				m_eIntroState = BOSS_STAGE_INTRO_STATE::CAMERA_MOVE;
+
+				// UI는 다 닫고, 레터 박스만 열리게 구현
+				CUIMgr::GetInstance()->HideAllUI();
+				CUIMgr::GetInstance()->ShowUI(UIID::LETTER_BOX);
+			}
+			break;
+		}
+		case BOSS_STAGE_STATE::BATTLE:
+		{
+			if (m_pGolem != nullptr)
+				m_pGolem->RequestChange(GOLEM_STATE::COMBAT);
+
+			CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+			if (pPlayer != nullptr)
+			{
+				pPlayer->SetPlayerBehaviorEnable(true);
+				CCameraMgr::GetInstance()->SetCameraTarget(pPlayer);
+			}
+
+			CUIMgr::GetInstance()->HideUI(UIID::LETTER_BOX);
+			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
+			CUIMgr::GetInstance()->ShowUI(UIID::BOSS_HP, m_pGolem);
+			break;
+		}
+		case BOSS_STAGE_STATE::FINAL:
+		{
+			CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+			if (pPlayer != nullptr)
+			{
+				// 플레이어 조작 불가
+				pPlayer->RequestChange(PLAYER_STATE::IDLE);
+				pPlayer->SetPlayerBehaviorEnable(false);
+
+				// 카메라 이동 및 인트로 상태 변경
+				CCameraMgr::GetInstance()->MoveCamera(m_pErma->GetInfo().vPoint);
+				m_eFinalState = BOSS_STAGE_FINAL_STATE::CAMERA_MOVE1;
+
+				// UI는 다 닫고, 레터 박스만 열리게 구현
+				CUIMgr::GetInstance()->HideAllUI();
+				CUIMgr::GetInstance()->ShowUI(UIID::LETTER_BOX);
+			}
+			break;
+		}
+		case BOSS_STAGE_STATE::CLEAR:
+		{
+			CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+			if (pPlayer != nullptr)
+			{
+				pPlayer->SetPlayerBehaviorEnable(true);
+				CCameraMgr::GetInstance()->SetCameraTarget(pPlayer);
+			}
+
+			CUIMgr::GetInstance()->HideUI(UIID::LETTER_BOX);
+			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
+			CUIMgr::GetInstance()->HideUI(UIID::BOSS_HP);
+			break;
+		}
+		default:
+			break;
+		}
+
+		m_eCurState = m_eNextState;
+	}
+}
+
+
+void CBossStage::UpdateTime()
+{
+	switch (m_eCurState)
+	{
+	case BOSS_STAGE_STATE::INTRO:
+	{
+		UpdateIntroTime();
+		break;
+	}
+	case BOSS_STAGE_STATE::FINAL:
+	{
+		UpdateFinalTime();
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void CBossStage::UpdateIntroTime()
+{
+	m_dIntroTime += DT;
+
+	switch (m_eIntroState)
+	{
+	case BOSS_STAGE_INTRO_STATE::CAMERA_MOVE:
+		// 카메라가 특정 위치에 도착하면 다음 상태로 변경
+		if (CCameraMgr::GetInstance()->GetCamera()->GetState() == CCamera::STATE::FIXED)
+			ChangeIntroState(BOSS_STAGE_INTRO_STATE::DIALOG1);
+		break;
+	case BOSS_STAGE_INTRO_STATE::DIALOG1:
+		// 2초 지나면 다음 상태
+		if (m_dIntroTime >= 2.f)
+			ChangeIntroState(BOSS_STAGE_INTRO_STATE::EXCLAMTION);
+		break;
+	case BOSS_STAGE_INTRO_STATE::EXCLAMTION:
+		// 1초 지나면 다음 상태
+		if (m_dIntroTime >= 1.f)
+			ChangeIntroState(BOSS_STAGE_INTRO_STATE::DIALOG2);
+		break;
+	case BOSS_STAGE_INTRO_STATE::DIALOG2:
+		// 2초 지나면 다음 상태
+		if (m_dIntroTime >= 2.f)
+			ChangeIntroState(BOSS_STAGE_INTRO_STATE::DIALOG3);
+		break;
+	case BOSS_STAGE_INTRO_STATE::DIALOG3:
+		// 2초 지나면 다음 상태
+		if (m_dIntroTime >= 2.f)
+			ChangeIntroState(BOSS_STAGE_INTRO_STATE::ENTER_GOLEM);
+		break;
+	case BOSS_STAGE_INTRO_STATE::ENTER_GOLEM:
+	{
+		if (m_pErma->IsReturnFinish())
+			ChangeIntroState(BOSS_STAGE_INTRO_STATE::FINISH);
+
+		break;
+	}
+	case BOSS_STAGE_INTRO_STATE::FINISH:
+		if (m_dIntroTime >= 1.f)
+			RequestChange(BOSS_STAGE_STATE::BATTLE);
+		break;
+	}
+}
+
+void CBossStage::UpdateFinalTime()
+{
+	m_dFinalTime += DT;
+
+	switch (m_eFinalState)
+	{
+	case BOSS_STAGE_FINAL_STATE::CAMERA_MOVE1:
+		// 카메라가 특정 위치에 도착하면 다음 상태로 변경
+		if (CCameraMgr::GetInstance()->GetCamera()->GetState() == CCamera::STATE::FIXED)
+			ChangeFinalState(BOSS_STAGE_FINAL_STATE::DIALOG1);
+		break;
+	case BOSS_STAGE_FINAL_STATE::DIALOG1:
+		// 2초 지나면 다음 상태
+		if (m_dFinalTime >= 2.f)
+			ChangeFinalState(BOSS_STAGE_FINAL_STATE::ENTER_GOLEM);
+		break;
+	case BOSS_STAGE_FINAL_STATE::ENTER_GOLEM:
+		if (m_pErma->IsReturnFinish())
+			ChangeFinalState(BOSS_STAGE_FINAL_STATE::DIALOG2);
+		break;
+	case BOSS_STAGE_FINAL_STATE::DIALOG2:
+		if (m_dFinalTime >= 2.f)
+			ChangeFinalState(BOSS_STAGE_FINAL_STATE::DIALOG3);
+		break;
+	case BOSS_STAGE_FINAL_STATE::DIALOG3:
+		if (m_dFinalTime >= 2.f)
+			ChangeFinalState(BOSS_STAGE_FINAL_STATE::BROKEN1);
+		break;
+	case BOSS_STAGE_FINAL_STATE::BROKEN1:
+		if (m_dFinalTime >= 1.f)
+			ChangeFinalState(BOSS_STAGE_FINAL_STATE::BROKEN2);
+		break;
+	case BOSS_STAGE_FINAL_STATE::BROKEN2:
+		if (m_dFinalTime >= 1.f)
+			ChangeFinalState(BOSS_STAGE_FINAL_STATE::DOWN);
+		break;
+	case BOSS_STAGE_FINAL_STATE::DOWN:
+		if (m_dFinalTime >= 2.f)
+			ChangeFinalState(BOSS_STAGE_FINAL_STATE::CAMERA_MOVE2);
+		break;
+	case BOSS_STAGE_FINAL_STATE::CAMERA_MOVE2:
+		// 카메라가 특정 위치에 도착하면 다음 상태로 변경
+		if (CCameraMgr::GetInstance()->GetCamera()->GetState() == CCamera::STATE::FIXED)
+			ChangeFinalState(BOSS_STAGE_FINAL_STATE::DIALOG4);
+		break;
+	case BOSS_STAGE_FINAL_STATE::DIALOG4:
+		if (m_dFinalTime >= 2.f)
+			ChangeFinalState(BOSS_STAGE_FINAL_STATE::FINISH);
+		break;
+	case BOSS_STAGE_FINAL_STATE::FINISH:
+		break;
+	}
+}
+
+void CBossStage::ChangeIntroState(BOSS_STAGE_INTRO_STATE eState)
+{
+	if (m_eIntroState == eState)
+		return;
+
+	m_eIntroState = eState;
+	m_dIntroTime = 0.;
+
+	switch (m_eIntroState)
+	{
+	case BOSS_STAGE_INTRO_STATE::CAMERA_MOVE:
+		break;
+	case BOSS_STAGE_INTRO_STATE::DIALOG1:
+		break;
+	case BOSS_STAGE_INTRO_STATE::EXCLAMTION:
+	{
+		if (nullptr == m_pErma)
+			return;
+
+		m_pErma->SetFrameKey(L"Erma_L");
+
+		VEC vRenderPoint = m_pErma->GetInfo().vPoint;
+		vRenderPoint.fX -= 50.f;
+		vRenderPoint.fY -= 50.f;
+		CEffectMgr::GetInstance()->CreateEffect(L"Emoj_Exclamation", vRenderPoint, EFTMGR_FIXED | EFTMGR_SCROLL | EFTMGR_IMAGE, 0.f, 0.1f);
+		break;
+	}
+	case BOSS_STAGE_INTRO_STATE::DIALOG2:
+		break;
+	case BOSS_STAGE_INTRO_STATE::DIALOG3:
+		break;
+	case BOSS_STAGE_INTRO_STATE::ENTER_GOLEM:
+	{
+		if (nullptr == m_pErma)
+			return;
+
+		CCameraMgr::GetInstance()->SetCameraTarget(m_pErma);
+		m_pErma->StartReturn();
+		break;
+	}
+	case BOSS_STAGE_INTRO_STATE::FINISH:
+		break;
+	}
+}
+
+void CBossStage::ChangeFinalState(BOSS_STAGE_FINAL_STATE eState)
+{
+	if (m_eFinalState == eState)
+		return;
+
+	m_eFinalState = eState;
+	m_dFinalTime = 0.;
+
+	switch (m_eFinalState)
+	{
+	case BOSS_STAGE_FINAL_STATE::CAMERA_MOVE1:
+		break;
+	case BOSS_STAGE_FINAL_STATE::DIALOG1:
+		break;
+	case BOSS_STAGE_FINAL_STATE::ENTER_GOLEM:
+		if (nullptr == m_pErma)
+			return;
+
+		CCameraMgr::GetInstance()->SetCameraTarget(m_pErma);
+		m_pErma->StartReturn();
+		break;
+	case BOSS_STAGE_FINAL_STATE::DIALOG2:
+		break;
+	case BOSS_STAGE_FINAL_STATE::DIALOG3:
+		break;
+	case BOSS_STAGE_FINAL_STATE::BROKEN1:
+		CEffectMgr::GetInstance()->CreateEffect(L"Golem_Core_Broken", m_pErma->GetInfo().vPoint, EFTMGR_FIXED | EFTMGR_SCROLL | EFTMGR_IMAGE, 0.f, 0.1f);
+		break;
+	case BOSS_STAGE_FINAL_STATE::BROKEN2:
+		CEffectMgr::GetInstance()->CreateEffect(L"Golem_Core_Broken", m_pErma->GetInfo().vPoint, EFTMGR_FIXED | EFTMGR_SCROLL | EFTMGR_IMAGE, 0.f, 0.1f);
+		break;
+	case BOSS_STAGE_FINAL_STATE::DOWN:
+		m_pGolem->RequestChange(GOLEM_STATE::DOWN);
+		break;
+	case BOSS_STAGE_FINAL_STATE::CAMERA_MOVE2:
+		CCameraMgr::GetInstance()->MoveCamera(m_pErma->GetInfo().vPoint);
+		break;
+	case BOSS_STAGE_FINAL_STATE::DIALOG4:
+		break;
+	case BOSS_STAGE_FINAL_STATE::FINISH:
+		CFade* pFade = static_cast<CFade*>(CUIMgr::GetInstance()->ShowUI(UIID::FADE));
+		pFade->SetFadeType(FADE_TYPE::RECTANGLE);
+		m_pErma->SetDead(true);
+
+		RequestChange(BOSS_STAGE_STATE::CLEAR);
+		break;
+	}
 }

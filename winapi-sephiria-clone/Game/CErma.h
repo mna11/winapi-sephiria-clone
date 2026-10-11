@@ -3,6 +3,8 @@
 #include "CState.h"
 #include "CMonster.h"
 
+class CGolem;
+
 enum class ERMA_STATE
 {
     IDLE,
@@ -31,7 +33,20 @@ public:
 
 public:
     void ApplyChange() override;
+
+public:
+    void UpdateFrame() override;
     void HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END, bool bCritical = false) override;
+    void SetOwner(CGolem* pGolem) { m_pOwner = pGolem; }
+
+public:
+    void StartReturn();
+    void StartExpose(VEC vPoint);
+    bool IsReturnFinish();
+
+public:
+    void Show() { m_bView = true; }
+    void Hide() { m_bView = false; }
 
 private:
     void UpdateTime() override;
@@ -39,5 +54,10 @@ private:
     void Attack() override;
 
 private:
+    VEC    m_vReturnPoint;
+    VEC    m_vExposePoint;
+
     double m_dStateTime;
+    CGolem* m_pOwner;
+    bool    m_bView;
 };

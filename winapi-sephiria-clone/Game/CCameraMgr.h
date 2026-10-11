@@ -40,6 +40,7 @@ public:
 
 public:
 	VEC  GetScroll() const { return m_vScroll; }
+	const CCamera* GetCamera() const { return m_pCamera; }
 
 public:
 	void SetCameraPos(VEC vPoint);

@@ -8,6 +8,9 @@ enum class GOLEM_HEAD_STATE
 {
     IDLE,
     SHOOT,
+    EXPOSE,
+    RECOVER,
+    DOWN,
     END
 };
 
@@ -24,11 +27,14 @@ public:
     void Render(Graphics*) override;
     void Release() override;
 private:
+    void UpdateFrame() override;
     void UpdateTime() override;
     void Move() override;
     void Attack() override;
 private:
     void ApplyChange() override;
+public:
+    void HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END, bool bCritical = false) override;
 
 public:
     void SetOwner(CGolem* pGolem) { m_pOwner = pGolem; }

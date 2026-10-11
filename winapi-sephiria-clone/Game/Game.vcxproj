@@ -203,6 +203,7 @@
     <ClInclude Include="CShopTable.h" />
     <ClInclude Include="CShopTableSlot.h" />
     <ClInclude Include="CSoundMgr.h" />
+    <ClInclude Include="CSpeechBubble.h" />
     <ClInclude Include="CStage.h" />
     <ClInclude Include="CStage1.h" />
     <ClInclude Include="CStageChange.h" />
@@ -295,6 +296,7 @@
     <ClCompile Include="CShopTable.cpp" />
     <ClCompile Include="CShopTableSlot.cpp" />
     <ClCompile Include="CSoundMgr.cpp" />
+    <ClCompile Include="CSpeechBubble.cpp" />
     <ClCompile Include="CStage.cpp" />
     <ClCompile Include="CStage1.cpp" />
     <ClCompile Include="CStageChange.cpp" />

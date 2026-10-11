@@ -1,20 +1,20 @@
 ﻿#include "pch.h"
 #include "CErma.h"
 
+#include "CGolem.h"
+#include "CScene.h"
+#include "CBossStage.h"
+
 #include "CImgMgr.h"
 #include "CCameraMgr.h"
 #include "CTimeMgr.h"
-
-namespace
-{
-    constexpr double AIR_TIME = 0.75;
-    constexpr double RETURN_TIME = 1.4;
-    constexpr float AIR_ARC_HEIGHT = 140.f;
-    constexpr int EXPOSED_HIT_COUNT = 3;
-}
+#include "CSceneMgr.h"
 
 CErma::CErma()
-    : CState(ERMA_STATE::END, ERMA_STATE::IDLE)
+    : CState(ERMA_STATE::END, ERMA_STATE::IDLE),
+    m_dStateTime(0.),
+    m_pOwner(nullptr),
+    m_bView(true)
 {
 }
 
@@ -35,10 +35,10 @@ void CErma::Initialize()
     CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Monster/Boss/Erma/Erma_GoToStone_RIGHT.png", L"Erma_Stone_R");
     CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Monster/Boss/Erma/Erma_Stone_Shiny.png", L"Erma_Stone_Shiny");
 
-    m_pFrameKey = L"Erma_L";
+    m_pFrameKey = L"Erma_R";
     SetFrame(0, 5, 0, 0.2);
 
-    m_tStat = { 0, 0, 0 };
+    m_tStat = { 100, 100, 0 };
 }
 
 int CErma::Update()
@@ -46,21 +46,43 @@ int CErma::Update()
     if (m_bDead)
         return DEAD;
 
+    if (!m_bView)
+        return NOEVENT;
+
     ApplyChange();
     UpdateTime();
     Move();
 
-    __super::UpdateFrame();
+    UpdateFrame();
     __super::UpdateRect();
     return NOEVENT;
 }
 
 void CErma::LateUpdate()
 {
+    if (!m_bView)
+        return;
+
+    if (m_eCurState == ERMA_STATE::STUN && m_tStat.iHp <= 0)
+    {
+        if (nullptr == m_pOwner)
+            return;
+
+        if (0 == m_pOwner->GetPhase())
+            StartReturn();
+        else
+        {
+            RequestChange(ERMA_STATE::IDLE);
+            static_cast<CBossStage*>(CSceneMgr::GetInstance()->GetCurrentScene())->RequestChange(BOSS_STAGE_STATE::FINAL);
+        }
+    }
 }
 
 void CErma::Render(Graphics* pGraphics)
 {
+    if (!m_bView)
+        return;
+
     const VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
 #ifdef _DEBUG
@@ -112,7 +134,7 @@ void CErma::ApplyChange()
 {
     if (m_eCurState != m_eNextState)
     {
-        switch (m_eCurState)
+        switch (m_eNextState)
         {
         case ERMA_STATE::IDLE:
             m_pFrameKey = L"Erma_L";
@@ -151,12 +173,69 @@ void CErma::ApplyChange()
     }
 }
 
+void CErma::UpdateFrame()
+{
+    if (m_eCurState == ERMA_STATE::RETURN)
+        return;
+
+    m_tFrame.dFrameElapsedTime += DT;
+    if (m_tFrame.dFrameSpeed <= m_tFrame.dFrameElapsedTime)
+    {
+        ++m_tFrame.iStart;
+        m_tFrame.dFrameElapsedTime -= m_tFrame.dFrameSpeed;
+
+        if (m_tFrame.iStart > m_tFrame.iEnd)
+        {
+            if (m_eCurState == ERMA_STATE::STONE)
+            {
+                m_tFrame.iStart = m_tFrame.iEnd;
+                RequestChange(ERMA_STATE::RETURN);
+            }
+            else
+            {
+                m_tFrame.iStart = 0;
+            }
+        }
+    }
+}
 void CErma::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-    if (m_bHit)
+    if (m_bHit || !m_bView || m_eCurState != ERMA_STATE::STUN)
         return;
 
     m_bHit = true;
+    m_dHitElapseTime = 0.;
+
+    m_tStat.iHp = clamp(m_tStat.iHp - iDamage, 0, m_tStat.iMaxHp);
+}
+
+void CErma::StartReturn()
+{
+    if (nullptr == m_pOwner)
+        return;
+
+    m_vReturnPoint = m_pOwner->GetEnterPoint();
+
+    RequestChange(ERMA_STATE::STONE);
+}
+
+void CErma::StartExpose(VEC vPoint)
+{
+    m_vExposePoint = vPoint;
+    m_bView = true;
+
+    m_tStat.iMaxHp = 100;
+    m_tStat.iHp = m_tStat.iMaxHp;
+
+    RequestChange(ERMA_STATE::AIR);
+}
+
+bool CErma::IsReturnFinish()
+{
+    if (nullptr == m_pOwner)
+        return false;
+
+    return ((m_tInfo.vPoint - m_pOwner->GetEnterPoint()).Norm() == 0.f);
 }
 
 void CErma::UpdateTime()
@@ -176,6 +255,48 @@ void CErma::UpdateTime()
 
 void CErma::Move()
 {
+    switch (m_eCurState)
+    {
+    case ERMA_STATE::RETURN:
+    {
+        VEC vDistance = m_vReturnPoint - m_tInfo.vPoint;
+        float fDistance = vDistance.Norm();
+        float fMoveDistance = 200.f * DT;
+        if (fDistance <= fMoveDistance)
+        {
+            m_tInfo.vPoint = m_vReturnPoint;
+            m_bView = false;
+
+            if (nullptr != m_pOwner)
+                m_pOwner->RequestChange(GOLEM_STATE::RECOVER);
+        }
+        else
+            m_tInfo.vPoint += vDistance.Normalize() * fMoveDistance;
+
+        break;
+    }
+    case ERMA_STATE::AIR:
+    {
+        VEC vDistance = m_vExposePoint - m_tInfo.vPoint;
+        float fDistance = vDistance.Norm();
+        float fMoveDistance = 400.f * DT;
+        if (fDistance <= fMoveDistance)
+        {
+            m_tInfo.vPoint = m_vExposePoint;
+
+            if (nullptr != m_pOwner)
+            {
+                RequestChange(ERMA_STATE::STUN);
+            }
+
+        }
+        else
+            m_tInfo.vPoint += vDistance.Normalize() * fMoveDistance;
+
+        break;
+    }
+    }
+
 }
 
 void CErma::Attack()

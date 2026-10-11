@@ -42,16 +42,38 @@ private:
 
 public:
     void InitializeParts();
+    void SetErma(CErma* pErma);
+
+public:
+    VEC GetEnterPoint() const;
+    int GetPhase() const { return m_iPhase; }
 
 private:
     void StartMissile(int iType);
 
 private:
-    CErma* m_pErma;
+    CErma*      m_pErma;
     CGolemHead* m_pHead;
     CGolemHand* m_pLeftHand;
     CGolemHand* m_pRightHand;
 
-    double m_dStateTime;
-
+    double      m_dStateTime;
+    
+    // 전투 패턴 관련
+    // 페이즈
+    int         m_iPhase;
+    // 슬램 
+    double      m_dSlamCycleElapsed;    // 사이클 지나는 시간
+    double      m_dSlamCycle;           // 사이클 주기
+    double      m_dSlamElapsed;         // 슬램 지나는 시간 
+    double      m_dSlamInterval;        // 슬램 주기
+    int         m_iSlamRemain;          // 현재 사이클에서 남은 슬램 수
+    int         m_iSlamCount;           // 사이클 내에서 진행할 슬램 수
+    bool        m_bNextSlamLeft;        // 다음 슬램은 어느 손인가
+    // 미사일
+    double      m_dMissileElapsed;
+    double      m_dMissileInterval;
+    // 레이저
+    double      m_dLaserElapsed;
+    double      m_dLaserInterval;
 };

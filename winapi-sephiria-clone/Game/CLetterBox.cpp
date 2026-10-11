@@ -38,7 +38,7 @@ int CLetterBox::Update()
         m_fHeight = clamp(m_fHeight + fStep, 0.f, m_fTargetHeight);
     // 현재 높이가 목표 높이보다 크면 줄여야 함
     else if (m_fHeight > m_fTargetHeight)
-        m_fHeight = clamp(m_fHeight - fStep, 0.f, m_fTargetHeight);
+        m_fHeight = max(m_fHeight - fStep, m_fTargetHeight);
 
     // 타겟 높이랑 현재 높이가 둘 다 0이면 m_bView를 false로 바꿈
     if (m_fTargetHeight == 0.f && m_fHeight == 0.f)

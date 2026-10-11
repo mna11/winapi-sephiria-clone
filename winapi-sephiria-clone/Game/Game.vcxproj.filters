@@ -295,6 +295,9 @@
     <Filter Include="01. Obj\06. UI\13. LetterBox">
       <UniqueIdentifier>{2554b182-a317-4668-bee9-23d5e6800194}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\06. UI\14. SpeechBubble">
+      <UniqueIdentifier>{a72e8d92-2937-43a9-bad7-7df870077ea2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -573,6 +576,9 @@
     <ClInclude Include="CLetterBox.h">
       <Filter>01. Obj\06. UI\13. LetterBox</Filter>
     </ClInclude>
+    <ClInclude Include="CSpeechBubble.h">
+      <Filter>01. Obj\06. UI\14. SpeechBubble</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -835,6 +841,9 @@
     </ClCompile>
     <ClCompile Include="CLetterBox.cpp">
       <Filter>01. Obj\06. UI\13. LetterBox</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpeechBubble.cpp">
+      <Filter>01. Obj\06. UI\14. SpeechBubble</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
