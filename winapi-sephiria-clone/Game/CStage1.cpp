@@ -27,8 +27,8 @@ void CStage1::Initialize()
 	Init_CreateObj();
 
 	InitializeRooms();
+
 	Init_LoadImg(L"../Resource/Image/Stage/Stage01.png");
-	
 	Init_BGM(L"DugeonLibrary_Field.wav", 0.3f);
 }
 
@@ -93,27 +93,9 @@ void CStage1::Render(Graphics* pGraphics)
 	for (const ROOM_INFO& room : m_vecRooms)
 	{
 		const RECT& rc = room.rcTrigger;
-
-		pGraphics->DrawRectangle(
-			&roomPen,
-			RectF(
-				rc.left + vScroll.fX,
-				rc.top + vScroll.fY,
-				static_cast<float>(rc.right - rc.left),
-				static_cast<float>(rc.bottom - rc.top)
-			)
-		);
+		pGraphics->DrawRectangle(&roomPen, RectF(rc.left + vScroll.fX, rc.top + vScroll.fY, static_cast<float>(rc.right - rc.left),static_cast<float>(rc.bottom - rc.top)));
 	}
-
-	pGraphics->DrawRectangle(
-		&roomPen,
-		RectF(
-			m_rcStair.left + vScroll.fX,
-			m_rcStair.top + vScroll.fY,
-			static_cast<float>(m_rcStair.right - m_rcStair.left),
-			static_cast<float>(m_rcStair.bottom - m_rcStair.top)
-		)
-	);
+	pGraphics->DrawRectangle(&roomPen,RectF( m_rcStair.left + vScroll.fX, m_rcStair.top + vScroll.fY, static_cast<float>(m_rcStair.right - m_rcStair.left), static_cast<float>(m_rcStair.bottom - m_rcStair.top)));
 #endif // _DEBUG
 }
 

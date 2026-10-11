@@ -43,6 +43,11 @@ void CEffectMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Alert_Square.png", L"Erma_Alert_Square");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Golem_Hand_Shadow_LEFT.png", L"Erma_Hand_Shadow_L");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Golem_Hand_Shadow_RIGHT.png", L"Erma_Hand_Shadow_R");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Golem_Slam_Targeting.png", L"Golem_Targeting");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Golem_Slam.png", L"Golem_Slam");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Alert_Missile.png", L"Golem_Alert_Missle");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Missile_UP.png", L"Golem_Missile_U");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Missile_Down.png", L"Golem_Missile_D");
 
 	// 가고일
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Monster/Gargoyle/Gargoyle_Attack.png", L"Gargoyle_Attack");
@@ -176,7 +181,7 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 	{
 		pEffect->SetFrame(0, 19, 0, dFrameSpeed);
 		pEffect->SetSize({ 96, 72 });
-		pEffect->SetRenderOption(RENDERID::GAMEOBJECT, 1);
+		pEffect->SetRenderOption(RENDERID::GAMEOBJECT, 0);
 	}
 	// 전투
 	else if (!lstrcmpW(pFrameKey, L"Exclamation_Mark"))
@@ -231,6 +236,39 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 	{
 		pEffect->SetFrame(0, 7, 0, dFrameSpeed);
 		pEffect->SetSize({ 10.f, 10.f });
+	}
+	// 보스 몬스터
+	else if (!lstrcmpW(pFrameKey, L"Golem_Targeting"))
+	{
+		pEffect->SetFrame(0, 19, 0, dFrameSpeed);
+		pEffect->SetSize({ 52.f, 52.f });
+		pEffect->SetRenderOption(RENDERID::GAMEOBJECT, 0);
+	}
+	else if (!lstrcmpW(pFrameKey, L"Golem_Slam"))
+	{
+		pEffect->SetFrame(0, 6, 0, dFrameSpeed);
+		pEffect->SetSize({ 76.f, 39.f });
+		pEffect->SetRenderOption(RENDERID::GAMEOBJECT, 0);
+
+		CSoundMgr::GetInstance()->PlaySound(L"GolemSlam.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
+	else if (!lstrcmpW(pFrameKey, L"Golem_Alert_Missle"))
+	{
+		pEffect->SetFrame(0, 17, 0, dFrameSpeed);
+		pEffect->SetSize({ 66.f, 34.f });
+		pEffect->SetRenderOption(RENDERID::GAMEOBJECT, 0);
+	}
+	else if (!lstrcmpW(pFrameKey, L"Golem_Missile_U"))
+	{
+		pEffect->SetFrame(0, 11, 0, dFrameSpeed);
+		pEffect->SetSize({ 17.f, 106.f });
+	}
+	else if (!lstrcmpW(pFrameKey, L"Golem_Missile_D"))
+	{
+		pEffect->SetFrame(0, 16, 0, dFrameSpeed);
+		pEffect->SetSize({ 51.f, 103.f });
+
+		CSoundMgr::GetInstance()->PlaySound(L"GolemMissileDown.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 
 	if (iOption & EFTMGR_IMAGE)
