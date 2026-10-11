@@ -21,6 +21,7 @@
 #include "CStageChange.h"
 #include "CFade.h"
 #include "CStat.h"
+#include "CLetterBox.h"
 
 CUIMgr* CUIMgr::m_pInstance = nullptr;
 
@@ -267,6 +268,9 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		break;
 	case UIID::STAT:
 		pUI = CAbstractFactory<CStat>::CreateUI(m_pMouse);
+		break;
+	case UIID::LETTER_BOX:
+		pUI = CAbstractFactory<CLetterBox>::CreateUI(m_pMouse);
 		break;
 	default:
 		break;
