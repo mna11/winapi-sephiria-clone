@@ -2,6 +2,7 @@
 #include "CSephirite.h"
 
 #include "CPlayer.h"
+#include "CItemSelectUI.h"
 
 #include "CCollisionMgr.h"
 #include "CKeyMgr.h"
@@ -13,7 +14,7 @@
 #include "CSoundMgr.h"
 
 CSephirite::CSephirite()
-	: m_bCol(false)
+	: m_bCol(false), m_eItemType(ITEM_TYPE::END)
 {
 	ZeroMemory(&m_tInteractRect, sizeof(RECT));
 }
@@ -25,20 +26,24 @@ CSephirite::~CSephirite()
 
 void CSephirite::Initialize()
 {
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Sephirite/Sephirite.png", L"Sephirite");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Sephirite/Sephirite_Artifact.png", L"Sephirite_Artifact");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Sephirite/Sephirite_StoneTablet.png", L"Sephirite_StoneTablet");
 
 	// 기초 정보 초기화
 	m_tInfo = { 0.f, 0.f, 12.f * PIXEL_SCALE, 15.f * PIXEL_SCALE };
 	m_eRender = RENDERID::GAMEOBJECT;
 	m_iRenderLayer = 0;
 
-	m_pFrameKey = L"Sephirite";
+	m_pFrameKey = L"Sephirite_Artifact";
 	SetFrame(0, 19, 0, 0.2);
 }
 
 int CSephirite::Update()
 {
 	if (m_bDead)
+		return DEAD;
+
+	if (m_eItemType == ITEM_TYPE::END)
 		return DEAD;
 
 	HandleInteraction();
@@ -152,7 +157,8 @@ void CSephirite::HandleInteraction()
 	{
 		if (KEY_DOWN('F'))
 		{
-			CUIMgr::GetInstance()->ShowUI(UIID::ITEM_SELECT);
+			CItemSelectUI* pItemSelectUI = static_cast<CItemSelectUI*>(CUIMgr::GetInstance()->ShowUI(UIID::ITEM_SELECT));
+			pItemSelectUI->SetItemType(m_eItemType);
 			m_bDead = true;
 		}
 		m_bCol = true;
@@ -160,5 +166,25 @@ void CSephirite::HandleInteraction()
 	else
 	{
 		m_bCol = false;
+	}
+}
+
+
+void CSephirite::SetItemType(ITEM_TYPE eItemType)
+{
+	m_eItemType = eItemType;
+
+	switch (m_eItemType)
+	{
+	case ITEM_TYPE::ARTIFACT:
+		m_pFrameKey = L"Sephirite_Artifact";
+		m_tInfo.vSize = { 12.f * PIXEL_SCALE, 15.f * PIXEL_SCALE };
+		break;
+	case ITEM_TYPE::STONE_TABLET:
+		m_pFrameKey = L"Sephirite_StoneTablet";
+		m_tInfo.vSize = { 17.f * PIXEL_SCALE, 16.f * PIXEL_SCALE };
+		break;
+	default:
+		break;
 	}
 }

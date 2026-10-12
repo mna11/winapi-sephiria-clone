@@ -125,6 +125,14 @@ void CStage3::Init_CreateObj()
 	}
 	else
 		CObjMgr::GetInstance()->GetPlayer()->SetPos(VEC{ 580.f, 1480.f });
+
+	// 필드 아이템 
+	CSephirite* pArtifactSephirite = static_cast<CSephirite*>(CAbstractFactory<CSephirite>::CreateObj(2550.f, 390.f));
+	pArtifactSephirite->SetItemType(ITEM_TYPE::ARTIFACT);
+	CSephirite* pStoneTabletSephirite = static_cast<CSephirite*>(CAbstractFactory<CSephirite>::CreateObj(3520.f, 390.f));
+	pStoneTabletSephirite->SetItemType(ITEM_TYPE::STONE_TABLET);
+	CObjMgr::GetInstance()->AddObject(OBJID::FIELD_ITEM, pArtifactSephirite);
+	CObjMgr::GetInstance()->AddObject(OBJID::FIELD_ITEM, pStoneTabletSephirite);
 }
 
 void CStage3::InitializeRooms()

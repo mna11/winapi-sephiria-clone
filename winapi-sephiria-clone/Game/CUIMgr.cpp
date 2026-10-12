@@ -75,7 +75,8 @@ void CUIMgr::Initialize()
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/KeyUI.png", L"KeyUI");
 
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemSelect/Sephirite_Broken.png", L"Sephirite_Broken");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemSelect/Sephirite_Artifact_Broken.png", L"Sephirite_Artifact_Broken");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemSelect/Sephirite_StoneTablet_Broken.png", L"Sephirite_StoneTablet_Broken");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemSelect/Sephirite_Slot.png", L"Sephirite_Slot");
 
 

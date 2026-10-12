@@ -36,6 +36,9 @@ public:
     void ApplyChange() override;
 
 public:
+    void SetItemType(ITEM_TYPE eItemType);
+
+public:
     void UpdateTime();
     void KeyInput();
     void Move();
@@ -58,5 +61,7 @@ private:
 
     CButton* m_pRerollBtn;
     CButton* m_pSkipBtn;
+
+    ITEM_TYPE m_eItemType;
 };
 

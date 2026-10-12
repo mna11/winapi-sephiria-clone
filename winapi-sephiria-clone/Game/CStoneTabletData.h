@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 class CStoneTabletData
 {
@@ -44,6 +44,7 @@ private:
 public:
 	const STONE_TABLET_INFO* FindStoneTabletInfo(int iID) const;
 	ITEM_INFO				 FindItemInfo(int iID);
+	const int&				 GetStoneTableNum() const { return m_mapStoneTabletInfo.size(); }
 
 private:
 	static CStoneTabletData* m_pInstance;

@@ -45,6 +45,7 @@ private:
 public:
 	const ARTIFACT_INFO* FindArtifactInfo(int iID) const;
 	ITEM_INFO			 FindItemInfo(int iID);
+	const int&			 GetArtifactNum() const { return m_mapArtifactInfo.size(); }
 
 private:
 	static CArtifactData* m_pInstance;
