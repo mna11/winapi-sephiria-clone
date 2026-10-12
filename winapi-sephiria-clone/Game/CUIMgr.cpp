@@ -23,6 +23,7 @@
 #include "CStat.h"
 #include "CLetterBox.h"
 #include "CSpeechBubble.h"
+#include "CFishingUI.h"
 
 CUIMgr* CUIMgr::m_pInstance = nullptr;
 
@@ -102,6 +103,8 @@ void CUIMgr::Initialize()
 
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/SpeechBubble/SpeechBubbleBase.png", L"SpeechBubble_Base");
+
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Rod/fishingRod.png", L"Fishing_Rod");
 }
 
 CUI* CUIMgr::ShowUI(UIID eID)
@@ -279,6 +282,9 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		break;
 	case UIID::SPEECH_BUBBLE:
 		pUI = CAbstractFactory<CSpeechBubble>::CreateUI(m_pMouse);
+		break; 
+	case UIID::FISHING:
+		pUI = CAbstractFactory<CFishingUI>::CreateUI(m_pMouse);
 		break;
 	default:
 		break;

@@ -21,7 +21,9 @@
 #include "CSoundMgr.h"
 
 CStage3::CStage3()
+	: m_iPlayerWeaponID(-1)
 {
+	ZeroMemory(&m_rcFishing, sizeof(RECT));
 }
 
 CStage3::~CStage3()
@@ -55,7 +57,9 @@ void CStage3::LateUpdate()
 	// 전투 방 충돌 
 	HandleCollisionBattleRoom();
 	// 계단 충돌
-	HandleCollisionStair();
+	HandleCollisionStair(); 
+	// 낚시 스팟 충돌 
+	HandleCollisionFishingSpot();
 	// 전투 종료 시 DropItem 빨아오기
 	EndBattle();
 }
@@ -108,6 +112,7 @@ void CStage3::Render(Graphics* pGraphics)
 		pGraphics->DrawRectangle(&roomPen, RectF(rc.left + vScroll.fX, rc.top + vScroll.fY, static_cast<float>(rc.right - rc.left), static_cast<float>(rc.bottom - rc.top)));
 	}
 	pGraphics->DrawRectangle(&roomPen, RectF(m_rcStair.left + vScroll.fX, m_rcStair.top + vScroll.fY, static_cast<float>(m_rcStair.right - m_rcStair.left), static_cast<float>(m_rcStair.bottom - m_rcStair.top)));
+	pGraphics->DrawRectangle(&roomPen, RectF(m_rcFishing.left + vScroll.fX, m_rcFishing.top + vScroll.fY, static_cast<float>(m_rcFishing.right - m_rcFishing.left), static_cast<float>(m_rcFishing.bottom - m_rcFishing.top)));
 #endif // _DEBUG
 }
 
@@ -145,6 +150,7 @@ void CStage3::InitializeRooms()
 	m_vecRooms.push_back(room2);
 
 	SetRect(&m_rcStair, 1220, 5600, 1420, 5800);
+	SetRect(&m_rcFishing, 4100, 1380, 4300, 1580);
 }
 
 void CStage3::SpawnMonster(int iRoomIdx)
@@ -158,5 +164,34 @@ void CStage3::SpawnMonster(int iRoomIdx)
 		break;
 	default:
 		break;
+	}
+}
+
+void CStage3::HandleCollisionFishingSpot()
+{
+	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+	if (nullptr == pPlayer)
+		return;
+
+	if (CCollisionMgr::CollisionRect(pPlayer->GetRect(), m_rcFishing))
+	{
+		CUIMgr::GetInstance()->ShowUI(UIID::FISHING);
+
+		if (m_iPlayerWeaponID == -1)
+		{
+			m_iPlayerWeaponID = pPlayer->GetWeaponController()->GetWeaponID();
+
+			if (m_iPlayerWeaponID != 3)
+				pPlayer->GetWeaponController()->RequestChange(3);
+		}
+	}
+	else
+	{
+		CUIMgr::GetInstance()->HideUI(UIID::FISHING);
+		if (m_iPlayerWeaponID == -1)
+			return;
+
+		pPlayer->GetWeaponController()->RequestChange(m_iPlayerWeaponID);
+		m_iPlayerWeaponID = -1;
 	}
 }

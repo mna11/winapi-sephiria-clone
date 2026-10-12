@@ -307,6 +307,18 @@
     <Filter Include="01. Obj\05. Bullet">
       <UniqueIdentifier>{262c9b9a-b25f-4ad1-8660-5443f6ec93c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\03. Weapon\02. FishingRod">
+      <UniqueIdentifier>{3ed33c8e-de79-438a-839f-851e70a96ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\15. Fishing">
+      <UniqueIdentifier>{1c5c722a-b37b-411c-a40b-f985d19198bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\15. Fishing\00. FishingRodUI">
+      <UniqueIdentifier>{93f120f2-f465-4d45-a0ea-f12adef2decb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\15. Fishing\01. FishingRhythmUI">
+      <UniqueIdentifier>{debada62-2dde-416c-9868-92160d91c0cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -597,6 +609,18 @@
     <ClInclude Include="CStage3.h">
       <Filter>04. Scene\01. Stage\03. Stage3</Filter>
     </ClInclude>
+    <ClInclude Include="CFishingRod.h">
+      <Filter>01. Obj\03. Weapon\02. FishingRod</Filter>
+    </ClInclude>
+    <ClInclude Include="CFishingUI.h">
+      <Filter>01. Obj\06. UI\15. Fishing</Filter>
+    </ClInclude>
+    <ClInclude Include="CFishingRodUI.h">
+      <Filter>01. Obj\06. UI\15. Fishing\00. FishingRodUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CFishingRythmUI.h">
+      <Filter>01. Obj\06. UI\15. Fishing\01. FishingRhythmUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -871,6 +895,18 @@
     </ClCompile>
     <ClCompile Include="CStage3.cpp">
       <Filter>04. Scene\01. Stage\03. Stage3</Filter>
+    </ClCompile>
+    <ClCompile Include="CFishingRod.cpp">
+      <Filter>01. Obj\03. Weapon\02. FishingRod</Filter>
+    </ClCompile>
+    <ClCompile Include="CFishingUI.cpp">
+      <Filter>01. Obj\06. UI\15. Fishing</Filter>
+    </ClCompile>
+    <ClCompile Include="CFishingRodUI.cpp">
+      <Filter>01. Obj\06. UI\15. Fishing\00. FishingRodUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CFishingRythmUI.cpp">
+      <Filter>01. Obj\06. UI\15. Fishing\01. FishingRhythmUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -17,5 +17,11 @@ public:
 public:
     void InitializeRooms() override;
     void SpawnMonster(int iRoomIdx) override;
+
+private:
+    void HandleCollisionFishingSpot();
+private:
+    RECT m_rcFishing;
+    int  m_iPlayerWeaponID;
 };
 

@@ -92,6 +92,13 @@ void CStage::HotKey()
     {
         CUIMgr::GetInstance()->HideUI(UIID::STAGE_CHANGE);
     }
+
+
+    // 테스트 
+    if (KEY_DOWN(VK_F1))
+    {
+        CObjMgr::GetInstance()->GetPlayer()->GetWeaponController()->RequestChange(3);
+    }
 }
 
 void CStage::HandleCollisionBattleRoom()

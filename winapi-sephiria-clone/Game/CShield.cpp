@@ -24,6 +24,9 @@ void CShield::Initialize()
 
 int CShield::Update()
 {
+	if (m_bDead)
+		return DEAD;
+
 	if (nullptr == m_pTarget)
 		return NOEVENT;
 

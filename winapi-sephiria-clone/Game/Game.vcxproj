@@ -144,6 +144,10 @@
     <ClInclude Include="CBaba.h" />
     <ClInclude Include="CBasicInfo.h" />
     <ClInclude Include="CEnd.h" />
+    <ClInclude Include="CFishingUI.h" />
+    <ClInclude Include="CFishingRod.h" />
+    <ClInclude Include="CFishingRodUI.h" />
+    <ClInclude Include="CFishingRythmUI.h" />
     <ClInclude Include="CGolem.h" />
     <ClInclude Include="CGolemHand.h" />
     <ClInclude Include="CGolemHead.h" />
@@ -240,6 +244,10 @@
     <ClCompile Include="CBaba.cpp" />
     <ClCompile Include="CBasicInfo.cpp" />
     <ClCompile Include="CEnd.cpp" />
+    <ClCompile Include="CFishingUI.cpp" />
+    <ClCompile Include="CFishingRod.cpp" />
+    <ClCompile Include="CFishingRodUI.cpp" />
+    <ClCompile Include="CFishingRythmUI.cpp" />
     <ClCompile Include="CGolem.cpp" />
     <ClCompile Include="CGolemHand.cpp" />
     <ClCompile Include="CGolemHead.cpp" />

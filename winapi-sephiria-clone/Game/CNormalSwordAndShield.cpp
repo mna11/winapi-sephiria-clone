@@ -99,15 +99,15 @@ void CNormalSwordAndShield::CreateEffect()
 
 		switch (m_tAtk.iLevel)
 		{
-		case 0:
+		case 1:
 			CEffectMgr::GetInstance()->CreateEffect(L"SwordSwing1", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
 			vRectSize = { 50.f, 50.f };
 			break;
-		case 1:
+		case 2:
 			CEffectMgr::GetInstance()->CreateEffect(L"SwordSwing2", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
 			vRectSize = { 60.f, 60.f };
 			break;
-		case 2:
+		case 3:
 			CEffectMgr::GetInstance()->CreateEffect(L"SwordSwing3", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
 			vRectSize = { 80.f, 80.f };
 			break;
