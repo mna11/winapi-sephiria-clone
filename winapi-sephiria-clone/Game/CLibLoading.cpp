@@ -20,6 +20,7 @@ CLibLoading::~CLibLoading()
 void CLibLoading::Initialize()
 {
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Stage/LibLoading.png",L"LibLoading");
+    Init_BGM(L"LibLoading.wav", 1.f);
 }
 
 void CLibLoading::Update()

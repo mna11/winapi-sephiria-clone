@@ -137,7 +137,7 @@ void CErma::ApplyChange()
         switch (m_eNextState)
         {
         case ERMA_STATE::IDLE:
-            m_pFrameKey = L"Erma_L";
+            m_pFrameKey = L"Erma_R";
             SetFrame(0, 5, 0, 0.1);
             break;
         case ERMA_STATE::WALK:
@@ -163,6 +163,10 @@ void CErma::ApplyChange()
         case ERMA_STATE::LIGHT:
             m_pFrameKey = L"Erma_Stone_Shiny";
             SetFrame(0, 2, 0, 0.2);
+            break;
+        case ERMA_STATE::DOWN:
+            m_pFrameKey = L"Erma_L";
+            SetFrame(0, 3, 4, 0.2);
             break;
         default:
             break;
@@ -190,6 +194,10 @@ void CErma::UpdateFrame()
             {
                 m_tFrame.iStart = m_tFrame.iEnd;
                 RequestChange(ERMA_STATE::RETURN);
+            }
+            else if (m_eCurState == ERMA_STATE::DOWN)
+            {
+                m_tFrame.iStart = m_tFrame.iEnd;
             }
             else
             {

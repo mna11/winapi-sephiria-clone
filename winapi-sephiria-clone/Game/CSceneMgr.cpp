@@ -75,6 +75,7 @@ void CSceneMgr::ApplyChange()
 
 			CObjMgr* pObjMgr = CObjMgr::GetInstance();
 			pObjMgr->DeleteID(OBJID::FIELD_ITEM);
+			pObjMgr->DeleteID(OBJID::MONSTER);
 			pObjMgr->DeleteID(OBJID::NPC);
 		}
 

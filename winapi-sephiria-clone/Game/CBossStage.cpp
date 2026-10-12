@@ -7,6 +7,7 @@
 #include "CErma.h"
 #include "CMonster.h"
 #include "CFade.h"
+#include "CSpeechBubble.h"
 
 #include "CAbstractFactory.h"
 #include "CCollisionMgr.h"
@@ -144,7 +145,7 @@ void CBossStage::Release()
 void CBossStage::Init_CreateObj()
 {
 	if (nullptr == CObjMgr::GetInstance()->GetPlayer())
-		CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(3000.f, 1300.f));
+		CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(3000.f, 1500.f));
 	else
 		CObjMgr::GetInstance()->GetPlayer()->SetPos({412.f, 1024.f});
 
@@ -335,25 +336,35 @@ void CBossStage::UpdateIntroTime()
 			ChangeIntroState(BOSS_STAGE_INTRO_STATE::DIALOG1);
 		break;
 	case BOSS_STAGE_INTRO_STATE::DIALOG1:
-		// 2초 지나면 다음 상태
-		if (m_dIntroTime >= 0.f)
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->GetUI(UIID::SPEECH_BUBBLE));
+		// 말풍선이 종료되면 다음 상태로 이동
+		if (nullptr != pBubble && pBubble->IsFinished())
 			ChangeIntroState(BOSS_STAGE_INTRO_STATE::EXCLAMTION);
+
 		break;
+	}
 	case BOSS_STAGE_INTRO_STATE::EXCLAMTION:
 		// 1초 지나면 다음 상태
-		if (m_dIntroTime >= 0.f)
+		if (m_dIntroTime >= 1.f)
 			ChangeIntroState(BOSS_STAGE_INTRO_STATE::DIALOG2);
 		break;
 	case BOSS_STAGE_INTRO_STATE::DIALOG2:
-		// 2초 지나면 다음 상태
-		if (m_dIntroTime >= 0.f)
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->GetUI(UIID::SPEECH_BUBBLE));
+		// 말풍선이 종료되면 다음 상태로 이동
+		if (nullptr != pBubble && pBubble->IsFinished())
 			ChangeIntroState(BOSS_STAGE_INTRO_STATE::DIALOG3);
 		break;
+	}
 	case BOSS_STAGE_INTRO_STATE::DIALOG3:
-		// 2초 지나면 다음 상태
-		if (m_dIntroTime >= 0.f)
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->GetUI(UIID::SPEECH_BUBBLE));
+		// 말풍선이 종료되면 다음 상태로 이동
+		if (nullptr != pBubble && pBubble->IsFinished())
 			ChangeIntroState(BOSS_STAGE_INTRO_STATE::ENTER_GOLEM);
 		break;
+	}
 	case BOSS_STAGE_INTRO_STATE::ENTER_GOLEM:
 	{
 		if (m_pErma->IsReturnFinish())
@@ -380,28 +391,42 @@ void CBossStage::UpdateFinalTime()
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::DIALOG1);
 		break;
 	case BOSS_STAGE_FINAL_STATE::DIALOG1:
-		// 2초 지나면 다음 상태
-		if (m_dFinalTime >= 0.f)
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->GetUI(UIID::SPEECH_BUBBLE));
+		// 말풍선이 종료되면 다음 상태로 이동
+		if (nullptr != pBubble && pBubble->IsFinished())
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::ENTER_GOLEM);
+
 		break;
+	}
 	case BOSS_STAGE_FINAL_STATE::ENTER_GOLEM:
 		if (m_pErma->IsReturnFinish())
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::DIALOG2);
 		break;
 	case BOSS_STAGE_FINAL_STATE::DIALOG2:
-		if (m_dFinalTime >= 0.f)
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->GetUI(UIID::SPEECH_BUBBLE));
+		// 말풍선이 종료되면 다음 상태로 이동
+		if (nullptr != pBubble && pBubble->IsFinished())
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::DIALOG3);
+
 		break;
+	}
 	case BOSS_STAGE_FINAL_STATE::DIALOG3:
-		if (m_dFinalTime >= 0.f)
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->GetUI(UIID::SPEECH_BUBBLE));
+		// 말풍선이 종료되면 다음 상태로 이동
+		if (nullptr != pBubble && pBubble->IsFinished())
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::BROKEN1);
+
 		break;
+	}
 	case BOSS_STAGE_FINAL_STATE::BROKEN1:
-		if (m_dFinalTime >= 1.f)
+		if (m_dFinalTime >= 1.5f)
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::BROKEN2);
 		break;
 	case BOSS_STAGE_FINAL_STATE::BROKEN2:
-		if (m_dFinalTime >= 1.f)
+		if (m_dFinalTime >= 1.5f)
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::DOWN);
 		break;
 	case BOSS_STAGE_FINAL_STATE::DOWN:
@@ -414,9 +439,14 @@ void CBossStage::UpdateFinalTime()
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::DIALOG4);
 		break;
 	case BOSS_STAGE_FINAL_STATE::DIALOG4:
-		if (m_dFinalTime >= 1.f)
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->GetUI(UIID::SPEECH_BUBBLE));
+		// 말풍선이 종료되면 다음 상태로 이동
+		if (nullptr != pBubble && pBubble->IsFinished())
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::FINISH);
+
 		break;
+	}
 	case BOSS_STAGE_FINAL_STATE::FINISH:
 		break;
 	}
@@ -435,7 +465,15 @@ void CBossStage::ChangeIntroState(BOSS_STAGE_INTRO_STATE eState)
 	case BOSS_STAGE_INTRO_STATE::CAMERA_MOVE:
 		break;
 	case BOSS_STAGE_INTRO_STATE::DIALOG1:
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->ShowUI(UIID::SPEECH_BUBBLE));
+		if (nullptr != pBubble && nullptr != m_pErma)
+		{
+			pBubble->SetText(m_pErma, L"에르마", L"암암암암암1", 3.0, 70.f);
+			pBubble->SetOffset(VEC{ 0.f, m_pErma->GetInfo().vSize.fY * -0.5f });
+		}
 		break;
+	}
 	case BOSS_STAGE_INTRO_STATE::EXCLAMTION:
 	{
 		if (nullptr == m_pErma)
@@ -450,9 +488,25 @@ void CBossStage::ChangeIntroState(BOSS_STAGE_INTRO_STATE eState)
 		break;
 	}
 	case BOSS_STAGE_INTRO_STATE::DIALOG2:
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->ShowUI(UIID::SPEECH_BUBBLE));
+		if (nullptr != pBubble && nullptr != m_pErma)
+		{
+			pBubble->SetText(m_pErma, L"에르마", L"암암암암암2", 3.0, 70.f);
+			pBubble->SetOffset(VEC{ 0.f, m_pErma->GetInfo().vSize.fY * -0.5f });
+		}
 		break;
+	}
 	case BOSS_STAGE_INTRO_STATE::DIALOG3:
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->ShowUI(UIID::SPEECH_BUBBLE));
+		if (nullptr != pBubble && nullptr != m_pErma)
+		{
+			pBubble->SetText(m_pErma, L"에르마", L"암암암암암3", 3.0, 70.f);
+			pBubble->SetOffset(VEC{ 0.f, m_pErma->GetInfo().vSize.fY * -0.5f });
+		}
 		break;
+	}
 	case BOSS_STAGE_INTRO_STATE::ENTER_GOLEM:
 	{
 		if (nullptr == m_pErma)
@@ -482,7 +536,15 @@ void CBossStage::ChangeFinalState(BOSS_STAGE_FINAL_STATE eState)
 		CSoundMgr::GetInstance()->StopAll();
 		break;
 	case BOSS_STAGE_FINAL_STATE::DIALOG1:
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->ShowUI(UIID::SPEECH_BUBBLE));
+		if (nullptr != pBubble && nullptr != m_pErma)
+		{
+			pBubble->SetText(m_pErma, L"에르마", L"암암암암암1", 3.0, 70.f);
+			pBubble->SetOffset(VEC{ 0.f, m_pErma->GetInfo().vSize.fY * -0.5f });
+		}
 		break;
+	}
 	case BOSS_STAGE_FINAL_STATE::ENTER_GOLEM:
 		if (nullptr == m_pErma)
 			return;
@@ -491,15 +553,37 @@ void CBossStage::ChangeFinalState(BOSS_STAGE_FINAL_STATE eState)
 		m_pErma->StartReturn();
 		break;
 	case BOSS_STAGE_FINAL_STATE::DIALOG2:
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->ShowUI(UIID::SPEECH_BUBBLE));
+		if (nullptr != pBubble && nullptr != m_pErma)
+		{
+			pBubble->SetText(m_pErma, L"에르마", L"암암암암암2", 3.0, 70.f);
+			pBubble->SetOffset(VEC{ 0.f, m_pErma->GetInfo().vSize.fY * -0.5f });
+		}
 		break;
+	}
 	case BOSS_STAGE_FINAL_STATE::DIALOG3:
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->ShowUI(UIID::SPEECH_BUBBLE));
+		if (nullptr != pBubble && nullptr != m_pErma)
+		{
+			pBubble->SetText(m_pErma, L"에르마", L"암암암암암3", 3.0, 70.f);
+			pBubble->SetOffset(VEC{ 0.f, m_pErma->GetInfo().vSize.fY * -0.5f });
+		}
 		break;
+	}
 	case BOSS_STAGE_FINAL_STATE::BROKEN1:
-		CEffectMgr::GetInstance()->CreateEffect(L"Golem_Core_Broken", m_pErma->GetInfo().vPoint, EFTMGR_FIXED | EFTMGR_SCROLL | EFTMGR_IMAGE, 0.f, 0.1f);
+	{
+		VEC vOffset{ -20.f, 0.f };
+		CEffectMgr::GetInstance()->CreateEffect(L"Golem_Core_Broken", m_pErma->GetInfo().vPoint + vOffset, EFTMGR_FIXED | EFTMGR_SCROLL | EFTMGR_IMAGE, 0.f, 0.1f);
 		break;
+	}
 	case BOSS_STAGE_FINAL_STATE::BROKEN2:
-		CEffectMgr::GetInstance()->CreateEffect(L"Golem_Core_Broken", m_pErma->GetInfo().vPoint, EFTMGR_FIXED | EFTMGR_SCROLL | EFTMGR_IMAGE, 0.f, 0.1f);
+	{
+		VEC vOffset{ -20.f, 0.f };
+		CEffectMgr::GetInstance()->CreateEffect(L"Golem_Core_Broken", m_pErma->GetInfo().vPoint + vOffset, EFTMGR_FIXED | EFTMGR_SCROLL | EFTMGR_IMAGE, 0.f, 0.1f);
 		break;
+	}
 	case BOSS_STAGE_FINAL_STATE::DOWN:
 		m_pGolem->RequestChange(GOLEM_STATE::DOWN);
 		break;
@@ -507,11 +591,19 @@ void CBossStage::ChangeFinalState(BOSS_STAGE_FINAL_STATE eState)
 		CCameraMgr::GetInstance()->MoveCamera(m_pErma->GetInfo().vPoint);
 		break;
 	case BOSS_STAGE_FINAL_STATE::DIALOG4:
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->ShowUI(UIID::SPEECH_BUBBLE));
+		if (nullptr != pBubble && nullptr != m_pErma)
+		{
+			m_pErma->RequestChange(ERMA_STATE::DOWN);
+			pBubble->SetText(m_pErma, L"에르마", L"암암암암암4", 3.0, 70.f);
+			pBubble->SetOffset(VEC{ 0.f, m_pErma->GetInfo().vSize.fY * -0.5f });
+		}
 		break;
+	}
 	case BOSS_STAGE_FINAL_STATE::FINISH:
 		CFade* pFade = static_cast<CFade*>(CUIMgr::GetInstance()->ShowUI(UIID::FADE));
 		pFade->SetFadeType(FADE_TYPE::RECTANGLE);
-		m_pErma->SetDead(true);
 
 		CSoundMgr::GetInstance()->PlaySound(L"DugeonLibrary_Field.wav", CHANNEL_GROUPID::BGM, 0.5f);
 		RequestChange(BOSS_STAGE_STATE::CLEAR);

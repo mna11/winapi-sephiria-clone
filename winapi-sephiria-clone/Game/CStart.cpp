@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CStart.h"
 
 #include "CButton.h"
@@ -36,7 +36,7 @@ void CStart::Initialize()
 	Init_LoadImg(L"../Resource/Image/Start/StartBgwLogo.png");
 	Init_CreateObj();
 
-	m_dHorayTime = 4.; // 4ÃÊ
+	m_dHorayTime = 4.; // 4ì´ˆ
 }
 
 void CStart::Update()
@@ -61,13 +61,13 @@ void CStart::Render(Graphics* pGraphics)
 {
 	HDC hBackDC = pGraphics->GetHDC();
 
-	// Ã³À½¿¡ µÎµÕÅ¹ÇÏ°í ÆÀ ÈÄ·¹ÀÌ ³ª¿À±â
-	// ±× ´ÙÀ½¿¡ ¾¾¾Ñ »Ñ¸®±â
-	// ±× ´ÙÀ½¿¡ ¶ç¿ì±â
-	// Á¾·á½Ã Á¾·á
-	// °ÔÀÓ ½ÃÀÛ½Ã Stage 0·Î ÀüÈ¯
+	// ì²˜ìŒì— ë‘ë‘¥íƒí•˜ê³  íŒ€ í›„ë ˆì´ ë‚˜ì˜¤ê¸°
+	// ê·¸ ë‹¤ìŒì— ì”¨ì•— ë¿Œë¦¬ê¸°
+	// ê·¸ ë‹¤ìŒì— ë„ìš°ê¸°
+	// ì¢…ë£Œì‹œ ì¢…ë£Œ
+	// ê²Œì„ ì‹œì‘ì‹œ Stage 0ë¡œ ì „í™˜
 	
-	// ¹è°æ °ËÁ¤»öÀ¸·Î Ä¥ÇÏ±â
+	// ë°°ê²½ ê²€ì •ìƒ‰ìœ¼ë¡œ ì¹ í•˜ê¸°
 	RECT rc{ 0, 0, WINCX, WINCY };
 	HBRUSH brush = CreateSolidBrush(RGB(0, 0, 0));
 	FillRect(hBackDC, &rc, brush);
@@ -92,7 +92,7 @@ void CStart::Render(Graphics* pGraphics)
 
 void CStart::Release()
 {
-	// ¹öÆ° »èÁ¦ ±ÔÄ¢
+	// ë²„íŠ¼ ì‚­ì œ ê·œì¹™
 	if (nullptr != m_pStartBtn)
 	{
 		m_pStartBtn->SetDead(true);
@@ -107,8 +107,8 @@ void CStart::Release()
 
 void CStart::Init_CreateObj()
 {
-	// ¸¶¿ì½º UI »óÅÂ·Î º¯°æ
-	// ¸¸¾à ¾ø´Ù¸é ¸¸µé¾îÁÜ
+	// ë§ˆìš°ìŠ¤ UI ìƒíƒœë¡œ ë³€ê²½
+	// ë§Œì•½ ì—†ë‹¤ë©´ ë§Œë“¤ì–´ì¤Œ
 	m_pMouse = CObjMgr::GetInstance()->GetMouse();
 	if (nullptr == m_pMouse)
 	{
@@ -118,14 +118,14 @@ void CStart::Init_CreateObj()
 	}
 	m_pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
 
-	// ¹öÆ° µî·Ï
+	// ë²„íŠ¼ ë“±ë¡
 	VEC vOffset{};
 	RectF{};
 	float fGap = 150.f;
 	VEC vCellSize{ 64.f, 20.f };
 	VEC vImgSize = vCellSize * 2.5f;
 
-	// ½ÃÀÛ ¹öÆ° À§Ä¡
+	// ì‹œì‘ ë²„íŠ¼ ìœ„ì¹˜
 	vOffset = { (WINCX - (vImgSize.fX * 2 + fGap)) * 0.5f + vImgSize.fX * 0.5f, 550.f };
 	RectF DestRect = { vOffset.fX - vImgSize.fX * 0.5f, vOffset.fY - vImgSize.fY * 0.5f, vImgSize.fX, vImgSize.fY };
 	m_pStartBtn = CAbstractFactory<CButton>::CreateButton(
@@ -136,7 +136,7 @@ void CStart::Init_CreateObj()
 		vCellSize
 	);
 
-	// ½ÃÀÛ ¹öÆ° À§Ä¡
+	// ì‹œì‘ ë²„íŠ¼ ìœ„ì¹˜
 	vOffset.fX += vImgSize.fX + fGap;
 	DestRect = { vOffset.fX - vImgSize.fX * 0.5f, vOffset.fY - vImgSize.fY * 0.5f, vImgSize.fX, vImgSize.fY };
 	m_pExitBtn = CAbstractFactory<CButton>::CreateButton(
@@ -147,10 +147,11 @@ void CStart::Init_CreateObj()
 		vCellSize
 	);
 
-	// ¹öÆ° ÇÔ¼ö µî·Ï
+	// ë²„íŠ¼ í•¨ìˆ˜ ë“±ë¡
 	m_pStartBtn->SetOnClick([this]() {
 		CSceneMgr::GetInstance()->RequestChange(SCENEID::LIB_LOADING);
 		m_pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
+		CSoundMgr::GetInstance()->PlaySound(L"StartClick.wav", CHANNEL_GROUPID::SFX, 1.f);
 	});
 
 	m_pExitBtn->SetOnClick([this]() {

@@ -14,6 +14,7 @@ enum class ERMA_STATE
     STONE,
     RETURN,
     LIGHT,
+    DOWN,
     END
 };
 

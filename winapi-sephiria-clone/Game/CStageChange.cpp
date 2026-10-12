@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CStageChange.h"
 
 #include "CButton.h"
@@ -12,6 +12,7 @@
 #include "CObjMgr.h"
 #include "CUIMgr.h"
 #include "CTimeMgr.h"
+#include "CSoundMgr.h"
 
 CStageChange::CStageChange()
 	: m_fHeight(WINCY * 2), m_iNodeNum(8), m_iCurStep(0), m_iCurNode(0), m_pPlayerIcon(nullptr)
@@ -19,8 +20,8 @@ CStageChange::CStageChange()
 	m_vecNode.reserve(m_iNodeNum);
 	ZeroMemory(&m_vWheelScroll, sizeof(VEC));
 
-	// °£¼± ¸ğµç °æ¿ìÀÇ ¼ö
-	// - ÀÌ Áß first°¡ ÇöÀç ³ëµåÀÎ °æ¿ì¸¸ È­¸é¿¡ Ç¥½ÃÇÒ °ÅÀÓ
+	// ê°„ì„  ëª¨ë“  ê²½ìš°ì˜ ìˆ˜
+	// - ì´ ì¤‘ firstê°€ í˜„ì¬ ë…¸ë“œì¸ ê²½ìš°ë§Œ í™”ë©´ì— í‘œì‹œí•  ê±°ì„
 	m_vecEdge = {
 		{0, 1}, {0, 2}, {0, 3},
 		{1, 4}, {1, 5}, {1, 6},
@@ -55,11 +56,11 @@ int CStageChange::Update()
 	if (!m_bView)
 		return NOEVENT;
 
-	// È­¸é¿¡ ³ª¿À´Â µ¿¾È ¾ÆÀÌÄÜÀÌ ºù±Ûºù±Û µ¹°ÔÇÏ±â
+	// í™”ë©´ì— ë‚˜ì˜¤ëŠ” ë™ì•ˆ ì•„ì´ì½˜ì´ ë¹™ê¸€ë¹™ê¸€ ëŒê²Œí•˜ê¸°
 	if (nullptr != m_pPlayerIcon)
 		m_pPlayerIcon->AddAngle(0.01f);
 
-	// ¸¶¿ì½º ½ºÅ©·Ñ°ª ¾÷µ¥ÀÌÆ®
+	// ë§ˆìš°ìŠ¤ ìŠ¤í¬ë¡¤ê°’ ì—…ë°ì´íŠ¸
 	UpdateScroll();
 
 	return NOEVENT;
@@ -76,26 +77,26 @@ void CStageChange::Render(Graphics* pGraphics)
 	if (!m_bView)
 		return;
 
-	// ¹è°æ ±×¸®±â
+	// ë°°ê²½ ê·¸ë¦¬ê¸°
 	Image* pImg{nullptr};
 	VEC vCellSize = {320.f, 180.f};
-	VEC vImgSize = { WINCX, vCellSize.fX * m_fUIScale }; // °¡·Î·Î´Â ²ËÂ÷°Ô, ¼¼·Î·Î´Â ½ºÄÉÀÏ¸¸Å­¸¸
+	VEC vImgSize = { WINCX, vCellSize.fX * m_fUIScale }; // ê°€ë¡œë¡œëŠ” ê½‰ì°¨ê²Œ, ì„¸ë¡œë¡œëŠ” ìŠ¤ì¼€ì¼ë§Œí¼ë§Œ
 	RectF DestRect{};
 
 	pImg = CImgMgr::GetInstance()->FindImg(L"StageChange_Background");
 	if (nullptr == pImg)
 		return;
 
-	// ³ôÀÌ°¡ ²ËÂ÷°Ô ±×¸®±â
-	// m_fHeight - vImgSize.fY·Î Çß´õ´Ï ³ôÀÌ°¡ ¾È¸Â¾Æ¼­ ´ú ±×¸®´õ¶ó ±×³É ³Ë³ËÇÏ°Ô ÇÔ
+	// ë†’ì´ê°€ ê½‰ì°¨ê²Œ ê·¸ë¦¬ê¸°
+	// m_fHeight - vImgSize.fYë¡œ í–ˆë”ë‹ˆ ë†’ì´ê°€ ì•ˆë§ì•„ì„œ ëœ ê·¸ë¦¬ë”ë¼ ê·¸ëƒ¥ ë„‰ë„‰í•˜ê²Œ í•¨
 	for (float y = 0.f; y < m_fHeight; y += vImgSize.fY)
 	{
-		// ÈÙ ½ºÅ©·Ñ ´õÇØÁÖ±â
+		// íœ  ìŠ¤í¬ë¡¤ ë”í•´ì£¼ê¸°
 		DestRect = { 0.f, y + m_vWheelScroll.fY, vImgSize.fX, vImgSize.fY };
 		pGraphics->DrawImage(pImg, DestRect, 0, 0, vCellSize.fX, vCellSize.fY, UnitPixel);
 	}
 
-	// °£¼± ±×¸®±â
+	// ê°„ì„  ê·¸ë¦¬ê¸°
 	pImg = CImgMgr::GetInstance()->FindImg(L"StageChange_Line");
 	if (nullptr == pImg)
 		return;
@@ -105,29 +106,29 @@ void CStageChange::Render(Graphics* pGraphics)
 
 	for (int iIdx = 0; iIdx < m_vecEdge.size(); ++iIdx)
 	{
-		// ÇöÀç ³ëµå¿Í °ü·ÃÀÌ ÀÖ´Â °£¼±¸¸ ±×¸²
+		// í˜„ì¬ ë…¸ë“œì™€ ê´€ë ¨ì´ ìˆëŠ” ê°„ì„ ë§Œ ê·¸ë¦¼
 		if (m_iCurNode != m_vecEdge[iIdx].first)
 			continue;
 
-		// A(ÇöÀç ÇÃ·¹ÀÌ¾î À§Ä¡)¿¡¼­ °¥ ¼ö ÀÖ´Â ³ëµå(B) »çÀÌÀÇ °Å¸®¿Í ¹æÇâÀ» ±¸ÇÔ
+		// A(í˜„ì¬ í”Œë ˆì´ì–´ ìœ„ì¹˜)ì—ì„œ ê°ˆ ìˆ˜ ìˆëŠ” ë…¸ë“œ(B) ì‚¬ì´ì˜ ê±°ë¦¬ì™€ ë°©í–¥ì„ êµ¬í•¨
 		VEC vA = m_vecNode[m_vecEdge[iIdx].first].pButton->GetInfo().vPoint;
 		VEC vB = m_vecNode[m_vecEdge[iIdx].second].pButton->GetInfo().vPoint;
 		float fDistance = (vB - vA).Norm();
 		VEC vDir = (vB - vA).Normalize();
 
-		// atan2f¸¦ ÇÏ°Ô µÇ¸é, xÃà¿¡¼­ ¹æÇâ º¤ÅÍ »çÀÌÀÇ ³¢ÀÎ°¢À» ±¸ÇØÁà¼­ ±× ¸¸Å­ È¸Àü½ÃÅ°¸é ¹æÇâÀ» °¡¸®Å´
+		// atan2fë¥¼ í•˜ê²Œ ë˜ë©´, xì¶•ì—ì„œ ë°©í–¥ ë²¡í„° ì‚¬ì´ì˜ ë¼ì¸ê°ì„ êµ¬í•´ì¤˜ì„œ ê·¸ ë§Œí¼ íšŒì „ì‹œí‚¤ë©´ ë°©í–¥ì„ ê°€ë¦¬í‚´
 		float fAngle = atan2f(vDir.fY, vDir.fX) * 180.f / PI;
 
-		// È¸ÀüÇÑ °æ¿ì°¡ ÀÖ¾î¼­ Á¤È®ÇÏÁö´Â ¾ÊÁö¸¸ ´ëÃæ ³ª»ÚÁö ¾Ê¾Æ¼­ ±×³É ÀÌ´ë·Î ÇÔ
+		// íšŒì „í•œ ê²½ìš°ê°€ ìˆì–´ì„œ ì •í™•í•˜ì§€ëŠ” ì•Šì§€ë§Œ ëŒ€ì¶© ë‚˜ì˜ì§€ ì•Šì•„ì„œ ê·¸ëƒ¥ ì´ëŒ€ë¡œ í•¨
 		float fGap = vImgSize.fX;
 
-		// ¿©±âµµ ¹è°æÃ³·³ °Å¸® »çÀÌ¿¡ ²Ë Â÷°Ô ±×¸²
+		// ì—¬ê¸°ë„ ë°°ê²½ì²˜ëŸ¼ ê±°ë¦¬ ì‚¬ì´ì— ê½‰ ì°¨ê²Œ ê·¸ë¦¼
 		for (float d = fGap; d < fDistance; d += fGap)
 		{
-			// ½ÃÀÛÁ¡ + ¹æÇâ º¤ÅÍ * °Å¸®
+			// ì‹œì‘ì  + ë°©í–¥ ë²¡í„° * ê±°ë¦¬
 			VEC vPoint = vA + vDir * d;
 
-			// ¾Æ±î ±¸ÇÑ °¢µµ¸¸Å­ ÁÂÇ¥°è È¸Àü
+			// ì•„ê¹Œ êµ¬í•œ ê°ë„ë§Œí¼ ì¢Œí‘œê³„ íšŒì „
 			Matrix matRot{};
 			matRot.RotateAt(fAngle, { vPoint.fX, vPoint.fY });
 			pGraphics->SetTransform(&matRot);
@@ -143,12 +144,12 @@ void CStageChange::Render(Graphics* pGraphics)
 		}
 	}
 
-	// ¾ÆÀÌÄÜÇÏ°í ¹öÆ°Àº CObjMgr°¡ ¾Ë¾Æ¼­ ±×·ÁÁÜ
+	// ì•„ì´ì½˜í•˜ê³  ë²„íŠ¼ì€ CObjMgrê°€ ì•Œì•„ì„œ ê·¸ë ¤ì¤Œ
 }
 
 void CStageChange::Release()
 {
-	// ¹öÆ° »èÁ¦ ¿¹Á¤
+	// ë²„íŠ¼ ì‚­ì œ ì˜ˆì •
 	for (auto& node : m_vecNode)
 	{
 		if (nullptr == node.pButton)
@@ -158,7 +159,7 @@ void CStageChange::Release()
 		node.pButton = nullptr;
 	}
 
-	// ¾ÆÀÌÄÜ »èÁ¦ ¿¹Á¤
+	// ì•„ì´ì½˜ ì‚­ì œ ì˜ˆì •
 	if (nullptr != m_pPlayerIcon)
 	{
 		m_pPlayerIcon->SetDead(true);
@@ -170,10 +171,10 @@ void CStageChange::Show()
 {
 	m_bView = true;
 
-	// ¾À ¸Å´ÏÀú¿¡¼­ ÇöÀç ¾î¶² ³ëµåÀÎÁö ¼¼ÆÃ
+	// ì”¬ ë§¤ë‹ˆì €ì—ì„œ í˜„ì¬ ì–´ë–¤ ë…¸ë“œì¸ì§€ ì„¸íŒ…
 	SetCurrentNode(CSceneMgr::GetInstance()->GetCurrentNodeID());
 
-	// ¹öÆ°, ¾ÆÀÌÄÜ º¸ÀÌ°Ô ÇÏ±â
+	// ë²„íŠ¼, ì•„ì´ì½˜ ë³´ì´ê²Œ í•˜ê¸°
 	for (auto& node : m_vecNode)
 	{
 		if (nullptr == node.pButton)
@@ -201,7 +202,7 @@ void CStageChange::Hide()
 {
 	m_bView = false;
 
-	// ¹öÆ°ÇÏ°í ¾ÆÀÌÄÜ ¼û±â±â
+	// ë²„íŠ¼í•˜ê³  ì•„ì´ì½˜ ìˆ¨ê¸°ê¸°
 	for (auto& node : m_vecNode)
 	{
 		if (nullptr == node.pButton)
@@ -220,7 +221,7 @@ void CStageChange::SetCurrentNode(int iNodeID)
 		if (node.iNodeID != iNodeID)
 			continue;
 
-		// ³ëµå, ´Ü°è, ¾ÆÀÌÄÜ ¼¼ÆÃ
+		// ë…¸ë“œ, ë‹¨ê³„, ì•„ì´ì½˜ ì„¸íŒ…
 		m_iCurNode = node.iNodeID;
 		m_iCurStep = node.iStep;
 
@@ -234,7 +235,7 @@ void CStageChange::SetCurrentNode(int iNodeID)
 
 void CStageChange::InitializeNode()
 {
-	// ¸¸¾à ³ëµå°¡ ÀÖ´Ù¸é ÀÏ´Ü ÃÊ±âÈ­
+	// ë§Œì•½ ë…¸ë“œê°€ ìˆë‹¤ë©´ ì¼ë‹¨ ì´ˆê¸°í™”
 	for (auto& node : m_vecNode)
 	{
 		if (nullptr == node.pButton)
@@ -245,7 +246,7 @@ void CStageChange::InitializeNode()
 	}
 	m_vecNode.clear();
 
-	// ³ëµå »ı¼ºÇØ¼­ ³Ö¾îÁÖ±â
+	// ë…¸ë“œ ìƒì„±í•´ì„œ ë„£ì–´ì£¼ê¸°
 	for (int i = 0; i < m_iNodeNum; ++i)
 	{
 		m_vecNode.push_back(CreateNode(i));
@@ -254,7 +255,7 @@ void CStageChange::InitializeNode()
 
 void CStageChange::InitializePlayerIcon()
 {
-	// ÇÃ·¹ÀÌ¾î ¾ÆÀÌÄÜ ¼¼ÆÃ
+	// í”Œë ˆì´ì–´ ì•„ì´ì½˜ ì„¸íŒ…
 	m_pPlayerIcon = static_cast<CStageChangePlayerIcon*>(CAbstractFactory<CStageChangePlayerIcon>::CreateObj());
 	m_pPlayerIcon->SetRenderLayer(0);
 	CObjMgr::GetInstance()->AddObject(OBJID::UI, m_pPlayerIcon);
@@ -262,19 +263,19 @@ void CStageChange::InitializePlayerIcon()
 
 void CStageChange::UpdateScroll()
 {
-	// ÈÙ ÇÑ¹ø ±¼¸®¸é WHEEL_DELTA¸¸Å­ ³ª¿È, ±×·¡¼­ ¸î¹ø ±¼·È³Ä?¸¦ ±¸ÇÒ·Á°í ³ª´«°Å
-	// ±×·¡¼­ ÇÑ¹ø ±¼¸±¶§ 60 ¸¸Å­ ÀÌµ¿ÇÏ°Ô ÇÒ·Á°í 60À¸·Î Á¤ÇÑ°Å
+	// íœ  í•œë²ˆ êµ´ë¦¬ë©´ WHEEL_DELTAë§Œí¼ ë‚˜ì˜´, ê·¸ë˜ì„œ ëª‡ë²ˆ êµ´ë ¸ëƒ?ë¥¼ êµ¬í• ë ¤ê³  ë‚˜ëˆˆê±°
+	// ê·¸ë˜ì„œ í•œë²ˆ êµ´ë¦´ë•Œ 60 ë§Œí¼ ì´ë™í•˜ê²Œ í• ë ¤ê³  60ìœ¼ë¡œ ì •í•œê±°
 	m_vWheelScroll.fY += (CKeyMgr::GetInstance()->GetWheelScroll() / WHEEL_DELTA) * 60.f;
 
-	// ¹è°æÀÇ ½ÃÀÛÁ¡ÀÌ ½ºÅ©·ÑÀÇ ÁÂÇ¥¶ó°í »ı°¢ÇÏ¸é ½±´õ¶ó
-	// ¹è°æÀÌ 0ºÎÅÍ ½ÃÀÛÇÏ´Âµ¥ + ¹æÇâÀ¸·Î °¡¸é ´ëÂü»çÀÓ ±×·¡¼­ Max´Â 0
-	// MinÀº m_fHeight°¡ ³ôÀÌ´Ï±ñ m_fHeight¿¡¼­ WINCY¸¦ »« ¸¸Å­ÀÇ À½¼öÀÓ
+	// ë°°ê²½ì˜ ì‹œì‘ì ì´ ìŠ¤í¬ë¡¤ì˜ ì¢Œí‘œë¼ê³  ìƒê°í•˜ë©´ ì‰½ë”ë¼
+	// ë°°ê²½ì´ 0ë¶€í„° ì‹œì‘í•˜ëŠ”ë° + ë°©í–¥ìœ¼ë¡œ ê°€ë©´ ëŒ€ì°¸ì‚¬ì„ ê·¸ë˜ì„œ MaxëŠ” 0
+	// Minì€ m_fHeightê°€ ë†’ì´ë‹ˆê¹ m_fHeightì—ì„œ WINCYë¥¼ ëº€ ë§Œí¼ì˜ ìŒìˆ˜ì„
 	float fMin = -max(0.f, m_fHeight - static_cast<float>(WINCY));
 	float fMax = 0.f;
-	// ½ºÅ©·ÑÀº min max clamp °Ë
+	// ìŠ¤í¬ë¡¤ì€ min max clamp ê²€
 	m_vWheelScroll.fY = clamp(m_vWheelScroll.fY, fMin, fMax);
 
-	// ¹öÆ°¿¡ ½ºÅ©·Ñ ¿ÀÇÁ¼Â °ªÀ» Àû¿ë½ÃÅ´
+	// ë²„íŠ¼ì— ìŠ¤í¬ë¡¤ ì˜¤í”„ì…‹ ê°’ì„ ì ìš©ì‹œí‚´
 	for (auto& node : m_vecNode)
 	{
 		if (node.pButton)
@@ -284,7 +285,7 @@ void CStageChange::UpdateScroll()
 
 void CStageChange::UpdateNode()
 {
-	// ÇöÀç ´Ü°è¿¡¼­ ´ÙÀ½ ´Ü°è¸¸ ¹öÆ° È°¼ºÈ­
+	// í˜„ì¬ ë‹¨ê³„ì—ì„œ ë‹¤ìŒ ë‹¨ê³„ë§Œ ë²„íŠ¼ í™œì„±í™”
 	for (auto& node : m_vecNode)
 	{
 		bool bSelectable = node.iStep == m_iCurStep + 1;
@@ -294,8 +295,8 @@ void CStageChange::UpdateNode()
 
 NODE_INFO CStageChange::CreateNode(int iID)
 {
-	// ³ëµå »ı¼º 
-	// ³ëµå ID, ½ºÅÜ, ¾î¶² ¾ÀÀ¸·Î ÀüÈ¯ÇÒ°ÇÁö, ¹öÆ° »ı¼º
+	// ë…¸ë“œ ìƒì„± 
+	// ë…¸ë“œ ID, ìŠ¤í…, ì–´ë–¤ ì”¬ìœ¼ë¡œ ì „í™˜í• ê±´ì§€, ë²„íŠ¼ ìƒì„±
 	NODE_INFO tNodeInfo{};
 
 	switch (iID)
@@ -326,11 +327,12 @@ NODE_INFO CStageChange::CreateNode(int iID)
 		break;
 	}
 
-	// ¹öÆ° Å¬¸¯ Äİ¹é ÇÔ¼ö µî·Ï
+	// ë²„íŠ¼ í´ë¦­ ì½œë°± í•¨ìˆ˜ ë“±ë¡
 	tNodeInfo.pButton->SetOnClick([tNodeInfo]() {
-		// ÇöÀç ¾À ¸Å´ÏÀúÀÇ ³ëµå¸¦ º¯°æÇÏ°í RequestChange(SCENEID)¸¦ È£ÃâÇÏ´Â ÇÔ¼ö
-		// - ¾À ¸Å´ÏÀúÀÇ ³ëµå´Â ÇöÀç ÇÃ·¹ÀÌ ÁßÀÎ ½ºÅ×ÀÌÁö ³ëµåÀÓ
+		// í˜„ì¬ ì”¬ ë§¤ë‹ˆì €ì˜ ë…¸ë“œë¥¼ ë³€ê²½í•˜ê³  RequestChange(SCENEID)ë¥¼ í˜¸ì¶œí•˜ëŠ” í•¨ìˆ˜
+		// - ì”¬ ë§¤ë‹ˆì €ì˜ ë…¸ë“œëŠ” í˜„ì¬ í”Œë ˆì´ ì¤‘ì¸ ìŠ¤í…Œì´ì§€ ë…¸ë“œì„
 		CSceneMgr::GetInstance()->RequestNodeChange(tNodeInfo.iNodeID, tNodeInfo.eSceneID);
+		CSoundMgr::GetInstance()->PlaySound(L"StageChangeSelectNode.wav", CHANNEL_GROUPID::SFX, 1.f);
 	});
 
 	return move(tNodeInfo);
@@ -344,9 +346,9 @@ CButton* CStageChange::CreateButton(int iID)
 	RectF DestRect{};
 	VEC vCenter{};
 
-	// ¹öÆ° À§Ä¡
-	// yÃà 0.2Â÷ÀÌ
-	// xÃà 0.25Â÷ÀÌ
+	// ë²„íŠ¼ ìœ„ì¹˜
+	// yì¶• 0.2ì°¨ì´
+	// xì¶• 0.25ì°¨ì´
 	switch (iID)
 	{
 	case 0:
@@ -389,7 +391,7 @@ CButton* CStageChange::CreateButton(int iID)
 	if (nullptr == pImg)
 		return nullptr;
 
-	// ¹öÆ° »ı¼º
+	// ë²„íŠ¼ ìƒì„±
 	VEC vCellSize{ static_cast<float>(pImg->GetWidth()) / 3.f, static_cast<float>(pImg->GetHeight()) };
 	VEC vDrawSize = vCellSize * PIXEL_SCALE * 0.8f;
 	DestRect = { vCenter.fX - vDrawSize.fX * 0.5f, vCenter.fY - vDrawSize.fY * 0.5f, vDrawSize.fX, vDrawSize.fY };

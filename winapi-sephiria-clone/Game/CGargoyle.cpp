@@ -175,8 +175,8 @@ void CGargoyle::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritic
 	{
 		m_eNextState = GARGOYLE_STATE::DOWN;
 
-		float fExp = 35.f * pObj->GetStat().fExperienceDrop;
-		float fLeaf = 500.f * pObj->GetStat().fLeafDrop;
+		float fExp = 20.f * pObj->GetStat().fExperienceDrop;
+		float fLeaf = 100.f * pObj->GetStat().fLeafDrop;
 
 		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX - m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::EXP, fExp));
 		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX + m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::LEAF, fLeaf));
