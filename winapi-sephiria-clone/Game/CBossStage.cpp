@@ -64,7 +64,8 @@ void CBossStage::LateUpdate()
 		HotKey();
 	}
 
-	HandleCollision();
+	HandleCollisionBattleRoom();
+	HandleCollisionStair();
 	EndBattle();
 }
 
@@ -176,7 +177,7 @@ void CBossStage::SpawnMonster(int iRoomIdx)
 {
 }
 
-void CBossStage::HandleCollision()
+void CBossStage::HandleCollisionBattleRoom()
 {
 	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer)
@@ -197,7 +198,7 @@ void CBossStage::HandleCollision()
 			// 만약 준비중인 방과 트리거가 충돌이 된다면
 			if (CCollisionMgr::CollisionRect(pPlayer->GetRect(), room.rcTrigger))
 			{
-				// 현재 방을 전투 상태로 변환
+				// 인트로 상태로 전환
 				StartBattleRoom(i);
 				RequestChange(BOSS_STAGE_STATE::INTRO);
 				break;
@@ -210,9 +211,10 @@ void CBossStage::HandleCollision()
 		if (CObjMgr::GetInstance()->ObjEmpty(OBJID::MONSTER))
 			ClearCurRoom();
 	}
+}
 
-
-	// 계단
+void CBossStage::HandleCollisionStair()
+{
 	if (CCollisionMgr::CollisionRect(CObjMgr::GetInstance()->GetPlayer()->GetRect(), m_rcStair) && KEY_DOWN('F'))
 	{
 		CSceneMgr::GetInstance()->RequestChange(SCENEID::END);

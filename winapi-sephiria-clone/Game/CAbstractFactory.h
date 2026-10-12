@@ -69,7 +69,7 @@ public:
 		return static_cast<CObj*>(pSwordOrShield);
 	}
 
-	static CObj* CreateBullet(VEC vPoint, const TCHAR* pFrameKey, float fAngle, float fSpeed, float fDamage, CObj* pOwner)
+	static CObj* CreateBullet(VEC vPoint, const TCHAR* pFrameKey, float fAngle, float fSpeed, float fDamage, double dAliveTime, CObj* pOwner)
 	{
 		CBullet* pObj = new T;
 		pObj->Initialize();
@@ -80,6 +80,7 @@ public:
 		pObj->SetSpeed(fSpeed);
 		pObj->SetOwner(pOwner);
 		pObj->SetDamage(fDamage);
+		pObj->SetAliveTime(dAliveTime);
 		return pObj;
 	}
 

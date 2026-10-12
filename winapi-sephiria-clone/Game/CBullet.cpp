@@ -7,7 +7,7 @@
 #include "CEffectMgr.h"
 
 CBullet::CBullet()
-	: m_fDamage(0.), m_pOwner(nullptr)
+	: m_fDamage(0.), m_pOwner(nullptr), m_dAliveTime(0.)
 {
 	ZeroMemory(&m_vCellSize, sizeof(VEC));
 	ZeroMemory(&m_vDir, sizeof(VEC));
@@ -26,10 +26,13 @@ void CBullet::Initialize()
 	m_eRender = RENDERID::GAMEOBJECT; 
 	m_iRenderLayer = 5;
 
+	m_dAliveTime = -1;
+
 	// 나중에 CObjMgr Init으로 옮기자
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Bullet/MagicBullet.png", L"MagicBullet");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Bullet/MagicBulletBig.png", L"MagicBulletBig");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Bullet/FireBullet.png", L"FireBullet");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Bullet/AirBullet.png", L"AirBullet");
 }
 
 int CBullet::Update()
@@ -41,6 +44,8 @@ int CBullet::Update()
 	}
 
 	m_vPrePoint = m_tInfo.vPoint;
+
+	UpdateTime();
 
 	Move();
 
@@ -66,7 +71,7 @@ void CBullet::Render(Graphics* pGraphics)
 		(int)m_tInfo.vSize.fX,
 		(int)m_tInfo.vSize.fY);
 #endif // _DEBUG
-
+	
 	Image* pImg = CImgMgr::GetInstance()->FindImg(m_pFrameKey);
 	if (nullptr == pImg)
 		return;
@@ -78,6 +83,12 @@ void CBullet::Render(Graphics* pGraphics)
 					vImgSize.fX,
 					vImgSize.fY };
 
+
+	float fDegree = m_fAngle * 180.f / PI;
+	Matrix matRot;
+	matRot.RotateAt(fDegree, { m_tInfo.vPoint.fX + vScroll.fX, m_tInfo.vPoint.fY + vScroll.fY });
+	pGraphics->SetTransform(&matRot); // DC 회전
+
 	pGraphics->DrawImage(
 		pImg, rcDest,
 		m_vCellSize.fX * m_tFrame.iStart,
@@ -86,10 +97,21 @@ void CBullet::Render(Graphics* pGraphics)
 		m_vCellSize.fY,
 		UnitPixel
 	);
+
+	pGraphics->ResetTransform();
 }
 
 void CBullet::Release()
 {
+}
+
+
+void CBullet::UpdateTime()
+{
+	m_dAliveTime -= DT;
+
+	if (m_dAliveTime <= 0)
+		m_bDead = true;
 }
 
 void CBullet::UpdateInfo()
@@ -109,6 +131,11 @@ void CBullet::UpdateInfo()
 		SetCellSize({ 10.f, 10.f });
 		SetFrame(0, 7, 0, 0.1);
 	}
+	else if (!lstrcmp(m_pFrameKey, L"AirBullet"))
+	{
+		SetCellSize({ 16.f, 6.f });
+		SetFrame(0, 3, 0, 0.1);
+	}
 }
 
 void CBullet::Move()
@@ -126,6 +153,10 @@ void CBullet::CreateDisapperEffect()
 	}
 	else if (!lstrcmp(m_pFrameKey, L"FireBullet"))
 	{
-		CEffectMgr::GetInstance()->CreateEffect(L"FireBullet_Disapper_Effect", m_tInfo.vPoint, EFTMGR_FIXED | EFTMGR_IMAGE | EFTMGR_SCROLL, 0.f, 0.03f);
+		CEffectMgr::GetInstance()->CreateEffect(L"FireBullet_Disapper_Effect", m_tInfo.vPoint, EFTMGR_FIXED | EFTMGR_IMAGE | EFTMGR_SCROLL, m_fAngle, 0.03f);
+	}
+	else if (!lstrcmp(m_pFrameKey, L"AirBullet"))
+	{
+		CEffectMgr::GetInstance()->CreateEffect(L"AirBullet_Disapper_Effect", m_tInfo.vPoint, EFTMGR_FIXED | EFTMGR_IMAGE | EFTMGR_SCROLL, m_fAngle, 0.05f);
 	}
 }

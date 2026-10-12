@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CStage.h"
 class CStage2 :
     public CStage
@@ -17,6 +17,5 @@ public:
 public:
     void InitializeRooms() override;
     void SpawnMonster(int iRoomIdx) override;
-    void HandleCollision() override;
 };
 

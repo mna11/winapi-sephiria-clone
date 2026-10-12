@@ -208,6 +208,7 @@
     <ClInclude Include="CStage.h" />
     <ClInclude Include="CStage1.h" />
     <ClInclude Include="CStage2.h" />
+    <ClInclude Include="CStage3.h" />
     <ClInclude Include="CStageChange.h" />
     <ClInclude Include="CStageChangePlayerIcon.h" />
     <ClInclude Include="CStageTest.h" />
@@ -303,6 +304,7 @@
     <ClCompile Include="CStage.cpp" />
     <ClCompile Include="CStage1.cpp" />
     <ClCompile Include="CStage2.cpp" />
+    <ClCompile Include="CStage3.cpp" />
     <ClCompile Include="CStageChange.cpp" />
     <ClCompile Include="CStageChangePlayerIcon.cpp" />
     <ClCompile Include="CStageTest.cpp" />

@@ -130,6 +130,12 @@ void CStage::HandleCollisionBattleRoom()
     }
 }
 
+void CStage::HandleCollisionStair()
+{
+    if (CCollisionMgr::CollisionRect(CObjMgr::GetInstance()->GetPlayer()->GetRect(), m_rcStair) && KEY_DOWN('F'))
+        CUIMgr::GetInstance()->ShowUI(UIID::STAGE_CHANGE);
+}
+
 void CStage::CreateBattleWallEffects()
 {
     auto& arrTiles = CTileMgr::GetInstance()->GetTiles();

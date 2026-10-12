@@ -91,9 +91,6 @@
     <Filter Include="01. Obj\03. Weapon\00. WeaponController">
       <UniqueIdentifier>{93d0bea1-2ae2-48e6-9494-4de31152151c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\05. Bullet">
-      <UniqueIdentifier>{262c9b9a-b25f-4ad1-8660-5443f6ec93c6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Obj\04. Effect">
       <UniqueIdentifier>{a87a83a9-bd56-4a17-9549-ad7a29e76cc6}</UniqueIdentifier>
     </Filter>
@@ -306,6 +303,9 @@
     </Filter>
     <Filter Include="04. Scene\05. End">
       <UniqueIdentifier>{0bd92a36-923c-48e6-b67a-c72ced0dbae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\05. Bullet">
+      <UniqueIdentifier>{262c9b9a-b25f-4ad1-8660-5443f6ec93c6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -594,6 +594,9 @@
     <ClInclude Include="CEnd.h">
       <Filter>04. Scene\05. End</Filter>
     </ClInclude>
+    <ClInclude Include="CStage3.h">
+      <Filter>04. Scene\01. Stage\03. Stage3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -865,6 +868,9 @@
     </ClCompile>
     <ClCompile Include="CEnd.cpp">
       <Filter>04. Scene\05. End</Filter>
+    </ClCompile>
+    <ClCompile Include="CStage3.cpp">
+      <Filter>04. Scene\01. Stage\03. Stage3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

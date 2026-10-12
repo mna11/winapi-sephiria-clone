@@ -13,7 +13,6 @@ public:
 public:
 	virtual void InitializeRooms()				PURE;
 	virtual void SpawnMonster(int iRoomIdx)		PURE;
-	virtual void HandleCollision()				PURE;
 	void StartBattleRoom(int iRoomIdx);
 	void ClearCurRoom();
 
@@ -25,7 +24,8 @@ public:
 	const int& GetBattleRoomIdx() const { return m_iCurBattleRoomIdx; }
 
 protected:
-	void HandleCollisionBattleRoom();
+	virtual void HandleCollisionBattleRoom();
+	virtual void HandleCollisionStair();	
 
 protected:
 	void CreateBattleWallEffects();
