@@ -21,6 +21,8 @@
 #include "CStageChange.h"
 #include "CFade.h"
 #include "CStat.h"
+#include "CLetterBox.h"
+#include "CSpeechBubble.h"
 
 CUIMgr* CUIMgr::m_pInstance = nullptr;
 
@@ -96,6 +98,9 @@ void CUIMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Stat/Stat_Base.png", L"Stat_Base");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Stat/Stat_String_Bg.png", L"Stat_String_Bg");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/KeywordUI.png", L"KeywordUI");
+
+
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/SpeechBubble/SpeechBubbleBase.png", L"SpeechBubble_Base");
 }
 
 CUI* CUIMgr::ShowUI(UIID eID)
@@ -267,6 +272,12 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		break;
 	case UIID::STAT:
 		pUI = CAbstractFactory<CStat>::CreateUI(m_pMouse);
+		break;
+	case UIID::LETTER_BOX:
+		pUI = CAbstractFactory<CLetterBox>::CreateUI(m_pMouse);
+		break;
+	case UIID::SPEECH_BUBBLE:
+		pUI = CAbstractFactory<CSpeechBubble>::CreateUI(m_pMouse);
 		break;
 	default:
 		break;

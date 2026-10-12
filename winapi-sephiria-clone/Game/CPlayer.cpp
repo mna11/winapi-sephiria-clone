@@ -64,7 +64,7 @@ void CPlayer::Initialize()
 		70,				// HP
 		70,			    // MAX HP
 
-		10,			    // 물리 공격력
+		100,			    // 물리 공격력
 		20,				// 불 공격력
 		20,				// 얼음 공격력
 		20,				// 번개 공격력
@@ -105,6 +105,8 @@ int CPlayer::Update()
 	if (m_bDead)
 		return DEAD;
 
+	// 이번 프레임 상태 결정
+	ApplyChange();
 	// Elapse 변수들 업데이트
 	UpdateTime();
 	// 이번 프레임 이동 전 위치 기억
@@ -112,8 +114,6 @@ int CPlayer::Update()
 
 	if (m_bPlayerBehaviorEnable)
 	{
-		// 이번 프레임 상태 결정
-		ApplyChange();
 		
 		// 무기 컨트롤러 업데이트
 		m_pWeaponController->Update();
@@ -277,6 +277,7 @@ void CPlayer::Dash()
 		{
 			--m_tStat.iDash;
 			m_fSpeed = m_fRunSpeed * 20.f;
+			m_bHit = true;	// Dash일때는 잠시 무적
 		}
 	}
 	else if (KEY_HOLD(VK_SPACE))

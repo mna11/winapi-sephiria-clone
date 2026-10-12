@@ -143,7 +143,10 @@
     <ClInclude Include="CArtifact.h" />
     <ClInclude Include="CBaba.h" />
     <ClInclude Include="CBasicInfo.h" />
-    <ClInclude Include="CBossErma.h" />
+    <ClInclude Include="CEnd.h" />
+    <ClInclude Include="CGolem.h" />
+    <ClInclude Include="CGolemHand.h" />
+    <ClInclude Include="CGolemHead.h" />
     <ClInclude Include="CBossHp.h" />
     <ClInclude Include="CBossStage.h" />
     <ClInclude Include="CBullet.h" />
@@ -154,14 +157,6 @@
     <ClInclude Include="CEffect.h" />
     <ClInclude Include="CEffectMgr.h" />
     <ClInclude Include="CErma.h" />
-    <ClInclude Include="CErmaBody.h" />
-    <ClInclude Include="CErmaHand.h" />
-    <ClInclude Include="CErmaHead.h" />
-    <ClInclude Include="CErmaLaser.h" />
-    <ClInclude Include="CErmaMissile.h" />
-    <ClInclude Include="CErmaPhase.h" />
-    <ClInclude Include="CErmaPhase1.h" />
-    <ClInclude Include="CErmaPhase2.h" />
     <ClInclude Include="CFade.h" />
     <ClInclude Include="CFluffy.h" />
     <ClInclude Include="CFontMgr.h" />
@@ -171,6 +166,7 @@
     <ClInclude Include="CForgeUI.h" />
     <ClInclude Include="CGargoyle.h" />
     <ClInclude Include="CGolemCow.h" />
+    <ClInclude Include="CGolemMissile.h" />
     <ClInclude Include="CImgMgr.h" />
     <ClInclude Include="CInventory.h" />
     <ClInclude Include="CInventorySlotUI.h" />
@@ -181,6 +177,7 @@
     <ClInclude Include="CItemSelectUI.h" />
     <ClInclude Include="CArtifactToolTip.h" />
     <ClInclude Include="CKeyMgr.h" />
+    <ClInclude Include="CLetterBox.h" />
     <ClInclude Include="CLevelUp.h" />
     <ClInclude Include="CLibLoading.h" />
     <ClInclude Include="CLine.h" />
@@ -207,8 +204,10 @@
     <ClInclude Include="CShopTable.h" />
     <ClInclude Include="CShopTableSlot.h" />
     <ClInclude Include="CSoundMgr.h" />
+    <ClInclude Include="CSpeechBubble.h" />
     <ClInclude Include="CStage.h" />
     <ClInclude Include="CStage1.h" />
+    <ClInclude Include="CStage2.h" />
     <ClInclude Include="CStageChange.h" />
     <ClInclude Include="CStageChangePlayerIcon.h" />
     <ClInclude Include="CStageTest.h" />
@@ -239,7 +238,10 @@
     <ClCompile Include="CArtifact.cpp" />
     <ClCompile Include="CBaba.cpp" />
     <ClCompile Include="CBasicInfo.cpp" />
-    <ClCompile Include="CBossErma.cpp" />
+    <ClCompile Include="CEnd.cpp" />
+    <ClCompile Include="CGolem.cpp" />
+    <ClCompile Include="CGolemHand.cpp" />
+    <ClCompile Include="CGolemHead.cpp" />
     <ClCompile Include="CBossHp.cpp" />
     <ClCompile Include="CBossStage.cpp" />
     <ClCompile Include="CBullet.cpp" />
@@ -250,14 +252,6 @@
     <ClCompile Include="CEffect.cpp" />
     <ClCompile Include="CEffectMgr.cpp" />
     <ClCompile Include="CErma.cpp" />
-    <ClCompile Include="CErmaBody.cpp" />
-    <ClCompile Include="CErmaHand.cpp" />
-    <ClCompile Include="CErmaHead.cpp" />
-    <ClCompile Include="CErmaLaser.cpp" />
-    <ClCompile Include="CErmaMissile.cpp" />
-    <ClCompile Include="CErmaPhase.cpp" />
-    <ClCompile Include="CErmaPhase1.cpp" />
-    <ClCompile Include="CErmaPhase2.cpp" />
     <ClCompile Include="CFade.cpp" />
     <ClCompile Include="CFluffy.cpp" />
     <ClCompile Include="CFontMgr.cpp" />
@@ -267,6 +261,7 @@
     <ClCompile Include="CForgeUI.cpp" />
     <ClCompile Include="CGargoyle.cpp" />
     <ClCompile Include="CGolemCow.cpp" />
+    <ClCompile Include="CGolemMissile.cpp" />
     <ClCompile Include="CImgMgr.cpp" />
     <ClCompile Include="CInventory.cpp" />
     <ClCompile Include="CInventorySlotUI.cpp" />
@@ -277,6 +272,7 @@
     <ClCompile Include="CItemSelectUI.cpp" />
     <ClCompile Include="CArtifactToolTip.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
+    <ClCompile Include="CLetterBox.cpp" />
     <ClCompile Include="CLevelUp.cpp" />
     <ClCompile Include="CLibLoading.cpp" />
     <ClCompile Include="CLine.cpp" />
@@ -303,8 +299,10 @@
     <ClCompile Include="CShopTable.cpp" />
     <ClCompile Include="CShopTableSlot.cpp" />
     <ClCompile Include="CSoundMgr.cpp" />
+    <ClCompile Include="CSpeechBubble.cpp" />
     <ClCompile Include="CStage.cpp" />
     <ClCompile Include="CStage1.cpp" />
+    <ClCompile Include="CStage2.cpp" />
     <ClCompile Include="CStageChange.cpp" />
     <ClCompile Include="CStageChangePlayerIcon.cpp" />
     <ClCompile Include="CStageTest.cpp" />

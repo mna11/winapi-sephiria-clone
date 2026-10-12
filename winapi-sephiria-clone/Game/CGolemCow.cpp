@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CGolemCow.h"
 
 #include "CAbstractFactory.h"
@@ -26,23 +26,23 @@ CGolemCow::~CGolemCow()
 
 void CGolemCow::Initialize()
 {
-	// ±âÃÊ Á¤º¸ ÃÊ±âÈ­
+	// ê¸°ì´ˆ ì •ë³´ ì´ˆê¸°í™”
 	m_tInfo = { WINCX >> 1, WINCY >> 1, 125.f, 125.f };
 	m_eRender = RENDERID::GAMEOBJECT;
 	m_iRenderLayer = 4;
 	m_fSpeed = 200.f;
 
-	// ½ºÇÁ¶óÀÌÆ® ½ÃÆ® Insert
+	// ìŠ¤í”„ë¼ì´íŠ¸ ì‹œíŠ¸ Insert
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Monster/GolemCow/Golem_Cow_LEFT.png", L"GolemCow_L");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Monster/GolemCow/Golem_Cow_RIGHT.png", L"GolemCow_R");
 
-	// ½ºÇÁ¶óÀÌÆ® ½ÃÆ® ¼±ÅÃ
+	// ìŠ¤í”„ë¼ì´íŠ¸ ì‹œíŠ¸ ì„ íƒ
 	m_pFrameKey = L"GolemCow_L";
 
-	// ½ºÅÈ ÃÊ±âÈ­
+	// ìŠ¤íƒ¯ ì´ˆê¸°í™”
 	m_tStat = { 200, 200, 30 };
 
-	// ½Ã°£ ÃÊ±âÈ­
+	// ì‹œê°„ ì´ˆê¸°í™”
 	m_dStateTime = 0.;
 	m_dSummonTime = 2.;
 	m_dDownTime = 1.;
@@ -80,14 +80,14 @@ void CGolemCow::Render(Graphics* pGraphics)
 	VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
 #ifdef _DEBUG
-	// ÇÇ°İ Ãæµ¹ ¹Ú½º ·»´õ¸µ
+	// í”¼ê²© ì¶©ëŒ ë°•ìŠ¤ ë Œë”ë§
 	SolidBrush WhiteBrush(Color(255, 255, 255, 255));
 	pGraphics->FillRectangle(&WhiteBrush, (int)(m_tRect.left + vScroll.fX),
 		(int)(m_tRect.top + vScroll.fY),
 		(int)m_tInfo.vSize.fX,
 		(int)m_tInfo.vSize.fY);
 
-	// °ø°İ Ãæµ¹ ¹Ú½º ·»´õ¸µ
+	// ê³µê²© ì¶©ëŒ ë°•ìŠ¤ ë Œë”ë§
 	SolidBrush BlackBrush(Color(255, 0, 0, 0));
 	for (int i = 0; i < toUType(GOLEM_COW_ATK_RECT::END); ++i)
 	{
@@ -135,7 +135,7 @@ void CGolemCow::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritic
 	if (m_eCurState == GOLEM_COW_STATE::DOWN || m_eCurState == GOLEM_COW_STATE::SUMMON)
 		return;
 
-	m_bHit = true;		// m_bHitÀº m_bHitÀÌ µÈÁö °æ°úÇÑ ½Ã°£ÀÌ iframeTimeÀ» ³ÑÀ¸¸é false°¡ µÈ´Ù.
+	m_bHit = true;		// m_bHitì€ m_bHitì´ ëœì§€ ê²½ê³¼í•œ ì‹œê°„ì´ iframeTimeì„ ë„˜ìœ¼ë©´ falseê°€ ëœë‹¤.
 
 	m_tStat.iHp -= iDamage;
 
@@ -144,7 +144,7 @@ void CGolemCow::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritic
 		m_eNextState = GOLEM_COW_STATE::DOWN;
 
 		float fExp = 40.f * pObj->GetStat().fExperienceDrop;
-		float fLeaf = 1000.f * pObj->GetStat().fLeafDrop;
+		float fLeaf = 200.f * pObj->GetStat().fLeafDrop;
 
 		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX - m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::EXP, fExp));
 		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX + m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::LEAF, fLeaf));
@@ -155,7 +155,7 @@ void CGolemCow::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritic
 	else
 		CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 255, 255 });
 
-	// »ç¿îµå
+	// ì‚¬ìš´ë“œ
 	switch (eHit)
 	{
 	case HIT_SOURCE::SLASH:
@@ -169,10 +169,10 @@ void CGolemCow::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritic
 
 void CGolemCow::OnWallCollision()
 {
-	// µ¹ÁøÇÏ´Ù°¡ º®¿¡ ºÎµúÈû
+	// ëŒì§„í•˜ë‹¤ê°€ ë²½ì— ë¶€ë”ªí˜
 	if (m_eCurState == GOLEM_COW_STATE::CHARGE)
 	{
-		// ¼Ò¸® + IDLE »óÅÂ ÀüÈ¯ + Ä«¸Ş¶ó Èçµé¸²
+		// ì†Œë¦¬ + IDLE ìƒíƒœ ì „í™˜ + ì¹´ë©”ë¼ í”ë“¤ë¦¼
 
 		RequestChange(GOLEM_COW_STATE::IDLE);
 		SetRect(&m_vecAtkRect[toUType(GOLEM_COW_ATK_RECT::CHARGE)], 0, 0, 0, 0);
@@ -185,7 +185,7 @@ void CGolemCow::UpdateTime()
 {
 	m_dStateTime += DT;
 
-	// ÇÇÇØ À¯È¿ ±Ù°Å¿ë ½Ã°£
+	// í”¼í•´ ìœ íš¨ ê·¼ê±°ìš© ì‹œê°„
 	if (m_bHit)
 	{
 		m_dHitElapseTime += DT;

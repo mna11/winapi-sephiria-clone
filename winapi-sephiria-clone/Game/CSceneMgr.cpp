@@ -8,10 +8,12 @@
 #include "CStage.h"
 #include "CObjMgr.h"
 #include "CStage1.h"
+#include "CStage2.h"
 #include "CLibLoading.h"
 #include "CBossStage.h"
 #include "CShop.h"
 #include "CForge.h"
+#include "CEnd.h"
 #include "CStageTest.h"
 
 #include "CShopTable.h"
@@ -67,8 +69,15 @@ void CSceneMgr::ApplyChange()
 		CUIMgr::GetInstance()->HideAllUI();
 
 		// 상점, 대장간과 관련된 씬 전환이 아니라면 이전 씬 삭제
-		if(!HandleChangeReturnScene())
+		if (!HandleChangeReturnScene())
+		{
 			SafeDelete(m_pScene);
+
+			CObjMgr* pObjMgr = CObjMgr::GetInstance();
+			pObjMgr->DeleteID(OBJID::FIELD_ITEM);
+			pObjMgr->DeleteID(OBJID::MONSTER);
+			pObjMgr->DeleteID(OBJID::NPC);
+		}
 
 		switch (m_eCurScene)
 		{
@@ -119,6 +128,18 @@ void CSceneMgr::ApplyChange()
 
 			break;
 		}
+		case SCENEID::STAGE2:
+		{
+
+			if (nullptr == m_pScene)
+				m_pScene = CAbstractFactory<CStage2>::CreateScene();
+			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
+			CUI* pFade = CUIMgr::GetInstance()->ShowUI(UIID::FADE);
+			if (nullptr != pFade)
+				static_cast<CFade*>(pFade)->SetFadeType(FADE_TYPE::RECTANGLE);
+
+			break;
+		}
 		case SCENEID::STAGE_TEST:
 		{
 
@@ -140,6 +161,12 @@ void CSceneMgr::ApplyChange()
 			if (nullptr != pFade)
 				static_cast<CFade*>(pFade)->SetFadeType(FADE_TYPE::RECTANGLE);
 
+			break;
+		}
+		case SCENEID::END:
+		{
+			if (nullptr == m_pScene)
+				m_pScene = CAbstractFactory<CEnd>::CreateScene();
 			break;
 		}
 		default:

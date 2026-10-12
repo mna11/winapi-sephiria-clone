@@ -20,6 +20,7 @@ CLibLoading::~CLibLoading()
 void CLibLoading::Initialize()
 {
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Stage/LibLoading.png",L"LibLoading");
+    Init_BGM(L"LibLoading.wav", 1.f);
 }
 
 void CLibLoading::Update()
@@ -38,7 +39,7 @@ void CLibLoading::Update()
 void CLibLoading::LateUpdate()
 {
     if (m_dNextStageTime <= 0)
-        CSceneMgr::GetInstance()->RequestChange(SCENEID::BOSS_STAGE);
+        CSceneMgr::GetInstance()->RequestChange(SCENEID::STAGE1);
 }
 
 void CLibLoading::Render(Graphics* pGraphics)
@@ -63,14 +64,17 @@ void CLibLoading::Render(Graphics* pGraphics)
         UnitPixel
     );
 
-    wstring wstr = L"Library";
-    wstring wstrDescription = L"뭐시기 저시기 도서관 설명";
+    wstring wstr = L"도서관";
+    wstring wstrDescription1 = L"당신은 초목지대의 거대한 유적에 들어갑니다. 도서관이라 불리는 이곳은 동물들이 탑에 정착하기 전부터 존재하던 곳입니다.";
+    wstring wstrDescription2 = L"비록 오랜 시간이 지났지만, 유적의 경비는 삼엄합니다.";
 
-    RectF rcTitleRect{0, 400, WINCX, 80};
-    RectF rcDescriptionRect{ 0, 500, WINCX, 100 };
-    CFontMgr::GetInstance()->DrawString(pGraphics, wstr, FONT_TYPE::NORMAL, rcTitleRect, Color{255, 126, 192, 192}, 32.f);
+    RectF rcTitleRect{0, 430, WINCX, 80};
+    RectF rcDescriptionRect1{ 300, 530, 700, 100 };
+    RectF rcDescriptionRect2{ 300, 630, 700, 100 };
 
-    CFontMgr::GetInstance()->DrawString(pGraphics, wstrDescription, FONT_TYPE::NORMAL, rcDescriptionRect, Color{255, 185, 187, 183}, 32.f);
+    CFontMgr::GetInstance()->DrawString(pGraphics, wstr, FONT_TYPE::NORMAL, rcTitleRect, Color{255, 126, 192, 192}, 48.f);
+    CFontMgr::GetInstance()->DrawString(pGraphics, wstrDescription1, FONT_TYPE::NORMAL, rcDescriptionRect1, Color{255, 185, 187, 183}, 22.f, StringAlignmentNear, StringAlignmentNear);
+    CFontMgr::GetInstance()->DrawString(pGraphics, wstrDescription2, FONT_TYPE::NORMAL, rcDescriptionRect2, Color{255, 185, 187, 183}, 22.f, StringAlignmentNear, StringAlignmentNear);
 }
 
 void CLibLoading::Release()
