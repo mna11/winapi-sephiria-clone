@@ -8,6 +8,8 @@
 #include "CGolemCow.h"
 #include "CSephirite.h"
 #include "CAnvil.h"
+#include "CKeyGuide.h"
+#include "CFishingUI.h"
 
 #include "CAbstractFactory.h"
 #include "CCollisionMgr.h"
@@ -125,7 +127,8 @@ void CStage3::Init_CreateObj()
 	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer)
 	{
-		CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(580.f, 1480.f));
+		//CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(580.f, 1480.f));
+		CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(4200.f, 1300.f));
 		CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
 	}
 	else
@@ -158,7 +161,7 @@ void CStage3::SpawnMonster(int iRoomIdx)
 	switch (iRoomIdx)
 	{
 	case 0:
-		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CFluffy>::CreateObj(2800.f, 1525.f));
+		//CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CFluffy>::CreateObj(2800.f, 1525.f));
 		break;
 	case 1:
 		break;
@@ -173,21 +176,35 @@ void CStage3::HandleCollisionFishingSpot()
 	if (nullptr == pPlayer)
 		return;
 
+	CKeyGuide* pKeyGuide = static_cast<CKeyGuide*>(CUIMgr::GetInstance()->GetUI(UIID::KEY_GUIDE));
+
 	if (CCollisionMgr::CollisionRect(pPlayer->GetRect(), m_rcFishing))
 	{
-		CUIMgr::GetInstance()->ShowUI(UIID::FISHING);
-
+		CFishingUI* pFishingUI = static_cast<CFishingUI*>(CUIMgr::GetInstance()->ShowUI(UIID::FISHING));
+		
 		if (m_iPlayerWeaponID == -1)
 		{
 			m_iPlayerWeaponID = pPlayer->GetWeaponController()->GetWeaponID();
 
 			if (m_iPlayerWeaponID != 3)
 				pPlayer->GetWeaponController()->RequestChange(3);
+
+			pKeyGuide->ShowGuide(pPlayer);
+			pKeyGuide->SetFollow(true);
+			pKeyGuide->SetKeyGuideInfo(VK_LBUTTON, L"낚시", { 0.f, -pPlayer->GetInfo().vSize.fY * 1.5f }, { 28.f, 10.f });
+		}
+
+		if (KEY_DOWN(VK_LBUTTON))
+		{
+			pKeyGuide->HideGuide(pPlayer);
+			pFishingUI->RequestChange(FISHING_STATE::PLAYING);
 		}
 	}
 	else
 	{
 		CUIMgr::GetInstance()->HideUI(UIID::FISHING);
+		pKeyGuide->HideGuide(pPlayer);
+
 		if (m_iPlayerWeaponID == -1)
 			return;
 

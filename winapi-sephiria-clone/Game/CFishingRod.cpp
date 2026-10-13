@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CFishingRod.h"
 
 #include "CImgMgr.h"
@@ -60,7 +60,7 @@ void CFishingRod::Render(Graphics* pGraphics)
 	matTransform.Scale(bFaceLeft ? -1.f : 1.f, 1.f, MatrixOrderAppend);
 	matTransform.Rotate(fTargetAngle, MatrixOrderAppend);
 	matTransform.Translate(vPivot.fX, vPivot.fY, MatrixOrderAppend);
-	pGraphics->SetTransform(&matTransform); // DC È¸Àü
+	pGraphics->SetTransform(&matTransform); // DC íšŒì „
 
 	VEC vCellSize = { 20.f, 20.f };
 	VEC vDrawSize = VEC{ 16.f, 16.f } * PIXEL_SCALE;
@@ -84,7 +84,7 @@ void CFishingRod::Release()
 
 void CFishingRod::UpdatePos()
 {
-	// ¸¶¿ì½º À§Ä¡¿¡ µû¸¥ À§Ä¡ ¼¼ÆÃ
+	// ë§ˆìš°ìŠ¤ ìœ„ì¹˜ì— ë”°ë¥¸ ìœ„ì¹˜ ì„¸íŒ…
 
 	if (nullptr == m_pTarget)
 		return;
@@ -93,16 +93,16 @@ void CFishingRod::UpdatePos()
 	VEC vTargetPoint = m_pTarget->GetInfo().vPoint;
 	VEC vOffset = m_tInfo.vSize * 0.2;
 
-	// 4»çºÐ¸é
+	// 4ì‚¬ë¶„ë©´
 	if (fTargetAngle >= 0.f && fTargetAngle < PI * 0.5f)
 		this->SetPos(static_cast<float>(m_pTarget->GetRect().right) - vOffset.fX * 1.25f, vTargetPoint.fY + vOffset.fY * 0.75f);
-	// 3»çºÐ¸é 
+	// 3ì‚¬ë¶„ë©´ 
 	else if (fTargetAngle >= PI * 0.5f && fTargetAngle < PI)
 		this->SetPos(static_cast<float>(m_pTarget->GetRect().left) + vOffset.fX * 1.25f, vTargetPoint.fY + vOffset.fY * 0.75f);
-	// 2»çºÐ¸é
+	// 2ì‚¬ë¶„ë©´
 	else if (fTargetAngle >= -PI && fTargetAngle < -PI * 0.5f)
 		this->SetPos(static_cast<float>(m_pTarget->GetRect().left) + vOffset.fX, vTargetPoint.fY + vOffset.fY);
-	// 1»çºÐ¸é
+	// 1ì‚¬ë¶„ë©´
 	else
 		this->SetPos(static_cast<float>(m_pTarget->GetRect().right) - vOffset.fX, vTargetPoint.fY + vOffset.fY);
 }

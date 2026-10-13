@@ -1,8 +1,13 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CFishingRodUI.h"
 
+#include "CPlayer.h"
+
+#include "CObjMgr.h"
 #include "CImgMgr.h"
+#include "CUIMgr.h"
 #include "CTimeMgr.h"
+#include "CKeyMgr.h"
 
 CFishingRodUI::CFishingRodUI()
     : CState<FISHING_ROD_STATE>(FISHING_ROD_STATE::END,FISHING_ROD_STATE::IDLE_OUT_WATER),
@@ -38,6 +43,7 @@ int CFishingRodUI::Update()
         return NOEVENT;
 
     ApplyChange();
+    UpdateTime();
 
     UpdateFrame();
     __super::UpdateRect();
@@ -61,8 +67,8 @@ void CFishingRodUI::Render(Graphics* pGraphics)
     RectF DestRect { m_tInfo.vPoint.fX, m_tInfo.vPoint.fY, m_tInfo.vSize.fX, m_tInfo.vSize.fY};
 
 #ifdef _DEBUG
-    SolidBrush blackBrush(Color(255, 255, 255, 255));
-    pGraphics->FillRectangle(&blackBrush, destRect);
+    SolidBrush WhiteBrush(Color(255, 255, 255, 255));
+    pGraphics->FillRectangle(&WhiteBrush, DestRect);
 #endif // _DEBUG
 
     pGraphics->DrawImage(
@@ -81,7 +87,7 @@ void CFishingRodUI::Release()
 
 void CFishingRodUI::Show()
 {
-    // ÀÌ¹Ì Ç¥½Ã ÁßÀÌ¸é ¾Ö´Ï¸ŞÀÌ¼ÇÀ» ´Ù½Ã ½ÃÀÛÇÏÁö ¾ÊÀ½
+    // ì´ë¯¸ í‘œì‹œ ì¤‘ì´ë©´ ì• ë‹ˆë©”ì´ì…˜ì„ ë‹¤ì‹œ ì‹œì‘í•˜ì§€ ì•ŠìŒ
     if (m_bView)
         return;
 
@@ -141,6 +147,23 @@ void CFishingRodUI::ApplyChange()
     }
 
     m_eCurState = m_eNextState;
+}
+
+void CFishingRodUI::UpdateTime()
+{
+    switch (m_eCurState)
+    {
+    case FISHING_ROD_STATE::PREPARE_CAST:
+        if (m_bAnimationFinished)
+            RequestChange(FISHING_ROD_STATE::CASTING);
+        break;
+    case FISHING_ROD_STATE::CASTING:
+        if (m_bAnimationFinished)
+            RequestChange(FISHING_ROD_STATE::IDLE_OUT_WATER);
+        break;
+    default:
+        break;
+    }
 }
 
 void CFishingRodUI::UpdateFrame()

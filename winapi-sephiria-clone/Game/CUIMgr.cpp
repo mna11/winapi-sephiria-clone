@@ -24,6 +24,7 @@
 #include "CLetterBox.h"
 #include "CSpeechBubble.h"
 #include "CFishingUI.h"
+#include "CKeyGuide.h"
 
 CUIMgr* CUIMgr::m_pInstance = nullptr;
 
@@ -105,6 +106,11 @@ void CUIMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/SpeechBubble/SpeechBubbleBase.png", L"SpeechBubble_Base");
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Rod/fishingRod.png", L"Fishing_Rod");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Playing/FishingBase.png", L"Fishing_Playing_Base");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Playing/FishingPanel.png", L"Fishing_Playing_Panel");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Playing/FishingCatchBar.png", L"Fishing_Playing_Net");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Playing/FishingFish_0.png", L"Fishing_Playing_Fish");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Playing/FishingProgressFill.png", L"Fishing_Playing_Progress_Fill");
 }
 
 CUI* CUIMgr::ShowUI(UIID eID)
@@ -285,6 +291,9 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		break; 
 	case UIID::FISHING:
 		pUI = CAbstractFactory<CFishingUI>::CreateUI(m_pMouse);
+		break;
+	case UIID::KEY_GUIDE:
+		pUI = CAbstractFactory<CKeyGuide>::CreateUI(m_pMouse);
 		break;
 	default:
 		break;

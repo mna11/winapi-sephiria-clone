@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CUI.h"
 #include "CState.h"
 
@@ -30,7 +30,9 @@ public:
     void Release() override;
 
 public:
+    void UpdateTime();
     void UpdateFrame() override;
+
 
 public:
     void Show() override;
