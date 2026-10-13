@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "CObj.h"
 
+class CKeyGuide;
+
 class CSephirite :
     public CObj
 {
@@ -26,5 +28,6 @@ private:
     bool m_bCol;
 
     ITEM_TYPE m_eItemType;
+    CKeyGuide* m_pKeyGuide;
 };
 

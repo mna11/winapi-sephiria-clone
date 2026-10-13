@@ -1,5 +1,8 @@
 ﻿#pragma once
 #include "CObj.h"
+
+class CKeyGuide;
+
 class CBaba :
     public CObj
 {
@@ -23,5 +26,7 @@ private:
 private:
     RECT m_tInteractRect;
     bool m_bCol;
+
+    CKeyGuide* m_pKeyGuide;
 };
 

@@ -147,7 +147,7 @@
     <ClInclude Include="CFishingUI.h" />
     <ClInclude Include="CFishingRod.h" />
     <ClInclude Include="CFishingRodUI.h" />
-    <ClInclude Include="CFishingRythmUI.h" />
+    <ClInclude Include="CFishingPlayingUI.h" />
     <ClInclude Include="CGolem.h" />
     <ClInclude Include="CGolemHand.h" />
     <ClInclude Include="CGolemHead.h" />
@@ -180,6 +180,7 @@
     <ClInclude Include="CItemSelectSlotUI.h" />
     <ClInclude Include="CItemSelectUI.h" />
     <ClInclude Include="CArtifactToolTip.h" />
+    <ClInclude Include="CKeyGuide.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CLetterBox.h" />
     <ClInclude Include="CLevelUp.h" />
@@ -247,7 +248,7 @@
     <ClCompile Include="CFishingUI.cpp" />
     <ClCompile Include="CFishingRod.cpp" />
     <ClCompile Include="CFishingRodUI.cpp" />
-    <ClCompile Include="CFishingRythmUI.cpp" />
+    <ClCompile Include="CFishingPlayingUI.cpp" />
     <ClCompile Include="CGolem.cpp" />
     <ClCompile Include="CGolemHand.cpp" />
     <ClCompile Include="CGolemHead.cpp" />
@@ -280,6 +281,7 @@
     <ClCompile Include="CItemSelectSlotUI.cpp" />
     <ClCompile Include="CItemSelectUI.cpp" />
     <ClCompile Include="CArtifactToolTip.cpp" />
+    <ClCompile Include="CKeyGuide.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLetterBox.cpp" />
     <ClCompile Include="CLevelUp.cpp" />

@@ -3,6 +3,7 @@
 
 #include "CPlayer.h"
 #include "CItemSelectUI.h"
+#include "CKeyGuide.h"
 
 #include "CCollisionMgr.h"
 #include "CKeyMgr.h"
@@ -46,9 +47,9 @@ int CSephirite::Update()
 	if (m_eItemType == ITEM_TYPE::END)
 		return DEAD;
 
-	HandleInteraction();
-
 	UpdateInteractRect();
+
+	HandleInteraction();
 
 	__super::UpdateRect();
 	__super::UpdateFrame();
@@ -93,51 +94,12 @@ void CSephirite::Render(Graphics* pGraphics)
 		vCellSize.fX * m_tFrame.iStart,
 		vCellSize.fY * m_tFrame.iMotion,
 		vCellSize.fX, vCellSize.fY, UnitPixel);
-
-
-	if (m_bCol)
-	{
-		// 안내 그리기
-		pImg = CImgMgr::GetInstance()->FindImg(L"KeyUI");
-
-		float fKeyImgWidth = 15.f * PIXEL_SCALE;
-		float fTextWidth = 10.f * PIXEL_SCALE;
-		float fGap = 3.f * PIXEL_SCALE;
-		float fAllWidth = fKeyImgWidth + fTextWidth + fGap;
-		float fHeight = 10.f * PIXEL_SCALE;
-
-		wstring strGet = L"줍기";
-		RectF rcGet = { m_tInfo.vPoint.fX - fAllWidth * 0.5f + vScroll.fX, m_tInfo.vPoint.fY - vImgSize.fY * 0.7f - fHeight + vScroll.fY,
-							fAllWidth, fHeight };
-		// rcGet 안에 포함되는 위치
-		RectF rcGetImg = rcGet;
-		rcGetImg.Width = fKeyImgWidth;
-
-	#ifdef _DEBUG
-		SolidBrush BlackBrush(Color(255, 0, 0, 0));
-		pGraphics->FillRectangle(&BlackBrush, rcGet);
-		SolidBrush WhiteBrush(Color(255, 255, 255, 255));
-		pGraphics->FillRectangle(&WhiteBrush, rcGetImg);
-	#endif // _DEBUG
-		vCellSize = { 13.f, 9.f };
-		pGraphics->DrawImage(
-			pImg, rcGetImg,
-			3 * vCellSize.fX,
-			3 * vCellSize.fY,
-			vCellSize.fX,
-			vCellSize.fY,
-			UnitPixel
-		);
-		RectF rcBgStr = rcGet;
-		rcBgStr.X += 2.f;
-		rcBgStr.Y += 2.f;
-		CFontMgr::GetInstance()->DrawString(pGraphics, strGet, FONT_TYPE::NORMAL, rcBgStr, Color{ 255, 0, 0, 0 }, 28.f, StringAlignmentFar);
-		CFontMgr::GetInstance()->DrawString(pGraphics, strGet, FONT_TYPE::NORMAL, rcGet, Color{ 255, 255, 255, 255 }, 28.f, StringAlignmentFar);
-	}
 }
 
 void CSephirite::Release()
 {
+	if (nullptr != m_pKeyGuide)
+		m_pKeyGuide->HideGuide(this);
 }
 
 void CSephirite::UpdateInteractRect()
@@ -153,18 +115,30 @@ void CSephirite::HandleInteraction()
 	if (nullptr == pPlayer)
 		return;
 
+	m_pKeyGuide = static_cast<CKeyGuide*>(CUIMgr::GetInstance()->GetUI(UIID::KEY_GUIDE));
+
 	if (CCollisionMgr::CollisionRect(pPlayer->GetRect(), m_tInteractRect))
 	{
+		if (!m_bCol)
+		{
+			m_pKeyGuide->ShowGuide(this);
+			m_pKeyGuide->SetKeyGuideInfo('F', L"줍기", { 0, -m_tInfo.vSize.fY }, { 28.f, 10.f });
+		}
+
+		m_bCol = true;
+
 		if (KEY_DOWN('F'))
 		{
+			m_pKeyGuide->HideGuide(this);
+			m_bCol = false;
 			CItemSelectUI* pItemSelectUI = static_cast<CItemSelectUI*>(CUIMgr::GetInstance()->ShowUI(UIID::ITEM_SELECT));
 			pItemSelectUI->SetItemType(m_eItemType);
 			m_bDead = true;
 		}
-		m_bCol = true;
 	}
 	else
 	{
+		m_pKeyGuide->HideGuide(this);
 		m_bCol = false;
 	}
 }

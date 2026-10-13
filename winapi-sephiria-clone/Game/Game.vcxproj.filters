@@ -316,7 +316,10 @@
     <Filter Include="01. Obj\06. UI\15. Fishing\00. FishingRodUI">
       <UniqueIdentifier>{93f120f2-f465-4d45-a0ea-f12adef2decb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\06. UI\15. Fishing\01. FishingRhythmUI">
+    <Filter Include="01. Obj\06. UI\16. KeyGuide">
+      <UniqueIdentifier>{4308a7ac-3398-4f8e-b585-f8964da57bcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\15. Fishing\01. FishingPlayingUI">
       <UniqueIdentifier>{debada62-2dde-416c-9868-92160d91c0cf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -618,8 +621,11 @@
     <ClInclude Include="CFishingRodUI.h">
       <Filter>01. Obj\06. UI\15. Fishing\00. FishingRodUI</Filter>
     </ClInclude>
-    <ClInclude Include="CFishingRythmUI.h">
-      <Filter>01. Obj\06. UI\15. Fishing\01. FishingRhythmUI</Filter>
+    <ClInclude Include="CFishingPlayingUI.h">
+      <Filter>01. Obj\06. UI\15. Fishing\01. FishingPlayingUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CKeyGuide.h">
+      <Filter>01. Obj\06. UI\16. KeyGuide</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -905,8 +911,11 @@
     <ClCompile Include="CFishingRodUI.cpp">
       <Filter>01. Obj\06. UI\15. Fishing\00. FishingRodUI</Filter>
     </ClCompile>
-    <ClCompile Include="CFishingRythmUI.cpp">
-      <Filter>01. Obj\06. UI\15. Fishing\01. FishingRhythmUI</Filter>
+    <ClCompile Include="CFishingPlayingUI.cpp">
+      <Filter>01. Obj\06. UI\15. Fishing\01. FishingPlayingUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CKeyGuide.cpp">
+      <Filter>01. Obj\06. UI\16. KeyGuide</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
