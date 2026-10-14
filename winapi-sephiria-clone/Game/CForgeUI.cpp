@@ -30,7 +30,7 @@ void CForgeUI::Initialize()
 {
 	m_tInfo = { WINCX >> 1, WINCY >> 1, 0.f, 0.f };
 	m_fUIScale = PIXEL_SCALE * 0.5f;
-	
+	m_vWheelScroll = { 0.f, 0.f };
 	m_eRender = RENDERID::UI;
 	m_iRenderLayer = 0;
 }

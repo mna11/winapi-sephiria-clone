@@ -216,7 +216,7 @@ bool CInventory::UsePotion()
 		ChangePotion(-1, true);	// 현재 인덱스 이후로 포션 찾음
 	}
 	VEC vOffset { 0.f, m_pOwner->GetInfo().vSize.fY * -0.5f };
-	CEffectMgr::GetInstance()->CreateEffect(L"Potion_Use", m_pOwner->GetInfo().vPoint + vOffset, 0, 0.f, 0.1);
+	CEffectMgr::GetInstance()->CreateEffect(L"Potion_Use", m_pOwner->GetInfo().vPoint + vOffset, EFTMGR_FOLLOW | EFTMGR_IMAGE | EFTMGR_SCROLL, 0.f, 0.1, m_pOwner);
 	return true;
 }
 

@@ -144,7 +144,7 @@ void CGolemCow::Release()
 
 void CGolemCow::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-	if (m_bDead)
+	if (m_bDead || m_tStat.iHp <= 0)
 		return;
 
 	if (m_bHit && eHit != HIT_SOURCE::BULLET)
@@ -161,11 +161,12 @@ void CGolemCow::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritic
 	{
 		m_eNextState = GOLEM_COW_STATE::DOWN;
 
-		float fExp = 40.f * pObj->GetStat().fExperienceDrop;
-		float fLeaf = 200.f * pObj->GetStat().fLeafDrop;
+		float fExp = 15.f * pObj->GetStat().fExperienceDrop;
+		float fLeaf = 100.f * pObj->GetStat().fLeafDrop;
 
 		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX - m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::EXP, fExp));
 		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX + m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::LEAF, fLeaf));
+		static_cast<CPlayer*>(pObj)->AddKill(1);
 	}
 
 	if (bCritical)

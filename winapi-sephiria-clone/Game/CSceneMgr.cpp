@@ -64,6 +64,10 @@ void CSceneMgr::Release()
 
 void CSceneMgr::ApplyChange()
 {
+	CMouse* pMouse = CObjMgr::GetInstance()->GetMouse();
+	if (nullptr == pMouse)
+		return;
+
 	if (m_ePreScene != m_eCurScene || m_iRequestNodeID != -1)
 	{
 
@@ -86,11 +90,18 @@ void CSceneMgr::ApplyChange()
 		{
 		case SCENEID::START:
 		{
+			CObjMgr* pObjMgr = CObjMgr::GetInstance();
+			pObjMgr->DeleteID(OBJID::PLAYER);
+			pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
+
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CStart>::CreateScene();
 
-			if (m_iCurrentNodeID == 1)
+			if (m_iCurrentNodeID == 1 || m_iRequestNodeID == 1)
 				static_cast<CStart*>(m_pScene)->RequestChange(START_SCENE_STATE::ANIMATION);
+
+			m_iCurrentNodeID = 0;
+			m_iRequestNodeID = -1;
 			break;
 		}
 		case SCENEID::LIB_LOADING:
@@ -103,6 +114,7 @@ void CSceneMgr::ApplyChange()
 		{
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CShop>::CreateScene();
+			pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
 			CUIMgr::GetInstance()->ShowUI(UIID::INVENTORY);
 			CUIMgr::GetInstance()->ShowUI(UIID::SHOP_TABLE);
 			static_cast<CShopTable*>(CUIMgr::GetInstance()->GetUI(UIID::SHOP_TABLE))->SetSellingItem(m_eSaveScene);
@@ -112,6 +124,7 @@ void CSceneMgr::ApplyChange()
 		{
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CForge>::CreateScene();
+			pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
 			CUIMgr::GetInstance()->ShowUI(UIID::FORGE);
 			break;
 		}
@@ -127,6 +140,7 @@ void CSceneMgr::ApplyChange()
 
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CStage1>::CreateScene();
+			pMouse->RequestChange(MOUSE_STATE::COMBAT);
 			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
 			CUI* pFade = CUIMgr::GetInstance()->ShowUI(UIID::FADE);
 			if (nullptr != pFade)
@@ -139,6 +153,7 @@ void CSceneMgr::ApplyChange()
 
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CStage2>::CreateScene();
+			pMouse->RequestChange(MOUSE_STATE::COMBAT);
 			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
 			CUI* pFade = CUIMgr::GetInstance()->ShowUI(UIID::FADE);
 			if (nullptr != pFade)
@@ -151,6 +166,7 @@ void CSceneMgr::ApplyChange()
 
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CStage3>::CreateScene();
+			pMouse->RequestChange(MOUSE_STATE::COMBAT);
 			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
 			CUI* pFade = CUIMgr::GetInstance()->ShowUI(UIID::FADE);
 			if (nullptr != pFade)
@@ -163,6 +179,7 @@ void CSceneMgr::ApplyChange()
 
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CStageTest>::CreateScene();
+			pMouse->RequestChange(MOUSE_STATE::COMBAT);
 			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
 			CUI* pFade = CUIMgr::GetInstance()->ShowUI(UIID::FADE);
 			if (nullptr != pFade)
@@ -173,6 +190,7 @@ void CSceneMgr::ApplyChange()
 		{
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CBossStage>::CreateScene();
+			pMouse->RequestChange(MOUSE_STATE::COMBAT);
 			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
 
 			CUI* pFade = CUIMgr::GetInstance()->ShowUI(UIID::FADE);
@@ -191,6 +209,7 @@ void CSceneMgr::ApplyChange()
 		{
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CScoreBoard>::CreateScene();
+			pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
 			break;
 		}
 		default:
