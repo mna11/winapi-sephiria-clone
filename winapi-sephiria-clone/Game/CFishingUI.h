@@ -41,6 +41,9 @@ public:
     void ApplyChange() override;
 
 private:
+    void InitializeData();
+
+private:
     CPlayer*            m_pPlayer;      // 게임 플레이어
     CFishingRodUI*      m_pRodUI;       // 낚시대 UI
     CFishingPlayingUI*  m_pPlayingUI;   // 게임 플레이 UI
@@ -51,4 +54,12 @@ private:
 
     double m_dNotColElapseTime; // NotColTime
     double m_dNotColJudTime;    // NotCol판단
+
+    int    m_iPotionID;         // 낚은 포션류
+    VEC    m_vPotionPoint;      // 포션 위치
+    float  m_fPotionSpeed;      // 포션 속도
+    float  m_fPotionAngle;      // 포션 각도
+
+    double m_dCaughtElapseTime; // 잡은 뒤 시간
+    double m_dCaughtMaxTime;    // 잡은 뒤 다시 READY 상태로 돌아가는 시간
 };

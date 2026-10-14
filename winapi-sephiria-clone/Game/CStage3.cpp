@@ -188,16 +188,11 @@ void CStage3::HandleCollisionFishingSpot()
 
 			if (m_iPlayerWeaponID != 3)
 				pPlayer->GetWeaponController()->RequestChange(3);
-
-			pKeyGuide->ShowGuide(pPlayer);
-			pKeyGuide->SetFollow(true);
-			pKeyGuide->SetKeyGuideInfo(VK_LBUTTON, L"낚시", { 0.f, -pPlayer->GetInfo().vSize.fY * 1.5f }, { 28.f, 10.f });
 		}
 	}
 	else
 	{
 		CUIMgr::GetInstance()->HideUI(UIID::FISHING);
-		pKeyGuide->HideGuide(pPlayer);
 
 		if (m_iPlayerWeaponID == -1)
 			return;

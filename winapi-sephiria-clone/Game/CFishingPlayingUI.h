@@ -38,6 +38,9 @@ private:
     void HandleCollision();
 
 private:
+    void InitializeData();
+
+private:
     float       m_fFishSpeed; // 물고기 속도 
     float       m_fNetSpeed;  // 네트 속도
 
@@ -55,6 +58,6 @@ private:
 
     ImageAttributes m_imgAttrAlpha;             // Panel 반투명
 
-    bool        m_bIsCol;                         // Fish와 Net이 충돌하고 있는지 여부
+    bool        m_bIsCol;                       // Fish와 Net이 충돌하고 있는지 여부
 };
 

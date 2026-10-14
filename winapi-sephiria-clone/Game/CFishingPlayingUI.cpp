@@ -211,9 +211,7 @@ void CFishingPlayingUI::Show()
 
 	m_bView = true;
 	
-	m_vFish = { 0.f, 0.f };
-	m_vNet = { 0.f, 0.f };
-	m_fCatchGauge = 0.f;
+	InitializeData();
 }
 
 void CFishingPlayingUI::Hide()
@@ -223,9 +221,23 @@ void CFishingPlayingUI::Hide()
 		return;
 
 	m_bView = false;
+}
+
+void CFishingPlayingUI::InitializeData()
+{
 	m_vFish = { 0.f, 0.f };
 	m_vNet = { 0.f, 0.f };
 	m_fCatchGauge = 0.f;
+
+	m_fFishSpeed = 0.f;
+	m_fNetSpeed = 0.f;
+
+	m_dFishChangeMoveElapseTime = 0.;
+	m_bFishChangeMove = true;
+
+	m_bIsCol = false;
+
+	UpdateRect();
 }
 
 void CFishingPlayingUI::UpdateTime()
@@ -274,16 +286,16 @@ void CFishingPlayingUI::MoveFish()
 void CFishingPlayingUI::MoveNet()
 {
 	// 가속도
-	float fAccel = 5.f;
+	float fAccel = 300.f;
 
 	float fRectHeight = m_rcNet.bottom - m_rcNet.top;
 	float fMinY = -143.f * m_fUIScale + fRectHeight * 0.5f;	// 가장 위 
 	float fMaxY = -fRectHeight * 0.5f;						// 가장 아래
 
 	if (KEY_DOWN(VK_LBUTTON) || KEY_HOLD(VK_LBUTTON))
-		m_fNetSpeed -= fAccel;
+		m_fNetSpeed -= fAccel * DT;
 	else
-		m_fNetSpeed += fAccel;
+		m_fNetSpeed += fAccel * DT;
 
 	m_fNetSpeed = clamp(m_fNetSpeed, -100.f, 100.f);
 
