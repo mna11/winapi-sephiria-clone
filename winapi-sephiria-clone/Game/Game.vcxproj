@@ -210,6 +210,7 @@
     <ClInclude Include="CReturningGuardianSword.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneMgr.h" />
+    <ClInclude Include="CScoreBoard.h" />
     <ClInclude Include="CSephirite.h" />
     <ClInclude Include="CShield.h" />
     <ClInclude Include="CShop.h" />
@@ -319,6 +320,7 @@
     <ClCompile Include="CReturningGuardianSword.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneMgr.cpp" />
+    <ClCompile Include="CScoreBoard.cpp" />
     <ClCompile Include="CSephirite.cpp" />
     <ClCompile Include="CShield.cpp" />
     <ClCompile Include="CShop.cpp" />

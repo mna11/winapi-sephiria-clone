@@ -346,6 +346,9 @@
     <Filter Include="01. Obj\05. Bullet\00. PenetrationBullet">
       <UniqueIdentifier>{21e74517-9e1e-4d9c-ab41-04883a051d6e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Scene\06. ScoreBoard">
+      <UniqueIdentifier>{c7d17d6c-0eb1-4d18-aa36-85567f3af788}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -675,6 +678,9 @@
     <ClInclude Include="CPenetrationBullet.h">
       <Filter>01. Obj\05. Bullet\00. PenetrationBullet</Filter>
     </ClInclude>
+    <ClInclude Include="CScoreBoard.h">
+      <Filter>04. Scene\06. ScoreBoard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -988,6 +994,9 @@
     </ClCompile>
     <ClCompile Include="CPenetrationBullet.cpp">
       <Filter>01. Obj\05. Bullet\00. PenetrationBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CScoreBoard.cpp">
+      <Filter>04. Scene\06. ScoreBoard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
