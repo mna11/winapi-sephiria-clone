@@ -2,6 +2,8 @@
 #include "CBasicInfo.h"
 
 #include "CPlayer.h"
+#include "CInventory.h"
+#include "CItem.h"
 
 #include "CImgMgr.h"
 #include "CObjMgr.h"
@@ -98,6 +100,16 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	if (nullptr == pDiceImg)
 		return;
 
+	// 포션 슬롯 이미지 가져오기
+	Image* pPotionSlotImg = CImgMgr::GetInstance()->FindImg(L"Potion_Slot");
+	if (nullptr == pPotionSlotImg)
+		return;
+
+	// 키 UI 이미지 가져오기
+	Image* pKeyImg = CImgMgr::GetInstance()->FindImg(L"KeyUI");
+	if (nullptr == pKeyImg)
+		return;
+
 	///////////////////////////////////// 본격적인 출력 전 설정 (출력? 렌더?)
 
 	// 픽셀 갭 
@@ -112,7 +124,6 @@ void CBasicInfo::Render(Graphics* pGraphics)
 	// 대시 사이즈 
 	VEC vDashCellSize = { 11.f, 9.f };
 	VEC vDashSize = vDashCellSize * m_fUIScale * 0.6; // 대시만 조금 더 작게 함
-
 
 	// 띄울 위치
 	VEC vStartPoint = m_tInfo.vPoint;
@@ -195,6 +206,55 @@ void CBasicInfo::Render(Graphics* pGraphics)
 		}
 	}
 
+	// 포션 슬롯 그리기
+	vStartPoint.fX += iGap * 1.5f + vDashSize.fX * 0.5f;
+	vStartPoint.fY += vDashSize.fY + 5.f * iGap;
+
+	VEC vCellSize = { static_cast<float>(pPotionSlotImg->GetWidth()), static_cast<float>(pPotionSlotImg->GetHeight()) };
+	VEC vImgSize = vCellSize * m_fUIScale * 0.6f;
+	rcDest = { vStartPoint.fX - vImgSize.fX * 0.5f, vStartPoint.fY - vImgSize.fY * 0.5f, vImgSize.fX, vImgSize.fY };
+	pGraphics->DrawImage(
+		pPotionSlotImg, rcDest,
+		0, 0, vCellSize.fX, vCellSize.fY,
+		UnitPixel
+	);
+
+	// 세팅된 포션 그리기
+	int iPotionSlotIdx = pPlayer->GetInventory()->GetUsePotionSlot();
+	if (-1 != iPotionSlotIdx)
+	{
+		CItem* pPotion = pPlayer->GetInventory()->GetItem(iPotionSlotIdx);
+		if (nullptr == pPotion)
+			return;
+
+		const ITEM_INFO pItemInfo = pPotion->GetItemInfo();
+		Image* pImg = CImgMgr::GetInstance()->FindImg(pItemInfo.strImg.c_str());
+		if (nullptr == pImg)
+			return; 
+
+		VEC vCellSize = { static_cast<float>(pImg->GetWidth()), static_cast<float>(pImg->GetHeight()) };
+		VEC vImgSize = vCellSize * m_fUIScale * 0.4f;
+		RectF rcDest = { vStartPoint.fX - vImgSize.fX * 0.5f, vStartPoint.fY - vImgSize.fY * 0.5f, vImgSize.fX, vImgSize.fY };
+		pGraphics->DrawImage(
+			pImg, rcDest,
+			0, 0, vCellSize.fX, vCellSize.fY,
+			UnitPixel
+		);
+	}
+
+	// R 키 입력 그리기
+	vStartPoint.fX -= vImgSize.fX * 0.4f;
+	vStartPoint.fY += vImgSize.fY * 0.4f;
+
+	vCellSize = { 13.f, 9.f };
+	vImgSize = vCellSize * m_fUIScale * 0.5f;
+	rcDest = { vStartPoint.fX - vImgSize.fX * 0.5f, vStartPoint.fY - vImgSize.fY * 0.5f, vImgSize.fX, vImgSize.fY };
+	pGraphics->DrawImage(
+		pKeyImg, rcDest,
+		3 * vCellSize.fX, 2 * vCellSize.fY, vCellSize.fX, vCellSize.fY,
+		UnitPixel
+	);
+
 	// Exp 그리기
 	float fExpRatio = (float)pPlayer->GetExp() / (float)pPlayer->GetMaxExp();
 	rcDest = { 0, WINCY - vExpSize.fY,
@@ -205,14 +265,14 @@ void CBasicInfo::Render(Graphics* pGraphics)
 
 	// Exp 프레임 그리기
 	rcDest = { 0, WINCY - vExpBarFrameSize.fY, vExpBarFrameSize.fX, vExpBarFrameSize.fY };
-	VEC vCellSize{ 660.f, 2.f };
+	vCellSize = { 660.f, 2.f };
 	pGraphics->DrawImage(
 		pExpFrameImg, rcDest, 0, 0, vCellSize.fX, vCellSize.fY, UnitPixel
 	);
 
 	// 리프 그리기
 	vCellSize = { 11.f, 12.f };
-	VEC vImgSize = vCellSize * m_fUIScale * 0.5f;
+	vImgSize = vCellSize * m_fUIScale * 0.5f;
 	rcDest = { WINCX - 50.f, WINCY - 50.f,
 			   vImgSize.fX, vImgSize.fY };
 

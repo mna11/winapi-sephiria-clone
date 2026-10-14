@@ -67,6 +67,7 @@ void CStage::HotKey()
         CUIMgr::GetInstance()->ToggleUI(UIID::INVENTORY);
         CUIMgr::GetInstance()->HideUI(UIID::ARTIFACT_TOOLTIP);
         CUIMgr::GetInstance()->HideUI(UIID::STONE_TABLET_TOOLTIP);
+        CUIMgr::GetInstance()->HideUI(UIID::POTION_TOOLTIP);
 
         // 사운드
         if (CUIMgr::GetInstance()->GetUI(UIID::INVENTORY)->GetView())
@@ -79,6 +80,18 @@ void CStage::HotKey()
     if (KEY_DOWN('C'))
     {
         CUIMgr::GetInstance()->ToggleUI(UIID::STAT);
+    }
+
+    if (KEY_DOWN('R'))
+    {
+        if (pPlayer->GetInventory()->UsePotion())
+            ; // 나중에 사운드 추가
+    }
+
+    float fWheelScroll = CKeyMgr::GetInstance()->GetWheelScroll() / WHEEL_DELTA;
+    if (fWheelScroll != 0)
+    {
+        pPlayer->GetInventory()->ChangePotion(fWheelScroll);
     }
 
 

@@ -8,6 +8,7 @@
 #include "CStoneTablet.h"
 
 #include "CAbstractFactory.h"
+#include "CEffectMgr.h"
 #include "CImgMgr.h"
 #include "CUIMgr.h"
 #include "CInventoryUI.h"
@@ -15,7 +16,7 @@
 #include "CSoundMgr.h"
 
 CInventory::CInventory()
-	: m_iInvenSize(INVEN_SIZE), m_pOwner(nullptr)
+	: m_iInvenSize(INVEN_SIZE), m_pOwner(nullptr), m_iUsePotionSlot(-1)
 {
 	m_vecItems.resize(m_iInvenSize, nullptr);
 	m_vecLevels.resize(m_iInvenSize, 0);
@@ -46,6 +47,9 @@ void CInventory::Initialize()
 			InsertItem(i, i, ITEM_TYPE::POTION);
 		}
 	}
+
+	// 테스트용 
+	m_iUsePotionSlot = 2;
 }
 
 void CInventory::Update()
@@ -98,6 +102,8 @@ bool CInventory::InsertItem(int iIdx, int iID, ITEM_TYPE eItemType)
 		case ITEM_TYPE::POTION:
 			m_vecItems[iIdx] = CAbstractFactory<CPotion>::CreateItem(iID, m_pOwner, eItemType);
 			static_cast<CPotion*>(m_vecItems[iIdx])->SetHave(1);
+			if (-1 == m_iUsePotionSlot)
+				m_iUsePotionSlot = iIdx;
 			break;
 		default:
 			return false;
@@ -123,8 +129,10 @@ bool CInventory::InsertItem(int iIdx, int iID, ITEM_TYPE eItemType)
 					m_vecItems[i] = CAbstractFactory<CStoneTablet>::CreateItem(iID, m_pOwner, eItemType);
 					break;
 				case ITEM_TYPE::POTION:
-					m_vecItems[iIdx] = CAbstractFactory<CPotion>::CreateItem(iID, m_pOwner, eItemType);
-					static_cast<CPotion*>(m_vecItems[iIdx])->SetHave(1);
+					m_vecItems[i] = CAbstractFactory<CPotion>::CreateItem(iID, m_pOwner, eItemType);
+					static_cast<CPotion*>(m_vecItems[i])->SetHave(1);
+					if (-1 == m_iUsePotionSlot)
+						m_iUsePotionSlot = i;
 					break;
 				default:
 					return false;
@@ -150,6 +158,10 @@ void CInventory::EraseItem(int iIdx)
 
 void CInventory::MoveItem(int iStartIdx, int iEndIdx)
 {
+	// 만약 현재 세팅된 포션과 관련이 있을 시 바꿔주기
+	if (m_iUsePotionSlot == iStartIdx) m_iUsePotionSlot = iEndIdx;
+	else if (m_iUsePotionSlot == iEndIdx) m_iUsePotionSlot = iStartIdx;
+
 	std::swap(m_vecItems[iStartIdx], m_vecItems[iEndIdx]);
 }
 
@@ -163,6 +175,68 @@ int CInventory::FindItem(int iID, ITEM_TYPE eItemType)
 		return -1;
 	else
 		return static_cast<int>(iter - m_vecItems.begin());
+}
+
+bool CInventory::UsePotion()
+{
+	// 세팅이 안된 상태라면 false
+	if (-1 == m_iUsePotionSlot)
+		return false; 
+
+	CItem* pItem = m_vecItems[m_iUsePotionSlot];
+	if (nullptr == pItem || ITEM_TYPE::POTION != pItem->GetItemType())
+		return false;
+	
+	CPotion* pPotion = static_cast<CPotion*>(pItem);
+	const POTION_INFO* pPotionInfo = pPotion->GetPotionInfo();
+	if (nullptr == pPotionInfo)
+		return false;
+	
+	// 스탯을 더해주고 보유량을 하나 까준다.
+	m_pOwner->AddStat(pPotionInfo->tStat);
+	pPotion->AddHave(-1);
+
+	// 보유량이 0 이하가 되면 인벤토리에서 삭제하고 Slot을 -1로 초기화해준다.
+	if (pPotion->GetHave() <= 0)
+	{
+		EraseItem(m_iUsePotionSlot);
+		ChangePotion(-1, true);	// 현재 인덱스 이후로 포션 찾음
+	}
+	VEC vOffset { 0.f, m_pOwner->GetInfo().vSize.fY * -0.5f };
+	CEffectMgr::GetInstance()->CreateEffect(L"Potion_Use", m_pOwner->GetInfo().vPoint + vOffset, 0, 0.f, 0.1);
+	return true;
+}
+
+void CInventory::ChangePotion(int iWheelScroll, bool bUse)
+{
+	if (iWheelScroll == 0)
+		return;
+
+	int iInvenSize = m_vecItems.size();
+	int iDir = (iWheelScroll > 0) ? -1 : 1;
+	int iSlot = m_iUsePotionSlot;
+
+	for (int i = 0; i < iInvenSize; ++i)
+	{
+		iSlot = (iSlot + iDir + iInvenSize) % iInvenSize;
+
+		CItem* pItem = m_vecItems[iSlot];
+		if (pItem == nullptr || pItem->GetItemType() != ITEM_TYPE::POTION)
+			continue;
+
+		if (iSlot != m_iUsePotionSlot)
+		{
+			m_iUsePotionSlot = iSlot;
+			
+			// 사용으로 바뀔때는 소리 X
+			if (!bUse)
+				CSoundMgr::GetInstance()->PlaySound(L"ChangePotion.wav", CHANNEL_GROUPID::SFX, 1.f);
+		}
+		return;
+	}
+
+	// 현재 인벤토리에 포션류가 없음
+	m_iUsePotionSlot = -1;
 }
 
 void CInventory::UpdateLevel()

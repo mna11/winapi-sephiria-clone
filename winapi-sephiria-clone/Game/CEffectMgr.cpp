@@ -81,6 +81,8 @@ void CEffectMgr::Initialize()
 	// 플러피
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Monster/Fluffy/Fluffy_AirCircle.png", L"Fluffy_AirCircle");
 	
+	// 포션 이펙트
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/PotionUse/PotionUse.png", L"Potion_Use");
 }
 
 
@@ -309,6 +311,15 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 	{
 		pEffect->SetFrame(0, 24, 0, dFrameSpeed);
 		pEffect->SetSize({20.f, 24.f});
+	}
+	// 포션 사용
+	else if (!lstrcmpW(pFrameKey, L"Potion_Use"))
+	{
+		pEffect->SetFrame(0, 8, 0, dFrameSpeed);
+		pEffect->SetSize({ 18.f, 30.f });
+
+		CSoundMgr::GetInstance()->PlaySound(L"Drinking.wav", CHANNEL_GROUPID::SFX, 1.f);
+		CSoundMgr::GetInstance()->PlaySound(L"SpellBuff.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 
 	if (iOption & EFTMGR_IMAGE)
