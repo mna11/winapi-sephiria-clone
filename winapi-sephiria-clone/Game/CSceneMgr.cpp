@@ -15,6 +15,7 @@
 #include "CShop.h"
 #include "CForge.h"
 #include "CEnd.h"
+#include "CScoreBoard.h"
 #include "CStageTest.h"
 
 #include "CShopTable.h"
@@ -87,6 +88,9 @@ void CSceneMgr::ApplyChange()
 		{
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CStart>::CreateScene();
+
+			if (m_iCurrentNodeID == 1)
+				static_cast<CStart*>(m_pScene)->RequestChange(START_SCENE_STATE::ANIMATION);
 			break;
 		}
 		case SCENEID::LIB_LOADING:
@@ -181,6 +185,12 @@ void CSceneMgr::ApplyChange()
 		{
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CEnd>::CreateScene();
+			break;
+		}
+		case SCENEID::SCORE_BOARD:
+		{
+			if (nullptr == m_pScene)
+				m_pScene = CAbstractFactory<CScoreBoard>::CreateScene();
 			break;
 		}
 		default:

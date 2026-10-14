@@ -36,6 +36,12 @@ void CEffectMgr::Initialize()
 	// 매직 완드 회전베기
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/MagicWand/Wand_Cleave.png", L"MagicWandCleave");
 
+	// 회귀하는 수호 공격
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/ReturningGuardian/Sword_1.png", L"RG_SwordSwing1");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/ReturningGuardian/Sword_2.png", L"RG_SwordSwing2");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/ReturningGuardian/Sword_3.png", L"RG_SwordSwing3");
+
+
 	// 한손검 방어
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/Shield.png", L"Shield");
 
@@ -78,6 +84,7 @@ void CEffectMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Bullet/MagicBallBig_Disapper.png", L"MagicBallBig_Disapper_Effect");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Bullet/FireBullet_Disapper.png", L"FireBullet_Disapper_Effect");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Bullet/AirBullet_Disapper.png", L"AirBullet_Disapper_Effect");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Bullet/ShieldBullet_Disapper.png", L"ShieldBullet_Disapper_Effect");
 
 	// 이모지 느낌표
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Emoj/Exclamation/Exclamation.png", L"Emoj_Exclamation");
@@ -187,6 +194,30 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 
 		CSoundMgr::GetInstance()->PlaySound(L"Cleave.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
+	else if (!lstrcmpW(pFrameKey, L"RG_SwordSwing1"))
+	{
+		pEffect->SetFrame(0, 1, 0, 0.1);
+		pEffect->SetSize({ 37.f, 22.f });
+		pEffect->SetAngle(fFactor);
+
+		CSoundMgr::GetInstance()->PlaySound(L"SwingSwish01.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
+	else if (!lstrcmpW(pFrameKey, L"RG_SwordSwing2"))
+	{
+		pEffect->SetFrame(0, 1, 0, 0.1);
+		pEffect->SetSize({ 30.f, 30.f });
+		pEffect->SetAngle(fFactor);
+
+		CSoundMgr::GetInstance()->PlaySound(L"SwingSwish01.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
+	else if (!lstrcmpW(pFrameKey, L"RG_SwordSwing3"))
+	{
+		pEffect->SetFrame(0, 3, 0, 0.1);
+		pEffect->SetSize({ 32.f, 43.f });
+		pEffect->SetAngle(fFactor);
+
+		CSoundMgr::GetInstance()->PlaySound(L"SwingSwish02.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
 	// 가고일
 	else if (!lstrcmpW(pFrameKey, L"Gargoyle_Attack"))
 	{
@@ -264,6 +295,14 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 		pEffect->SetFrame(0, 8, 0, dFrameSpeed);
 		pEffect->SetSize({ 22.f, 15.f });
 		pEffect->SetAngle(fFactor);
+	}
+	else if (!lstrcmpW(pFrameKey, L"ShieldBullet_Disapper_Effect"))
+	{
+		pEffect->SetFrame(0, 23, 0, dFrameSpeed);
+		pEffect->SetSize({ 32.f, 32.f });
+		pEffect->SetSpeed(fFactor);
+
+		CSoundMgr::GetInstance()->PlaySound(L"ShieldBlock.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 	// 보스 몬스터
 	else if (!lstrcmpW(pFrameKey, L"Golem_Targeting"))

@@ -25,5 +25,6 @@ private:
 
 private:
     vector<CForgeSlotUI*>   m_vecWeaponSlot;
+    VEC                     m_vWheelScroll;     // 휠 스크롤 오프셋
 };
 

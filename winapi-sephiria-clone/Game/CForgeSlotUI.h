@@ -14,13 +14,17 @@ public:
     void Render(Graphics*) override;
     void Release() override;
 public:
+    void UpdateRect() override;
+public:
     void SetWeaponID(int iID) { m_iWeaponID = iID; }
     void SetCollide(bool bCol) { m_bCol = bCol; }
+    void SetScrollOffset(VEC vOffset) { m_vOffset = vOffset; }
 public:
     const int& GetWeaponID() const { return m_iWeaponID; }
 
 private:
     int     m_iWeaponID;    // 슬롯에 표시할 무기 아이디
     bool    m_bCol;         // 마우스 충돌 여부
+    VEC     m_vOffset;
 };
 

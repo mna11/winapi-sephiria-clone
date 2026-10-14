@@ -59,10 +59,15 @@ void CForgeUI::LateUpdate()
 	if (!m_bView)
 		return;
 
+
+	m_vWheelScroll.fY += (CKeyMgr::GetInstance()->GetWheelScroll() / WHEEL_DELTA) * 60.f;
 	for (auto& weaponSlot : m_vecWeaponSlot)
 	{
 		if (nullptr != weaponSlot)
+		{
 			weaponSlot->LateUpdate();
+			weaponSlot->SetScrollOffset(m_vWheelScroll);
+		}
 	}
 }
 

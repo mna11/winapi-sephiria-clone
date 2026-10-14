@@ -34,7 +34,7 @@ int CForgeSlotUI::Update()
 	if (m_bDead)
 		return DEAD;
 
-	__super::UpdateRect();
+	UpdateRect();
 	return NOEVENT;
 }
 
@@ -52,8 +52,8 @@ void CForgeSlotUI::Render(Graphics* pGraphics)
 	if (nullptr == pImg)
 		return;
 
-	RectF rcDest{ m_tInfo.vPoint.fX - vImgSize.fX * 0.5f,
-					m_tInfo.vPoint.fY - vImgSize.fY * 0.5f,
+	RectF rcDest{ m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + m_vOffset.fX,
+					m_tInfo.vPoint.fY - vImgSize.fY * 0.5f + m_vOffset.fY,
 					vImgSize.fX,
 					vImgSize.fY };
 
@@ -77,8 +77,8 @@ void CForgeSlotUI::Render(Graphics* pGraphics)
 	VEC vIconCellSize = { 64.f, 64.f };
 	VEC vIconImgSize = vIconCellSize * m_fUIScale * 0.35f;
 	VEC vOffset = VEC{ -17.f, 16.f } * m_fUIScale;
-	rcDest = { m_tInfo.vPoint.fX - vIconImgSize.fX * 0.5f + vImgSize.fX * 0.5f + vOffset.fX,
-			   m_tInfo.vPoint.fY - vIconImgSize.fY * 0.5f - vImgSize.fY * 0.5f + vOffset.fY,
+	rcDest = { m_tInfo.vPoint.fX - vIconImgSize.fX * 0.5f + vImgSize.fX * 0.5f + vOffset.fX + m_vOffset.fX,
+			   m_tInfo.vPoint.fY - vIconImgSize.fY * 0.5f - vImgSize.fY * 0.5f + vOffset.fY + m_vOffset.fY,
 			   vIconImgSize.fX, vIconImgSize.fY };
 
 	pGraphics->DrawImage(
@@ -96,7 +96,7 @@ void CForgeSlotUI::Render(Graphics* pGraphics)
 
 	vRectSize = VEC{ 105.f, 18.f } * m_fUIScale;
 	vOffset = VEC{ 10.f, 5.f } *m_fUIScale;
-	rcDest = { m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + vOffset.fX, m_tInfo.vPoint.fY - vImgSize.fY * 0.5f + vOffset.fY, vRectSize.fX, vRectSize.fY };
+	rcDest = { m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + vOffset.fX + m_vOffset.fX, m_tInfo.vPoint.fY - vImgSize.fY * 0.5f + vOffset.fY + m_vOffset.fY, vRectSize.fX, vRectSize.fY };
 	rcBgStr = rcDest;
 	rcBgStr.X += 3.f;
 	rcBgStr.Y += 3.f;
@@ -110,7 +110,7 @@ void CForgeSlotUI::Render(Graphics* pGraphics)
 	// 무기 설명 텍스트 그리기
 	vOffset = VEC{ 10.f, 27.f } *m_fUIScale;
 	vRectSize = VEC{ 250.f, 50.f } *m_fUIScale;
-	rcDest = { m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + vOffset.fX, m_tInfo.vPoint.fY - vImgSize.fY * 0.5f + vOffset.fY, vRectSize.fX, vRectSize.fY };
+	rcDest = { m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + vOffset.fX + m_vOffset.fX, m_tInfo.vPoint.fY - vImgSize.fY * 0.5f + vOffset.fY + m_vOffset.fY, vRectSize.fX, vRectSize.fY };
 #ifdef _DEBUG
 	SolidBrush RedBrush(Color{ 255, 128, 0, 0 });
 	pGraphics->FillRectangle(&RedBrush, rcDest);
@@ -120,4 +120,13 @@ void CForgeSlotUI::Render(Graphics* pGraphics)
 
 void CForgeSlotUI::Release()
 {
+}
+
+void CForgeSlotUI::UpdateRect()
+{
+	__super::UpdateRect();
+	m_tRect.left += static_cast<int>(m_vOffset.fX);
+	m_tRect.top += static_cast<int>(m_vOffset.fY);
+	m_tRect.right += static_cast<int>(m_vOffset.fX);
+	m_tRect.bottom += static_cast<int>(m_vOffset.fY);
 }
