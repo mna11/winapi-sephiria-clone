@@ -238,6 +238,8 @@ void CInventoryUI::Render(Graphics* pGraphics)
 	if (!m_bView)
 		return;
 
+	SyncInventorySlot();
+
 	// 배경 그리기
 	Image* pInventoryBaseImg = CImgMgr::GetInstance()->FindImg(L"Inventory_Base");
 	if (nullptr == pInventoryBaseImg)

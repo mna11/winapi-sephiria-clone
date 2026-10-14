@@ -82,10 +82,9 @@ void CStage::HotKey()
         CUIMgr::GetInstance()->ToggleUI(UIID::STAT);
     }
 
-    if (KEY_DOWN('R'))
+    if (!CUIMgr::GetInstance()->GetUI(UIID::INVENTORY)->GetView() && KEY_DOWN('R'))
     {
-        if (pPlayer->GetInventory()->UsePotion())
-            ; // 나중에 사운드 추가
+        pPlayer->GetInventory()->UsePotion();
     }
 
     float fWheelScroll = CKeyMgr::GetInstance()->GetWheelScroll() / WHEEL_DELTA;
