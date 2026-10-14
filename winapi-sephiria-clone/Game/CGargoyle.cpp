@@ -21,7 +21,8 @@ CGargoyle::CGargoyle()
 	m_dDownTime(0.),
 	m_dFlyAtkTime(0.), m_dFlyAtkCycleTime(0.), m_dFlyAtkDownTime(0.), m_dFlyAtkCollisionTime(0.), m_dFlyAtkEndTime(0.),
 	m_bEffectCreate(false),
-	m_fAtkDistance(0.f), m_fFlyAtkDistance(0.f)
+	m_fAtkDistance(0.f), m_fFlyAtkDistance(0.f),
+	m_bFirstAtkFinished(false)
 {
 	// reserve가 아닌 이유는, 0으로 초기화해두기 위해서
 	m_vecAtkRect.resize(toUType(GARGOYLE_ATK_RECT::END));
@@ -60,7 +61,7 @@ void CGargoyle::Initialize()
 
 	// 플레이어와의 공격 거리
 	m_fAtkDistance = 100.f; 
-	m_fFlyAtkDistance = 600.f; // 400보다 멀어지면 공중 공격 진행
+	m_fFlyAtkDistance = 600.f; // 600보다 멀어지면 공중 공격 진행
 
 	// 시간 초기화
 	m_dStateTime = 0.;
@@ -172,7 +173,10 @@ void CGargoyle::Release()
 
 void CGargoyle::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-	if (m_bHit)
+	if (m_bDead)
+		return;
+
+	if (m_bHit && eHit != HIT_SOURCE::BULLET)
 		return;
 
 	if (m_eCurState == GARGOYLE_STATE::DOWN || m_eCurState == GARGOYLE_STATE::SUMMON)
@@ -224,6 +228,7 @@ void CGargoyle::ApplyChange()
 		switch (m_eNextState)
 		{
 		case GARGOYLE_STATE::SUMMON:
+			CSoundMgr::GetInstance()->PlaySound(L"MonsterSummon1.wav", CHANNEL_GROUPID::SFX, 0.3f);
 			SetFrame(0, 20, 0, m_dSummonTime / 21.);
 			break;
 		case GARGOYLE_STATE::IDLE:
@@ -288,6 +293,7 @@ void CGargoyle::UpdateTime()
 	case GARGOYLE_STATE::ATK:
 		if (m_dStateTime >= m_dAtkTime)
 		{
+			m_bFirstAtkFinished = true;
 			SetRect(&m_vecAtkRect[toUType(GARGOYLE_ATK_RECT::ATK)], 0, 0, 0, 0);
 			if (m_tFrame.iMotion != 1)
 				SetFrame(0, 5, 1, 0.2);
@@ -308,8 +314,11 @@ void CGargoyle::UpdateTime()
 		}
 		else if (m_dStateTime >= m_dFlyAtkEndTime)
 		{
-			if (m_tFrame.iMotion != 7)
+			if (m_tFrame.iMotion != 7) {
 				SetFrame(0, 3, 7, (m_dFlyAtkTime - m_dFlyAtkEndTime) / 4.);
+				CCameraMgr::GetInstance()->CameraShaking(10.f, 0.25);
+				CSoundMgr::GetInstance()->PlaySound(L"LandBig.wav", CHANNEL_GROUPID::SFX, 1.f);
+			}
 		}
 		else if (m_dStateTime >= m_dFlyAtkDownTime)
 		{
@@ -393,6 +402,9 @@ void CGargoyle::Attack()
 	if (m_pTarget == nullptr)
 		return;
 
+	if (m_eCurState == GARGOYLE_STATE::SUMMON || m_eNextState == GARGOYLE_STATE::DOWN)
+		return;
+
 	// 일반 공격
 	if (m_eCurState == GARGOYLE_STATE::ATK)
 	{
@@ -428,7 +440,7 @@ void CGargoyle::Attack()
 			}
 		}
 
-		if (m_dStateTime >= m_dFlyAtkCollisionTime)
+		if (m_dStateTime >= m_dFlyAtkCollisionTime && m_dStateTime < m_dFlyAtkTime)
 		{
 			VEC vRectSize = { 100.f, 100.f };
 
@@ -454,7 +466,7 @@ void CGargoyle::Attack()
 		if (fDistance <= m_fAtkDistance)
 			m_eNextState = GARGOYLE_STATE::ATK;
 
-		if (fDistance >= m_fFlyAtkDistance)
+		if (m_bFirstAtkFinished && fDistance >= m_fFlyAtkDistance)
 			m_eNextState = GARGOYLE_STATE::FLY_ATK;
 	}
 }

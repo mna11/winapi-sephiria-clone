@@ -59,5 +59,7 @@ private:
     ImageAttributes m_imgAttrAlpha;             // Panel 반투명
 
     bool        m_bIsCol;                       // Fish와 Net이 충돌하고 있는지 여부
+
+    Channel* m_pReelingChannel;                 // Reelling하는 사운드
 };
 

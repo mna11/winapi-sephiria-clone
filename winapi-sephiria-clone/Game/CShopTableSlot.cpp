@@ -4,6 +4,7 @@
 #include "CImgMgr.h"
 #include "CArtifactData.h"
 #include "CStoneTabletData.h"
+#include "CPotionData.h"
 #include "CFontMgr.h"
 
 CShopTableSlot::CShopTableSlot()
@@ -75,6 +76,9 @@ void CShopTableSlot::Render(Graphics* pGraphics)
 		break;
 	case ITEM_TYPE::STONE_TABLET:
 		tItemInfo = CStoneTabletData::GetInstance()->FindItemInfo(m_iItemID);
+		break;
+	case ITEM_TYPE::POTION:
+		tItemInfo = CPotionData::GetInstance()->FindItemInfo(m_iItemID);
 		break;
 	default:
 		break;

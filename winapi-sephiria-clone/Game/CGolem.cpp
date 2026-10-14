@@ -191,6 +191,8 @@ void CGolem::ApplyChange()
 
             if (m_pErma != nullptr)
                 m_pErma->StartExpose(GetEnterPoint() + VEC{ 0.f, 350.f });
+
+            CSoundMgr::GetInstance()->PlaySound(L"GolemDie.wav", CHANNEL_GROUPID::SFX, 1.f);
             break;
         }
         default:
@@ -204,32 +206,25 @@ void CGolem::ApplyChange()
 
 void CGolem::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-    if (m_bHit)
-        return;
+    TryHitDamage(iDamage, pObj, eHit, bCritical);
+}
 
-    if (m_eCurState != GOLEM_STATE::COMBAT)
-        return;
+bool CGolem::TryHitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
+{
+    if (m_bDead || m_eCurState != GOLEM_STATE::COMBAT)
+        return false;
 
-    m_bHit = true;		// m_bHit은 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
+    if (m_bHit && eHit != HIT_SOURCE::BULLET)
+        return false;
 
-    m_tStat.iHp -= iDamage;
+    m_bHit = true;
+    m_dHitElapseTime = 0.;
+    m_tStat.iHp = clamp(m_tStat.iHp - iDamage, 0, m_tStat.iMaxHp);
 
     if (m_tStat.iHp <= 0)
-    {
-        m_tStat.iHp = 0;
         RequestChange(GOLEM_STATE::EXPOSED);
-    }
 
-    // 사운드
-    switch (eHit)
-    {
-    case HIT_SOURCE::SLASH:
-        CSoundMgr::GetInstance()->PlaySound(L"HitSword02.wav", CHANNEL_GROUPID::SFX, 1.f);
-        break;
-    case HIT_SOURCE::BULLET:
-        CSoundMgr::GetInstance()->PlaySound(L"HitMagicFire02.wav", CHANNEL_GROUPID::SFX, 1.f);
-        break;
-    }
+    return true;
 }
 
 void CGolem::UpdateTime()

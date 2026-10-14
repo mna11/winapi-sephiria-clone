@@ -76,7 +76,7 @@ void CMagicStaffSwordAndShield::CreateEffect()
 		float fDistance = 50.f;
 		VEC vOffset{ fDistance * cosf(fTargetAngle), fDistance * sinf(fTargetAngle) };
 
-		vRenderPoint = m_tInfo.vPoint + vOffset;
+		vRenderPoint = m_tInfo.vPoint + vOffset * 1.5f;
 
 		float fBulletSpeed = 1000.f;
 		float fBulletAliveTime = 1.f;
@@ -89,15 +89,15 @@ void CMagicStaffSwordAndShield::CreateEffect()
 		case 2:
 			CEffectMgr::GetInstance()->CreateEffect(L"MagicWandSwing2", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
 			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, fBulletSpeed, iFireAtk, fBulletAliveTime, m_pTarget));
-			vRenderPoint -= vOffset * 0.5f;
+			vRenderPoint -= vOffset * 1.5f;
 			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, fBulletSpeed, iFireAtk, fBulletAliveTime, m_pTarget));
 			break;
 		case 3:
 			CEffectMgr::GetInstance()->CreateEffect(L"MagicWandSwing1", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
 			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, fBulletSpeed, iFireAtk, fBulletAliveTime, m_pTarget));
-			vRenderPoint -= vOffset * 0.5f;
+			vRenderPoint += vOffset * 1.5f;
 			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, fBulletSpeed, iFireAtk, fBulletAliveTime, m_pTarget));
-			vRenderPoint -= vOffset * 0.5f;
+			vRenderPoint -= vOffset * 1.5f * 2;
 			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, fBulletSpeed, iFireAtk, fBulletAliveTime, m_pTarget));
 			break;
 		}
@@ -157,7 +157,7 @@ void CMagicStaffSwordAndShield::ApplyChange()
 		{
 			SetAtk(0, 0, 0., 0.01, 0.01);
 
-			float fBulletSpeed = 1000.f;
+			float fBulletSpeed = 700.f;
 			float fBulletAliveTime = 1.f;
 			for (int i = 0; i < 8; ++i)
 			{

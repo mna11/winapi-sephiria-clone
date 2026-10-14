@@ -145,6 +145,7 @@ void CFluffy::ApplyChange()
 		switch (m_eNextState)
 		{
 		case FLUFFY_STATE::SUMMON:
+			CSoundMgr::GetInstance()->PlaySound(L"FluffySummon.wav", CHANNEL_GROUPID::SFX, 5.f, 1.f);
 			SetFrame(0, 13, 0, m_dSummonTime / 14.);				// 프레임 키가 다름 - Fluffy_Summon
 			break;
 		case FLUFFY_STATE::IDLE:
@@ -273,7 +274,10 @@ void CFluffy::Attack()
 
 void CFluffy::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-	if (m_bHit || m_tStat.iHp <= 0)
+	if (m_bDead)
+		return;
+
+	if (m_bHit && eHit != HIT_SOURCE::BULLET)
 		return;
 
 	if (m_eCurState == FLUFFY_STATE::DOWN || m_eCurState == FLUFFY_STATE::SUMMON)

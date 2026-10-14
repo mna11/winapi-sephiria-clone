@@ -67,6 +67,7 @@ private:
 
     // 공격 기준 - 플레이어와의 거리
     float m_fAtkDistance;
+    bool m_bFirstAtkFinished; // 가고일은 일단 첫번째 일반 공격을 한 뒤에 날 수 있게 할려고 플래그 만들었음
     // 공격 기준2 
     float m_fFlyAtkDistance;
 

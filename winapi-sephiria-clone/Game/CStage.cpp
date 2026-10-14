@@ -7,6 +7,7 @@
 #include "CFluffy.h"
 #include "CMonster.h"
 #include "CTile.h"
+#include "CKeyGuide.h"
 
 #include "CItemSelectUI.h"
 
@@ -82,13 +83,13 @@ void CStage::HotKey()
         CUIMgr::GetInstance()->ToggleUI(UIID::STAT);
     }
 
-    if (!CUIMgr::GetInstance()->GetUI(UIID::INVENTORY)->GetView() && KEY_DOWN('R'))
+    if (!CUIMgr::GetInstance()->GetUI(UIID::INVENTORY)->GetView() && !CUIMgr::GetInstance()->GetUI(UIID::LEVEL_UP)->GetView() && KEY_DOWN('R'))
     {
         pPlayer->GetInventory()->UsePotion();
     }
 
     float fWheelScroll = CKeyMgr::GetInstance()->GetWheelScroll() / WHEEL_DELTA;
-    if (fWheelScroll != 0)
+    if (fWheelScroll != 0 && !CUIMgr::GetInstance()->GetUI(UIID::STAGE_CHANGE)->GetView())
     {
         pPlayer->GetInventory()->ChangePotion(fWheelScroll);
     }
@@ -151,8 +152,32 @@ void CStage::HandleCollisionBattleRoom()
 
 void CStage::HandleCollisionStair()
 {
-    if (CCollisionMgr::CollisionRect(CObjMgr::GetInstance()->GetPlayer()->GetRect(), m_rcStair) && KEY_DOWN('F'))
+    bool bCol(false);
+    CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+    if (nullptr == pPlayer)
+        return;
+
+    CKeyGuide* pKeyGuide = static_cast<CKeyGuide*>(CUIMgr::GetInstance()->GetUI(UIID::KEY_GUIDE));
+    if ((bCol = CCollisionMgr::CollisionRect(pPlayer->GetRect(), m_rcStair)) && KEY_DOWN('F'))
+    {
         CUIMgr::GetInstance()->ShowUI(UIID::STAGE_CHANGE);
+        pKeyGuide->HideGuide(pPlayer);
+    }
+
+    bool bShowGuide = bCol && !CUIMgr::GetInstance()->GetUI(UIID::STAGE_CHANGE)->GetView();
+
+    if (bShowGuide)
+    {
+        pKeyGuide->ShowGuide(pPlayer);
+        pKeyGuide->SetFollow(true);
+        pKeyGuide->SetKeyGuideInfo('F', L"이동", { 0.f, -pPlayer->GetInfo().vSize.fY * 1.5f }, { 28.f, 10.f });
+        m_bStairGuideShown = true;
+    }
+    else if (m_bStairGuideShown)
+    {
+        pKeyGuide->HideGuide(pPlayer);
+        m_bStairGuideShown = false;
+    }
 }
 
 void CStage::CreateBattleWallEffects()

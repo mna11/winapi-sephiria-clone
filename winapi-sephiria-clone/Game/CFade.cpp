@@ -84,6 +84,7 @@ void CFade::Show()
 	
 	m_dFadeElapsed = 0.;
 	m_iAlpha = 255;
+	m_tFadeColor = { 255, 0, 0, 0 };
 	SetFrame(0, 59, 0, 0.001);
 }
 

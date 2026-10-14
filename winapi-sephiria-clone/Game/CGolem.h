@@ -34,6 +34,7 @@ public:
 public:
     void ApplyChange() override;
     void HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END, bool bCritical = false) override;
+    bool TryHitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical);
 
 private:
     void UpdateTime() override;

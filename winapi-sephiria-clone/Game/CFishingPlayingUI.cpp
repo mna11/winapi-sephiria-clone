@@ -5,11 +5,12 @@
 #include "CKeyMgr.h"
 #include "CCollisionMgr.h"
 #include "CImgMgr.h"
+#include "CSoundMgr.h"
 
 CFishingPlayingUI::CFishingPlayingUI()
 	: m_fCatchGauge(0.f), m_fFishSpeed(0.f), m_fNetSpeed(0.f),
 	m_dFishChangeMoveElapseTime(0.), m_dFishChangeMoveInterval(0.), m_bFishChangeMove(true),
-	m_bIsCol(false)
+	m_bIsCol(false), m_pReelingChannel(nullptr)
 {
 	ZeroMemory(&m_rcFish, sizeof(RECT));
 	ZeroMemory(&m_rcNet, sizeof(RECT));
@@ -221,6 +222,12 @@ void CFishingPlayingUI::Hide()
 		return;
 
 	m_bView = false;
+
+	if (m_pReelingChannel != nullptr)
+	{
+		m_pReelingChannel->stop();
+		m_pReelingChannel = nullptr;
+	}
 }
 
 void CFishingPlayingUI::InitializeData()
@@ -339,4 +346,18 @@ void CFishingPlayingUI::HandleCollision()
 		m_fCatchGauge = clamp(m_fCatchGauge + fGaugeInc, 0.f, 100.f);
 	else
 		m_fCatchGauge = clamp(m_fCatchGauge - fGaugeInc * 0.8f, 0.f, 100.f);
+
+
+	if (m_bIsCol)
+	{
+		if (m_pReelingChannel == nullptr)
+		{
+			m_pReelingChannel = CSoundMgr::GetInstance()->PlayLoopSFX(L"fishingRodBend_01.wav", 1.f, 1.f);
+		}
+	}
+	else if (m_pReelingChannel != nullptr)
+	{
+		m_pReelingChannel->stop();
+		m_pReelingChannel = nullptr;
+	}
 }

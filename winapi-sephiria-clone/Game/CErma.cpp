@@ -10,6 +10,9 @@
 #include "CTimeMgr.h"
 #include "CSceneMgr.h"
 
+#include "CSoundMgr.h"
+#include "CEffectMgr.h"
+
 CErma::CErma()
     : CState(ERMA_STATE::END, ERMA_STATE::IDLE),
     m_dStateTime(0.),
@@ -107,13 +110,19 @@ void CErma::Render(Graphics* pGraphics)
     else if (m_pFrameKey == L"Erma_Stone_Shiny")
         vCellSize = { 25.f, 25.f };
 
-    const VEC vImgSize = vCellSize * PIXEL_SCALE;
-    const RectF rcDest{
-        m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + vScroll.fX,
-        m_tInfo.vPoint.fY - vImgSize.fY * 0.5f + vScroll.fY,
-        vImgSize.fX,
-        vImgSize.fY
-    };
+    VEC vImgSize = vCellSize * PIXEL_SCALE;
+
+    float fOffset(0.f);
+    if (m_bHit && m_dIframeTime > 0.)
+    {
+        float fRatio = clamp(static_cast<float>(m_dHitElapseTime / m_dIframeTime), 0.f, 1.f);
+        float fAmplitude = vCellSize.fY * 0.5f * PIXEL_SCALE;
+        float fDecay = (1.f - fRatio) * (1.f - fRatio);
+
+        fOffset = -fAmplitude * sinf(fRatio * PI) * fDecay;
+    }
+
+    RectF rcDest{ m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + vScroll.fX - fOffset * 0.5f, m_tInfo.vPoint.fY - vImgSize.fY * 0.5f + vScroll.fY + fOffset, vImgSize.fX + fOffset, vImgSize.fY - fOffset };
 
     ImageAttributes* pImgAttr = m_bHit ? &m_imgAttrHit : nullptr;
     pGraphics->DrawImage(
@@ -153,8 +162,9 @@ void CErma::ApplyChange()
             SetFrame(0, 5, 3, 0.2);
             break;
         case ERMA_STATE::STONE:
+            CSoundMgr::GetInstance()->PlaySound(L"GolemSlotTransform.wav", CHANNEL_GROUPID::SFX, 1.f);
             m_pFrameKey = L"Erma_Stone_L";
-            SetFrame(0, 18, 0, 0.1);
+            SetFrame(0, 18, 0, 0.08);
             break;
         case ERMA_STATE::RETURN:
             m_pFrameKey = L"Erma_Stone_L";
@@ -208,13 +218,37 @@ void CErma::UpdateFrame()
 }
 void CErma::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-    if (m_bHit || !m_bView || m_eCurState != ERMA_STATE::STUN)
+    if (m_bDead)
+        return;
+
+    if (m_bHit && eHit != HIT_SOURCE::BULLET)
+        return;
+
+    if (!m_bView || m_eCurState != ERMA_STATE::STUN)
         return;
 
     m_bHit = true;
     m_dHitElapseTime = 0.;
 
     m_tStat.iHp = clamp(m_tStat.iHp - iDamage, 0, m_tStat.iMaxHp);
+
+    if (nullptr == pObj)
+        return;
+
+    VEC vDir = (pObj->GetInfo().vPoint - m_tInfo.vPoint).Normalize();
+    float fTargetAngle = atan2f(vDir.fY, vDir.fX);
+
+    switch (eHit)
+    {
+    case HIT_SOURCE::SLASH:
+        CEffectMgr::GetInstance()->CreateEffect(L"Attack_Slash", m_tInfo.vPoint, 0, fTargetAngle, 0.05);
+        break;
+    case HIT_SOURCE::BULLET:
+        CEffectMgr::GetInstance()->CreateEffect(L"Attack_Bullet", m_tInfo.vPoint, 0, fTargetAngle, 0.05);
+        break;
+    default:
+        break;
+    }
 }
 
 void CErma::StartReturn()
@@ -243,7 +277,11 @@ bool CErma::IsReturnFinish()
     if (nullptr == m_pOwner)
         return false;
 
-    return ((m_tInfo.vPoint - m_pOwner->GetEnterPoint()).Norm() == 0.f);
+    bool bFinish = ((m_tInfo.vPoint - m_pOwner->GetEnterPoint()).Norm() == 0.f);
+    if (bFinish)
+        CSoundMgr::GetInstance()->PlaySound(L"GolemEnter.wav", CHANNEL_GROUPID::SFX, 1.f);
+
+    return bFinish;
 }
 
 void CErma::UpdateTime()

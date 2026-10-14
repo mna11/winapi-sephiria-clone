@@ -35,6 +35,7 @@ public:
 
 public:
 	void PlaySound(const TCHAR* pSoundKey, CHANNEL_GROUPID eID, float fVolume, float fSpeed = 1.f);
+	Channel* PlayLoopSFX(const TCHAR* pSoundKey, float fVolume, float fSpeed);
 	void StopSound(CHANNEL_GROUPID eID);
 	void StopAll();
 	void SetChannelVolume(CHANNEL_GROUPID eID, float fVolume);

@@ -38,6 +38,8 @@ protected:
 	vector<ROOM_INFO> m_vecRooms;
 	vector<CObj*>	  m_vecBattleWallEffects;
 	int				  m_iCurBattleRoomIdx;
-	RECT			  m_rcStair;
+	RECT			  m_rcStair; 
+	
+	bool m_bStairGuideShown = false;
 };
 

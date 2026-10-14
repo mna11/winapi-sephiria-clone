@@ -46,13 +46,16 @@ void CCollisionMgr::CollisionWall(list<CObj*>& DstList)
 	
     for (CObj* pObj : DstList)
     {
+        if (nullptr == pObj || !pObj->GetWallCollisionEnable())
+            continue;
+
         for (auto& vecTiles : arrVecTiles)
         {
             for (CObj* pTileObj : vecTiles)
             {
                 CTile* pTile = static_cast<CTile*>(pTileObj);
 
-                bool bIsWall = (pTile->GetTile().eTileOption == TILE_OPTION::WALL);
+                bool bIsWall = (pTile->GetTile().eTileOption == TILE_OPTION::WALL || pTile->GetTile().eTileOption == TILE_OPTION::AIR);
                 bool bIsBlockedInteraction = (pTile->GetTile().eTileOption == TILE_OPTION::INTERACTION && CTileMgr::GetInstance()->GetInteractionBlocked());
 
                 if (!bIsWall && !bIsBlockedInteraction)

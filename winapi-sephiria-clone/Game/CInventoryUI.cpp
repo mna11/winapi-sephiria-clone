@@ -188,7 +188,6 @@ int CInventoryUI::Update()
 					static_cast<CShop*>(CSceneMgr::GetInstance()->GetCurrentScene())->TryBuyItem(iIdx, m_pMouse->GetDragReferItem().iID, m_pMouse->GetDragReferItem().eItemType);
 				}
 
-				// SyncInventorySlot이 LateUpdate에서 Slot 동기화 해줘서 별도로 할 것 없음
 
 				// 초기화
 				m_pMouse->SetDragReferItem({ -1, ITEM_TYPE::END, ITEM_SOURCE::END });

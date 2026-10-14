@@ -15,7 +15,8 @@ CObj::CObj()
 	m_iRenderLayer(0),
 	m_bHit(false),
 	m_dIframeTime(0.),
-	m_dHitElapseTime(0.)
+	m_dHitElapseTime(0.),
+	m_bWallCollisionEnable(true)
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	ZeroMemory(&m_tRect, sizeof(RECT));

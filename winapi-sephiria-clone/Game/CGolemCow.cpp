@@ -13,7 +13,8 @@
 
 CGolemCow::CGolemCow()
     : CState(GOLEM_COW_STATE::END, GOLEM_COW_STATE::SUMMON),
-	m_dChargeInterval(0.), m_dChargeReadyTime(0.), m_dDownTime(0.), m_dStateTime(0.), m_dSummonTime(0.), m_dDustInterval(0.), m_dDustElapsedTime(0.)
+	m_dChargeInterval(0.), m_dChargeReadyTime(0.), m_dDownTime(0.), m_dStateTime(0.), m_dSummonTime(0.), m_dDustInterval(0.), m_dDustElapsedTime(0.),
+	m_pFootStep(nullptr)
 {
     m_vecAtkRect.resize(toUType(GOLEM_COW_ATK_RECT::END));
 	ZeroMemory(&m_vDir, sizeof(VEC));
@@ -134,11 +135,19 @@ void CGolemCow::Render(Graphics* pGraphics)
 
 void CGolemCow::Release()
 {
+	if (m_pFootStep != nullptr)
+	{
+		m_pFootStep->stop();
+		m_pFootStep = nullptr;
+	}
 }
 
 void CGolemCow::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-	if (m_bHit)
+	if (m_bDead)
+		return;
+
+	if (m_bHit && eHit != HIT_SOURCE::BULLET)
 		return;
 
 	if (m_eCurState == GOLEM_COW_STATE::DOWN || m_eCurState == GOLEM_COW_STATE::SUMMON)
@@ -187,6 +196,13 @@ void CGolemCow::OnWallCollision()
 		SetRect(&m_vecAtkRect[toUType(GOLEM_COW_ATK_RECT::CHARGE)], 0, 0, 0, 0);
 		CCameraMgr::GetInstance()->CameraShaking(8, 0.2);
 		CSoundMgr::GetInstance()->PlaySound(L"GolemCowWallCollide.wav", CHANNEL_GROUPID::SFX, 1.f);
+
+		// 발소리 끄기
+		if (m_pFootStep != nullptr)
+		{
+			m_pFootStep->stop();
+			m_pFootStep = nullptr;
+		}
 	}
 }
 
@@ -294,6 +310,7 @@ void CGolemCow::ApplyChange()
 		switch (m_eNextState)
 		{
 		case GOLEM_COW_STATE::SUMMON:
+			CSoundMgr::GetInstance()->PlaySound(L"MonsterSummon1.wav", CHANNEL_GROUPID::SFX, 1.f);
 			SetFrame(0, 22, 0, m_dSummonTime / 23.);
 			break;
 		case GOLEM_COW_STATE::IDLE:
@@ -304,9 +321,18 @@ void CGolemCow::ApplyChange()
 			break;
 		case GOLEM_COW_STATE::READY:
 			SetFrame(0, 12, 3, m_dChargeReadyTime / 13.);
+			CSoundMgr::GetInstance()->PlaySound(L"GolemCowAttackReady.wav", CHANNEL_GROUPID::SFX, 1.f, 1.f);
+			
 			break;
 		case GOLEM_COW_STATE::CHARGE:
 			m_dDustElapsedTime = 0.;
+			if (m_pFootStep == nullptr)
+				m_pFootStep = CSoundMgr::GetInstance()->PlayLoopSFX(L"GolemCowFootStep.wav", 5.f, 1.f);
+			else if (m_pFootStep != nullptr)
+			{
+				m_pFootStep->stop();
+				m_pFootStep = nullptr;
+			}
 			SetFrame(0, 3, 4, 0.2);
 			break;
 		case GOLEM_COW_STATE::AIR:
@@ -314,6 +340,13 @@ void CGolemCow::ApplyChange()
 			break;
 		case GOLEM_COW_STATE::DOWN:
 			SetFrame(0, 0, 6, m_dDownTime);
+
+			// 달리다가 죽을 수도 있으니깐 발소리 끄기
+			if (m_pFootStep != nullptr)
+			{
+				m_pFootStep->stop();
+				m_pFootStep = nullptr;
+			}
 			break;
 		}
 

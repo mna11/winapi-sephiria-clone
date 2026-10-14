@@ -122,7 +122,7 @@ void CSephirite::HandleInteraction()
 		if (!m_bCol)
 		{
 			m_pKeyGuide->ShowGuide(this);
-			m_pKeyGuide->SetKeyGuideInfo('F', L"줍기", { 0, -m_tInfo.vSize.fY }, { 28.f, 10.f });
+ 			m_pKeyGuide->SetKeyGuideInfo('F', L"줍기", { 0, -m_tInfo.vSize.fY }, { 28.f, 10.f });
 		}
 
 		m_bCol = true;

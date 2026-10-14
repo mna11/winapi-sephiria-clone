@@ -8,6 +8,7 @@
 #include "CUIMgr.h"
 #include "CTimeMgr.h"
 #include "CKeyMgr.h"
+#include "CSoundMgr.h"
 
 CFishingRodUI::CFishingRodUI()
     : CState<FISHING_ROD_STATE>(FISHING_ROD_STATE::END,FISHING_ROD_STATE::IDLE_OUT_WATER),
@@ -117,6 +118,7 @@ void CFishingRodUI::ApplyChange()
 
     case FISHING_ROD_STATE::CASTING:
         SetFrame(0, 11, 1, 0.08);
+        CSoundMgr::GetInstance()->PlaySound(L"FishCast.wav", CHANNEL_GROUPID::SFX, 1.f);
         break;
 
     case FISHING_ROD_STATE::IDLE_OUT_WATER:

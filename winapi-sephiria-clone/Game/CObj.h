@@ -24,6 +24,7 @@ public:
 	const vector<RECT>& GetAtkRectVec() const			{ return m_vecAtkRect; }
 	const vector<RECT>& GetDefRectVec() const			{ return m_vecDefRect; }
 	bool				GetDead() const { return m_bDead; }
+	bool GetWallCollisionEnable() const { return m_bWallCollisionEnable; }
 
 public:
 	void				SetPos(float _fX, float _fY)		{ m_tInfo.vPoint.fX = _fX; m_tInfo.vPoint.fY = _fY; }
@@ -78,5 +79,8 @@ protected:
 
 	vector<RECT>		m_vecAtkRect;		 // 공격 충돌 박스
 	vector<RECT>		m_vecDefRect;		 // 방어 충돌 박스
+
+
+	bool m_bWallCollisionEnable; // 벽 충돌 처리 여부
 };
 

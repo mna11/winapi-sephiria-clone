@@ -50,6 +50,8 @@ void CGolemHand::Initialize()
     m_dLaserEndTime = 0.5;      // 레이저 없어지는 시간
 
     m_tStat = { 0, 0, 20 };     // 주먹 데미지
+
+    m_bWallCollisionEnable = false;
 }
 
 int CGolemHand::Update()
@@ -103,12 +105,28 @@ void CGolemHand::Render(Graphics* pGraphics)
     VEC vImgSize = vCellSize * PIXEL_SCALE * 0.8;
     VEC vOffset{ vScroll.fX, vScroll.fY };
     RectF DestRect = { m_tInfo.vPoint.fX + vOffset.fX - vImgSize.fX * 0.5f, m_tInfo.vPoint.fY + vOffset.fY - vImgSize.fY * 0.5f, vImgSize.fX, vImgSize.fY };
+
+    if (m_bHit && m_dIframeTime > 0.)
+    {
+        float fRatio = clamp(static_cast<float>(m_dHitElapseTime / m_dIframeTime), 0.f, 1.f);
+        float fAmplitude = vImgSize.fY * 0.1f;
+        float fDecay = (1.f - fRatio) * (1.f - fRatio);
+        float fOffset = -fAmplitude * sinf(fRatio * PI) * fDecay;
+
+        DestRect.X -= fOffset * 0.5f;
+        DestRect.Y += fOffset;
+        DestRect.Width += fOffset;
+        DestRect.Height -= fOffset;
+    }
+
+    ImageAttributes* pImgAttr = m_bHit ? &m_imgAttrHit : nullptr;
+
     pGraphics->DrawImage(
         pHeadImg, DestRect,
         vCellSize.fX * m_tFrame.iStart,
         vCellSize.fY * m_tFrame.iMotion,
         vCellSize.fX, vCellSize.fY,
-        UnitPixel
+        UnitPixel, pImgAttr
     );
 
     // 레이저 렌더링
@@ -131,7 +149,7 @@ void CGolemHand::RenderLaser(Graphics* pGraphics)
 
     VEC vOffset{ m_bLeft ? 0.f : -vImgSize.fX, 20.f + -vImgSize.fY * 0.5f };
     RectF DestRect{ m_tInfo.vPoint.fX + vOffset.fX + vScroll.fX, m_tInfo.vPoint.fY + vOffset.fY + vScroll.fY, vImgSize.fX, vImgSize.fY };
-
+    
     pGraphics->DrawImage(
         pImg,
         DestRect,
@@ -151,6 +169,17 @@ void CGolemHand::UpdateTime()
 {
     if (nullptr == m_pTarget)
         return;
+
+    if (m_bHit)
+    {
+        m_dHitElapseTime += DT;
+
+        if (m_dHitElapseTime >= m_dIframeTime)
+        {
+            m_bHit = false;
+            m_dHitElapseTime = 0.;
+        }
+    }
 
     m_dStateTime += DT;
 
@@ -482,10 +511,30 @@ void CGolemHand::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCriti
     if (nullptr == m_pOwner)
         return;
 
-    if (bCritical)
-        CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 210, 60 });
-    else
-        CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 255, 255 });
+    if (!m_pOwner->TryHitDamage(iDamage, pObj, eHit, bCritical))
+        return;
 
-    m_pOwner->HitDamage(iDamage, pObj, eHit, bCritical);
+    m_bHit = true;
+    m_dHitElapseTime = 0.;
+
+    Color damageColor = bCritical ? Color{ 255, 255, 210, 60 } : Color{ 255, 255, 255, 255 };
+    CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), damageColor);
+
+    if (nullptr == pObj)
+        return;
+
+    VEC vDir = (pObj->GetInfo().vPoint - m_tInfo.vPoint).Normalize();
+    float fTargetAngle = atan2f(vDir.fY, vDir.fX);
+
+    switch (eHit)
+    {
+    case HIT_SOURCE::SLASH:
+        CEffectMgr::GetInstance()->CreateEffect(L"Attack_Slash", m_tInfo.vPoint, 0, fTargetAngle, 0.05);
+        break;
+    case HIT_SOURCE::BULLET:
+        CEffectMgr::GetInstance()->CreateEffect(L"Attack_Bullet", m_tInfo.vPoint, 0, fTargetAngle, 0.05);
+        break;
+    default:
+        break;
+    }
 }

@@ -4,6 +4,7 @@
 #include "CPlayer.h"
 #include "CInventory.h"
 #include "CItem.h"
+#include "CPotion.h"
 
 #include "CImgMgr.h"
 #include "CObjMgr.h"
@@ -240,6 +241,19 @@ void CBasicInfo::Render(Graphics* pGraphics)
 			0, 0, vCellSize.fX, vCellSize.fY,
 			UnitPixel
 		);
+
+		// 개수 그리기
+		int iHave = static_cast<CPotion*>(pPotion)->GetHave();
+		wstring strHave = to_wstring(iHave);
+
+		VEC vOffset{ vImgSize.fX * 0.5f, 0.f };
+		RectF rcHave{ vStartPoint.fX + vOffset.fX + 2.f * m_fUIScale, vStartPoint.fY - 3.f * m_fUIScale, 50.f, 30.f };
+#ifdef _DEBUG
+		SolidBrush black1Brush(Color(255, 0, 0, 0));
+		pGraphics->FillRectangle(&black1Brush, rcHave);
+#endif // _DEBUG
+
+		CFontMgr::GetInstance()->DrawString(pGraphics, strHave, FONT_TYPE::PIXEL_BIG, rcHave, Color{ 255, 255, 255, 255 }, 24.f, StringAlignmentNear, StringAlignmentCenter);
 	}
 
 	// R 키 입력 그리기

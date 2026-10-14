@@ -32,24 +32,21 @@ void CInventory::Initialize()
 	// 테스트용
 	for (int i = 0; i < m_vecItems.size(); ++i)
 	{
-		if (i < 9)
+		if (i < 4)
 		{
 			InsertItem(i, i, ITEM_TYPE::ARTIFACT);
 		}
 
-		if (i < 5)
+		if (i < 3)
 		{
 			InsertItem(i, i, ITEM_TYPE::STONE_TABLET);
 		}
 
-		if (i < 3)
+		if (i >= 3 && i < 5)
 		{
 			InsertItem(i, i, ITEM_TYPE::POTION);
 		}
 	}
-
-	// 테스트용 
-	m_iUsePotionSlot = 2;
 }
 
 void CInventory::Update()
@@ -193,7 +190,23 @@ bool CInventory::UsePotion()
 		return false;
 	
 	// 스탯을 더해주고 보유량을 하나 까준다.
-	m_pOwner->AddStat(pPotionInfo->tStat);
+
+	// Hp와 Mp는 따로 처리해준다.
+	STAT tStat = pPotionInfo->tStat;
+	if (tStat.iHp != 0)
+	{
+		int iMaxHp = m_pOwner->GetStat().iMaxHp;
+		m_pOwner->AddHp(iMaxHp * tStat.iHp / 100.f);
+		tStat.iHp = 0;
+	}
+	if (tStat.iMp != 0)
+	{
+		int iMaxMp = m_pOwner->GetStat().iMaxMp;
+		m_pOwner->AddMp(iMaxMp * tStat.iMp / 100.f);
+		tStat.iMp = 0;
+	}
+
+	m_pOwner->AddStat(tStat);
 	pPotion->AddHave(-1);
 
 	// 보유량이 0 이하가 되면 인벤토리에서 삭제하고 Slot을 -1로 초기화해준다.

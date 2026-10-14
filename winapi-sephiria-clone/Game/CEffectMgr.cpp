@@ -87,6 +87,9 @@ void CEffectMgr::Initialize()
 	
 	// 포션 이펙트
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/PotionUse/PotionUse.png", L"Potion_Use");
+
+	// 낚시
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Fishing/Fishing_Hit.png", L"Fishing_Hit");
 }
 
 
@@ -315,6 +318,9 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 	{
 		pEffect->SetFrame(0, 24, 0, dFrameSpeed);
 		pEffect->SetSize({20.f, 24.f});
+
+
+		CSoundMgr::GetInstance()->PlaySound(L"FluffyShot.wav", CHANNEL_GROUPID::SFX, 1.f, 1.f);
 	}
 	// 포션 사용
 	else if (!lstrcmpW(pFrameKey, L"Potion_Use"))
@@ -341,7 +347,15 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 		pEffect->SetAngle(fFactor);
 
 		CSoundMgr::GetInstance()->PlaySound(L"HitMagicFire02.wav", CHANNEL_GROUPID::SFX, 1.f);
-		}
+	}
+	// 낚시 히트
+	else if (!lstrcmpW(pFrameKey, L"Fishing_Hit"))
+	{
+		pEffect->SetFrame(0, 23, 0, dFrameSpeed);
+		pEffect->SetSize({ 49.f, 27.f });
+
+		CSoundMgr::GetInstance()->PlaySound(L"FishHit.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
 
 	if (iOption & EFTMGR_IMAGE)
 	{
