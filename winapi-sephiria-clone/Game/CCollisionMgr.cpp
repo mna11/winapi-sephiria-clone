@@ -188,36 +188,67 @@ bool CCollisionMgr::CollisionMouse(VEC vMousePoint, RECT& rc)
 
 void CCollisionMgr::CollisionBulletWall(list<CObj*>& bullets)
 {
-    // 타일 가져오기
     auto& arrVecTiles = CTileMgr::GetInstance()->GetTiles();
-    // 현재 통로 닫혀있는지 확인하기
-    bool interactionBlocked = CTileMgr::GetInstance()->GetInteractionBlocked();
+    bool bInteractionBlocked = CTileMgr::GetInstance()->GetInteractionBlocked();
 
-    for (CObj* bullet : bullets)
+    for (CObj* pObj : bullets)
     {
-        if (bullet == nullptr || bullet->GetDead())
+        if (nullptr == pObj || pObj->GetDead())
             continue;
+
+        CBullet* pBullet = static_cast<CBullet*>(pObj);
+        pBullet->SetWallCollision(false);
+
+        bool bHandled = false;
 
         for (auto& tiles : arrVecTiles)
         {
             for (CObj* pTileObj : tiles)
             {
-                if (pTileObj == nullptr)
+                if (nullptr == pTileObj)
                     continue;
 
                 CTile* pTile = static_cast<CTile*>(pTileObj);
-                bool bIsWall = (pTile->GetTile().eTileOption == TILE_OPTION::WALL);
-                bool bIsBlockedInteraction = (pTile->GetTile().eTileOption == TILE_OPTION::INTERACTION && CTileMgr::GetInstance()->GetInteractionBlocked());
+                bool bWall = pTile->GetTile().eTileOption == TILE_OPTION::WALL;
+                bool bBlocked = pTile->GetTile().eTileOption == TILE_OPTION::INTERACTION && bInteractionBlocked;
 
-                if (!bIsWall && !bIsBlockedInteraction)
+                if (!bWall && !bBlocked)
                     continue;
 
-                if (!CollisionRect(bullet->GetRect(), pTile->GetRect()))
+                if (!CollisionRect(pBullet->GetRect(), pTile->GetRect()))
                     continue;
 
-                bullet->SetDead(true);
+                VEC vDistance = pBullet->GetInfo().vPoint - pTile->GetInfo().vPoint;
+                VEC vColDistance = (pBullet->GetInfo().vSize + pTile->GetInfo().vSize) * 0.5f;
+                VEC vOverlap{ vColDistance.fX - fabsf(vDistance.fX), vColDistance.fY - fabsf(vDistance.fY) };
+
+                if (vOverlap.fX <= 0.f || vOverlap.fY <= 0.f)
+                    continue;
+
+                VEC vNormal{};
+
+                // x축으로 충돌했음
+                if (vOverlap.fX < vOverlap.fY)
+                {
+                    vNormal = { vDistance.fX < 0.f ? -1.f : 1.f, 0.f };
+                    pBullet->AddPos(vNormal.fX * (vOverlap.fX + 1.f), 0.f);
+                }
+                else
+                {
+                    vNormal = { 0.f, vDistance.fY < 0.f ? -1.f : 1.f };
+                    pBullet->AddPos(0.f, vNormal.fY * (vOverlap.fY + 1.f));
+                }
+
+                pBullet->RefreshRect();
+                pBullet->SetWallNormal(vNormal);
+                pBullet->SetWallCollision(true);
+
+                bHandled = true;
                 break;
             }
+
+            if (bHandled)
+                break;
         }
     }
 }
@@ -239,13 +270,7 @@ void CCollisionMgr::CollisionBulletObj(list<CObj*>& DstList, list<CObj*>& SrcLis
 
             CBullet* pBullet = static_cast<CBullet*>(pDst);
 
-            int iDamage = pBullet->GetDamage();
-            bool bCritical = (uniform_real_distribution<float>(0.f, 1.f)(g_engine) < pBullet->GetOwner()->GetStat().fCriticalChange);
-            if (bCritical)
-                iDamage = static_cast<int>(iDamage * (1.f + pBullet->GetOwner()->GetStat().fCriticalDamage));
-
-            pSrc->HitDamage(iDamage, pBullet->GetOwner(), HIT_SOURCE::BULLET, bCritical);
-            pBullet->SetDead(true);
+            pBullet->OnHitObj(pSrc);
             break;
         }
     }

@@ -24,13 +24,13 @@ public:
     void SetAtkInfo(ATK_INFO* pAtk)                      { m_pAtk = pAtk; }
 
 private:
-    virtual void HandleIdleRender   (Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
-    virtual void HandleAttackRender (Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
-    virtual void HandleAttack1Render(Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
-    virtual void HandleAttack2Render(Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
-    virtual void HandleAttack3Render(Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
-    virtual void HandleShieldRender (Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
-    virtual void HandleCleaveRender (Graphics* pGraphics, Image* pImg, VEC& vScroll) PURE;
+    virtual void HandleIdleRender   (Graphics* pGraphics, Image* pImg, VEC& vScroll);
+    virtual void HandleAttackRender (Graphics* pGraphics, Image* pImg, VEC& vScroll);
+    virtual void HandleAttack1Render(Graphics* pGraphics, Image* pImg, VEC& vScroll);
+    virtual void HandleAttack2Render(Graphics* pGraphics, Image* pImg, VEC& vScroll);
+    virtual void HandleAttack3Render(Graphics* pGraphics, Image* pImg, VEC& vScroll);
+    virtual void HandleShieldRender (Graphics* pGraphics, Image* pImg, VEC& vScroll);
+    virtual void HandleCleaveRender (Graphics* pGraphics, Image* pImg, VEC& vScroll);
 
 protected:
     void DrawSword(Graphics* pGraphics, Image* pImg, VEC& vScroll, float fTargetAngle = 0);

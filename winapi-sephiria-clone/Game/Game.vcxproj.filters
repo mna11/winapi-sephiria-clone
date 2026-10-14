@@ -334,6 +334,18 @@
     <Filter Include="04. Scene\01. Stage\00. StageTest">
       <UniqueIdentifier>{ab371628-cac9-4dce-83b8-d44f61a0b2c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\03. ReturningGuardian">
+      <UniqueIdentifier>{93d1137e-a4f5-4206-841c-c03534c0be47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\03. ReturningGuardian\00. Sword">
+      <UniqueIdentifier>{56d9ed25-cd1f-4456-a496-a829c0e9a492}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\03. ReturningGuardian\01. Shield">
+      <UniqueIdentifier>{e53da938-9276-48ed-9f58-48e5a024502e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\05. Bullet\00. PenetrationBullet">
+      <UniqueIdentifier>{21e74517-9e1e-4d9c-ab41-04883a051d6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -651,6 +663,18 @@
     <ClInclude Include="CDummy.h">
       <Filter>01. Obj\02. Monster\04. Dummy</Filter>
     </ClInclude>
+    <ClInclude Include="CReturningGuardian.h">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\03. ReturningGuardian</Filter>
+    </ClInclude>
+    <ClInclude Include="CReturningGuardianSword.h">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\03. ReturningGuardian\00. Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="CReturningGuardianShield.h">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\03. ReturningGuardian\01. Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="CPenetrationBullet.h">
+      <Filter>01. Obj\05. Bullet\00. PenetrationBullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -952,6 +976,18 @@
     </ClCompile>
     <ClCompile Include="CDummy.cpp">
       <Filter>01. Obj\02. Monster\04. Dummy</Filter>
+    </ClCompile>
+    <ClCompile Include="CReturningGuardian.cpp">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\03. ReturningGuardian</Filter>
+    </ClCompile>
+    <ClCompile Include="CReturningGuardianSword.cpp">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\03. ReturningGuardian\00. Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="CReturningGuardianShield.cpp">
+      <Filter>01. Obj\03. Weapon\01. SwordAndShield\03. ReturningGuardian\01. Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="CPenetrationBullet.cpp">
+      <Filter>01. Obj\05. Bullet\00. PenetrationBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

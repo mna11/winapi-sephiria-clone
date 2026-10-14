@@ -7,10 +7,10 @@
 #include "CEffectMgr.h"
 
 CBullet::CBullet()
-	: m_fDamage(0.), m_pOwner(nullptr), m_dAliveTime(0.)
+	: m_fDamage(0.), m_pOwner(nullptr), m_dAliveTime(0.), m_bWallCol(false)
 {
 	ZeroMemory(&m_vCellSize, sizeof(VEC));
-	ZeroMemory(&m_vDir, sizeof(VEC));
+	ZeroMemory(&m_vWallNormal, sizeof(VEC));
 }
 
 CBullet::~CBullet()
@@ -33,6 +33,7 @@ void CBullet::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Bullet/MagicBulletBig.png", L"MagicBulletBig");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Bullet/FireBullet.png", L"FireBullet");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Bullet/AirBullet.png", L"AirBullet");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Bullet/ShieldBullet.png", L"ShieldBullet");
 }
 
 int CBullet::Update()
@@ -57,7 +58,7 @@ int CBullet::Update()
 
 void CBullet::LateUpdate()
 {
-
+	HandleCollision();
 }
 
 void CBullet::Render(Graphics* pGraphics)
@@ -112,13 +113,18 @@ void CBullet::UpdateTime()
 
 	if (m_dAliveTime <= 0)
 		m_bDead = true;
+
+	if (!lstrcmp(m_pFrameKey, L"ShieldBullet"))
+	{
+
+	}
 }
 
 void CBullet::UpdateInfo()
 {
 	if (!lstrcmp(m_pFrameKey, L"MagicBullet"))
 	{
-		SetCellSize({7.f, 7.f});
+		SetCellSize({ 7.f, 7.f });
 		SetFrame(0, 4, 0, 0.1);
 	}
 	else if (!lstrcmp(m_pFrameKey, L"MagicBulletBig"))
@@ -136,6 +142,16 @@ void CBullet::UpdateInfo()
 		SetCellSize({ 16.f, 6.f });
 		SetFrame(0, 3, 0, 0.1);
 	}
+	else if (!lstrcmp(m_pFrameKey, L"ShieldBullet"))
+	{
+		SetCellSize({ 20.f, 20.f });
+		SetFrame(0, 7, 0, 0.05);
+	}
+	else
+		return; 
+
+
+	m_tInfo.vSize = m_vCellSize * PIXEL_SCALE;
 }
 
 void CBullet::Move()
@@ -159,4 +175,25 @@ void CBullet::CreateDisapperEffect()
 	{
 		CEffectMgr::GetInstance()->CreateEffect(L"AirBullet_Disapper_Effect", m_tInfo.vPoint, EFTMGR_FIXED | EFTMGR_IMAGE | EFTMGR_SCROLL, m_fAngle, 0.05f);
 	}
+	else if (!lstrcmp(m_pFrameKey, L"ShieldBullet"))
+	{
+		VEC vDir{ cosf(m_fAngle), sinf(m_fAngle) };
+		CEffectMgr::GetInstance()->CreateEffect(L"ShieldBullet_Disapper_Effect", m_tInfo.vPoint, EFTMGR_MOVE | EFTMGR_IMAGE | EFTMGR_SCROLL, 200.f, 0.05f, nullptr, vDir);
+	}
+}
+
+void CBullet::OnHitObj(CObj* pObj)
+{
+	bool bCritical =  (uniform_real_distribution<float>(0.f, 1.f)(g_engine) < m_pOwner->GetStat().fCriticalChange);
+	if (bCritical)
+		m_fDamage = static_cast<int>(m_fDamage * (1.f + m_pOwner->GetStat().fCriticalDamage));
+
+	pObj->HitDamage(m_fDamage, m_pOwner, HIT_SOURCE::BULLET, bCritical);
+	SetDead(true);
+}
+
+void CBullet::HandleCollision()
+{
+	if (m_bWallCol)
+		SetDead(true);
 }

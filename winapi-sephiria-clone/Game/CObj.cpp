@@ -4,6 +4,8 @@
 #include "CTimeMgr.h"
 #include "CEffectMgr.h"
 
+int CObj::s_iObjID = 0;
+
 CObj::CObj()
 	:
 	m_fSpeed(0.f),
@@ -16,13 +18,16 @@ CObj::CObj()
 	m_bHit(false),
 	m_dIframeTime(0.),
 	m_dHitElapseTime(0.),
-	m_bWallCollisionEnable(true)
+	m_bWallCollisionEnable(true),
+	m_iObjID(0)
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	ZeroMemory(&m_tRect, sizeof(RECT));
 	ZeroMemory(&m_tFrame, sizeof(FRAME));
 	ZeroMemory(&m_vPrePoint, sizeof(VEC));
 	ZeroMemory(&m_tStat, sizeof(STAT));
+
+	m_iObjID = s_iObjID++;
 }
 
 CObj::~CObj()

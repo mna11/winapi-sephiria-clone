@@ -2,6 +2,8 @@
 class CObj abstract
 {
 public:
+	static int s_iObjID;
+public:
 	CObj();
 	virtual ~CObj();
 
@@ -23,6 +25,7 @@ public:
 	const STAT&			GetStat()		const			{ return m_tStat; }
 	const vector<RECT>& GetAtkRectVec() const			{ return m_vecAtkRect; }
 	const vector<RECT>& GetDefRectVec() const			{ return m_vecDefRect; }
+	const int&			GetObjID() const { return m_iObjID; }
 	bool				GetDead() const { return m_bDead; }
 	bool GetWallCollisionEnable() const { return m_bWallCollisionEnable; }
 
@@ -82,5 +85,7 @@ protected:
 
 
 	bool m_bWallCollisionEnable; // 벽 충돌 처리 여부
+
+	int  m_iObjID;
 };
 

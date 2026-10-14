@@ -3,6 +3,7 @@
 
 #include "CNormalSwordAndShield.h"
 #include "CMagicStaffSwordAndShield.h"
+#include "CReturningGuardian.h"
 #include "CFishingRod.h"
 
 #include "CAbstractFactory.h"
@@ -97,6 +98,9 @@ void CWeaponController::ApplyChange()
 			m_iID = 1;
 			break;
 		case 2:
+			m_pWeapon = CAbstractFactory<CReturningGuardian>::CreateWeapon();
+			m_pWeapon->SetTarget(m_pTarget);
+			CObjMgr::GetInstance()->AddObject(OBJID::WEAPON, m_pWeapon);
 			m_iID = 2;
 			break;
 		case 3: // 일반 낚시대
