@@ -17,7 +17,7 @@ CGargoyle::CGargoyle()
 	: CState(GARGOYLE_STATE::END, GARGOYLE_STATE::SUMMON),
 	m_dStateTime(0.),
 	m_dSummonTime(0.),
-	m_dAtkTime(0.), m_dAtkCollisionTime(0.),
+	m_dAtkTime(0.), m_dAtkCollisionTime(0.), m_dAtkLateDelay(0.),
 	m_dDownTime(0.),
 	m_dFlyAtkTime(0.), m_dFlyAtkCycleTime(0.), m_dFlyAtkDownTime(0.), m_dFlyAtkCollisionTime(0.), m_dFlyAtkEndTime(0.),
 	m_bEffectCreate(false),
@@ -67,7 +67,8 @@ void CGargoyle::Initialize()
 	m_dSummonTime = 2.;
 	m_dDownTime = 1.;
 
-	m_dAtkTime = 1.;
+	m_dAtkTime = 0.8;
+	m_dAtkLateDelay = 1.5;
 	m_dAtkCollisionTime = m_dAtkTime / 8. * 5; // 6번째 프레임부터 공격한다.
 
 	m_dFlyAtkTime = 2.3;    
@@ -137,10 +138,20 @@ void CGargoyle::Render(Graphics* pGraphics)
 	VEC vCellSize{ 41.f, 40.f };
 	VEC vImgSize = vCellSize * PIXEL_SCALE;
 
-	RectF rcDest{ m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + vScroll.fX,
-					m_tInfo.vPoint.fY - vImgSize.fY * 0.5f + vScroll.fY,
-					vImgSize.fX,
-					vImgSize.fY };
+	float fOffset(0.f);
+	if (m_bHit && m_dIframeTime > 0.)
+	{
+		// 살짝 위로 길어졌다가 돌아오기
+		float fRatio = clamp(static_cast<float>(m_dHitElapseTime / m_dIframeTime), 0.f, 1.f);
+		float fAmplitude = vCellSize.fY * 0.5f * PIXEL_SCALE;
+		float fDecay = (1.f - fRatio) * (1.f - fRatio);
+
+		fOffset = -fAmplitude * sinf(fRatio * PI) * fDecay;
+	}
+	RectF rcDest{ m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + vScroll.fX - fOffset * 0.5f,
+					m_tInfo.vPoint.fY - vImgSize.fY * 0.5f + vScroll.fY + fOffset,
+					vImgSize.fX + fOffset,
+					vImgSize.fY - fOffset};
 
 	ImageAttributes* pImgAttr = m_bHit ? &m_imgAttrHit : nullptr;
 	pImgAttr = m_eCurState == GARGOYLE_STATE::DOWN ? &m_imgAttrDown : pImgAttr;
@@ -187,14 +198,21 @@ void CGargoyle::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritic
 	else
 		CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{255, 255, 255, 255});
 	
+
+	if (nullptr == m_pTarget)
+		return; 
+
+	VEC vDir = (pObj->GetInfo().vPoint - m_tInfo.vPoint).Normalize();
+	float fTargetAngle = atan2f(vDir.fY, vDir.fX);
+
 	// 사운드
 	switch (eHit)
 	{
 	case HIT_SOURCE::SLASH:
-		CSoundMgr::GetInstance()->PlaySound(L"HitSword02.wav", CHANNEL_GROUPID::SFX, 1.f);
+		CEffectMgr::GetInstance()->CreateEffect(L"Attack_Slash", m_tInfo.vPoint, 0, fTargetAngle, 0.05);
 		break;
 	case HIT_SOURCE::BULLET:
-		CSoundMgr::GetInstance()->PlaySound(L"HitMagicFire02.wav", CHANNEL_GROUPID::SFX, 1.f);
+		CEffectMgr::GetInstance()->CreateEffect(L"Attack_Bullet", m_tInfo.vPoint, 0, fTargetAngle, 0.05);
 		break;
 	}
 }
@@ -220,18 +238,6 @@ void CGargoyle::ApplyChange()
 		case GARGOYLE_STATE::FLY_ATK:
 			SetFrame(0, 3, 4, m_dFlyAtkCycleTime / 4.f);
 			break;
-		/*case GARGOYLE_STATE::FLY_READY:
-			SetFrame(0, 3, 4, 0.2);
-			break;
-		case GARGOYLE_STATE::FLY_CYCLE:
-			SetFrame(0, 5, 5, 0.2);
-			break;
-		case GARGOYLE_STATE::FLY_DOWN:
-			SetFrame(0, 1, 6, 0.2);
-			break;
-		case GARGOYLE_STATE::FLY_END:
-			SetFrame(0, 3, 7, 0.2);
-			break;*/
 		case GARGOYLE_STATE::AIR:
 			SetFrame(0, 0, 8, 1.0);
 			break;
@@ -282,11 +288,15 @@ void CGargoyle::UpdateTime()
 	case GARGOYLE_STATE::ATK:
 		if (m_dStateTime >= m_dAtkTime)
 		{
-			m_eNextState = GARGOYLE_STATE::IDLE;
-
 			SetRect(&m_vecAtkRect[toUType(GARGOYLE_ATK_RECT::ATK)], 0, 0, 0, 0);
+			if (m_tFrame.iMotion != 1)
+				SetFrame(0, 5, 1, 0.2);
 			m_vAtkDir = { 0.f, 0.f };
 		}
+
+		if (m_dStateTime >= m_dAtkLateDelay)
+			m_eNextState = GARGOYLE_STATE::IDLE;
+
 		break;
 	case GARGOYLE_STATE::FLY_ATK:
 		if (m_dStateTime >= m_dFlyAtkTime)
@@ -338,7 +348,7 @@ void CGargoyle::Move()
 		return;
 
 	VEC vDir = (m_pTarget->GetInfo().vPoint - m_tInfo.vPoint).Normalize();
-	if (m_eCurState != GARGOYLE_STATE::ATK)
+	if (m_eCurState != GARGOYLE_STATE::ATK && m_eNextState != GARGOYLE_STATE::ATK)
 	{
 		if (vDir.fX <= 0) m_pFrameKey = L"Gargoyle_L";
 		else m_pFrameKey = L"Gargoyle_R";
@@ -359,7 +369,7 @@ void CGargoyle::Move()
 		if (m_vAtkDir.fX == 0.f && m_vAtkDir.fY == 0.f)
 			m_vAtkDir = vDir;
 		
-		if (m_dStateTime >= m_dAtkCollisionTime)
+		if (m_dStateTime >= m_dAtkCollisionTime && m_dStateTime < m_dAtkTime)
 			m_tInfo.vPoint += m_vAtkDir * m_fSpeed * 3 * DT;
 	}
 
@@ -387,7 +397,7 @@ void CGargoyle::Attack()
 	if (m_eCurState == GARGOYLE_STATE::ATK)
 	{
 		// 공격 충돌 박스 활성화
-		if (m_dStateTime >= m_dAtkCollisionTime)
+		if (m_dStateTime >= m_dAtkCollisionTime && m_dStateTime < m_dAtkTime)
 		{
 			float fDistance = 50.f;
 			float fDirAngle = atan2f(m_vAtkDir.fY, m_vAtkDir.fX);
@@ -409,7 +419,7 @@ void CGargoyle::Attack()
 	// 공중 공격
 	else if (m_eCurState == GARGOYLE_STATE::FLY_ATK)
 	{
-		if (m_dStateTime >= m_dFlyAtkCycleTime)
+		if (m_dStateTime >= m_dFlyAtkCycleTime && m_dStateTime < m_dFlyAtkEndTime)
 		{
 			if (!m_bEffectCreate)
 			{

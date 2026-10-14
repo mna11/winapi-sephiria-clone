@@ -5,6 +5,7 @@
 #include "CBaba.h"
 #include "CGargoyle.h"
 #include "CGolemCow.h"
+#include "CFluffy.h"
 #include "CSephirite.h"
 #include "CAnvil.h"
 
@@ -146,8 +147,8 @@ void CStage1::SpawnMonster(int iRoomIdx)
 	{
 	case 0:
 		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(600, 4279));
-		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(1000, 4279));
-		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGolemCow>::CreateObj(1300, 4279));
+		//CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CFluffy>::CreateObj(1000, 4279));
+		//CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGolemCow>::CreateObj(1300, 4279));
 		break;
 	case 1:
 		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(2300, 3900));

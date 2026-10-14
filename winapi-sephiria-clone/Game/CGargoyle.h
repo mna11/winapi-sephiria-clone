@@ -49,6 +49,7 @@ private:
 
     double  m_dAtkTime;             // 일반 공격하는데 걸리는 총 시간
     double  m_dAtkCollisionTime;    // 공격할 때, 공격 활성화되는 시작 시간
+    double  m_dAtkLateDelay;        // 후딜레이
     double  m_dDownTime;            // 죽는 시간
 
     double  m_dFlyAtkTime;          // 공중 공격하는데 걸리는 총 시간
