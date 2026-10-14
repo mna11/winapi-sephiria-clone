@@ -200,6 +200,9 @@
     <ClInclude Include="CObjMgr.h" />
     <ClInclude Include="CDrop.h" />
     <ClInclude Include="CPlayer.h" />
+    <ClInclude Include="CPotion.h" />
+    <ClInclude Include="CPotionData.h" />
+    <ClInclude Include="CPotionToolTip.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneMgr.h" />
     <ClInclude Include="CSephirite.h" />
@@ -301,6 +304,9 @@
     <ClCompile Include="CObjMgr.cpp" />
     <ClCompile Include="CDrop.cpp" />
     <ClCompile Include="CPlayer.cpp" />
+    <ClCompile Include="CPotion.cpp" />
+    <ClCompile Include="CPotionData.cpp" />
+    <ClCompile Include="CPotionToolTip.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneMgr.cpp" />
     <ClCompile Include="CSephirite.cpp" />

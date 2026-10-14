@@ -19,6 +19,7 @@ public:
 
 public:
     const float& GetGauge() const { return m_fCatchGauge; }
+    const bool&  GetIsCol() const { return m_bIsCol; }
 
 private:
     void UpdateTime();
@@ -53,5 +54,7 @@ private:
     bool        m_bFishChangeMove;              // 이번 프레임에 물고기가 방향과 속도를 바꿔야하는지 여부
 
     ImageAttributes m_imgAttrAlpha;             // Panel 반투명
+
+    bool        m_bIsCol;                         // Fish와 Net이 충돌하고 있는지 여부
 };
 

@@ -12,6 +12,7 @@
 
 #include "CArtifactData.h"
 #include "CStoneTabletData.h"
+#include "CPotionData.h"
 
 #include "CImgMgr.h"
 #include "CObjMgr.h"
@@ -79,6 +80,7 @@ int CInventoryUI::Update()
 		if (pItemInfo.eItemType == ITEM_TYPE::ARTIFACT)
 		{
 			CUIMgr::GetInstance()->HideUI(UIID::STONE_TABLET_TOOLTIP);
+			CUIMgr::GetInstance()->HideUI(UIID::POTION_TOOLTIP);
 
 			CUIMgr::GetInstance()->ShowUI(UIID::ARTIFACT_TOOLTIP);
 			CUIMgr::GetInstance()->SetPos(UIID::ARTIFACT_TOOLTIP, VEC{ 210.f, 200.f });
@@ -86,10 +88,20 @@ int CInventoryUI::Update()
 		else if (pItemInfo.eItemType == ITEM_TYPE::STONE_TABLET)
 		{
 			CUIMgr::GetInstance()->HideUI(UIID::ARTIFACT_TOOLTIP);
+			CUIMgr::GetInstance()->HideUI(UIID::POTION_TOOLTIP);
 
 			CUIMgr::GetInstance()->ShowUI(UIID::STONE_TABLET_TOOLTIP);
 			CUIMgr::GetInstance()->SetPos(UIID::STONE_TABLET_TOOLTIP, VEC{ 210.f, 200.f });
 		}
+		else if (pItemInfo.eItemType == ITEM_TYPE::POTION)
+		{
+			CUIMgr::GetInstance()->HideUI(UIID::ARTIFACT_TOOLTIP);
+			CUIMgr::GetInstance()->HideUI(UIID::STONE_TABLET_TOOLTIP);
+
+			CUIMgr::GetInstance()->ShowUI(UIID::POTION_TOOLTIP);
+			CUIMgr::GetInstance()->SetPos(UIID::POTION_TOOLTIP, VEC{ 210.f, 200.f });
+		}
+		
 	}
 	else if (m_pMouse->GetHoverReferItem().eItemSource == ITEM_SOURCE::INVENTORY)
 	{
@@ -100,6 +112,10 @@ int CInventoryUI::Update()
 		else if (m_pMouse->GetHoverReferItem().eItemType == ITEM_TYPE::STONE_TABLET)
 		{
 			CUIMgr::GetInstance()->HideUI(UIID::STONE_TABLET_TOOLTIP);
+		}
+		else if (m_pMouse->GetHoverReferItem().eItemType == ITEM_TYPE::POTION)
+		{
+			CUIMgr::GetInstance()->HideUI(UIID::POTION_TOOLTIP);
 		}
 
 		m_pMouse->SetHoverReferItem({ -1, ITEM_TYPE::END, ITEM_SOURCE::END });

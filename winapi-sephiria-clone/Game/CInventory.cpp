@@ -4,6 +4,7 @@
 #include "CPlayer.h"
 
 #include "CArtifact.h"
+#include "CPotion.h"
 #include "CStoneTablet.h"
 
 #include "CAbstractFactory.h"
@@ -39,6 +40,11 @@ void CInventory::Initialize()
 		{
 			InsertItem(i, i, ITEM_TYPE::STONE_TABLET);
 		}
+
+		if (i < 3)
+		{
+			InsertItem(i, i, ITEM_TYPE::POTION);
+		}
 	}
 }
 
@@ -60,6 +66,24 @@ bool CInventory::InsertItem(int iIdx, int iID, ITEM_TYPE eItemType)
 	if (nullptr == m_pOwner)
 		return false;
 
+	// 포션은 중첩이 있어서 먼저 검사 후 넣음
+	if (eItemType == ITEM_TYPE::POTION)
+	{
+		int iAlreadyItemIdx = FindItem(iID, eItemType);
+
+		if (iAlreadyItemIdx != -1)
+		{
+			CPotion* pPotion = static_cast<CPotion*>(m_vecItems[iAlreadyItemIdx]);
+			const POTION_INFO* pPotionInfo = pPotion->GetPotionInfo();
+			if (nullptr == pPotionInfo || pPotion->GetHave() >= pPotionInfo->iMaxHave)
+				return false;
+
+			pPotion->AddHave(1);
+			return true;
+		}
+	}
+
+
 	if (nullptr == m_vecItems[iIdx])
 	{
 		switch (eItemType)
@@ -70,6 +94,10 @@ bool CInventory::InsertItem(int iIdx, int iID, ITEM_TYPE eItemType)
 			break;
 		case ITEM_TYPE::STONE_TABLET:
 			m_vecItems[iIdx] = CAbstractFactory<CStoneTablet>::CreateItem(iID, m_pOwner, eItemType);
+			break;
+		case ITEM_TYPE::POTION:
+			m_vecItems[iIdx] = CAbstractFactory<CPotion>::CreateItem(iID, m_pOwner, eItemType);
+			static_cast<CPotion*>(m_vecItems[iIdx])->SetHave(1);
 			break;
 		default:
 			return false;
@@ -94,6 +122,10 @@ bool CInventory::InsertItem(int iIdx, int iID, ITEM_TYPE eItemType)
 				case ITEM_TYPE::STONE_TABLET:
 					m_vecItems[i] = CAbstractFactory<CStoneTablet>::CreateItem(iID, m_pOwner, eItemType);
 					break;
+				case ITEM_TYPE::POTION:
+					m_vecItems[iIdx] = CAbstractFactory<CPotion>::CreateItem(iID, m_pOwner, eItemType);
+					static_cast<CPotion*>(m_vecItems[iIdx])->SetHave(1);
+					break;
 				default:
 					return false;
 					break;
@@ -110,7 +142,7 @@ bool CInventory::InsertItem(int iIdx, int iID, ITEM_TYPE eItemType)
 
 void CInventory::EraseItem(int iIdx)
 {
-	if (nullptr != m_vecItems[iIdx])
+	if (nullptr != m_vecItems[iIdx] && m_vecItems[iIdx]->GetItemType() == ITEM_TYPE::ARTIFACT)
 		m_pOwner->AddStat(m_vecItems[iIdx]->GetStat() * -1);
 	SafeDelete<CItem*>(m_vecItems[iIdx]);
 	m_vecItems[iIdx] = nullptr;
@@ -119,6 +151,18 @@ void CInventory::EraseItem(int iIdx)
 void CInventory::MoveItem(int iStartIdx, int iEndIdx)
 {
 	std::swap(m_vecItems[iStartIdx], m_vecItems[iEndIdx]);
+}
+
+int CInventory::FindItem(int iID, ITEM_TYPE eItemType)
+{
+	auto iter = find_if(m_vecItems.begin(), m_vecItems.end(), [iID, eItemType]( const CItem* pItem ) {
+		return (nullptr != pItem && pItem->GetItemID() == iID && pItem->GetItemType() == eItemType);
+	});
+
+	if (iter == m_vecItems.end())
+		return -1;
+	else
+		return static_cast<int>(iter - m_vecItems.begin());
 }
 
 void CInventory::UpdateLevel()

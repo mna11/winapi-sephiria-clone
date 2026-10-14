@@ -13,6 +13,7 @@
 #include "CInventoryUI.h"
 #include "CArtifactToolTip.h"
 #include "CStoneTabletToolTip.h"
+#include "CPotionToolTip.h"
 #include "CShopTable.h"
 #include "CMsgBox.h"
 #include "CLevelUp.h"
@@ -59,6 +60,7 @@ void CUIMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/ArtifactToolTip/ArtifactToolTip_Base.png", L"ArtifactToolTip_Base");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/StoneTabletToolTip/StoneTabletToolTip_Base.png", L"StoneTabletToolTip_Base");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/StoneTabletToolTip/StoneTabletToolTip_Slot.png", L"StoneTabletToolTip_Slot");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/PotionToolTip/PotionTooltip_Base.png", L"PotionTooltip_Base");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Shop/ShopListBase.png", L"ShopList");
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Shop/ShopListSlot.png", L"ShopListSlot");
@@ -111,6 +113,8 @@ void CUIMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Playing/FishingCatchBar.png", L"Fishing_Playing_Net");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Playing/FishingFish_0.png", L"Fishing_Playing_Fish");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Playing/FishingProgressFill.png", L"Fishing_Playing_Progress_Fill");
+
+	
 }
 
 CUI* CUIMgr::ShowUI(UIID eID)
@@ -258,6 +262,9 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		break;
 	case UIID::STONE_TABLET_TOOLTIP:
 		pUI = CAbstractFactory<CStoneTabletToolTIp>::CreateUI(m_pMouse);
+		break;
+	case UIID::POTION_TOOLTIP:
+		pUI = CAbstractFactory<CPotionToolTip>::CreateUI(m_pMouse);
 		break;
 	case UIID::SHOP_TABLE:
 		pUI = CAbstractFactory<CShopTable>::CreateUI(m_pMouse);

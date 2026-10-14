@@ -37,10 +37,18 @@ public:
     void Toggle() override;
 
 public:
+    void UpdateTime();
     void ApplyChange() override;
 
 private:
-    CPlayer*            m_pPlayer;
-    CFishingRodUI*      m_pRodUI;
-    CFishingPlayingUI*  m_pPlayingUI;
+    CPlayer*            m_pPlayer;      // 게임 플레이어
+    CFishingRodUI*      m_pRodUI;       // 낚시대 UI
+    CFishingPlayingUI*  m_pPlayingUI;   // 게임 플레이 UI
+
+    double m_dCatchElapseTime;  // 물고기 잡기 시도 후 걸린 시간
+    double m_dCatchInterval;    // 물고기 잡기 시도 인터벌
+    float m_fCatchProb;         // 물고기 잡기 확률
+
+    double m_dNotColElapseTime; // NotColTime
+    double m_dNotColJudTime;    // NotCol판단
 };

@@ -193,12 +193,6 @@ void CStage3::HandleCollisionFishingSpot()
 			pKeyGuide->SetFollow(true);
 			pKeyGuide->SetKeyGuideInfo(VK_LBUTTON, L"낚시", { 0.f, -pPlayer->GetInfo().vSize.fY * 1.5f }, { 28.f, 10.f });
 		}
-
-		if (KEY_DOWN(VK_LBUTTON))
-		{
-			pKeyGuide->HideGuide(pPlayer);
-			pFishingUI->RequestChange(FISHING_STATE::PLAYING);
-		}
 	}
 	else
 	{

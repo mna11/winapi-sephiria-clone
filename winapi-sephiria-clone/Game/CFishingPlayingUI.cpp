@@ -8,7 +8,8 @@
 
 CFishingPlayingUI::CFishingPlayingUI()
 	: m_fCatchGauge(0.f), m_fFishSpeed(0.f), m_fNetSpeed(0.f),
-	m_dFishChangeMoveElapseTime(0.), m_dFishChangeMoveInterval(0.), m_bFishChangeMove(true)
+	m_dFishChangeMoveElapseTime(0.), m_dFishChangeMoveInterval(0.), m_bFishChangeMove(true),
+	m_bIsCol(false)
 {
 	ZeroMemory(&m_rcFish, sizeof(RECT));
 	ZeroMemory(&m_rcNet, sizeof(RECT));
@@ -322,7 +323,7 @@ void CFishingPlayingUI::UpdateNetRect()
 void CFishingPlayingUI::HandleCollision()
 {
 	float fGaugeInc = 15.f * DT;
-	if (CCollisionMgr::CollisionRect(m_rcFish, m_rcNet))
+	if (m_bIsCol = CCollisionMgr::CollisionRect(m_rcFish, m_rcNet))
 		m_fCatchGauge = clamp(m_fCatchGauge + fGaugeInc, 0.f, 100.f);
 	else
 		m_fCatchGauge = clamp(m_fCatchGauge - fGaugeInc * 0.8f, 0.f, 100.f);

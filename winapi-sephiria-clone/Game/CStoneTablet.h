@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 #include "CItem.h"
 #include "CStoneTabletData.h"
 
@@ -16,13 +16,12 @@ public:
     void Release() override;
 
 public:
-    ITEM_INFO                   GetItemInfo() override      { return ITEM_INFO{ m_iID, ITEM_TYPE::STONE_TABLET, CStoneTabletData::GetInstance()->FindStoneTabletInfo(m_iID)->strName, CStoneTabletData::GetInstance()->FindStoneTabletInfo(m_iID)->strImg, CStoneTabletData::GetInstance()->FindStoneTabletInfo(m_iID)->iLeaf }; }
+    ITEM_INFO                   GetItemInfo() override      { return CStoneTabletData::GetInstance()->FindItemInfo(m_iID); }
     const STONE_TABLET_INFO*    GetStoneTabletInfo() const  { return CStoneTabletData::GetInstance()->FindStoneTabletInfo(m_iID); }
+public:
+    void InitializeData(int iID, ITEM_TYPE eType) override;
 
 private:
     vector<pair<int, int>>  m_vecRelativePos;
-
-    // CItem¿ª(∏¶) ≈Î«ÿ ªÛº”µ 
-    void InitializeData(int iID, ITEM_TYPE eType) override;
 };
 

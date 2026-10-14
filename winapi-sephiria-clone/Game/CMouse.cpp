@@ -10,6 +10,7 @@
 
 #include "CArtifactData.h"
 #include "CStoneTabletData.h"
+#include "CPotionData.h"
 
 CMouse::CMouse()
 	: CState(MOUSE_STATE::END, MOUSE_STATE::COMBAT),
@@ -82,6 +83,9 @@ void CMouse::Render(Graphics* pGraphics)
 			break;
 		case ITEM_TYPE::STONE_TABLET:
 			tItemInfo = CStoneTabletData::GetInstance()->FindItemInfo(m_tDragReferItem.iID);
+			break;
+		case ITEM_TYPE::POTION:
+			tItemInfo = CPotionData::GetInstance()->FindItemInfo(m_tDragReferItem.iID);
 			break;
 		default:
 			break;

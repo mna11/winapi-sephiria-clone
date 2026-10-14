@@ -112,7 +112,7 @@ void CFishingRodUI::ApplyChange()
     switch (m_eNextState)
     {
     case FISHING_ROD_STATE::PREPARE_CAST:
-        SetFrame(0, 5, 0, 0.1);
+        SetFrame(0, 5, 0, 0.08);
         break;
 
     case FISHING_ROD_STATE::CASTING:
@@ -120,26 +120,26 @@ void CFishingRodUI::ApplyChange()
         break;
 
     case FISHING_ROD_STATE::IDLE_OUT_WATER:
-        SetFrame(0, 3, 2, 0.15);
+        SetFrame(0, 3, 2, 0.2);
         m_bLoop = true;
         break;
 
     case FISHING_ROD_STATE::IDLE_IN_WATER:
-        SetFrame(0, 3, 3, 0.15);
+        SetFrame(0, 1, 3, 0.2);
         m_bLoop = true;
         break;
 
     case FISHING_ROD_STATE::HOOK_SET:
-        SetFrame(0, 4, 4, 0.08);
+        SetFrame(0, 4, 4, 0.2);
         break;
 
     case FISHING_ROD_STATE::REELING:
-        SetFrame(0, 4, 5, 0.1);
+        SetFrame(0, 4, 5, 0.2);
         m_bLoop = true;
         break;
 
     case FISHING_ROD_STATE::CAUGHT:
-        SetFrame(0, 2, 6, 0.12);
+        SetFrame(0, 2, 6, 0.2);
         break;
 
     default:
@@ -158,6 +158,14 @@ void CFishingRodUI::UpdateTime()
             RequestChange(FISHING_ROD_STATE::CASTING);
         break;
     case FISHING_ROD_STATE::CASTING:
+        if (m_bAnimationFinished)
+            RequestChange(FISHING_ROD_STATE::IDLE_IN_WATER);
+        break;
+    case FISHING_ROD_STATE::HOOK_SET:
+        if (m_bAnimationFinished)
+            RequestChange(FISHING_ROD_STATE::REELING);
+        break;
+    case FISHING_ROD_STATE::CAUGHT:
         if (m_bAnimationFinished)
             RequestChange(FISHING_ROD_STATE::IDLE_OUT_WATER);
         break;

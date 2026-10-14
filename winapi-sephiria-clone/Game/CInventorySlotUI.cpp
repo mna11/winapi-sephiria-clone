@@ -3,6 +3,7 @@
 #include "CItem.h"
 
 #include "CArtifact.h"
+#include "CPotion.h"
 
 #include "CImgMgr.h"
 #include "CFontMgr.h"
@@ -125,11 +126,27 @@ void CInventorySlotUI::Render(Graphics* pGraphics)
 
 			return;
 		}
+
+		// 포션 소지 개수 / 최대 개수
+		if (m_pItem->GetItemType() == ITEM_TYPE::POTION)
+		{
+			// 아이템 레벨 그리기
+			int iMaxHave = static_cast<CPotion*>(m_pItem)->GetPotionInfo()->iMaxHave;
+			int iHave = static_cast<CPotion*>(m_pItem)->GetHave();
+			wstring strHave = to_wstring(iHave) + L"/" + to_wstring(iMaxHave);
+			VEC vOffset{ -3.f * m_fUIScale, -3.f * m_fUIScale };
+			RectF DestRect{ m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + vOffset.fX,
+							m_tInfo.vPoint.fY - vImgSize.fX * 0.5f + vOffset.fY,
+							vImgSize.fX, vImgSize.fY };
+
+			CFontMgr::GetInstance()->DrawString(pGraphics, strHave, FONT_TYPE::PIXEL_SMALL, DestRect, {255, 255, 255, 255}, 12.f, StringAlignmentFar, StringAlignmentFar);
+		}
 	}
 
 	if (0 == m_iSlotLevel)
 		return;
-		
+	
+	// 빈칸이나, 포션류, 석판류의 왼쪽 상단에 표시되는 레벨
 	wstring strLevel{};
 	Color   levelColor{};
 

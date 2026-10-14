@@ -65,7 +65,7 @@ class CButton;
 
 enum class OBJID	{ PLAYER, PLAYER_BULLET, MONSTER, MONSTER_BULLET, NPC, FIELD_ITEM, DROP, MOUSE, WEAPON, EFFECT, UI, CAMERA, END };
 enum class RENDERID	{ PRIORITY, GAMEOBJECT, EFFECT, UI, CAMERA, MOUSE, END };
-enum class UIID		{ BASIC_INFO, LEVEL_UP, BOSS_HP, INVENTORY, ARTIFACT_TOOLTIP, STONE_TABLET_TOOLTIP, SHOP_TABLE, MSG_BOX, BUTTON, ITEM_SELECT, FORGE, STAGE_CHANGE, STAT, FADE, LETTER_BOX, SPEECH_BUBBLE, FISHING, KEY_GUIDE, END };
+enum class UIID		{ BASIC_INFO, LEVEL_UP, BOSS_HP, INVENTORY, ARTIFACT_TOOLTIP, STONE_TABLET_TOOLTIP, POTION_TOOLTIP, SHOP_TABLE, MSG_BOX, BUTTON, ITEM_SELECT, FORGE, STAGE_CHANGE, STAT, FADE, LETTER_BOX, SPEECH_BUBBLE, FISHING, KEY_GUIDE, END };
 enum class SCENEID	{ START, LIB_LOADING, SHOP, FORGE, STAGE_TEST, STAGE0, STAGE1, STAGE2, STAGE3, BOSS_STAGE, END };
 
 enum class KEY_STATE { NONE, DOWN, HOLD, UP, END };
@@ -362,6 +362,17 @@ typedef struct tagStoneTabletInfo
 	int											iLeaf;			// 가격
 } STONE_TABLET_INFO;
 
+// 포션 정보
+typedef struct tagPotionInfo
+{
+	int							iID;				// 아이템 아이디
+	std::wstring				strImg;				// 포션 이미지 프레임 키
+	std::wstring				strName;			// 포션 이름
+	std::vector<std::wstring>	vecStrDescription;	// 포션 설명
+	tagStat						tStat;				// 포션 스텟
+	int							iMaxHave;			// 최대 보유 개수
+	int							iLeaf;				// 가격
+} POTION_INFO;
 
 typedef struct tagWeaponInfo
 {

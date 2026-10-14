@@ -322,6 +322,15 @@
     <Filter Include="01. Obj\06. UI\15. Fishing\01. FishingPlayingUI">
       <UniqueIdentifier>{debada62-2dde-416c-9868-92160d91c0cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\07. Item\02. Potion">
+      <UniqueIdentifier>{bf6fda55-d655-4dfc-8c58-4a644b45e3a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Data\03. PotionData">
+      <UniqueIdentifier>{71d3366a-a347-4ca9-8a75-a3d5a1a7d59b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\03. ToolTip\02. PotionToolTip">
+      <UniqueIdentifier>{6a5a7c1c-eba5-4971-a887-d223fd4249a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -627,6 +636,15 @@
     <ClInclude Include="CKeyGuide.h">
       <Filter>01. Obj\06. UI\16. KeyGuide</Filter>
     </ClInclude>
+    <ClInclude Include="CPotion.h">
+      <Filter>01. Obj\07. Item\02. Potion</Filter>
+    </ClInclude>
+    <ClInclude Include="CPotionData.h">
+      <Filter>06. Data\03. PotionData</Filter>
+    </ClInclude>
+    <ClInclude Include="CPotionToolTip.h">
+      <Filter>01. Obj\06. UI\03. ToolTip\02. PotionToolTip</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -916,6 +934,15 @@
     </ClCompile>
     <ClCompile Include="CKeyGuide.cpp">
       <Filter>01. Obj\06. UI\16. KeyGuide</Filter>
+    </ClCompile>
+    <ClCompile Include="CPotion.cpp">
+      <Filter>01. Obj\07. Item\02. Potion</Filter>
+    </ClCompile>
+    <ClCompile Include="CPotionData.cpp">
+      <Filter>06. Data\03. PotionData</Filter>
+    </ClCompile>
+    <ClCompile Include="CPotionToolTip.cpp">
+      <Filter>01. Obj\06. UI\03. ToolTip\02. PotionToolTip</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
