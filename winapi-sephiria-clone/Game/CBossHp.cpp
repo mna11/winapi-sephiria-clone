@@ -83,7 +83,7 @@ void CBossHp::Render(Graphics* pGraphics)
 	// 플레이어 스탯 정보 받아오기
 	const STAT& tPlayerStat = m_pTarget->GetStat();
 	// 텍스트 출력 string 설정
-	wstring strName = L"미친 과학자, 에르마";
+	wstring strName = L"실성한 과학자, \"에르마\"";
 
 	///////////////////////////////////// 그리기
 

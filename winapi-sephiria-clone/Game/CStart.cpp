@@ -152,6 +152,7 @@ void CStart::Init_CreateObj()
 		CSceneMgr::GetInstance()->RequestChange(SCENEID::LIB_LOADING);
 		m_pMouse->RequestChange(MOUSE_STATE::UI_IDLE);
 		CSoundMgr::GetInstance()->PlaySound(L"StartClick.wav", CHANNEL_GROUPID::SFX, 1.f);
+		CTimeMgr::GetInstance()->StartGame();
 	});
 
 	m_pExitBtn->SetOnClick([this]() {

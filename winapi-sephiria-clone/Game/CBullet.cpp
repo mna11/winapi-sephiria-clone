@@ -178,7 +178,7 @@ void CBullet::CreateDisapperEffect()
 	else if (!lstrcmp(m_pFrameKey, L"ShieldBullet"))
 	{
 		VEC vDir{ cosf(m_fAngle), sinf(m_fAngle) };
-		CEffectMgr::GetInstance()->CreateEffect(L"ShieldBullet_Disapper_Effect", m_tInfo.vPoint, EFTMGR_MOVE | EFTMGR_IMAGE | EFTMGR_SCROLL, 200.f, 0.05f, nullptr, vDir);
+		CEffectMgr::GetInstance()->CreateEffect(L"ShieldBullet_Disapper_Effect", m_tInfo.vPoint, EFTMGR_MOVE | EFTMGR_IMAGE | EFTMGR_SCROLL, 100.f, 0.05f, nullptr, vDir);
 	}
 }
 

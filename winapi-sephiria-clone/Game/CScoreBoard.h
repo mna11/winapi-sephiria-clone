@@ -1,5 +1,8 @@
-#pragma once
+﻿#pragma once
 #include "CScene.h"
+
+class CPlayer;
+
 class CScoreBoard :
     public CScene
 {
@@ -15,5 +18,6 @@ public:
     void Init_CreateObj() override;
 private:
     CButton* m_pRetryButton;
+    CPlayer* m_pPlayer;
 };
 

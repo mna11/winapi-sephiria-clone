@@ -173,7 +173,7 @@ void CGargoyle::Release()
 
 void CGargoyle::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-	if (m_bDead)
+	if (m_bDead || m_tStat.iHp <= 0)
 		return;
 
 	if (m_bHit && eHit != HIT_SOURCE::BULLET)
@@ -190,11 +190,12 @@ void CGargoyle::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritic
 	{
 		m_eNextState = GARGOYLE_STATE::DOWN;
 
-		float fExp = 20.f * pObj->GetStat().fExperienceDrop;
-		float fLeaf = 100.f * pObj->GetStat().fLeafDrop;
+		float fExp = 10.f * pObj->GetStat().fExperienceDrop;
+		float fLeaf = 70.f * pObj->GetStat().fLeafDrop;
 
 		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX - m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::EXP, fExp));
 		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX + m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::LEAF, fLeaf));
+		static_cast<CPlayer*>(pObj)->AddKill(1);
 	}
 
 	if (bCritical)

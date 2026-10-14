@@ -23,10 +23,11 @@ CPlayer::CPlayer()
 	m_bPlayerBehaviorEnable(true),
 	m_pInventory(nullptr),
 	m_iLeaf(1000),
-	m_iMaxExp(100), m_iExp(50), m_iLevelUp(0),
+	m_iMaxExp(100), m_iExp(0), m_iLevelUp(0),
 	m_iDice(3),
 	m_iLevel(1),
-	m_strName{}
+	m_strName{},
+	m_iKill(0)
 {
 }
 
@@ -63,8 +64,8 @@ void CPlayer::Initialize()
 
 	// 기본 스탯 초기화
 	m_tStat = {
-		200,				// HP
-		200,			    // MAX HP
+		75,				// HP
+		75,			    // MAX HP
 
 		20,				// 물리 공격력
 		20,				// 불 공격력

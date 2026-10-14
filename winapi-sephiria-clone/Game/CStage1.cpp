@@ -9,6 +9,7 @@
 #include "CSephirite.h"
 #include "CDummy.h"
 #include "CAnvil.h"
+#include "CInventoryUI.h"
 
 #include "CAbstractFactory.h"
 #include "CCollisionMgr.h"
@@ -124,10 +125,19 @@ void CStage1::Release()
 
 void CStage1::Init_CreateObj()
 {
-	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(360.f, 7600.f));
+	CPlayer* pPlayer = static_cast<CPlayer*>(CAbstractFactory<CPlayer>::CreateObj(360.f, 7600.f));
+	CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, pPlayer);
 	CObjMgr::GetInstance()->AddObject(OBJID::DUMMY, CAbstractFactory<CDummy>::CreateObj(1475.f, 6590.f));
-	
-	CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
+
+	CMouse* pMouse = CObjMgr::GetInstance()->GetMouse();
+	pMouse->SetHoverItem(nullptr);
+	pMouse->SetHoverReferItem({ -1, ITEM_TYPE::END, ITEM_SOURCE::END });
+	pMouse->SetDragReferItem({ -1, ITEM_TYPE::END, ITEM_SOURCE::END });
+
+	CInventoryUI* pInventoryUI = static_cast<CInventoryUI*>(CUIMgr::GetInstance()->GetUI(UIID::INVENTORY));
+	pInventoryUI->SetInventory(pPlayer->GetInventory());
+
+	CCameraMgr::GetInstance()->SetCameraTarget(pPlayer);
 }
 
 void CStage1::InitializeRooms()

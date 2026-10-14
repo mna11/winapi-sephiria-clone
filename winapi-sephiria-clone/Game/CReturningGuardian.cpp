@@ -85,8 +85,8 @@ void CReturningGuardian::ApplyChange()
 
 			float fBulletSpeed = 1000.f;
 			float fBulletAliveTime = 3.f;
-			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CPenetrationBullet>::CreateBullet(m_tInfo.vPoint, L"ShieldBullet", m_pTarget->GetAngle() + PI * 0.1f, fBulletSpeed, m_pTarget->GetStat().iPhysicalAtk * 1.25f, fBulletAliveTime, m_pTarget));
-			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CPenetrationBullet>::CreateBullet(m_tInfo.vPoint, L"ShieldBullet", m_pTarget->GetAngle() - PI * 0.1f, fBulletSpeed, m_pTarget->GetStat().iPhysicalAtk * 1.25f, fBulletAliveTime, m_pTarget));
+			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CPenetrationBullet>::CreateBullet(m_tInfo.vPoint, L"ShieldBullet", m_pTarget->GetAngle() + PI * 0.1f, fBulletSpeed, m_pTarget->GetStat().iPhysicalAtk * 0.4f, fBulletAliveTime, m_pTarget));
+			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CPenetrationBullet>::CreateBullet(m_tInfo.vPoint, L"ShieldBullet", m_pTarget->GetAngle() - PI * 0.1f, fBulletSpeed, m_pTarget->GetStat().iPhysicalAtk * 0.4f, fBulletAliveTime, m_pTarget));
 			CSoundMgr::GetInstance()->PlaySound(L"ShieldShoot.wav", CHANNEL_GROUPID::SFX, 1.f);
 			break;
 		}

@@ -42,6 +42,14 @@ public:
 	{
 		return GetTime(m_llStartCount);
 	}
+	double GetGameTime() const
+	{
+		return static_cast<double>(m_llGameEndTime.QuadPart - m_llGameStartTime.QuadPart) / static_cast<double>(m_llFrequncyCount.QuadPart);
+	}
+
+public:
+	void StartGame() { QueryPerformanceCounter(&m_llGameStartTime); }
+	void EndGame() { QueryPerformanceCounter(&m_llGameEndTime); }
 
 private:
 	static CTimeMgr* m_pInstance;
@@ -58,4 +66,7 @@ private:
 
 	double m_dDT;                    // 델타 타임 - 프레임 간 사이 시간
 	double m_dAcc;                   // 델타 타임을 누적하는 변수 - 1초 판단 근거
+
+	LARGE_INTEGER m_llGameStartTime; // 이번 게임 플레이 시작 틱
+	LARGE_INTEGER m_llGameEndTime;	 // 이번 게임 플레이 종료 틱
 };

@@ -46,6 +46,7 @@ public:
     const int&                  GetLevel()                  const { return m_iLevel; }
     const int&                  GetDice()                   const { return m_iDice; }
     const wstring&              GetName()           const { return m_strName; }
+    const int&                  GetKill()           const { return m_iKill; }
 
 public:
     void                        SetPlayerBehaviorEnable(bool bEnable) { m_bPlayerBehaviorEnable = bEnable; }
@@ -58,6 +59,7 @@ public:
     void                        AddDice(int iAmount); 
     void                        AddHp(int iAmount);
     void                        AddMp(int iAmount);
+    void                        AddKill(int iAmount) { m_iKill += iAmount; }
 public:
     void                        LevelUp();
 
@@ -119,5 +121,7 @@ private:
     void    PrintInfo();
     double  m_dPrintInterval = 3.;
 #endif // DEBUG 
+
+    int                 m_iKill;
 };
 

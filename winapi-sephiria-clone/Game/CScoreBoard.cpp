@@ -1,15 +1,19 @@
-#include "pch.h"
+Ôªø#include "pch.h"
 #include "CScoreBoard.h"
 
 #include "CPlayer.h"
 
+#include "CImgMgr.h"
 #include "CAbstractFactory.h"
 #include "CObjMgr.h"
+#include "CTimeMgr.h"
 #include "CSceneMgr.h"
+#include "CSoundMgr.h"
+#include "CCameraMgr.h"
 #include "CFontMgr.h"
 
 CScoreBoard::CScoreBoard()
-	: m_pRetryButton(nullptr)
+	: m_pRetryButton(nullptr), m_pPlayer(nullptr)
 {
 }
 
@@ -21,6 +25,8 @@ CScoreBoard::~CScoreBoard()
 void CScoreBoard::Initialize()
 {
 	Init_CreateObj();
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/ScoreBoard/GameEnd.png", L"GameEnd");
+	CSoundMgr::GetInstance()->PlaySound(L"GameClear.wav", CHANNEL_GROUPID::SFX, 1.f);
 }
 
 void CScoreBoard::Update()
@@ -35,7 +41,7 @@ void CScoreBoard::LateUpdate()
 
 void CScoreBoard::Render(Graphics* pGraphics)
 {
-	// πË∞Ê ∞À¡§ªˆ¿∏∑Œ ƒ•«œ±‚
+	// Î∞∞Í≤Ω Í≤ÄÏ†ïÏÉâÏúºÎ°ú Ïπ†ÌïòÍ∏∞
 	HDC hBackDC = pGraphics->GetHDC();
 
 	RECT rc{ 0, 0, WINCX, WINCY };
@@ -44,44 +50,99 @@ void CScoreBoard::Render(Graphics* pGraphics)
 	DeleteObject(brush);
 	pGraphics->ReleaseHDC(hBackDC);
 
-	// ≈¨∏ÆæÓ πÆ±∏ ∂ÁøÏ±‚
-	VEC vRectSize{ 200.f, 50.f };
-	VEC vOffset{ WINCX >> 1, WINCY >> 2 };
-	RectF DestRect{ vOffset.fX - vRectSize.fX * 0.5f, vOffset.fY - vRectSize.fY * 0.5f, vRectSize.fX, vRectSize.fY };
-	CFontMgr::GetInstance()->DrawString(pGraphics, L"≈¨∏ÆæÓ", FONT_TYPE::NORMAL, DestRect, { 255, 36, 191, 255 }, 32.f);
+	// GameEnd ÌîåÎ†àÏù¥Ïñ¥ Î∞±Í∑∏ÎùºÏö¥Îìú ÎùÑÏö∞Í∏∞
+	Image* pImg = CImgMgr::GetInstance()->FindImg(L"GameEnd");
+	if (nullptr == pImg)
+		return;
+	VEC vCellSize = { static_cast<float>(pImg->GetWidth()), static_cast<float>(pImg->GetHeight()) };
+	VEC vImgSize = vCellSize * PIXEL_SCALE;
+	VEC vOffset{ WINCX >> 1, WINCY >> 1 };
+	RectF DestRect{ vOffset.fX - vImgSize.fX * 0.5f, vOffset.fY - vImgSize.fY * 0.5f, vImgSize.fX, vImgSize.fY };
+	pGraphics->DrawImage(
+		pImg, DestRect,
+		0, 0, vCellSize.fX, vCellSize.fY,
+		UnitPixel
+	);
 
-	// ª˝¡∏ Ω√∞£ ∂ÁøÏ±‚
+	// ÌÅ¥Î¶¨Ïñ¥ Î¨∏Íµ¨ ÎùÑÏö∞Í∏∞
+	VEC vRectSize{ 200.f, 100.f };
+	vOffset = { WINCX >> 1, WINCY * 0.1f };
+	DestRect = { vOffset.fX - vRectSize.fX * 0.5f, vOffset.fY - vRectSize.fY * 0.5f, vRectSize.fX, vRectSize.fY };
+#ifdef _DEBUG
+	SolidBrush WhiteBrush(Color(255, 255, 255, 255));
+	pGraphics->FillRectangle(&WhiteBrush, DestRect);
+#endif // _DEBUG
+	CFontMgr::GetInstance()->DrawString(pGraphics, L"ÌÅ¥Î¶¨Ïñ¥", FONT_TYPE::NORMAL, DestRect, { 255, 36, 191, 255 }, 48.f);
 
-	// ¿Âº“ ∂ÁøÏ±‚
+	vOffset = { WINCX >> 1, WINCY * 0.7f };
+	vRectSize = { 500.f, 50.f };
+	float fGap = 50.f;
+	DestRect = { vOffset.fX - vRectSize.fX * 0.5f, vOffset.fY - vRectSize.fY * 0.5f, vRectSize.fX, vRectSize.fY };
 
-	// ∞°«— √— µ•πÃ¡ˆ
+	// ÏÉùÏ°¥ ÏãúÍ∞Ñ ÎùÑÏö∞Í∏∞
+	double dAliveTime = CTimeMgr::GetInstance()->GetGameTime();
+	wstring strTitle = L"ÏÉùÏ°¥ ÏãúÍ∞Ñ";
+	CFontMgr::GetInstance()->DrawString(pGraphics, strTitle, FONT_TYPE::NORMAL, DestRect, { 255, 255, 255, 255 }, 24.f, StringAlignmentNear);
+	int iTotalSec = static_cast<int>(dAliveTime);
+	int iHour = iTotalSec / 3600;
+	int iMinute = (iTotalSec % 3600) / 60;
+	int iSecond = iTotalSec % 60;
+	wstring strValue = format(L"{:02}:{:02}:{:02}", iHour, iMinute, iSecond);
+	CFontMgr::GetInstance()->DrawString(pGraphics, strValue, FONT_TYPE::NORMAL, DestRect, { 255, 255, 255, 255 }, 24.f, StringAlignmentFar);
 
-	// √≥ƒ°«— ∏ÛΩ∫≈Õ ºˆ
+	// Ï≤òÏπòÌïú Î™¨Ïä§ÌÑ∞ Ïàò
+	DestRect.Y += fGap;
+	strTitle = L"Ï≤òÏπòÌïú Î™¨Ïä§ÌÑ∞ Ïàò";
+	CFontMgr::GetInstance()->DrawString(pGraphics, strTitle, FONT_TYPE::NORMAL, DestRect, { 255, 255, 255, 255 }, 24.f, StringAlignmentNear);
+	strValue = to_wstring(m_pPlayer->GetKill());
+	CFontMgr::GetInstance()->DrawString(pGraphics, strValue, FONT_TYPE::NORMAL, DestRect, { 255, 255, 255, 255 }, 24.f, StringAlignmentFar);
+
+	// ÏµúÏ¢Ö Î¶¨ÌîÑ
+	DestRect.Y += fGap;
+	strTitle = L"ÏµúÏ¢Ö Î¶¨ÌîÑ";
+	CFontMgr::GetInstance()->DrawString(pGraphics, strTitle, FONT_TYPE::NORMAL, DestRect, { 255, 255, 255, 255 }, 24.f, StringAlignmentNear);
+	strValue = to_wstring(m_pPlayer->GetLeaf());
+	CFontMgr::GetInstance()->DrawString(pGraphics, strValue, FONT_TYPE::NORMAL, DestRect, { 255, 255, 255, 255 }, 24.f, StringAlignmentFar);
+
 
 	CObjMgr::GetInstance()->Render(pGraphics);
 }
 
 void CScoreBoard::Release()
 {
+	// Î≤ÑÌäº ÏÇ≠Ï†ú Í∑úÏπô
+	if (nullptr != m_pRetryButton)
+	{
+		m_pRetryButton->SetDead(true);
+		m_pRetryButton = nullptr;
+	}
 }
 
 void CScoreBoard::Init_CreateObj()
 {
-	if (nullptr == CObjMgr::GetInstance()->GetPlayer())
+	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
+	if (nullptr == pPlayer)
 	{
-		CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(WINCX, WINCY));
+		pPlayer = static_cast<CPlayer*>(CAbstractFactory<CPlayer>::CreateObj(WINCX >> 1, WINCY >> 1));
+		CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, pPlayer);
 	}
 	else
-		CObjMgr::GetInstance()->GetPlayer()->SetPos({ WINCX, WINCY });
+		pPlayer->SetPos({ WINCX >> 1, WINCY >> 1 });
 
-	// πˆ∆∞ µÓ∑œ
+	pPlayer->SetPlayerBehaviorEnable(false);
+	m_pPlayer = pPlayer;
+
+	VEC vButtonPoint{ WINCX >> 1, WINCY * 0.93f };
+	VEC vButtonSize{ 260.f, 70.f };
+	RectF DestRect{ vButtonPoint.fX - vButtonSize.fX * 0.5f, vButtonPoint.fY - vButtonSize.fY * 0.5f, vButtonSize.fX, vButtonSize.fY };
+	// Î≤ÑÌäº Îì±Î°ù
 	m_pRetryButton = CAbstractFactory<CButton>::CreateButton(
 		CObjMgr::GetInstance()->GetMouse(),
-		RectF{ WINCX >> 1, WINCY - WINCY >> 2, 21.f * PIXEL_SCALE * 0.5f, 33.f * PIXEL_SCALE * 0.5f },
-		L"µπæ∆∞°±‚"
+		DestRect,
+		L"ÏãúÏûë ÌôîÎ©¥ÏúºÎ°ú ÎèåÏïÑÍ∞ÄÍ∏∞"
 	);
 
-	// πˆ∆∞ «‘ºˆ µÓ∑œ
+	// Î≤ÑÌäº Ìï®Ïàò Îì±Î°ù
 	m_pRetryButton->SetOnClick([this]() {
 		CSceneMgr::GetInstance()->RequestNodeChange(1, SCENEID::START);
 	});

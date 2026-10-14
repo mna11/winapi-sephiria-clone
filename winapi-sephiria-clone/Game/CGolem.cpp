@@ -193,6 +193,8 @@ void CGolem::ApplyChange()
                 m_pErma->StartExpose(GetEnterPoint() + VEC{ 0.f, 350.f });
 
             CSoundMgr::GetInstance()->PlaySound(L"GolemDie.wav", CHANNEL_GROUPID::SFX, 1.f);
+
+            static_cast<CPlayer*>(m_pTarget)->AddKill(1);
             break;
         }
         default:

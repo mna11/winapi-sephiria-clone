@@ -274,7 +274,7 @@ void CFluffy::Attack()
 
 void CFluffy::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-	if (m_bDead)
+	if (m_bDead || m_tStat.iHp <= 0)
 		return;
 
 	if (m_bHit && eHit != HIT_SOURCE::BULLET)
@@ -292,10 +292,11 @@ void CFluffy::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical
 		m_eNextState = FLUFFY_STATE::STUN;
 
 		float fExp = 10.f * pObj->GetStat().fExperienceDrop;
-		float fLeaf = 80.f * pObj->GetStat().fLeafDrop;
+		float fLeaf = 70.f * pObj->GetStat().fLeafDrop;
 
 		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX - m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::EXP, fExp));
 		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX + m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::LEAF, fLeaf));
+		static_cast<CPlayer*>(pObj)->AddKill(1);
 	}
 
 	if (bCritical)

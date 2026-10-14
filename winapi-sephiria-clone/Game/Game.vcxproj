@@ -108,7 +108,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\core\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -128,7 +128,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\core\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>

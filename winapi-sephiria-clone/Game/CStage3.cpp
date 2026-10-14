@@ -135,7 +135,8 @@ void CStage3::Init_CreateObj()
 	if (nullptr == pPlayer)
 	{
 		CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(580.f, 1480.f));
-		//CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(4200.f, 1300.f));
+		//CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(3040.f, 3200.f)); - 모루 위치
+		//CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(4200.f, 1300.f)); - 낚시터 위치
 		CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
 	}
 	else
@@ -148,6 +149,7 @@ void CStage3::Init_CreateObj()
 	pStoneTabletSephirite->SetItemType(ITEM_TYPE::STONE_TABLET);
 	CObjMgr::GetInstance()->AddObject(OBJID::FIELD_ITEM, pArtifactSephirite);
 	CObjMgr::GetInstance()->AddObject(OBJID::FIELD_ITEM, pStoneTabletSephirite);
+	CObjMgr::GetInstance()->AddObject(OBJID::FIELD_ITEM, CAbstractFactory<CAnvil>::CreateObj(3040.f, 3200.f));
 }
 
 void CStage3::InitializeRooms()
@@ -185,7 +187,7 @@ void CStage3::SpawnMonster(int iRoomIdx)
 void CStage3::HandleCollisionFishingSpot()
 {
 	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
-	if (nullptr == pPlayer)
+	if (nullptr == pPlayer || m_iCurBattleRoomIdx != -1)
 		return;
 
 	if (CCollisionMgr::CollisionRect(pPlayer->GetRect(), m_rcFishing))

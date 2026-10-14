@@ -277,11 +277,7 @@ bool CErma::IsReturnFinish()
     if (nullptr == m_pOwner)
         return false;
 
-    bool bFinish = ((m_tInfo.vPoint - m_pOwner->GetEnterPoint()).Norm() == 0.f);
-    if (bFinish)
-        CSoundMgr::GetInstance()->PlaySound(L"GolemEnter.wav", CHANNEL_GROUPID::SFX, 1.f);
-
-    return bFinish;
+    return ((m_tInfo.vPoint - m_pOwner->GetEnterPoint()).Norm() == 0.f);
 }
 
 void CErma::UpdateTime()
@@ -312,6 +308,8 @@ void CErma::Move()
         {
             m_tInfo.vPoint = m_vReturnPoint;
             m_bView = false;
+
+            CSoundMgr::GetInstance()->PlaySound(L"GolemEnter.wav", CHANNEL_GROUPID::SFX, 1.f);
 
             if (nullptr != m_pOwner)
                 m_pOwner->RequestChange(GOLEM_STATE::RECOVER);

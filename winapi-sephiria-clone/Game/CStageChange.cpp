@@ -173,7 +173,7 @@ void CStageChange::Show()
 
 	// 씬 매니저에서 현재 어떤 노드인지 세팅
 	SetCurrentNode(CSceneMgr::GetInstance()->GetCurrentNodeID());
-
+	CSoundMgr::GetInstance()->PlaySound(L"StageChangeOpen.wav", CHANNEL_GROUPID::SFX, 1.f);
 	// 버튼, 아이콘 보이게 하기
 	for (auto& node : m_vecNode)
 	{
