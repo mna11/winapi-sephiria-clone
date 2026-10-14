@@ -7,6 +7,8 @@
 CFade::CFade()
 	: m_eFadeType(FADE_TYPE::END), m_iAlpha(255), m_dFadeDuration(1.5), m_dFadeElapsed(0.)
 {
+	ZeroMemory(&m_tFadeColor, sizeof(Color));
+	m_tFadeColor = { 255, 0, 0, 0 };
 }
 
 CFade::~CFade()
@@ -66,7 +68,8 @@ void CFade::Render(Graphics* pGraphics)
 	}
 	else
 	{
-		SolidBrush brush(Color(m_iAlpha, 0, 0, 0));
+		int iAlpha = clamp(m_tFadeColor.GetA() - (255 - m_iAlpha), 0, 255);
+		SolidBrush brush(Color(iAlpha, m_tFadeColor.GetR(), m_tFadeColor.GetG(), m_tFadeColor.GetB()));
 		pGraphics->FillRectangle(&brush, 0, 0, WINCX, WINCY);
 	}
 }
@@ -81,6 +84,7 @@ void CFade::Show()
 	
 	m_dFadeElapsed = 0.;
 	m_iAlpha = 255;
+	m_tFadeColor = { 255, 0, 0, 0 };
 	SetFrame(0, 59, 0, 0.001);
 }
 

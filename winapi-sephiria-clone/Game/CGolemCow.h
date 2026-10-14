@@ -57,5 +57,7 @@ private:
     double m_dDustInterval;
     double m_dDustElapsedTime;
     VEC m_vDir;
+
+    Channel* m_pFootStep;
 };
 

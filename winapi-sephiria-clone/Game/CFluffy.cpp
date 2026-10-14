@@ -106,11 +106,20 @@ void CFluffy::Render(Graphics* pGraphics)
 	else if (!lstrcmp(m_pFrameKey, L"Fluffy_Summon"))
 		vCellSize = { 65.f, 35.f };
 	VEC vImgSize = vCellSize * PIXEL_SCALE;
+	float fOffset(0.f);
+	if (m_bHit && m_dIframeTime > 0.)
+	{
+		// 살짝 위로 길어졌다가 돌아오기
+		float fRatio = clamp(static_cast<float>(m_dHitElapseTime / m_dIframeTime), 0.f, 1.f);
+		float fAmplitude = vCellSize.fY * 0.5f * PIXEL_SCALE;
+		float fDecay = (1.f - fRatio) * (1.f - fRatio);
 
-	RectF rcDest{ m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + vScroll.fX,
-					m_tInfo.vPoint.fY - vImgSize.fY * 0.5f + vScroll.fY,
-					vImgSize.fX,
-					vImgSize.fY };
+		fOffset = -fAmplitude * sinf(fRatio * PI) * fDecay;
+	}
+	RectF rcDest{ m_tInfo.vPoint.fX - vImgSize.fX * 0.5f + vScroll.fX - fOffset * 0.5f,
+					m_tInfo.vPoint.fY - vImgSize.fY * 0.5f + vScroll.fY + fOffset,
+					vImgSize.fX + fOffset,
+					vImgSize.fY - fOffset };
 
 	ImageAttributes* pImgAttr = m_bHit ? &m_imgAttrHit : nullptr;
 	pImgAttr = m_eCurState == FLUFFY_STATE::DOWN ? &m_imgAttrDown : pImgAttr;
@@ -136,6 +145,7 @@ void CFluffy::ApplyChange()
 		switch (m_eNextState)
 		{
 		case FLUFFY_STATE::SUMMON:
+			CSoundMgr::GetInstance()->PlaySound(L"FluffySummon.wav", CHANNEL_GROUPID::SFX, 5.f, 1.f);
 			SetFrame(0, 13, 0, m_dSummonTime / 14.);				// 프레임 키가 다름 - Fluffy_Summon
 			break;
 		case FLUFFY_STATE::IDLE:
@@ -264,7 +274,10 @@ void CFluffy::Attack()
 
 void CFluffy::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-	if (m_bHit || m_tStat.iHp <= 0)
+	if (m_bDead)
+		return;
+
+	if (m_bHit && eHit != HIT_SOURCE::BULLET)
 		return;
 
 	if (m_eCurState == FLUFFY_STATE::DOWN || m_eCurState == FLUFFY_STATE::SUMMON)

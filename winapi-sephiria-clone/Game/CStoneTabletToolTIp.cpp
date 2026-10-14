@@ -7,6 +7,7 @@
 #include "CImgMgr.h"
 #include "CKeyMgr.h"
 #include "CFontMgr.h"
+#include "CSoundMgr.h"
 
 #include "CStoneTabletData.h"
 
@@ -305,7 +306,7 @@ void CStoneTabletToolTIp::Rotate()
 	if (KEY_DOWN('R'))
 	{
 		AddAngle(PI * 0.5f);
-
+		CSoundMgr::GetInstance()->PlaySound(L"RotateStone.wav", CHANNEL_GROUPID::SFX, 1.f);
 		// 인벤토리에 있는 석판이면, 실제 인벤토리에 있는 아이템도 회전시켜준다.
 		if (m_pMouse != nullptr && m_pMouse->GetHoverReferItem().eItemSource == ITEM_SOURCE::INVENTORY)
 		{

@@ -94,6 +94,29 @@ void CSoundMgr::PlaySound(const TCHAR* pSoundKey, CHANNEL_GROUPID eID, float fVo
 
 }
 
+Channel* CSoundMgr::PlayLoopSFX(const TCHAR* pSoundKey, float fVolume, float fSpeed)
+{
+	map<TCHAR*, Sound*>::iterator iter;
+
+	// 사운드 찾기
+	iter = find_if(m_mapSound.begin(), m_mapSound.end(),
+		[&](auto& iter)->bool
+		{
+			return !lstrcmp(pSoundKey, iter.first);
+		});
+
+	if (iter == m_mapSound.end())
+		return nullptr;
+
+	Channel* pChannel = nullptr;
+	FMOD_RESULT eResult = m_pSystem->playSound(iter->second, m_pChannelGroup[toUType(CHANNEL_GROUPID::SFX)], true, &pChannel);
+	pChannel->setMode(FMOD_LOOP_NORMAL);
+	pChannel->setVolume(fVolume);
+	pChannel->setPitch(fSpeed);
+	pChannel->setPaused(false);
+	return pChannel;
+}
+
 void CSoundMgr::StopSound(CHANNEL_GROUPID eID)
 {
 	if (nullptr != m_pChannelGroup[toUType(eID)])

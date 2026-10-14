@@ -72,7 +72,10 @@ int CShopTable::Update()
 		case ITEM_TYPE::STONE_TABLET:
 			CUIMgr::GetInstance()->ShowUI(UIID::STONE_TABLET_TOOLTIP);
 			CUIMgr::GetInstance()->SetPos(UIID::STONE_TABLET_TOOLTIP, vPoint);
-			// 나중에 추가
+			break;
+		case ITEM_TYPE::POTION:
+			CUIMgr::GetInstance()->ShowUI(UIID::POTION_TOOLTIP);
+			CUIMgr::GetInstance()->SetPos(UIID::POTION_TOOLTIP, vPoint);
 			break;
 		default:
 			break;
@@ -87,7 +90,9 @@ int CShopTable::Update()
 			break;
 		case ITEM_TYPE::STONE_TABLET:
 			CUIMgr::GetInstance()->HideUI(UIID::STONE_TABLET_TOOLTIP);
-			// 나중에 추가
+			break;
+		case ITEM_TYPE::POTION:
+			CUIMgr::GetInstance()->HideUI(UIID::POTION_TOOLTIP);
 			break;
 		default:
 			break;
@@ -199,9 +204,18 @@ void CShopTable::SetSellingItem(SCENEID eCurStage)
 		if (i == m_vecItemSlot.size())
 			m_vecItemSlot.push_back(static_cast<CShopTableSlot*>(CAbstractFactory<CShopTableSlot>::CreateUI(vPoint.fX, vPoint.fY + fGap * i, m_pMouse)));
 		// 랜덤 뽑기
-		m_vecItemSlot[i]->SetItemID(uniform_int_distribution<int>(0, 8)(g_engine));
+		//m_vecItemSlot[i]->SetItemID(uniform_int_distribution<int>(0, 8)(g_engine));
 		// 일단 아티팩트만 팔게
-		m_vecItemSlot[i]->SetItemType(ITEM_TYPE::ARTIFACT);
+		//m_vecItemSlot[i]->SetItemType(ITEM_TYPE::ARTIFACT);
 	}
+	// 임시 
+	m_vecItemSlot[0]->SetItemType(ITEM_TYPE::ARTIFACT);
+	m_vecItemSlot[0]->SetItemID(0);
+	m_vecItemSlot[1]->SetItemType(ITEM_TYPE::ARTIFACT);
+	m_vecItemSlot[1]->SetItemID(3);
+	m_vecItemSlot[2]->SetItemType(ITEM_TYPE::STONE_TABLET);
+	m_vecItemSlot[2]->SetItemID(0);
+	m_vecItemSlot[3]->SetItemType(ITEM_TYPE::POTION);
+	m_vecItemSlot[3]->SetItemID(3);
 	m_eLastStage = eCurStage;
 }

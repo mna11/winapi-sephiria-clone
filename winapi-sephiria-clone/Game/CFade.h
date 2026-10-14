@@ -18,6 +18,8 @@ public:
 
 public:
     void SetFadeType(FADE_TYPE eType) { m_eFadeType = eType; }
+    void SetFadeColor(Color tColor) { m_tFadeColor = tColor; }
+    void SetDuration(double dDuration) { m_dFadeDuration = dDuration; }
 
 private:
     FADE_TYPE m_eFadeType; 
@@ -26,5 +28,7 @@ private:
     double  m_dFadeElapsed;
     double  m_dFadeDuration;
     int     m_iAlpha;
+
+    Color m_tFadeColor;
 };
 

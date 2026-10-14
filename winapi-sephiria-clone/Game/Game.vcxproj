@@ -143,6 +143,7 @@
     <ClInclude Include="CArtifact.h" />
     <ClInclude Include="CBaba.h" />
     <ClInclude Include="CBasicInfo.h" />
+    <ClInclude Include="CDummy.h" />
     <ClInclude Include="CEnd.h" />
     <ClInclude Include="CFishingUI.h" />
     <ClInclude Include="CFishingRod.h" />
@@ -247,6 +248,7 @@
     <ClCompile Include="CArtifact.cpp" />
     <ClCompile Include="CBaba.cpp" />
     <ClCompile Include="CBasicInfo.cpp" />
+    <ClCompile Include="CDummy.cpp" />
     <ClCompile Include="CEnd.cpp" />
     <ClCompile Include="CFishingUI.cpp" />
     <ClCompile Include="CFishingRod.cpp" />

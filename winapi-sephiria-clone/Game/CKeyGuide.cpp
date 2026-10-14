@@ -103,6 +103,7 @@ void CKeyGuide::Release()
 void CKeyGuide::Show()
 {
 	m_bView = true;
+	m_bFollow = false;
 
 	m_strGuide.clear();
 	m_vKeyImgPoint = {};

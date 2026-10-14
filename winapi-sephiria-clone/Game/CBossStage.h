@@ -39,6 +39,7 @@ enum class BOSS_STAGE_FINAL_STATE
     DOWN,
     CAMERA_MOVE2,
     DIALOG4,
+    DIALOG5,
     FINISH,
     END
 };

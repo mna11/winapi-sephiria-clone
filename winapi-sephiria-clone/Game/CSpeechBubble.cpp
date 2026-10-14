@@ -4,6 +4,7 @@
 #include "CFontMgr.h"
 #include "CTimeMgr.h"
 #include "CImgMgr.h"
+#include "CSoundMgr.h"
 
 
 CSpeechBubble::CSpeechBubble()
@@ -175,6 +176,13 @@ void CSpeechBubble::SetText(CObj* pTarget, wstring strName, wstring strText, dou
     m_dAliveTime = dAliveTime;
     m_fWidth = fWidth;
     m_fHeight = fHeight;
+}
+
+void CSpeechBubble::Show()
+{
+    m_bView = true;
+
+    CSoundMgr::GetInstance()->PlaySound(L"DialogueBlip.wav", CHANNEL_GROUPID::SFX, 1.f);
 }
 
 void CSpeechBubble::Hide()

@@ -73,6 +73,7 @@ void CObjMgr::LateUpdate()
 	// 벽 충돌
 	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::PLAYER)]);
 	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::MONSTER)]);
+	CCollisionMgr::CollisionWall(m_ObjList[toUType(OBJID::DUMMY)]);
 	// 총알 벽 충돌
 	CCollisionMgr::CollisionBulletWall(m_ObjList[toUType(OBJID::PLAYER_BULLET)]);
 	CCollisionMgr::CollisionBulletWall(m_ObjList[toUType(OBJID::MONSTER_BULLET)]);
@@ -101,6 +102,10 @@ void CObjMgr::LateUpdate()
 	CCollisionMgr::CollisionMonsterAttack(m_ObjList[toUType(OBJID::PLAYER)], m_ObjList[toUType(OBJID::MONSTER)]);
 	// 몬스터 총알 충돌
 	CCollisionMgr::CollisionBulletObj(m_ObjList[toUType(OBJID::MONSTER_BULLET)], m_ObjList[toUType(OBJID::PLAYER)]);
+
+	// 더미
+	CCollisionMgr::CollisionPlayerAttack(m_ObjList[toUType(OBJID::PLAYER)], m_ObjList[toUType(OBJID::DUMMY)]);
+	CCollisionMgr::CollisionBulletObj(m_ObjList[toUType(OBJID::PLAYER_BULLET)], m_ObjList[toUType(OBJID::DUMMY)]);
 }
 
 void CObjMgr::LateUpdateOnly(initializer_list<OBJID> ids)

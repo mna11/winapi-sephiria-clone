@@ -12,6 +12,7 @@
 #include "CUIMgr.h"
 #include "CKeyMgr.h"
 #include "CImgMgr.h"
+#include "CSoundMgr.h"
 
 #include "CPotionData.h"
 
@@ -94,7 +95,7 @@ void CFishingUI::Render(Graphics* pGraphics)
         return;
 
     VEC vCellSize = { static_cast<float>(pImg->GetWidth()), static_cast<float>(pImg->GetHeight()) };
-    VEC vImgSize = vCellSize * m_fUIScale;
+    VEC vImgSize = vCellSize * m_fUIScale * 1.5f;
     RectF DestRect = { m_vPotionPoint.fX - vImgSize.fX * 0.5f, m_vPotionPoint.fY - vImgSize.fY * 0.5f, vImgSize.fX, vImgSize.fY };
 
     Matrix matRot{};
@@ -178,7 +179,11 @@ void CFishingUI::UpdateTime()
             m_dCatchElapseTime -= m_dCatchInterval;
             bool bCatch = (uniform_real_distribution<float>(0.f, 1.f)(g_engine) < m_fCatchProb);
             if (bCatch)
+            {
                 RequestChange(FISHING_STATE::PLAYING);
+                VEC vOffset = VEC{ -15.f, -15.f } *m_fUIScale;
+                CEffectMgr::GetInstance()->CreateEffect(L"Fishing_Hit", m_pPlayer->GetInfo().vPoint + vOffset, 0, 0.f, 0.05f);
+            }
         }
         break;
     case FISHING_STATE::PLAYING:
@@ -266,6 +271,9 @@ void CFishingUI::ApplyChange()
             m_pRodUI->RequestChange(FISHING_ROD_STATE::CAUGHT); // 낚시대 잡은 모션 -> 낚시대 밖
             m_iPotionID = uniform_int_distribution<int>(0, 2)(g_engine);                // 낚은 포션 설정하기
             m_pPlayer->GetInventory()->InsertItem(0, m_iPotionID, ITEM_TYPE::POTION);   // 인벤토리에 넣어주기
+
+            CSoundMgr::GetInstance()->PlaySound(L"FishPull.wav", CHANNEL_GROUPID::SFX, 1.f);
+            CSoundMgr::GetInstance()->PlaySound(L"FishGet.wav", CHANNEL_GROUPID::SFX, 1.f);
             break;
         case FISHING_STATE::MISS:
             // 하긴 해야되는데 일단 패스

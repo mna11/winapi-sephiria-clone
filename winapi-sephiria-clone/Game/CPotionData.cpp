@@ -58,6 +58,14 @@ STAT CPotionData::CreateStat(int iID)
 	case 2: // 배스
 		tStat.fCriticalDamage = 0.1f;
 		break;
+
+	case 3: // HP 포션
+		tStat.iHp = 20.f;
+		break;
+
+	case 4: // MP 포션
+		tStat.iMp = 20.f;
+		break;
 	}
 
 	return tStat;
@@ -85,6 +93,18 @@ vector<wstring> CPotionData::CreateStrDescriptionVec(int iID)
 		vecStrDescription.reserve(2);
 		vecStrDescription.push_back(L"치명타 피해 +10%");
 		vecStrDescription.push_back(L"소지 상한 : 3개");
+		break;
+
+	case 3: // HP 물약
+		vecStrDescription.reserve(2);
+		vecStrDescription.push_back(L"HP +20% 회복");
+		vecStrDescription.push_back(L"소지 상한 : 5개");
+		break;
+
+	case 4: // MP 물약
+		vecStrDescription.reserve(2);
+		vecStrDescription.push_back(L"MP +20% 회복");
+		vecStrDescription.push_back(L"소지 상한 : 5개");
 		break;
 	}
 
@@ -118,6 +138,8 @@ void CPotionData::InitializeImg()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Item/Potion/Fish/Anchovy.png", L"Anchovy");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Item/Potion/Fish/Tuna.png", L"Tuna");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Item/Potion/Fish/SeaBass.png", L"SeaBass");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Item/Potion/RedPotion.png", L"RedPotion");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Item/Potion/BluePotion.png", L"BluePotion");
 }
 
 void CPotionData::InitializePotionInfo()
@@ -128,4 +150,8 @@ void CPotionData::InitializePotionInfo()
 	EmplaceArtifactInfo(1, L"Tuna", L"참치", CreateStrDescriptionVec(1), CreateStat(1), 3, 300);
 	// 2. 배스
 	EmplaceArtifactInfo(2, L"SeaBass", L"배스", CreateStrDescriptionVec(2), CreateStat(2), 3, 400);
+	// 3. HP 물약
+	EmplaceArtifactInfo(3, L"RedPotion", L"재생의 물약", CreateStrDescriptionVec(3), CreateStat(3), 5, 100);
+	// 4. MP 물약
+	EmplaceArtifactInfo(4, L"BluePotion", L"집중의 포션", CreateStrDescriptionVec(4), CreateStat(4), 5, 100);
 }

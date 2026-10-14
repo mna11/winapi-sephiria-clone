@@ -11,6 +11,7 @@
 #include "CObjMgr.h"
 #include "CArtifactData.h"
 #include "CStoneTabletData.h"
+#include "CPotionData.h"
 #include "CImgMgr.h"
 #include "CUIMgr.h"
 #include "CCameraMgr.h"
@@ -162,6 +163,9 @@ void CShop::TryBuyItem(int iInventoryIdx, int iID, ITEM_TYPE eItemType)
 	case ITEM_TYPE::STONE_TABLET:
 		tItemInfo = CStoneTabletData::GetInstance()->FindItemInfo(iID);
 		break;
+	case ITEM_TYPE::POTION:
+		tItemInfo = CPotionData::GetInstance()->FindItemInfo(iID);
+		break;
 	default:
 		break;
 	}
@@ -298,6 +302,9 @@ void CShop::TrySellItem(int iInventoryIdx, int iID, ITEM_TYPE eItemType)
 		break;
 	case ITEM_TYPE::STONE_TABLET:
 		tItemInfo = CStoneTabletData::GetInstance()->FindItemInfo(iID);
+		break;
+	case ITEM_TYPE::POTION:
+		tItemInfo = CPotionData::GetInstance()->FindItemInfo(iID);
 		break;
 	default:
 		break;

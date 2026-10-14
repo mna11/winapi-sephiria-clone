@@ -49,6 +49,7 @@ private:
 
     double  m_dAtkTime;             // 일반 공격하는데 걸리는 총 시간
     double  m_dAtkCollisionTime;    // 공격할 때, 공격 활성화되는 시작 시간
+    double  m_dAtkLateDelay;        // 후딜레이
     double  m_dDownTime;            // 죽는 시간
 
     double  m_dFlyAtkTime;          // 공중 공격하는데 걸리는 총 시간
@@ -66,6 +67,7 @@ private:
 
     // 공격 기준 - 플레이어와의 거리
     float m_fAtkDistance;
+    bool m_bFirstAtkFinished; // 가고일은 일단 첫번째 일반 공격을 한 뒤에 날 수 있게 할려고 플래그 만들었음
     // 공격 기준2 
     float m_fFlyAtkDistance;
 

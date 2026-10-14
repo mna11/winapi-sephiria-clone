@@ -100,6 +100,13 @@ void CStage3::Render(Graphics* pGraphics)
 
 	pGraphics->ReleaseHDC(hBackDC);
 
+	// 영역 테두리
+	Pen areaPen(Color{ 255, 70, 150, 210 }, 5.f);
+	RectF rcStair{ m_rcStair.left + vScroll.fX, m_rcStair.top + vScroll.fY, static_cast<float>(m_rcStair.right - m_rcStair.left), static_cast<float>(m_rcStair.bottom - m_rcStair.top) };
+	pGraphics->DrawRectangle(&areaPen, rcStair);
+	RectF rcFishing{ m_rcFishing.left + vScroll.fX, m_rcFishing.top + vScroll.fY, static_cast<float>(m_rcFishing.right - m_rcFishing.left), static_cast<float>(m_rcFishing.bottom - m_rcFishing.top) };
+	pGraphics->DrawRectangle(&areaPen, rcFishing);
+
 	// ReleaseHDC 이후부터 GDI+ 사용
 	CTileMgr::GetInstance()->Render(pGraphics);
 	CObjMgr::GetInstance()->Render(pGraphics);
@@ -127,8 +134,8 @@ void CStage3::Init_CreateObj()
 	CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 	if (nullptr == pPlayer)
 	{
-		//CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(580.f, 1480.f));
-		CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(4200.f, 1300.f));
+		CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(580.f, 1480.f));
+		//CObjMgr::GetInstance()->AddObject(OBJID::PLAYER, CAbstractFactory<CPlayer>::CreateObj(4200.f, 1300.f));
 		CCameraMgr::GetInstance()->SetCameraTarget(CObjMgr::GetInstance()->GetPlayer());
 	}
 	else
@@ -147,12 +154,12 @@ void CStage3::InitializeRooms()
 {
 	ROOM_INFO room1, room2;
 	room1.rcTrigger = { 2690, 1025, 4620, 2120 };
-	room2.rcTrigger = { 540, 2860, 2000, 4350 };
+	room2.rcTrigger = { 540, 2860, 2020, 4350 };
 
 	m_vecRooms.push_back(room1);
 	m_vecRooms.push_back(room2);
 
-	SetRect(&m_rcStair, 1220, 5600, 1420, 5800);
+	SetRect(&m_rcStair, 1254, 5615, 1457, 5828);
 	SetRect(&m_rcFishing, 4100, 1380, 4300, 1580);
 }
 
@@ -161,11 +168,16 @@ void CStage3::SpawnMonster(int iRoomIdx)
 	switch (iRoomIdx)
 	{
 	case 0:
-		//CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CFluffy>::CreateObj(2800.f, 1525.f));
+		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(3180.f, 1415.f));
+		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CFluffy>::CreateObj(3940.f, 1415.f));
+		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGolemCow>::CreateObj(3260.f, 1795.f));
+		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(3820.f, 1675.f));
 		break;
 	case 1:
-		break;
-	default:
+		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(910.f, 3530.f));
+		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CFluffy>::CreateObj(1570.f, 3390.f));
+		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGolemCow>::CreateObj(990.f, 3910.f));
+		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(1570.f, 3910.f));
 		break;
 	}
 }
@@ -176,11 +188,9 @@ void CStage3::HandleCollisionFishingSpot()
 	if (nullptr == pPlayer)
 		return;
 
-	CKeyGuide* pKeyGuide = static_cast<CKeyGuide*>(CUIMgr::GetInstance()->GetUI(UIID::KEY_GUIDE));
-
 	if (CCollisionMgr::CollisionRect(pPlayer->GetRect(), m_rcFishing))
 	{
-		CFishingUI* pFishingUI = static_cast<CFishingUI*>(CUIMgr::GetInstance()->ShowUI(UIID::FISHING));
+		CUIMgr::GetInstance()->ShowUI(UIID::FISHING);
 		
 		if (m_iPlayerWeaponID == -1)
 		{

@@ -2,12 +2,14 @@
 #include "CPlayer.h"
 
 #include "CWeaponController.h"
+#include "CFade.h"
 
 #include "CAbstractFactory.h"
 
 #include "CKeyMgr.h"
 #include "CSoundMgr.h"
 #include "CTimeMgr.h"
+#include "CUIMgr.h"
 #include "CCameraMgr.h"
 #include "CImgMgr.h"
 #include "CEffectMgr.h"
@@ -61,10 +63,10 @@ void CPlayer::Initialize()
 
 	// 기본 스탯 초기화
 	m_tStat = {
-		70,				// HP
-		70,			    // MAX HP
+		200,				// HP
+		200,			    // MAX HP
 
-		100,			    // 물리 공격력
+		20,				// 물리 공격력
 		20,				// 불 공격력
 		20,				// 얼음 공격력
 		20,				// 번개 공격력
@@ -73,8 +75,8 @@ void CPlayer::Initialize()
 		60,				// MAX MP
 		1,				// MP 재생력
 
-		0,				// 방어력
-		100,			// 회피
+		10,				// 방어력
+		15,				// 회피
 
 		3,				// 대시 횟수
 		3,				// 대시 최대 횟수
@@ -434,7 +436,6 @@ void CPlayer::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical
 		return;
 	}
 
-
 	// 세피리아 공식
 	int iHitDamage = iDamage - static_cast<int>(iDamage * log(m_tStat.iDefense / 40.f + 1) * 0.445);
 	iHitDamage = clamp(iHitDamage, 1, iDamage);
@@ -446,6 +447,13 @@ void CPlayer::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical
 	CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iHitDamage), Color{ 255, 255, 64, 64 });
 	CSoundMgr::GetInstance()->PlaySound(L"HitPlayer.wav", CHANNEL_GROUPID::SFX, 1.f);
 	CCameraMgr::GetInstance()->CameraShaking(5, 0.2);
+	CFade* pFade = static_cast<CFade*>(CUIMgr::GetInstance()->ShowUI(UIID::FADE));
+	if (pFade != nullptr)
+	{
+		pFade->SetFadeType(FADE_TYPE::RECTANGLE);
+		pFade->SetFadeColor(Color{ 150, 255, 0, 0 });
+		pFade->SetDuration(1.);
+	}
 	if (m_tStat.iHp <= 0)
 		m_bDead = true;
 }

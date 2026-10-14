@@ -188,6 +188,7 @@ void CForge::TryChangeWeapon(int iID)
 			m_pMsgBoxUI = nullptr;
 
 			this->ChangeWeapon(iID);
+			CSoundMgr::GetInstance()->PlaySound(L"AnvilEnhance.wav", CHANNEL_GROUPID::SFX, 1.f);
 		});
 	vecButtons[0]->SetString(L"Yes");
 

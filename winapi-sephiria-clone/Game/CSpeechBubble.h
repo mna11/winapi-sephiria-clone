@@ -20,6 +20,7 @@ public:
 public:
     // 타겟 + 말풍선 텍스트들 + 나타낼 시간 + 사이즈
     void SetText(CObj* pTarget, wstring strName, wstring strText, double dAliveTime, float fWidth, float Height = 24.f);
+    void Show() override;
     // 숨기기
     void Hide() override;
 

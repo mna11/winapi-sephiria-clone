@@ -58,8 +58,7 @@ void CBossStage::LateUpdate()
 {
 	CObjMgr::GetInstance()->LateUpdate();
 
-	if (m_eCurState == BOSS_STAGE_STATE::WAIT ||
-		m_eCurState == BOSS_STAGE_STATE::CLEAR)
+	if (m_eCurState == BOSS_STAGE_STATE::WAIT || m_eCurState == BOSS_STAGE_STATE::BATTLE || m_eCurState == BOSS_STAGE_STATE::CLEAR)
 	{
 		HotKey();
 	}
@@ -133,6 +132,10 @@ void CBossStage::Render(Graphics* pGraphics)
 	);
 #endif // _DEBUG
 
+	// 영역 그리기
+	Pen areaPen(Color{ 255, 70, 150, 210 }, 5.f);
+	RectF rcStair{ m_rcStair.left + vScroll.fX, m_rcStair.top + vScroll.fY, static_cast<float>(m_rcStair.right - m_rcStair.left), static_cast<float>(m_rcStair.bottom - m_rcStair.top) };
+	pGraphics->DrawRectangle(&areaPen, rcStair);
 
     // ReleaseHDC 이후부터 GDI+ 사용
     CTileMgr::GetInstance()->Render(pGraphics);
@@ -170,7 +173,7 @@ void CBossStage::InitializeRooms()
 
 	m_vecRooms.push_back(tBossRoom);
 
-	SetRect(&m_rcStair, 5100, 4300, 5700, 4700);
+	SetRect(&m_rcStair, 5250, 4300, 5650, 4700);
 }
 
 void CBossStage::SpawnMonster(int iRoomIdx)
@@ -208,7 +211,7 @@ void CBossStage::HandleCollisionBattleRoom()
 	else
 	{
 		// 전투 중인 상황인데, 현재 몬스터를 다 죽였다면 방을 클리어 상태로 변경한다.
-		if (CObjMgr::GetInstance()->ObjEmpty(OBJID::MONSTER))
+		if (m_eCurState == BOSS_STAGE_STATE::CLEAR)
 			ClearCurRoom();
 	}
 }
@@ -234,17 +237,17 @@ void CBossStage::ApplyChange()
 			CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 			if (pPlayer != nullptr)
 			{
-				// 플레이어 조작 불가
-				pPlayer->RequestChange(PLAYER_STATE::IDLE);
-				pPlayer->SetPlayerBehaviorEnable(false);
-
 				// 카메라 이동 및 인트로 상태 변경
 				CCameraMgr::GetInstance()->MoveCamera({3950.f, 1605.f});
-				m_eIntroState = BOSS_STAGE_INTRO_STATE::CAMERA_MOVE;
+				ChangeIntroState(BOSS_STAGE_INTRO_STATE::CAMERA_MOVE);
 
 				// UI는 다 닫고, 레터 박스만 열리게 구현
 				CUIMgr::GetInstance()->HideAllUI();
 				CUIMgr::GetInstance()->ShowUI(UIID::LETTER_BOX);
+
+				// 플레이어 조작 불가
+				pPlayer->RequestChange(PLAYER_STATE::IDLE);
+				pPlayer->SetPlayerBehaviorEnable(false);
 			}
 			break;
 		}
@@ -270,17 +273,17 @@ void CBossStage::ApplyChange()
 			CPlayer* pPlayer = CObjMgr::GetInstance()->GetPlayer();
 			if (pPlayer != nullptr)
 			{
-				// 플레이어 조작 불가
-				pPlayer->RequestChange(PLAYER_STATE::IDLE);
-				pPlayer->SetPlayerBehaviorEnable(false);
-
 				// 카메라 이동 및 인트로 상태 변경
 				CCameraMgr::GetInstance()->MoveCamera(m_pErma->GetInfo().vPoint);
-				m_eFinalState = BOSS_STAGE_FINAL_STATE::CAMERA_MOVE1;
+				ChangeFinalState(BOSS_STAGE_FINAL_STATE::CAMERA_MOVE1);
 
 				// UI는 다 닫고, 레터 박스만 열리게 구현
 				CUIMgr::GetInstance()->HideAllUI();
 				CUIMgr::GetInstance()->ShowUI(UIID::LETTER_BOX);
+
+				// 플레이어 조작 불가
+				pPlayer->RequestChange(PLAYER_STATE::IDLE);
+				pPlayer->SetPlayerBehaviorEnable(false);
 			}
 			break;
 		}
@@ -445,6 +448,15 @@ void CBossStage::UpdateFinalTime()
 		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->GetUI(UIID::SPEECH_BUBBLE));
 		// 말풍선이 종료되면 다음 상태로 이동
 		if (nullptr != pBubble && pBubble->IsFinished())
+			ChangeFinalState(BOSS_STAGE_FINAL_STATE::DIALOG5);
+
+		break;
+	}
+	case BOSS_STAGE_FINAL_STATE::DIALOG5:
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->GetUI(UIID::SPEECH_BUBBLE));
+		// 말풍선이 종료되면 다음 상태로 이동
+		if (nullptr != pBubble && pBubble->IsFinished())
 			ChangeFinalState(BOSS_STAGE_FINAL_STATE::FINISH);
 
 		break;
@@ -471,7 +483,7 @@ void CBossStage::ChangeIntroState(BOSS_STAGE_INTRO_STATE eState)
 		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->ShowUI(UIID::SPEECH_BUBBLE));
 		if (nullptr != pBubble && nullptr != m_pErma)
 		{
-			pBubble->SetText(m_pErma, L"에르마", L"암암암암암1", 3.0, 70.f);
+			pBubble->SetText(m_pErma, L"에르마", L"시..시공간의 이변이..", 3.0, 120.f);
 			pBubble->SetOffset(VEC{ 0.f, m_pErma->GetInfo().vSize.fY * -0.5f });
 		}
 		break;
@@ -494,7 +506,7 @@ void CBossStage::ChangeIntroState(BOSS_STAGE_INTRO_STATE eState)
 		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->ShowUI(UIID::SPEECH_BUBBLE));
 		if (nullptr != pBubble && nullptr != m_pErma)
 		{
-			pBubble->SetText(m_pErma, L"에르마", L"암암암암암2", 3.0, 70.f);
+			pBubble->SetText(m_pErma, L"에르마", L"너..너는..여기까지 날 따라온거야!", 3.0, 160.f);
 			pBubble->SetOffset(VEC{ 0.f, m_pErma->GetInfo().vSize.fY * -0.5f });
 		}
 		break;
@@ -504,7 +516,7 @@ void CBossStage::ChangeIntroState(BOSS_STAGE_INTRO_STATE eState)
 		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->ShowUI(UIID::SPEECH_BUBBLE));
 		if (nullptr != pBubble && nullptr != m_pErma)
 		{
-			pBubble->SetText(m_pErma, L"에르마", L"암암암암암3", 3.0, 70.f);
+			pBubble->SetText(m_pErma, L"에르마", L"나..날 방해할 생각하지마!", 3.0, 140.f);
 			pBubble->SetOffset(VEC{ 0.f, m_pErma->GetInfo().vSize.fY * -0.5f });
 		}
 		break;
@@ -542,7 +554,7 @@ void CBossStage::ChangeFinalState(BOSS_STAGE_FINAL_STATE eState)
 		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->ShowUI(UIID::SPEECH_BUBBLE));
 		if (nullptr != pBubble && nullptr != m_pErma)
 		{
-			pBubble->SetText(m_pErma, L"에르마", L"암암암암암1", 3.0, 70.f);
+			pBubble->SetText(m_pErma, L"에르마", L"젠장..이..이제 마지막이야!!", 3.0, 140.f);
 			pBubble->SetOffset(VEC{ 0.f, m_pErma->GetInfo().vSize.fY * -0.5f });
 		}
 		break;
@@ -557,10 +569,11 @@ void CBossStage::ChangeFinalState(BOSS_STAGE_FINAL_STATE eState)
 	case BOSS_STAGE_FINAL_STATE::DIALOG2:
 	{
 		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->ShowUI(UIID::SPEECH_BUBBLE));
-		if (nullptr != pBubble && nullptr != m_pErma)
+		if (nullptr != pBubble && nullptr != m_pGolem)
 		{
-			pBubble->SetText(m_pErma, L"에르마", L"암암암암암2", 3.0, 70.f);
-			pBubble->SetOffset(VEC{ 0.f, m_pErma->GetInfo().vSize.fY * -0.5f });
+			pBubble->SetText(m_pGolem, L"골렘", L"엔트로피 임계 상태, 손상 반환 개시", 3, 180.f);
+			CCameraMgr::GetInstance()->CameraShaking(4.f, 6.f);
+			pBubble->SetOffset(VEC{ 0.f, m_pGolem->GetInfo().vSize.fY * -0.2f });
 		}
 		break;
 	}
@@ -569,7 +582,7 @@ void CBossStage::ChangeFinalState(BOSS_STAGE_FINAL_STATE eState)
 		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->ShowUI(UIID::SPEECH_BUBBLE));
 		if (nullptr != pBubble && nullptr != m_pErma)
 		{
-			pBubble->SetText(m_pErma, L"에르마", L"암암암암암3", 3.0, 70.f);
+			pBubble->SetText(m_pErma, L"에르마", L"안돼!", 3, 60.f);
 			pBubble->SetOffset(VEC{ 0.f, m_pErma->GetInfo().vSize.fY * -0.5f });
 		}
 		break;
@@ -598,7 +611,18 @@ void CBossStage::ChangeFinalState(BOSS_STAGE_FINAL_STATE eState)
 		if (nullptr != pBubble && nullptr != m_pErma)
 		{
 			m_pErma->RequestChange(ERMA_STATE::DOWN);
-			pBubble->SetText(m_pErma, L"에르마", L"암암암암암4", 3.0, 70.f);
+			pBubble->SetText(m_pErma, L"에르마", L"난...순리를 어..어길 생각은...", 3.0, 150.f);
+			pBubble->SetOffset(VEC{ 0.f, m_pErma->GetInfo().vSize.fY * -0.5f });
+		}
+		break;
+	}
+	case BOSS_STAGE_FINAL_STATE::DIALOG5:
+	{
+		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->ShowUI(UIID::SPEECH_BUBBLE));
+		if (nullptr != pBubble && nullptr != m_pErma)
+		{
+			m_pErma->RequestChange(ERMA_STATE::DOWN);
+			pBubble->SetText(m_pErma, L"에르마", L"그만둬...안..안돼...", 3.0, 120.f);
 			pBubble->SetOffset(VEC{ 0.f, m_pErma->GetInfo().vSize.fY * -0.5f });
 		}
 		break;
@@ -606,6 +630,8 @@ void CBossStage::ChangeFinalState(BOSS_STAGE_FINAL_STATE eState)
 	case BOSS_STAGE_FINAL_STATE::FINISH:
 		CFade* pFade = static_cast<CFade*>(CUIMgr::GetInstance()->ShowUI(UIID::FADE));
 		pFade->SetFadeType(FADE_TYPE::RECTANGLE);
+		pFade->SetFadeColor(Color{ 150, 255, 255, 255 });
+		pFade->SetDuration(1.5f);
 
 		CSoundMgr::GetInstance()->PlaySound(L"DugeonLibrary_Field.wav", CHANNEL_GROUPID::BGM, 0.5f);
 		RequestChange(BOSS_STAGE_STATE::CLEAR);

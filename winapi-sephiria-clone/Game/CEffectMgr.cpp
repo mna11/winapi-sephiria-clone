@@ -39,6 +39,10 @@ void CEffectMgr::Initialize()
 	// 한손검 방어
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Weapon/Shield.png", L"Shield");
 
+	// 플레이어 공격 이펙트
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/PlayerAttack/AttackSlash.png", L"Attack_Slash");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/PlayerAttack/AttackBullet.png", L"Attack_Bullet");
+
 	// 보스 몬스터 에르마
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Alert_Square.png", L"Erma_Alert_Square");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Boss/Golem_Hand_Shadow_LEFT.png", L"Erma_Hand_Shadow_L");
@@ -83,6 +87,9 @@ void CEffectMgr::Initialize()
 	
 	// 포션 이펙트
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/PotionUse/PotionUse.png", L"Potion_Use");
+
+	// 낚시
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Fishing/Fishing_Hit.png", L"Fishing_Hit");
 }
 
 
@@ -311,6 +318,9 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 	{
 		pEffect->SetFrame(0, 24, 0, dFrameSpeed);
 		pEffect->SetSize({20.f, 24.f});
+
+
+		CSoundMgr::GetInstance()->PlaySound(L"FluffyShot.wav", CHANNEL_GROUPID::SFX, 1.f, 1.f);
 	}
 	// 포션 사용
 	else if (!lstrcmpW(pFrameKey, L"Potion_Use"))
@@ -320,6 +330,31 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 
 		CSoundMgr::GetInstance()->PlaySound(L"Drinking.wav", CHANNEL_GROUPID::SFX, 1.f);
 		CSoundMgr::GetInstance()->PlaySound(L"SpellBuff.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
+	// 플레이어 공격 이펙트
+	else if (!lstrcmpW(pFrameKey, L"Attack_Slash"))
+	{
+		pEffect->SetFrame(0, 6, 0, dFrameSpeed);
+		pEffect->SetSize({ 5.f, 57.f });
+		pEffect->SetAngle(fFactor);
+
+		CSoundMgr::GetInstance()->PlaySound(L"HitSword02.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
+	else if (!lstrcmpW(pFrameKey, L"Attack_Bullet"))
+	{
+		pEffect->SetFrame(0, 5, 0, dFrameSpeed);
+		pEffect->SetSize({ 46.f, 35.f });
+		pEffect->SetAngle(fFactor);
+
+		CSoundMgr::GetInstance()->PlaySound(L"HitMagicFire02.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
+	// 낚시 히트
+	else if (!lstrcmpW(pFrameKey, L"Fishing_Hit"))
+	{
+		pEffect->SetFrame(0, 23, 0, dFrameSpeed);
+		pEffect->SetSize({ 49.f, 27.f });
+
+		CSoundMgr::GetInstance()->PlaySound(L"FishHit.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 
 	if (iOption & EFTMGR_IMAGE)
