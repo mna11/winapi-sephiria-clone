@@ -13,6 +13,7 @@
 #include "CInventoryUI.h"
 #include "CArtifactToolTip.h"
 #include "CStoneTabletToolTip.h"
+#include "CPotionToolTip.h"
 #include "CShopTable.h"
 #include "CMsgBox.h"
 #include "CLevelUp.h"
@@ -23,6 +24,8 @@
 #include "CStat.h"
 #include "CLetterBox.h"
 #include "CSpeechBubble.h"
+#include "CFishingUI.h"
+#include "CKeyGuide.h"
 
 CUIMgr* CUIMgr::m_pInstance = nullptr;
 
@@ -48,6 +51,7 @@ void CUIMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Exp_Bar_Fill.png", L"Exp_Bar_Fill");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Leaf.png", L"HUD_Leaf");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Dice.png", L"HUD_Dice");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/BasicInfo/Potion_Slot.png", L"Potion_Slot");
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventoryBase.png", L"Inventory_Base");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Inventory/InventorySlot_Blank.png", L"Inventory_Slot_Blank");
@@ -57,6 +61,7 @@ void CUIMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/ArtifactToolTip/ArtifactToolTip_Base.png", L"ArtifactToolTip_Base");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/StoneTabletToolTip/StoneTabletToolTip_Base.png", L"StoneTabletToolTip_Base");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/StoneTabletToolTip/StoneTabletToolTip_Slot.png", L"StoneTabletToolTip_Slot");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemToolTip/PotionToolTip/PotionTooltip_Base.png", L"PotionTooltip_Base");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Shop/ShopListBase.png", L"ShopList");
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Shop/ShopListSlot.png", L"ShopListSlot");
@@ -75,7 +80,8 @@ void CUIMgr::Initialize()
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/KeyUI.png", L"KeyUI");
 
-	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemSelect/Sephirite_Broken.png", L"Sephirite_Broken");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemSelect/Sephirite_Artifact_Broken.png", L"Sephirite_Artifact_Broken");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemSelect/Sephirite_StoneTablet_Broken.png", L"Sephirite_StoneTablet_Broken");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/ItemSelect/Sephirite_Slot.png", L"Sephirite_Slot");
 
 
@@ -101,6 +107,15 @@ void CUIMgr::Initialize()
 
 
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/SpeechBubble/SpeechBubbleBase.png", L"SpeechBubble_Base");
+
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Rod/fishingRod.png", L"Fishing_Rod");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Playing/FishingBase.png", L"Fishing_Playing_Base");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Playing/FishingPanel.png", L"Fishing_Playing_Panel");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Playing/FishingCatchBar.png", L"Fishing_Playing_Net");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Playing/FishingFish_0.png", L"Fishing_Playing_Fish");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/UI/Fishing/Playing/FishingProgressFill.png", L"Fishing_Playing_Progress_Fill");
+
+	
 }
 
 CUI* CUIMgr::ShowUI(UIID eID)
@@ -249,6 +264,9 @@ CUI* CUIMgr::CreateUI(UIID eID)
 	case UIID::STONE_TABLET_TOOLTIP:
 		pUI = CAbstractFactory<CStoneTabletToolTIp>::CreateUI(m_pMouse);
 		break;
+	case UIID::POTION_TOOLTIP:
+		pUI = CAbstractFactory<CPotionToolTip>::CreateUI(m_pMouse);
+		break;
 	case UIID::SHOP_TABLE:
 		pUI = CAbstractFactory<CShopTable>::CreateUI(m_pMouse);
 		break;
@@ -278,6 +296,12 @@ CUI* CUIMgr::CreateUI(UIID eID)
 		break;
 	case UIID::SPEECH_BUBBLE:
 		pUI = CAbstractFactory<CSpeechBubble>::CreateUI(m_pMouse);
+		break; 
+	case UIID::FISHING:
+		pUI = CAbstractFactory<CFishingUI>::CreateUI(m_pMouse);
+		break;
+	case UIID::KEY_GUIDE:
+		pUI = CAbstractFactory<CKeyGuide>::CreateUI(m_pMouse);
 		break;
 	default:
 		break;

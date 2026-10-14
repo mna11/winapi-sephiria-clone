@@ -91,9 +91,6 @@
     <Filter Include="01. Obj\03. Weapon\00. WeaponController">
       <UniqueIdentifier>{93d0bea1-2ae2-48e6-9494-4de31152151c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\05. Bullet">
-      <UniqueIdentifier>{262c9b9a-b25f-4ad1-8660-5443f6ec93c6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Obj\04. Effect">
       <UniqueIdentifier>{a87a83a9-bd56-4a17-9549-ad7a29e76cc6}</UniqueIdentifier>
     </Filter>
@@ -306,6 +303,33 @@
     </Filter>
     <Filter Include="04. Scene\05. End">
       <UniqueIdentifier>{0bd92a36-923c-48e6-b67a-c72ced0dbae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\05. Bullet">
+      <UniqueIdentifier>{262c9b9a-b25f-4ad1-8660-5443f6ec93c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Weapon\02. FishingRod">
+      <UniqueIdentifier>{3ed33c8e-de79-438a-839f-851e70a96ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\15. Fishing">
+      <UniqueIdentifier>{1c5c722a-b37b-411c-a40b-f985d19198bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\15. Fishing\00. FishingRodUI">
+      <UniqueIdentifier>{93f120f2-f465-4d45-a0ea-f12adef2decb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\16. KeyGuide">
+      <UniqueIdentifier>{4308a7ac-3398-4f8e-b585-f8964da57bcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\15. Fishing\01. FishingPlayingUI">
+      <UniqueIdentifier>{debada62-2dde-416c-9868-92160d91c0cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\07. Item\02. Potion">
+      <UniqueIdentifier>{bf6fda55-d655-4dfc-8c58-4a644b45e3a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Data\03. PotionData">
+      <UniqueIdentifier>{71d3366a-a347-4ca9-8a75-a3d5a1a7d59b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06. UI\03. ToolTip\02. PotionToolTip">
+      <UniqueIdentifier>{6a5a7c1c-eba5-4971-a887-d223fd4249a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -594,6 +618,33 @@
     <ClInclude Include="CEnd.h">
       <Filter>04. Scene\05. End</Filter>
     </ClInclude>
+    <ClInclude Include="CStage3.h">
+      <Filter>04. Scene\01. Stage\03. Stage3</Filter>
+    </ClInclude>
+    <ClInclude Include="CFishingRod.h">
+      <Filter>01. Obj\03. Weapon\02. FishingRod</Filter>
+    </ClInclude>
+    <ClInclude Include="CFishingUI.h">
+      <Filter>01. Obj\06. UI\15. Fishing</Filter>
+    </ClInclude>
+    <ClInclude Include="CFishingRodUI.h">
+      <Filter>01. Obj\06. UI\15. Fishing\00. FishingRodUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CFishingPlayingUI.h">
+      <Filter>01. Obj\06. UI\15. Fishing\01. FishingPlayingUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CKeyGuide.h">
+      <Filter>01. Obj\06. UI\16. KeyGuide</Filter>
+    </ClInclude>
+    <ClInclude Include="CPotion.h">
+      <Filter>01. Obj\07. Item\02. Potion</Filter>
+    </ClInclude>
+    <ClInclude Include="CPotionData.h">
+      <Filter>06. Data\03. PotionData</Filter>
+    </ClInclude>
+    <ClInclude Include="CPotionToolTip.h">
+      <Filter>01. Obj\06. UI\03. ToolTip\02. PotionToolTip</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -865,6 +916,33 @@
     </ClCompile>
     <ClCompile Include="CEnd.cpp">
       <Filter>04. Scene\05. End</Filter>
+    </ClCompile>
+    <ClCompile Include="CStage3.cpp">
+      <Filter>04. Scene\01. Stage\03. Stage3</Filter>
+    </ClCompile>
+    <ClCompile Include="CFishingRod.cpp">
+      <Filter>01. Obj\03. Weapon\02. FishingRod</Filter>
+    </ClCompile>
+    <ClCompile Include="CFishingUI.cpp">
+      <Filter>01. Obj\06. UI\15. Fishing</Filter>
+    </ClCompile>
+    <ClCompile Include="CFishingRodUI.cpp">
+      <Filter>01. Obj\06. UI\15. Fishing\00. FishingRodUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CFishingPlayingUI.cpp">
+      <Filter>01. Obj\06. UI\15. Fishing\01. FishingPlayingUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CKeyGuide.cpp">
+      <Filter>01. Obj\06. UI\16. KeyGuide</Filter>
+    </ClCompile>
+    <ClCompile Include="CPotion.cpp">
+      <Filter>01. Obj\07. Item\02. Potion</Filter>
+    </ClCompile>
+    <ClCompile Include="CPotionData.cpp">
+      <Filter>06. Data\03. PotionData</Filter>
+    </ClCompile>
+    <ClCompile Include="CPotionToolTip.cpp">
+      <Filter>01. Obj\06. UI\03. ToolTip\02. PotionToolTip</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

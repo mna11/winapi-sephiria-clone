@@ -80,23 +80,23 @@ void CMagicStaffSwordAndShield::CreateEffect()
 
 		switch (m_tAtk.iLevel)
 		{
-		case 0:
-			CEffectMgr::GetInstance()->CreateEffect(L"MagicWandSwing1", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
-			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, 500.f, iFireAtk, m_pTarget));
-			break;
 		case 1:
-			CEffectMgr::GetInstance()->CreateEffect(L"MagicWandSwing2", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
-			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, 500.f, iFireAtk, m_pTarget));
-			vRenderPoint -= vOffset * 0.5f;
-			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, 500.f, iFireAtk, m_pTarget));
+			CEffectMgr::GetInstance()->CreateEffect(L"MagicWandSwing1", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
+			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, 500.f, iFireAtk, 1.5f, m_pTarget));
 			break;
 		case 2:
+			CEffectMgr::GetInstance()->CreateEffect(L"MagicWandSwing2", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
+			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, 500.f, iFireAtk, 1.5f, m_pTarget));
+			vRenderPoint -= vOffset * 0.5f;
+			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, 500.f, iFireAtk, 1.5f, m_pTarget));
+			break;
+		case 3:
 			CEffectMgr::GetInstance()->CreateEffect(L"MagicWandSwing1", vRenderPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
-			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, 500.f, iFireAtk, m_pTarget));
+			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, 500.f, iFireAtk, 1.5f, m_pTarget));
 			vRenderPoint -= vOffset * 0.5f;
-			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, 500.f, iFireAtk, m_pTarget));
+			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, 500.f, iFireAtk, 1.5f, m_pTarget));
 			vRenderPoint -= vOffset * 0.5f;
-			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, 500.f, iFireAtk, m_pTarget));
+			CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(vRenderPoint, L"FireBullet", fTargetAngle, 500.f, iFireAtk, 1.5f, m_pTarget));
 			break;
 		}
 	}
@@ -155,7 +155,7 @@ void CMagicStaffSwordAndShield::ApplyChange()
 			SetAtk(0, 0, 0., 0.01, 0.01); // 나중에 CLEAVE 구현할 때 여기 변경할 것
 			for (int i = 0; i < 8; ++i)
 			{
-				CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(m_tInfo.vPoint, L"FireBullet", 45 * i * PI / 180.f, 500.f, m_pTarget->GetStat().iFireAtk, m_pTarget));
+				CObjMgr::GetInstance()->AddObject(OBJID::PLAYER_BULLET, CAbstractFactory<CBullet>::CreateBullet(m_tInfo.vPoint, L"FireBullet", 45 * i * PI / 180.f, 500.f, m_pTarget->GetStat().iFireAtk, 1.5f, m_pTarget));
 			}
 			CEffectMgr::GetInstance()->CreateEffect(L"MagicWandCleave", m_tInfo.vPoint, EFTMGR_IMAGE | EFTMGR_FIXED, m_pTarget->GetAngle());
 			break;

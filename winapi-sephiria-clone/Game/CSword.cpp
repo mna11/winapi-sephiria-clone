@@ -24,6 +24,9 @@ void CSword::Initialize()
 
 int CSword::Update()
 {
+	if (m_bDead)
+		return DEAD;
+
 	if (nullptr == m_pTarget)
 		return NOEVENT;
 

@@ -131,8 +131,10 @@ void CLevelUp::KeyInput()
 	if (KEY_DOWN('R') && !CUIMgr::GetInstance()->GetUI(UIID::ITEM_SELECT)->GetView())
 	{
 		Hide();
-		CUIMgr::GetInstance()->ShowUI(UIID::ITEM_SELECT);
-		static_cast<CItemSelectUI*>(CUIMgr::GetInstance()->GetUI(UIID::ITEM_SELECT))->RequestChange(ITEM_SELECT_UI_STATE::SELECT);
+		// 레벨업의 경우, 아티팩트 획득으로 고정
+		CItemSelectUI* pItemSelectUI = static_cast<CItemSelectUI*>(CUIMgr::GetInstance()->ShowUI(UIID::ITEM_SELECT));
+		pItemSelectUI->SetItemType(ITEM_TYPE::ARTIFACT);
+		pItemSelectUI->RequestChange(ITEM_SELECT_UI_STATE::SELECT);
 		pPlayer->LevelUp();
 
 		CSoundMgr::GetInstance()->PlaySound(L"LevelUpUIOpen.wav", CHANNEL_GROUPID::SFX, 1.f);

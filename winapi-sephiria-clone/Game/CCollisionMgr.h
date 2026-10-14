@@ -29,6 +29,12 @@ public:
 
 		for (int i = 0; i < static_cast<int>(vecSlots.size()); ++i)
 		{
+			// ForgeUI에서는 일단 무기 데이터 개수만큼 전부 할당해뒀기 때문에 문제가 발생할 여지가 있음
+			// 여기는 수정 필요 - ForgeUI 자체가 수정할 필요 있음
+			// 무기 ID별로 슬롯 매칭을 해뒀는데, 무기 타입별 띄우는거에서 나오는 불일치 문제
+			if (nullptr == vecSlots[i])
+				return -1;
+
 			if (PtInRect(&vecSlots[i]->GetRect(), ptMouse))
 				return i;
 		}

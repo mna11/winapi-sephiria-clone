@@ -4,6 +4,9 @@ class CStage1 :
     public CStage
 {
 public:
+    CStage1();
+    ~CStage1();
+public:
     void Initialize() override;
     void Update() override;
     void LateUpdate() override;
@@ -16,6 +19,5 @@ public:
 public:
     void InitializeRooms() override;
     void SpawnMonster(int iRoomIdx) override;
-    void HandleCollision() override;
 };
 

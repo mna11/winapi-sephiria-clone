@@ -114,7 +114,6 @@ private:
 
     // 이름
     wstring             m_strName;
-
 #ifdef _DEBUG
 private:
     void    PrintInfo();

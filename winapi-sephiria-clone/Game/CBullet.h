@@ -15,6 +15,7 @@ public:
     void Release() override;
 
 public:
+    void UpdateTime();
     void UpdateInfo();
     void Move();
 
@@ -23,6 +24,7 @@ public:
     void SetCellSize(VEC vCellSize) { m_vCellSize = vCellSize; }
     void SetOwner(CObj* pObj) { m_pOwner = pObj; }
     void SetDamage(float fDamage) { m_fDamage = fDamage; }
+    void SetAliveTime(double dAliveTime) { m_dAliveTime = dAliveTime; }
 
 public:
     CObj*           GetOwner() { return m_pOwner; }
@@ -37,5 +39,7 @@ private:
     
     float m_fDamage;
     CObj* m_pOwner;
+
+    double m_dAliveTime;
 };
 

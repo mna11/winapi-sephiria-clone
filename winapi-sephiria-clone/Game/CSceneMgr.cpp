@@ -9,6 +9,7 @@
 #include "CObjMgr.h"
 #include "CStage1.h"
 #include "CStage2.h"
+#include "CStage3.h"
 #include "CLibLoading.h"
 #include "CBossStage.h"
 #include "CShop.h"
@@ -133,6 +134,18 @@ void CSceneMgr::ApplyChange()
 
 			if (nullptr == m_pScene)
 				m_pScene = CAbstractFactory<CStage2>::CreateScene();
+			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
+			CUI* pFade = CUIMgr::GetInstance()->ShowUI(UIID::FADE);
+			if (nullptr != pFade)
+				static_cast<CFade*>(pFade)->SetFadeType(FADE_TYPE::RECTANGLE);
+
+			break;
+		}
+		case SCENEID::STAGE3:
+		{
+
+			if (nullptr == m_pScene)
+				m_pScene = CAbstractFactory<CStage3>::CreateScene();
 			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
 			CUI* pFade = CUIMgr::GetInstance()->ShowUI(UIID::FADE);
 			if (nullptr != pFade)

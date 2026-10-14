@@ -73,9 +73,16 @@ void CEffectMgr::Initialize()
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Bullet/MagicBall_Disapper.png", L"MagicBall_Disapper_Effect");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Bullet/MagicBallBig_Disapper.png", L"MagicBallBig_Disapper_Effect");
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Bullet/FireBullet_Disapper.png", L"FireBullet_Disapper_Effect");
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Bullet/AirBullet_Disapper.png", L"AirBullet_Disapper_Effect");
 
 	// 이모지 느낌표
 	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Emoj/Exclamation/Exclamation.png", L"Emoj_Exclamation");
+	
+	// 플러피
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/Monster/Fluffy/Fluffy_AirCircle.png", L"Fluffy_AirCircle");
+	
+	// 포션 이펙트
+	CImgMgr::GetInstance()->InsertImg(L"../Resource/Image/Effect/PotionUse/PotionUse.png", L"Potion_Use");
 }
 
 
@@ -231,16 +238,25 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 	{
 		pEffect->SetFrame(0, 5, 0, dFrameSpeed);
 		pEffect->SetSize({ 7.f, 7.f });
+		pEffect->SetAngle(fFactor);
 	}
 	else if (!lstrcmpW(pFrameKey, L"MagicBulletBig_Disapper_Effect"))
 	{
 		pEffect->SetFrame(0, 6, 0, dFrameSpeed);
 		pEffect->SetSize({ 13.f, 13.f });
+		pEffect->SetAngle(fFactor);
 	}
 	else if (!lstrcmpW(pFrameKey, L"FireBullet_Disapper_Effect"))
 	{
 		pEffect->SetFrame(0, 7, 0, dFrameSpeed);
 		pEffect->SetSize({ 10.f, 10.f });
+		pEffect->SetAngle(fFactor);
+	}
+	else if (!lstrcmpW(pFrameKey, L"AirBullet_Disapper_Effect"))
+	{
+		pEffect->SetFrame(0, 8, 0, dFrameSpeed);
+		pEffect->SetSize({ 22.f, 15.f });
+		pEffect->SetAngle(fFactor);
 	}
 	// 보스 몬스터
 	else if (!lstrcmpW(pFrameKey, L"Golem_Targeting"))
@@ -289,6 +305,21 @@ CObj* CEffectMgr::CreateEffect(const TCHAR* pFrameKey, VEC vPoint, int iOption, 
 		pEffect->SetSize({ 5.f, 11.f });
 
 		CSoundMgr::GetInstance()->PlaySound(L"EmojiSurprise.wav", CHANNEL_GROUPID::SFX, 1.f);
+	}
+	// 플러피
+	else if (!lstrcmpW(pFrameKey, L"Fluffy_AirCircle"))
+	{
+		pEffect->SetFrame(0, 24, 0, dFrameSpeed);
+		pEffect->SetSize({20.f, 24.f});
+	}
+	// 포션 사용
+	else if (!lstrcmpW(pFrameKey, L"Potion_Use"))
+	{
+		pEffect->SetFrame(0, 8, 0, dFrameSpeed);
+		pEffect->SetSize({ 18.f, 30.f });
+
+		CSoundMgr::GetInstance()->PlaySound(L"Drinking.wav", CHANNEL_GROUPID::SFX, 1.f);
+		CSoundMgr::GetInstance()->PlaySound(L"SpellBuff.wav", CHANNEL_GROUPID::SFX, 1.f);
 	}
 
 	if (iOption & EFTMGR_IMAGE)

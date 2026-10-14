@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 #include "CItem.h"
 #include "CArtifactData.h"
 
@@ -16,13 +16,11 @@ public:
     void Release() override;
 
 public:
-    ITEM_INFO               GetItemInfo() override  { return ITEM_INFO{ m_iID, ITEM_TYPE::ARTIFACT, CArtifactData::GetInstance()->FindArtifactInfo(m_iID)->strName, CArtifactData::GetInstance()->FindArtifactInfo(m_iID)->strImg, CArtifactData::GetInstance()->FindArtifactInfo(m_iID)->iLeaf }; }
+    ITEM_INFO               GetItemInfo() override { return CArtifactData::GetInstance()->FindItemInfo(m_iID); }
     const ARTIFACT_INFO*    GetArtifactInfo() const { return CArtifactData::GetInstance()->FindArtifactInfo(m_iID); }
-
+public:
+    void InitializeData(int m_iID, ITEM_TYPE eType) override;
 public:
     void ChangeLevel(int iLevel);
-
-    // CItem¿ª(∏¶) ≈Î«ÿ ªÛº”µ 
-    void InitializeData(int m_iID, ITEM_TYPE eType) override;
 };
 

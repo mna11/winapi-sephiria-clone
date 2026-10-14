@@ -21,6 +21,7 @@
 // 데이터
 #include "CArtifactData.h"
 #include "CStoneTabletData.h"
+#include "CPotionData.h"
 #include "CWeaponData.h"
 
 CMainGame::CMainGame()
@@ -50,7 +51,7 @@ void CMainGame::Initialize()
 	m_pBackGraphics->SetTextRenderingHint(TextRenderingHintSingleBitPerPixel); // 폰트 안티 앨리어싱 없고 글자 픽셀 격자 맞게 보정
 #pragma pop_macro("new")
 
-	CSceneMgr::GetInstance()->RequestChange(SCENEID::BOSS_STAGE);
+	CSceneMgr::GetInstance()->RequestChange(SCENEID::STAGE3);
 
 	// 디버깅 시 콘솔 창 출력 
 #ifdef _DEBUG
@@ -67,6 +68,7 @@ void CMainGame::Initialize()
 	// 데이터 초기화
 	CArtifactData::GetInstance()->Initialize();
 	CStoneTabletData::GetInstance()->Initialize();
+	CPotionData::GetInstance()->Initialize();
 	CWeaponData::GetInstance()->Initialize();
 
 	// 이미지가 많은 매니저들 따로 Initialize
@@ -122,6 +124,7 @@ void CMainGame::Release()
 
 	CArtifactData::DestroyInstance();
 	CStoneTabletData::DestroyInstance();
+	CPotionData::DestroyInstance();
 	CWeaponData::DestroyInstance();
 
 	// 그래픽스 먼저 없애야 함

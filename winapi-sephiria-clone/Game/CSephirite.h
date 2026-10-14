@@ -1,5 +1,8 @@
 ﻿#pragma once
 #include "CObj.h"
+
+class CKeyGuide;
+
 class CSephirite :
     public CObj
 {
@@ -14,11 +17,17 @@ public:
     void Release() override;
 
 public:
+    void SetItemType(ITEM_TYPE eItemType);
+
+public:
     void HandleInteraction();
     void UpdateInteractRect();
 
 private:
     RECT m_tInteractRect;
     bool m_bCol;
+
+    ITEM_TYPE m_eItemType;
+    CKeyGuide* m_pKeyGuide;
 };
 

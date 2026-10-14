@@ -15,8 +15,5 @@ public:
     void Init_CreateObj() override;
     void InitializeRooms() override;
     void SpawnMonster(int iRoomIdx) override;
-
-    // CStage을(를) 통해 상속됨
-    void HandleCollision() override;
 };
 

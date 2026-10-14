@@ -19,6 +19,15 @@
 #include "CSceneMgr.h"
 #include "CSoundMgr.h"
 
+CStage1::CStage1()
+{
+}
+
+CStage1::~CStage1()
+{
+	Release();
+}
+
 void CStage1::Initialize()
 {
 	CTileMgr::GetInstance()->LoadTile(SCENEID::STAGE1);
@@ -43,7 +52,11 @@ void CStage1::LateUpdate()
 
 	HotKey();
 
-	HandleCollision(); 
+	// 전투 방 충돌 
+	HandleCollisionBattleRoom();
+	// 계단 충돌
+	HandleCollisionStair();
+	// 전투 종료 시 DropItem 빨아오기
 	EndBattle();
 }
 
@@ -142,18 +155,5 @@ void CStage1::SpawnMonster(int iRoomIdx)
 	case 2:
 		CObjMgr::GetInstance()->AddObject(OBJID::MONSTER, CAbstractFactory<CGargoyle>::CreateObj(4600, 5700));
 		break;
-	}
-}
-
-void CStage1::HandleCollision()
-{
-	// 전투 방
-	HandleCollisionBattleRoom();
-
-	// 계단
-	if (CCollisionMgr::CollisionRect(CObjMgr::GetInstance()->GetPlayer()->GetRect(), m_rcStair) && KEY_DOWN('F'))
-	{
-		CUIMgr::GetInstance()->ShowUI(UIID::STAGE_CHANGE);
-		//CSceneMgr::GetInstance()->RequestChange(SCENEID::LIB_LOADING);
 	}
 }

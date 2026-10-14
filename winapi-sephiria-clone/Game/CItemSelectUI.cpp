@@ -16,10 +16,13 @@
 #include "CFontMgr.h"
 #include "CSoundMgr.h"
 
+#include "CArtifactData.h"
+#include "CStoneTabletData.h"
+
 CItemSelectUI::CItemSelectUI()
     : m_iItemNum(5), CState(ITEM_SELECT_UI_STATE::END, ITEM_SELECT_UI_STATE::READY),
     m_dBrokenTime(3.0), m_dStateTime(0.), m_dSlotRenderTime(2.0),
-    m_pRerollBtn(nullptr), m_pSkipBtn(nullptr)
+    m_pRerollBtn(nullptr), m_pSkipBtn(nullptr), m_eItemType(ITEM_TYPE::END)
 {
     m_vecItemSlot.resize(5, nullptr);
 }
@@ -50,6 +53,11 @@ int CItemSelectUI::Update()
         return DEAD;
     if (!m_bView)
         return NOEVENT;
+
+    // 아이템 타입이 정해지지 않은 경우, 잘못된 이용이기에 Hide해버림
+    // UIMgr를 사용하는 이유는 플레이어 행동 제한관련 로직 때문임
+    if (m_eItemType == ITEM_TYPE::END)
+        CUIMgr::GetInstance()->HideUI(UIID::ITEM_SELECT);
 
     m_vPrePoint = m_tInfo.vPoint;
 
@@ -98,7 +106,7 @@ void CItemSelectUI::Render(Graphics* pGraphics)
     if (m_eCurState == ITEM_SELECT_UI_STATE::READY
         || m_eCurState == ITEM_SELECT_UI_STATE::BROKEN)
     {
-        pImg = CImgMgr::GetInstance()->FindImg(L"Sephirite_Broken");
+        pImg = CImgMgr::GetInstance()->FindImg(m_pFrameKey);
         if (nullptr == pImg)
             return;
         vCellSize = { 96.f, 96.f };
@@ -186,7 +194,6 @@ void CItemSelectUI::Show()
     m_bView = true;
 
     Initialize();
-    GachaItems();
     CreateBtn();
 }
 
@@ -205,7 +212,6 @@ void CItemSelectUI::Toggle()
     m_bView = !m_bView;
 
     Initialize();
-    GachaItems();
     CreateBtn();
 }
 
@@ -284,7 +290,8 @@ void CItemSelectUI::HandleCollisionMouse()
             CUIMgr::GetInstance()->SetPos(UIID::ARTIFACT_TOOLTIP, vPoint);
             break;
         case ITEM_TYPE::STONE_TABLET:
-            // 나중에 추가
+            CUIMgr::GetInstance()->ShowUI(UIID::STONE_TABLET_TOOLTIP);
+            CUIMgr::GetInstance()->SetPos(UIID::STONE_TABLET_TOOLTIP, vPoint);
             break;
         default:
             break;
@@ -298,7 +305,7 @@ void CItemSelectUI::HandleCollisionMouse()
             CUIMgr::GetInstance()->HideUI(UIID::ARTIFACT_TOOLTIP);
             break;
         case ITEM_TYPE::STONE_TABLET:
-            // 나중에 추가
+            CUIMgr::GetInstance()->HideUI(UIID::STONE_TABLET_TOOLTIP);
             break;
         default:
             break;
@@ -338,8 +345,20 @@ void CItemSelectUI::GachaItems()
         itemSlot->SetPos(m_tInfo.vPoint);
         itemSlot->SetSpread(false);
         itemSlot->Hide();
-        itemSlot->SetItemID(uniform_int_distribution<int>(0, 8)(g_engine));
-        itemSlot->SetItemType(ITEM_TYPE::ARTIFACT);
+
+        switch (m_eItemType)
+        {
+        case ITEM_TYPE::ARTIFACT:
+            itemSlot->SetItemID(uniform_int_distribution<int>(0, CArtifactData::GetInstance()->GetArtifactNum() - 1)(g_engine));
+            itemSlot->SetItemType(ITEM_TYPE::ARTIFACT);
+            break;
+        case ITEM_TYPE::STONE_TABLET:
+            itemSlot->SetItemID(uniform_int_distribution<int>(0, CStoneTabletData::GetInstance()->GetStoneTableNum() - 1)(g_engine));
+            itemSlot->SetItemType(ITEM_TYPE::STONE_TABLET);
+            break;
+        default:
+            break;
+        }
     }
 }
 
@@ -350,8 +369,19 @@ void CItemSelectUI::ReloadItems()
         auto& itemSlot = m_vecItemSlot[i];
         if (nullptr != itemSlot)
         {
-            itemSlot->SetItemID(uniform_int_distribution<int>(0, 8)(g_engine));
-            itemSlot->SetItemType(ITEM_TYPE::ARTIFACT);
+            switch (m_eItemType)
+            {
+            case ITEM_TYPE::ARTIFACT:
+                itemSlot->SetItemID(uniform_int_distribution<int>(0, CArtifactData::GetInstance()->GetArtifactNum() - 1)(g_engine));
+                itemSlot->SetItemType(ITEM_TYPE::ARTIFACT);
+                break;
+            case ITEM_TYPE::STONE_TABLET:
+                itemSlot->SetItemID(uniform_int_distribution<int>(0, CStoneTabletData::GetInstance()->GetStoneTableNum() - 1)(g_engine));
+                itemSlot->SetItemType(ITEM_TYPE::STONE_TABLET);
+                break;
+            default:
+                break;
+            }
         }
     }
 }
@@ -452,4 +482,20 @@ void CItemSelectUI::ApplyChange()
         m_eCurState = m_eNextState;
         m_dStateTime = 0.;
     }
+}
+
+// 아이템 타입을 정한 뒤, 아이템을 뽑아야해서 Show/Toggle에서 여기로 옮김
+void CItemSelectUI::SetItemType(ITEM_TYPE eItemType)
+{
+    m_eItemType = eItemType;
+    switch(m_eItemType)
+    {
+    case ITEM_TYPE::ARTIFACT:
+        m_pFrameKey = L"Sephirite_Artifact_Broken";
+        break;
+    case ITEM_TYPE::STONE_TABLET:
+        m_pFrameKey = L"Sephirite_StoneTablet_Broken";
+        break;
+    }
+    GachaItems();
 }

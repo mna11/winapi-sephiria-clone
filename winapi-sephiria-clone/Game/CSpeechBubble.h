@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "CUI.h"
+#include "CKeyGuide.h"
 
 // UIMgr를 통해 ShowUI(UIID::SpeechBubble) 해주고, SetText와 SetOffset해줘야 함
 

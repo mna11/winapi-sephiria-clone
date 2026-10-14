@@ -51,7 +51,8 @@ void CStageTest::LateUpdate()
 
 	HotKey();
 
-	HandleCollision();
+	HandleCollisionBattleRoom();
+	HandleCollisionStair();
 	EndBattle();
 }
 
@@ -145,17 +146,4 @@ void CStageTest::InitializeRooms()
 
 void CStageTest::SpawnMonster(int iRoomIdx)
 {
-}
-
-void CStageTest::HandleCollision()
-{
-	// 전투 방
-	HandleCollisionBattleRoom();
-
-	// 계단
-	if (CCollisionMgr::CollisionRect(CObjMgr::GetInstance()->GetPlayer()->GetRect(), m_rcStair) && KEY_DOWN('F'))
-	{
-		CUIMgr::GetInstance()->ShowUI(UIID::STAGE_CHANGE);
-		//CSceneMgr::GetInstance()->RequestChange(SCENEID::LIB_LOADING);
-	}
 }

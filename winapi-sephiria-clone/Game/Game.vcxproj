@@ -144,6 +144,10 @@
     <ClInclude Include="CBaba.h" />
     <ClInclude Include="CBasicInfo.h" />
     <ClInclude Include="CEnd.h" />
+    <ClInclude Include="CFishingUI.h" />
+    <ClInclude Include="CFishingRod.h" />
+    <ClInclude Include="CFishingRodUI.h" />
+    <ClInclude Include="CFishingPlayingUI.h" />
     <ClInclude Include="CGolem.h" />
     <ClInclude Include="CGolemHand.h" />
     <ClInclude Include="CGolemHead.h" />
@@ -176,6 +180,7 @@
     <ClInclude Include="CItemSelectSlotUI.h" />
     <ClInclude Include="CItemSelectUI.h" />
     <ClInclude Include="CArtifactToolTip.h" />
+    <ClInclude Include="CKeyGuide.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CLetterBox.h" />
     <ClInclude Include="CLevelUp.h" />
@@ -195,6 +200,9 @@
     <ClInclude Include="CObjMgr.h" />
     <ClInclude Include="CDrop.h" />
     <ClInclude Include="CPlayer.h" />
+    <ClInclude Include="CPotion.h" />
+    <ClInclude Include="CPotionData.h" />
+    <ClInclude Include="CPotionToolTip.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneMgr.h" />
     <ClInclude Include="CSephirite.h" />
@@ -208,6 +216,7 @@
     <ClInclude Include="CStage.h" />
     <ClInclude Include="CStage1.h" />
     <ClInclude Include="CStage2.h" />
+    <ClInclude Include="CStage3.h" />
     <ClInclude Include="CStageChange.h" />
     <ClInclude Include="CStageChangePlayerIcon.h" />
     <ClInclude Include="CStageTest.h" />
@@ -239,6 +248,10 @@
     <ClCompile Include="CBaba.cpp" />
     <ClCompile Include="CBasicInfo.cpp" />
     <ClCompile Include="CEnd.cpp" />
+    <ClCompile Include="CFishingUI.cpp" />
+    <ClCompile Include="CFishingRod.cpp" />
+    <ClCompile Include="CFishingRodUI.cpp" />
+    <ClCompile Include="CFishingPlayingUI.cpp" />
     <ClCompile Include="CGolem.cpp" />
     <ClCompile Include="CGolemHand.cpp" />
     <ClCompile Include="CGolemHead.cpp" />
@@ -271,6 +284,7 @@
     <ClCompile Include="CItemSelectSlotUI.cpp" />
     <ClCompile Include="CItemSelectUI.cpp" />
     <ClCompile Include="CArtifactToolTip.cpp" />
+    <ClCompile Include="CKeyGuide.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLetterBox.cpp" />
     <ClCompile Include="CLevelUp.cpp" />
@@ -290,6 +304,9 @@
     <ClCompile Include="CObjMgr.cpp" />
     <ClCompile Include="CDrop.cpp" />
     <ClCompile Include="CPlayer.cpp" />
+    <ClCompile Include="CPotion.cpp" />
+    <ClCompile Include="CPotionData.cpp" />
+    <ClCompile Include="CPotionToolTip.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneMgr.cpp" />
     <ClCompile Include="CSephirite.cpp" />
@@ -303,6 +320,7 @@
     <ClCompile Include="CStage.cpp" />
     <ClCompile Include="CStage1.cpp" />
     <ClCompile Include="CStage2.cpp" />
+    <ClCompile Include="CStage3.cpp" />
     <ClCompile Include="CStageChange.cpp" />
     <ClCompile Include="CStageChangePlayerIcon.cpp" />
     <ClCompile Include="CStageTest.cpp" />

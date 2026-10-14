@@ -38,7 +38,7 @@ CGargoyle::~CGargoyle()
 void CGargoyle::Initialize()
 {
 	// 기초 정보 초기화
-	m_tInfo = { WINCX >> 1, WINCY >> 1, 100.f, 100.f };
+	m_tInfo = { 0.f, 0.f, 100.f, 100.f };
 	m_eRender = RENDERID::GAMEOBJECT;
 	// 렌더 레이어 - 0 ~ 5 사이 플레이어는 중간인 3
 	m_iRenderLayer = 4;

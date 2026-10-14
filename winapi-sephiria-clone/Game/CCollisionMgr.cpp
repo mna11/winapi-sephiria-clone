@@ -136,10 +136,11 @@ void CCollisionMgr::CollisionPlayerAttack(list<CObj*>& DstList, list<CObj*>& Src
 void CCollisionMgr::CollisionPlayerDefense(list<CObj*>& DstList, list<CObj*>& SrcList)
 {
     RECT rc{};
-
+    
     for (auto& Dst : DstList)
     {
-        const vector<RECT>& vecWeaponRect = static_cast<CPlayer*>(Dst)->GetWeaponController()->GetWeapon()->GetDefRectVec();
+        CPlayer* pPlayer = static_cast<CPlayer*>(Dst);
+        const vector<RECT>& vecWeaponRect = pPlayer->GetWeaponController()->GetWeapon()->GetDefRectVec();
 
         for (auto& Src : SrcList)
         {
@@ -147,6 +148,8 @@ void CCollisionMgr::CollisionPlayerDefense(list<CObj*>& DstList, list<CObj*>& Sr
             {
                 if (IntersectRect(&rc, &ColRect, &Src->GetRect()))
                 {
+                    CEffectMgr::GetInstance()->CreateEffect(L"", pPlayer->GetInfo().vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{1.f, -1.f}.Normalize(), L"BLOCK", Color{255, 182, 190, 200});
+                    CSoundMgr::GetInstance()->PlaySound(L"ShieldBlock.wav", CHANNEL_GROUPID::SFX, 1.f);
                     Src->SetDead(true);
                 }
             }

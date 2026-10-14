@@ -30,6 +30,9 @@ CSwordAndShield::~CSwordAndShield()
 
 int CSwordAndShield::Update()
 {
+	if (m_bDead)
+		return DEAD;
+
 	m_tInfo.vPoint = m_pTarget->GetInfo().vPoint;
 
 	ApplyChange();
@@ -51,9 +54,17 @@ void CSwordAndShield::LateUpdate()
 
 void CSwordAndShield::Release()
 {
-	// 다른 무기와 다르게 소드와 실드를 따로 생성하므로
-	// 소멸할 때 정리해줘야 함
-	CObjMgr::GetInstance()->DeleteID(OBJID::WEAPON);
+	if (nullptr != m_pSword)
+	{
+		m_pSword->SetDead(true);
+		m_pSword = nullptr;
+	}
+
+	if (nullptr != m_pShield)
+	{
+		m_pShield->SetDead(true);
+		m_pShield = nullptr;
+	}
 }
 
 void CSwordAndShield::SetTarget(CObj* pObj)

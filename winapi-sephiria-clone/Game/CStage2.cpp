@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CStage2.h"
 
 #include "CPlayer.h"
@@ -52,7 +52,8 @@ void CStage2::LateUpdate()
 
 	HotKey();
 
-	HandleCollision();
+	HandleCollisionBattleRoom();
+	HandleCollisionStair();
 	EndBattle();
 }
 
@@ -91,7 +92,7 @@ void CStage2::Render(Graphics* pGraphics)
 	pGraphics->ReleaseHDC(hBackDC);
 
 
-	// ReleaseHDC ÀÌÈÄºÎÅÍ GDI+ »ç¿ë
+	// ReleaseHDC ì´í›„ë¶€í„° GDI+ ì‚¬ìš©
 	CTileMgr::GetInstance()->Render(pGraphics);
 	CObjMgr::GetInstance()->Render(pGraphics);
 
@@ -150,7 +151,7 @@ void CStage2::SpawnMonster(int iRoomIdx)
 {
 	switch (iRoomIdx)
 	{
-	case 0: // ¿À¸¥ÂÊ À§
+	case 0: // ì˜¤ë¥¸ìª½ ìœ„
 		CObjMgr::GetInstance()->AddObject(
 			OBJID::MONSTER,
 			CAbstractFactory<CGargoyle>::CreateObj(2920.f, 1480.f));
@@ -164,7 +165,7 @@ void CStage2::SpawnMonster(int iRoomIdx)
 			CAbstractFactory<CGolemCow>::CreateObj(3560.f, 1640.f));
 		break;
 
-	case 1: // ¾Æ·¡ °¡¿îµ¥
+	case 1: // ì•„ëž˜ ê°€ìš´ë°
 		CObjMgr::GetInstance()->AddObject(
 			OBJID::MONSTER,
 			CAbstractFactory<CGargoyle>::CreateObj(3400.f, 3720.f));
@@ -178,7 +179,7 @@ void CStage2::SpawnMonster(int iRoomIdx)
 			CAbstractFactory<CGolemCow>::CreateObj(3320.f, 3960.f));
 		break;
 
-	case 2: // ¾Æ·¡ ¿À¸¥ÂÊ
+	case 2: // ì•„ëž˜ ì˜¤ë¥¸ìª½
 		CObjMgr::GetInstance()->AddObject(
 			OBJID::MONSTER,
 			CAbstractFactory<CGargoyle>::CreateObj(4760.f, 3560.f));
@@ -195,18 +196,5 @@ void CStage2::SpawnMonster(int iRoomIdx)
 			OBJID::MONSTER,
 			CAbstractFactory<CGolemCow>::CreateObj(5000.f, 3800.f));
 		break;
-	}
-}
-
-void CStage2::HandleCollision()
-{
-	// ÀüÅõ ¹æ
-	HandleCollisionBattleRoom();
-
-	// °è´Ü
-	if (CCollisionMgr::CollisionRect(CObjMgr::GetInstance()->GetPlayer()->GetRect(), m_rcStair) && KEY_DOWN('F'))
-	{
-		CUIMgr::GetInstance()->ShowUI(UIID::STAGE_CHANGE);
-		//CSceneMgr::GetInstance()->RequestChange(SCENEID::LIB_LOADING);
 	}
 }
