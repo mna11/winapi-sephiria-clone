@@ -15,7 +15,7 @@
 #include "CSoundMgr.h"
 
 CSephirite::CSephirite()
-	: m_bCol(false), m_eItemType(ITEM_TYPE::END)
+	: m_bCol(false), m_eItemType(ITEM_TYPE::END), m_pKeyGuide(nullptr)
 {
 	ZeroMemory(&m_tInteractRect, sizeof(RECT));
 }
