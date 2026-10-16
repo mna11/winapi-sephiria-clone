@@ -4,6 +4,7 @@
 class CScene;
 
 class CSceneMgr
+	: public CState<SCENEID>
 {
 private:
 	CSceneMgr();
@@ -40,15 +41,14 @@ public:
 	// 저번 팀 과제 때, LateUpdate에서 씬 체인지를 불렀더니
 	// 이후의 것들을 부를려고 하다가 크래시 난 적이 있어서 그냥 아싸리 프레임 끝나고 
 	// 다음 프레임 시작할 때, 다르면 변경할거다.
-	void ApplyChange();
-	void RequestChange(SCENEID eScene);
+	void ApplyChange() override;
 	void RequestNodeChange(int iNodeID, SCENEID eSceneID);
 	// 저장해둔 씬으로 변경하는 상황
 	void BackToSaveScene();
 
 public:
 	CScene* GetCurrentScene() const { return m_pScene; }
-	const SCENEID& GetCurrentSceneID() const { return m_eCurScene; }
+	const SCENEID& GetCurrentSceneID() const { return m_eCurState; }
 	const int& GetCurrentNodeID() const { return m_iCurrentNodeID; }
 
 private:
@@ -60,9 +60,6 @@ private:
 
 	CScene* m_pSaveScene;
 	SCENEID m_eSaveScene;
-
-	SCENEID	m_eCurScene;
-	SCENEID m_ePreScene;
 
 	int m_iRequestNodeID;
 	int m_iCurrentNodeID;

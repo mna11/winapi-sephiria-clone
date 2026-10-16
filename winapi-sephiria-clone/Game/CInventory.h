@@ -22,22 +22,22 @@ public:
 	bool UsePotion();
 
 public:
-	void SetOwner(CPlayer* pPlayer) { m_pOwner = pPlayer; }
+	void					SetOwner(CPlayer* pPlayer) { m_pOwner = pPlayer; }
 
 public:
 	const vector<CItem*>&	GetItems() const { return m_vecItems; }
 	const vector<int>&		GetLevels() const { return m_vecLevels; }
-	const int& GetInventorySize() const { return m_iInvenSize; }
-	CItem* GetItem(int iIdx) const { return m_vecItems[iIdx]; }
-	const CPlayer* GetOwner() const { return m_pOwner; }
-	const int& GetUsePotionSlot() const { return m_iUsePotionSlot; }
+	const int&				GetInventorySize() const { return m_iInvenSize; }
+	CItem*					GetItem(int iIdx) const { return m_vecItems[iIdx]; }
+	const CPlayer*			GetOwner() const { return m_pOwner; }
+	const int&				GetUsePotionSlot() const { return m_iUsePotionSlot; }
 
 public:
-	bool IsExistItem(int iIdx) { return (- 1 != iIdx && (nullptr != m_vecItems[iIdx])); }
-	void ChangePotion(int iWheelScroll, bool bUse = false);
+	bool					IsExistItem(int iIdx) { return (- 1 != iIdx && (nullptr != m_vecItems[iIdx])); }
+	void 					ChangePotion(int iWheelScroll, bool bUse = false);
 
 private:
-	void UpdateLevel();
+	void					UpdateLevel();
 
 private:
 	const int		m_iInvenSize;

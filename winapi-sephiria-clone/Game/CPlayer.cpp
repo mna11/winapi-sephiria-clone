@@ -117,7 +117,6 @@ int CPlayer::Update()
 
 	if (m_bPlayerBehaviorEnable)
 	{
-		
 		// 무기 컨트롤러 업데이트
 		m_pWeaponController->Update();
 

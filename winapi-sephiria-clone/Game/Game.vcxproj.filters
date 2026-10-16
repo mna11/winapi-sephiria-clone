@@ -31,44 +31,11 @@
     <Filter Include="03. Manager\02. ObjMgr">
       <UniqueIdentifier>{d3e8b006-557b-4337-8bf4-b56fc81653ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Manager\03. LineMgr">
-      <UniqueIdentifier>{ced22420-8a0b-417f-aaf7-35c7d9e173eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Manager\03. LineMgr\00. Line">
-      <UniqueIdentifier>{f520e4f6-2655-4173-aed7-b8f8c36e7a6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Manager\04. KeyMgr">
-      <UniqueIdentifier>{b4f734d2-c40a-488a-b859-753153e4d0f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Manager\05. CameraMgr">
-      <UniqueIdentifier>{8e206dc1-ba11-498a-bd72-81681f1d484e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Manager\05. CameraMgr\00. Camera">
-      <UniqueIdentifier>{cd5475f6-a7bd-484f-90cd-229f76d6f6a2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Manager\07. SceneMgr">
-      <UniqueIdentifier>{70c17e59-b88d-4966-9aa1-1ac7c3b803fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Manager\08. TileMgr">
-      <UniqueIdentifier>{b2d7866e-ba71-4ed3-ad6f-f861225f733c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Manager\08. TileMgr\00. Tile">
-      <UniqueIdentifier>{2812b0d8-a1b7-40ed-981b-429b03079651}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Manager\09. TimeMgr">
-      <UniqueIdentifier>{3af0db6c-5252-4999-808f-2ee9b5df1c6e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Manager\06. ImgMgr">
-      <UniqueIdentifier>{9cc2d10b-d465-41ea-a18c-37f81bd6c20a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Scene">
       <UniqueIdentifier>{b8ee814c-7d36-4d1f-a40e-c46b14b554bb}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. State">
       <UniqueIdentifier>{8a089e36-8ce5-4178-badc-442b768965f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Manager\10. EffectMgr">
-      <UniqueIdentifier>{af869e37-16df-435b-823e-b383d743334c}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Obj\00. Player">
       <UniqueIdentifier>{690c488f-c7d2-4683-af87-44e31290119c}</UniqueIdentifier>
@@ -99,12 +66,6 @@
     </Filter>
     <Filter Include="01. Obj\06. UI\00. BasicInfo">
       <UniqueIdentifier>{c5b36fc4-eef3-4086-bb09-cafe2fc58f74}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Manager\11. UIMgr">
-      <UniqueIdentifier>{2cdb3a2a-5ec3-4250-a15b-dc96e7731538}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Manager\12. FontMgr">
-      <UniqueIdentifier>{2d728248-8ff4-4355-9f5f-87225fb362c1}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Obj\06. UI\01. BossHp">
       <UniqueIdentifier>{df4f24d7-d9e3-40df-8def-25bed12a8515}</UniqueIdentifier>
@@ -159,9 +120,6 @@
     </Filter>
     <Filter Include="01. Obj\09. Drop">
       <UniqueIdentifier>{d50b15cd-135c-4ff4-8a49-7bc0d4c31c80}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Manager\13. SoundMgr">
-      <UniqueIdentifier>{9411c1ed-ffbd-4352-a680-73209462060b}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Obj\10. Sephirite">
       <UniqueIdentifier>{798fd484-bdc7-4d6d-8db9-776e46fc80e8}</UniqueIdentifier>
@@ -343,6 +301,42 @@
     <Filter Include="04. Scene\05. ScoreBoard">
       <UniqueIdentifier>{c7d17d6c-0eb1-4d18-aa36-85567f3af788}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Manager\03. KeyMgr">
+      <UniqueIdentifier>{b4f734d2-c40a-488a-b859-753153e4d0f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Manager\04. CameraMgr">
+      <UniqueIdentifier>{8e206dc1-ba11-498a-bd72-81681f1d484e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Manager\04. CameraMgr\00. Camera">
+      <UniqueIdentifier>{cd5475f6-a7bd-484f-90cd-229f76d6f6a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Manager\05. ImgMgr">
+      <UniqueIdentifier>{9cc2d10b-d465-41ea-a18c-37f81bd6c20a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Manager\06. SceneMgr">
+      <UniqueIdentifier>{70c17e59-b88d-4966-9aa1-1ac7c3b803fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Manager\07. TileMgr">
+      <UniqueIdentifier>{b2d7866e-ba71-4ed3-ad6f-f861225f733c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Manager\07. TileMgr\00. Tile">
+      <UniqueIdentifier>{2812b0d8-a1b7-40ed-981b-429b03079651}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Manager\08. TimeMgr">
+      <UniqueIdentifier>{3af0db6c-5252-4999-808f-2ee9b5df1c6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Manager\09. EffectMgr">
+      <UniqueIdentifier>{af869e37-16df-435b-823e-b383d743334c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Manager\10. UIMgr">
+      <UniqueIdentifier>{2cdb3a2a-5ec3-4250-a15b-dc96e7731538}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Manager\11. FontMgr">
+      <UniqueIdentifier>{2d728248-8ff4-4355-9f5f-87225fb362c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Manager\12. SoundMgr">
+      <UniqueIdentifier>{9411c1ed-ffbd-4352-a680-73209462060b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -361,7 +355,7 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CTimeMgr.h">
-      <Filter>03. Manager\09. TimeMgr</Filter>
+      <Filter>03. Manager\08. TimeMgr</Filter>
     </ClInclude>
     <ClInclude Include="Define.h">
       <Filter>헤더 파일</Filter>
@@ -382,31 +376,25 @@
       <Filter>03. Manager\01. CollisionMgr</Filter>
     </ClInclude>
     <ClInclude Include="CKeyMgr.h">
-      <Filter>03. Manager\04. KeyMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="CLineMgr.h">
-      <Filter>03. Manager\03. LineMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="CLine.h">
-      <Filter>03. Manager\03. LineMgr\00. Line</Filter>
+      <Filter>03. Manager\03. KeyMgr</Filter>
     </ClInclude>
     <ClInclude Include="CCameraMgr.h">
-      <Filter>03. Manager\05. CameraMgr</Filter>
+      <Filter>03. Manager\04. CameraMgr</Filter>
     </ClInclude>
     <ClInclude Include="CTileMgr.h">
-      <Filter>03. Manager\08. TileMgr</Filter>
+      <Filter>03. Manager\07. TileMgr</Filter>
     </ClInclude>
     <ClInclude Include="CTile.h">
-      <Filter>03. Manager\08. TileMgr\00. Tile</Filter>
+      <Filter>03. Manager\07. TileMgr\00. Tile</Filter>
     </ClInclude>
     <ClInclude Include="CSceneMgr.h">
-      <Filter>03. Manager\07. SceneMgr</Filter>
+      <Filter>03. Manager\06. SceneMgr</Filter>
     </ClInclude>
     <ClInclude Include="CScene.h">
       <Filter>04. Scene</Filter>
     </ClInclude>
     <ClInclude Include="CImgMgr.h">
-      <Filter>03. Manager\06. ImgMgr</Filter>
+      <Filter>03. Manager\05. ImgMgr</Filter>
     </ClInclude>
     <ClInclude Include="CPlayer.h">
       <Filter>01. Obj\00. Player</Filter>
@@ -415,7 +403,7 @@
       <Filter>04. Scene\01. Stage</Filter>
     </ClInclude>
     <ClInclude Include="CCamera.h">
-      <Filter>03. Manager\05. CameraMgr\00. Camera</Filter>
+      <Filter>03. Manager\04. CameraMgr\00. Camera</Filter>
     </ClInclude>
     <ClInclude Include="CMonster.h">
       <Filter>01. Obj\02. Monster</Filter>
@@ -436,7 +424,7 @@
       <Filter>01. Obj\03. Weapon\01. SwordAndShield\00. Base\00. Sword</Filter>
     </ClInclude>
     <ClInclude Include="CEffectMgr.h">
-      <Filter>03. Manager\10. EffectMgr</Filter>
+      <Filter>03. Manager\09. EffectMgr</Filter>
     </ClInclude>
     <ClInclude Include="CEffect.h">
       <Filter>01. Obj\04. Effect</Filter>
@@ -454,10 +442,10 @@
       <Filter>01. Obj\06. UI</Filter>
     </ClInclude>
     <ClInclude Include="CUIMgr.h">
-      <Filter>03. Manager\11. UIMgr</Filter>
+      <Filter>03. Manager\10. UIMgr</Filter>
     </ClInclude>
     <ClInclude Include="CFontMgr.h">
-      <Filter>03. Manager\12. FontMgr</Filter>
+      <Filter>03. Manager\11. FontMgr</Filter>
     </ClInclude>
     <ClInclude Include="CBossStage.h">
       <Filter>04. Scene\01. Stage\99. BossStage</Filter>
@@ -526,7 +514,7 @@
       <Filter>01. Obj\09. Drop</Filter>
     </ClInclude>
     <ClInclude Include="CSoundMgr.h">
-      <Filter>03. Manager\13. SoundMgr</Filter>
+      <Filter>03. Manager\12. SoundMgr</Filter>
     </ClInclude>
     <ClInclude Include="CSephirite.h">
       <Filter>01. Obj\10. Sephirite</Filter>
@@ -678,7 +666,7 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CTimeMgr.cpp">
-      <Filter>03. Manager\09. TimeMgr</Filter>
+      <Filter>03. Manager\08. TimeMgr</Filter>
     </ClCompile>
     <ClCompile Include="CMainGame.cpp">
       <Filter>00. MainGame</Filter>
@@ -693,31 +681,25 @@
       <Filter>03. Manager\01. CollisionMgr</Filter>
     </ClCompile>
     <ClCompile Include="CKeyMgr.cpp">
-      <Filter>03. Manager\04. KeyMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="CLineMgr.cpp">
-      <Filter>03. Manager\03. LineMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="CLine.cpp">
-      <Filter>03. Manager\03. LineMgr\00. Line</Filter>
+      <Filter>03. Manager\03. KeyMgr</Filter>
     </ClCompile>
     <ClCompile Include="CCameraMgr.cpp">
-      <Filter>03. Manager\05. CameraMgr</Filter>
+      <Filter>03. Manager\04. CameraMgr</Filter>
     </ClCompile>
     <ClCompile Include="CTileMgr.cpp">
-      <Filter>03. Manager\08. TileMgr</Filter>
+      <Filter>03. Manager\07. TileMgr</Filter>
     </ClCompile>
     <ClCompile Include="CTile.cpp">
-      <Filter>03. Manager\08. TileMgr\00. Tile</Filter>
+      <Filter>03. Manager\07. TileMgr\00. Tile</Filter>
     </ClCompile>
     <ClCompile Include="CSceneMgr.cpp">
-      <Filter>03. Manager\07. SceneMgr</Filter>
+      <Filter>03. Manager\06. SceneMgr</Filter>
     </ClCompile>
     <ClCompile Include="CScene.cpp">
       <Filter>04. Scene</Filter>
     </ClCompile>
     <ClCompile Include="CImgMgr.cpp">
-      <Filter>03. Manager\06. ImgMgr</Filter>
+      <Filter>03. Manager\05. ImgMgr</Filter>
     </ClCompile>
     <ClCompile Include="CPlayer.cpp">
       <Filter>01. Obj\00. Player</Filter>
@@ -726,7 +708,7 @@
       <Filter>04. Scene\01. Stage</Filter>
     </ClCompile>
     <ClCompile Include="CCamera.cpp">
-      <Filter>03. Manager\05. CameraMgr\00. Camera</Filter>
+      <Filter>03. Manager\04. CameraMgr\00. Camera</Filter>
     </ClCompile>
     <ClCompile Include="CMonster.cpp">
       <Filter>01. Obj\02. Monster</Filter>
@@ -747,7 +729,7 @@
       <Filter>01. Obj\03. Weapon\01. SwordAndShield\00. Base\00. Sword</Filter>
     </ClCompile>
     <ClCompile Include="CEffectMgr.cpp">
-      <Filter>03. Manager\10. EffectMgr</Filter>
+      <Filter>03. Manager\09. EffectMgr</Filter>
     </ClCompile>
     <ClCompile Include="CEffect.cpp">
       <Filter>01. Obj\04. Effect</Filter>
@@ -765,10 +747,10 @@
       <Filter>01. Obj\06. UI</Filter>
     </ClCompile>
     <ClCompile Include="CUIMgr.cpp">
-      <Filter>03. Manager\11. UIMgr</Filter>
+      <Filter>03. Manager\10. UIMgr</Filter>
     </ClCompile>
     <ClCompile Include="CFontMgr.cpp">
-      <Filter>03. Manager\12. FontMgr</Filter>
+      <Filter>03. Manager\11. FontMgr</Filter>
     </ClCompile>
     <ClCompile Include="CBossStage.cpp">
       <Filter>04. Scene\01. Stage\99. BossStage</Filter>
@@ -837,7 +819,7 @@
       <Filter>01. Obj\09. Drop</Filter>
     </ClCompile>
     <ClCompile Include="CSoundMgr.cpp">
-      <Filter>03. Manager\13. SoundMgr</Filter>
+      <Filter>03. Manager\12. SoundMgr</Filter>
     </ClCompile>
     <ClCompile Include="CSephirite.cpp">
       <Filter>01. Obj\10. Sephirite</Filter>

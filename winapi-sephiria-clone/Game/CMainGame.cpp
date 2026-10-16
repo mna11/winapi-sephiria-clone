@@ -5,7 +5,6 @@
 
 // 매니저
 #include "CObjMgr.h"
-#include "CLineMgr.h"
 #include "CKeyMgr.h"
 #include "CCameraMgr.h"
 #include "CImgMgr.h"
@@ -115,7 +114,6 @@ void CMainGame::Release()
 	CImgMgr::DestroyInstance();
 	CCameraMgr::DestroyInstance();
 	CKeyMgr::DestroyInstance();
-	CLineMgr::DestroyInstance();
 	CObjMgr::DestroyInstance();
 	CTimeMgr::DestroyInstance();
 	CUIMgr::DestroyInstance();

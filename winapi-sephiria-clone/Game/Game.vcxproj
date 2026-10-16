@@ -185,8 +185,6 @@
     <ClInclude Include="CLetterBox.h" />
     <ClInclude Include="CLevelUp.h" />
     <ClInclude Include="CLibLoading.h" />
-    <ClInclude Include="CLine.h" />
-    <ClInclude Include="CLineMgr.h" />
     <ClInclude Include="CMagicStaffSwordAndShield.h" />
     <ClInclude Include="CMagicStaffShield.h" />
     <ClInclude Include="CMagicStaffSword.h" />
@@ -293,8 +291,6 @@
     <ClCompile Include="CLetterBox.cpp" />
     <ClCompile Include="CLevelUp.cpp" />
     <ClCompile Include="CLibLoading.cpp" />
-    <ClCompile Include="CLine.cpp" />
-    <ClCompile Include="CLineMgr.cpp" />
     <ClCompile Include="CMagicStaffSwordAndShield.cpp" />
     <ClCompile Include="CMagicStaffShield.cpp" />
     <ClCompile Include="CMagicStaffSword.cpp" />

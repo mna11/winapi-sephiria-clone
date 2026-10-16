@@ -45,8 +45,8 @@ public:
     const int&                  GetLevelUp()                const { return m_iLevelUp; }
     const int&                  GetLevel()                  const { return m_iLevel; }
     const int&                  GetDice()                   const { return m_iDice; }
-    const wstring&              GetName()           const { return m_strName; }
-    const int&                  GetKill()           const { return m_iKill; }
+    const wstring&              GetName()                   const { return m_strName; }
+    const int&                  GetKill()                   const { return m_iKill; }
 
 public:
     void                        SetPlayerBehaviorEnable(bool bEnable) { m_bPlayerBehaviorEnable = bEnable; }
@@ -116,12 +116,12 @@ private:
 
     // 이름
     wstring             m_strName;
+    int                 m_iKill;
+
 #ifdef _DEBUG
 private:
     void    PrintInfo();
     double  m_dPrintInterval = 3.;
 #endif // DEBUG 
-
-    int                 m_iKill;
 };
 

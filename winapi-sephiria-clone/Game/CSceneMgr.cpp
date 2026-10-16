@@ -23,9 +23,7 @@
 CSceneMgr* CSceneMgr::m_pInstance = nullptr;
 
 CSceneMgr::CSceneMgr() 
-	: 
-	m_eCurScene(SCENEID::END), 
-	m_ePreScene(SCENEID::END),
+	: CState(SCENEID::END, SCENEID::END),
 	m_eSaveScene(SCENEID::END),
 	m_pScene(nullptr), m_pSaveScene(nullptr),
 	m_iCurrentNodeID(0), m_iRequestNodeID(-1)
@@ -66,7 +64,7 @@ void CSceneMgr::ApplyChange()
 	if (nullptr == pMouse)
 		return;
 
-	if (m_ePreScene != m_eCurScene || m_iRequestNodeID != -1)
+	if (m_eCurState != m_eNextState || m_iRequestNodeID != -1)
 	{
 
 		// 씬 전환할 때, UI를 다 닫음
@@ -84,7 +82,7 @@ void CSceneMgr::ApplyChange()
 			pObjMgr->DeleteID(OBJID::DUMMY);
 		}
 
-		switch (m_eCurScene)
+		switch (m_eNextState)
 		{
 		case SCENEID::START:
 		{
@@ -189,7 +187,7 @@ void CSceneMgr::ApplyChange()
 			break;
 		}
 
-		m_ePreScene = m_eCurScene;
+		m_eCurState = m_eNextState;
 
 		if (m_iRequestNodeID != -1)
 		{
@@ -197,11 +195,6 @@ void CSceneMgr::ApplyChange()
 			m_iRequestNodeID = -1;
 		}
 	}
-}
-
-void CSceneMgr::RequestChange(SCENEID eScene)
-{
-	m_eCurScene = eScene;
 }
 
 void CSceneMgr::RequestNodeChange(int iNodeID, SCENEID eSceneID)
@@ -220,20 +213,20 @@ void CSceneMgr::BackToSaveScene()
 
 bool CSceneMgr::HandleChangeReturnScene()
 {
-	// 상점에 진입하는 경우
-	if (m_eCurScene == SCENEID::SHOP || m_eCurScene == SCENEID::FORGE)
+	// 상점, 대장간에 진입하는 경우
+	if (m_eNextState == SCENEID::SHOP || m_eNextState == SCENEID::FORGE)
 	{
 		// 이전 스테이지 정보를 기억한다.
 		m_pSaveScene = m_pScene;
 
 		// 세팅 
 		m_pScene = nullptr;
-		m_eSaveScene = m_ePreScene;
+		m_eSaveScene = m_eCurState;
 		return true;
 	}
 
-	// 상점에서 나가는 경우
-	if (m_ePreScene == SCENEID::SHOP || m_ePreScene == SCENEID::FORGE)
+	// 상점, 대장간에서 나가는 경우
+	if (m_eCurState == SCENEID::SHOP || m_eCurState == SCENEID::FORGE)
 	{
 		// 상점 씬을 삭제하고 원래 기억해둔 씬으로 바꾼다.
 		SafeDelete<CScene*>(m_pScene);
