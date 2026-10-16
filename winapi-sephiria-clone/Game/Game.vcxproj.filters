@@ -298,9 +298,6 @@
     <Filter Include="04. Scene\01. Stage\03. Stage3">
       <UniqueIdentifier>{3a4524a4-9bb8-4c1c-accd-1370d529f54d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Scene\05. End">
-      <UniqueIdentifier>{0bd92a36-923c-48e6-b67a-c72ced0dbae0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Obj\05. Bullet">
       <UniqueIdentifier>{262c9b9a-b25f-4ad1-8660-5443f6ec93c6}</UniqueIdentifier>
     </Filter>
@@ -331,9 +328,6 @@
     <Filter Include="01. Obj\02. Monster\04. Dummy">
       <UniqueIdentifier>{5a4e4a02-f0a8-4af0-9709-d8d7dba4e212}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Scene\01. Stage\00. StageTest">
-      <UniqueIdentifier>{ab371628-cac9-4dce-83b8-d44f61a0b2c9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Obj\03. Weapon\01. SwordAndShield\03. ReturningGuardian">
       <UniqueIdentifier>{93d1137e-a4f5-4206-841c-c03534c0be47}</UniqueIdentifier>
     </Filter>
@@ -346,7 +340,7 @@
     <Filter Include="01. Obj\05. Bullet\00. PenetrationBullet">
       <UniqueIdentifier>{21e74517-9e1e-4d9c-ab41-04883a051d6e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Scene\06. ScoreBoard">
+    <Filter Include="04. Scene\05. ScoreBoard">
       <UniqueIdentifier>{c7d17d6c-0eb1-4d18-aa36-85567f3af788}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -594,9 +588,6 @@
     <ClInclude Include="CStageChangePlayerIcon.h">
       <Filter>01. Obj\06. UI\10. StageChange\00. StageChangePlayerIcon</Filter>
     </ClInclude>
-    <ClInclude Include="CStageTest.h">
-      <Filter>04. Scene\01. Stage\00. StageTest</Filter>
-    </ClInclude>
     <ClInclude Include="CFade.h">
       <Filter>01. Obj\06. UI\11. Fade</Filter>
     </ClInclude>
@@ -632,9 +623,6 @@
     </ClInclude>
     <ClInclude Include="CStage2.h">
       <Filter>04. Scene\01. Stage\02. Stage2</Filter>
-    </ClInclude>
-    <ClInclude Include="CEnd.h">
-      <Filter>04. Scene\05. End</Filter>
     </ClInclude>
     <ClInclude Include="CStage3.h">
       <Filter>04. Scene\01. Stage\03. Stage3</Filter>
@@ -679,7 +667,7 @@
       <Filter>01. Obj\05. Bullet\00. PenetrationBullet</Filter>
     </ClInclude>
     <ClInclude Include="CScoreBoard.h">
-      <Filter>04. Scene\06. ScoreBoard</Filter>
+      <Filter>04. Scene\05. ScoreBoard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -911,9 +899,6 @@
     <ClCompile Include="CStageChangePlayerIcon.cpp">
       <Filter>01. Obj\06. UI\10. StageChange\00. StageChangePlayerIcon</Filter>
     </ClCompile>
-    <ClCompile Include="CStageTest.cpp">
-      <Filter>04. Scene\01. Stage\00. StageTest</Filter>
-    </ClCompile>
     <ClCompile Include="CFade.cpp">
       <Filter>01. Obj\06. UI\11. Fade</Filter>
     </ClCompile>
@@ -949,9 +934,6 @@
     </ClCompile>
     <ClCompile Include="CStage2.cpp">
       <Filter>04. Scene\01. Stage\02. Stage2</Filter>
-    </ClCompile>
-    <ClCompile Include="CEnd.cpp">
-      <Filter>04. Scene\05. End</Filter>
     </ClCompile>
     <ClCompile Include="CStage3.cpp">
       <Filter>04. Scene\01. Stage\03. Stage3</Filter>
@@ -996,7 +978,7 @@
       <Filter>01. Obj\05. Bullet\00. PenetrationBullet</Filter>
     </ClCompile>
     <ClCompile Include="CScoreBoard.cpp">
-      <Filter>04. Scene\06. ScoreBoard</Filter>
+      <Filter>04. Scene\05. ScoreBoard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

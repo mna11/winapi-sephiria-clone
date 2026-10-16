@@ -14,9 +14,7 @@
 #include "CBossStage.h"
 #include "CShop.h"
 #include "CForge.h"
-#include "CEnd.h"
 #include "CScoreBoard.h"
-#include "CStageTest.h"
 
 #include "CShopTable.h"
 #include "CUIMgr.h"
@@ -128,13 +126,6 @@ void CSceneMgr::ApplyChange()
 			CUIMgr::GetInstance()->ShowUI(UIID::FORGE);
 			break;
 		}
-		case SCENEID::STAGE0:
-		{
-			//if (nullptr == m_pScene)
-			//	m_pScene = CAbstractFactory<CStage0>::CreateScene();
-			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
-			break;
-		}
 		case SCENEID::STAGE1:
 		{
 
@@ -174,18 +165,6 @@ void CSceneMgr::ApplyChange()
 
 			break;
 		}
-		case SCENEID::STAGE_TEST:
-		{
-
-			if (nullptr == m_pScene)
-				m_pScene = CAbstractFactory<CStageTest>::CreateScene();
-			pMouse->RequestChange(MOUSE_STATE::COMBAT);
-			CUIMgr::GetInstance()->ShowUI(UIID::BASIC_INFO);
-			CUI* pFade = CUIMgr::GetInstance()->ShowUI(UIID::FADE);
-			if (nullptr != pFade)
-				static_cast<CFade*>(pFade)->SetFadeType(FADE_TYPE::RECTANGLE);
-			break;
-		}
 		case SCENEID::BOSS_STAGE:
 		{
 			if (nullptr == m_pScene)
@@ -197,12 +176,6 @@ void CSceneMgr::ApplyChange()
 			if (nullptr != pFade)
 				static_cast<CFade*>(pFade)->SetFadeType(FADE_TYPE::RECTANGLE);
 
-			break;
-		}
-		case SCENEID::END:
-		{
-			if (nullptr == m_pScene)
-				m_pScene = CAbstractFactory<CEnd>::CreateScene();
 			break;
 		}
 		case SCENEID::SCORE_BOARD:
