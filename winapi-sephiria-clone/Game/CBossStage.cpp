@@ -518,8 +518,7 @@ void CBossStage::ChangeIntroState(BOSS_STAGE_INTRO_STATE eState)
 	{
 		if (nullptr == m_pErma)
 			return;
-
-		m_pErma->SetFrameKey(L"Erma_L");
+		m_pErma->SetFace(false);
 
 		VEC vRenderPoint = m_pErma->GetInfo().vPoint;
 		vRenderPoint.fX -= 50.f;

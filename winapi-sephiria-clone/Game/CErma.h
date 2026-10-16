@@ -39,6 +39,7 @@ public:
     void UpdateFrame() override;
     void HitDamage(int iDamage, CObj* pObj = nullptr, HIT_SOURCE eHit = HIT_SOURCE::END, bool bCritical = false) override;
     void SetOwner(CGolem* pGolem) { m_pOwner = pGolem; }
+    void SetFace(bool bRight);
 
 public:
     void StartReturn();
@@ -55,6 +56,7 @@ private:
     void Attack() override;
     void Down() override;
 
+
 private:
     VEC    m_vReturnPoint;
     VEC    m_vExposePoint;
@@ -62,4 +64,6 @@ private:
     double m_dStateTime;
     CGolem* m_pOwner;
     bool    m_bView;
+
+    bool    m_bFaceRight;
 };
