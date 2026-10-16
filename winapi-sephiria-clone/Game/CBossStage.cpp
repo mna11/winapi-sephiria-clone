@@ -594,6 +594,7 @@ void CBossStage::ChangeFinalState(BOSS_STAGE_FINAL_STATE eState)
 	case BOSS_STAGE_FINAL_STATE::DIALOG2:
 	{
 		CSpeechBubble* pBubble = static_cast<CSpeechBubble*>(CUIMgr::GetInstance()->ShowUI(UIID::SPEECH_BUBBLE));
+		CSoundMgr::GetInstance()->PlaySound(L"GolemError.wav", CHANNEL_GROUPID::SFX, 1.f);
 		if (nullptr != pBubble && nullptr != m_pGolem)
 		{
 			pBubble->SetText(m_pGolem, L"골렘", L"에러! 에러! 엔트로피 임계 상태, 손상 반환 개시", 3, 200.f);
@@ -615,6 +616,7 @@ void CBossStage::ChangeFinalState(BOSS_STAGE_FINAL_STATE eState)
 	case BOSS_STAGE_FINAL_STATE::BROKEN1:
 	{
 		VEC vOffset{ -9.f, 15.f };
+		CSoundMgr::GetInstance()->StopAll();
 		CEffectMgr::GetInstance()->CreateEffect(L"Golem_Core_Broken", m_pErma->GetInfo().vPoint + vOffset, EFTMGR_FIXED | EFTMGR_SCROLL | EFTMGR_IMAGE, 0.f, 0.1f);
 		break;
 	}

@@ -68,20 +68,6 @@ void CErma::LateUpdate()
 {
     if (!m_bView)
         return;
-
-    if (m_eCurState == ERMA_STATE::STUN && m_tStat.iHp <= 0)
-    {
-        if (nullptr == m_pOwner)
-            return;
-
-        if (0 == m_pOwner->GetPhase())
-            StartReturn();
-        else
-        {
-            RequestChange(ERMA_STATE::IDLE);
-            static_cast<CBossStage*>(CSceneMgr::GetInstance()->GetCurrentScene())->RequestChange(BOSS_STAGE_STATE::FINAL);
-        }
-    }
 }
 
 void CErma::Render(Graphics* pGraphics)
@@ -226,6 +212,22 @@ void CErma::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
     
     if (!ApplyDamage(iDamage, eHit))
         return;
+
+    CreateHitEffect(iDamage, pObj, eHit, bCritical);
+
+    if (m_eCurState == ERMA_STATE::STUN && m_tStat.iHp <= 0)
+    {
+        if (nullptr == m_pOwner)
+            return;
+
+        if (0 == m_pOwner->GetPhase())
+            StartReturn();
+        else
+        {
+            RequestChange(ERMA_STATE::IDLE);
+            static_cast<CBossStage*>(CSceneMgr::GetInstance()->GetCurrentScene())->RequestChange(BOSS_STAGE_STATE::FINAL);
+        }
+    }
 }
 
 void CErma::SetFace(bool bRight)
