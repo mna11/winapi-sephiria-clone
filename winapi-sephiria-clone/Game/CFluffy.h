@@ -45,5 +45,8 @@ private:
     double m_dStunTime;
     double m_dAtkElapse;
     double m_dAtkCycle;
+
+    // CMonster을(를) 통해 상속됨
+    void Down() override;
 };
 

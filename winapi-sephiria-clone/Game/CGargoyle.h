@@ -38,9 +38,10 @@ public:
     void ApplyChange() override;
 
 private:
-    void UpdateTime();
-    void Move();
-    void Attack();
+    void UpdateTime() override;
+    void Move() override;
+    void Attack() override;
+    void Down() override;
 
 private:
     // 여러 시간 변수
@@ -70,12 +71,5 @@ private:
     bool m_bFirstAtkFinished; // 가고일은 일단 첫번째 일반 공격을 한 뒤에 날 수 있게 할려고 플래그 만들었음
     // 공격 기준2 
     float m_fFlyAtkDistance;
-
-
-#ifdef _DEBUG
-private:
-    void    PrintInfo();
-    double  m_dPrintInterval = 1.;
-#endif // DEBUG 
 };
 

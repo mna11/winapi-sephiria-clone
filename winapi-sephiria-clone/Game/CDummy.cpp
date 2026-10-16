@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CDummy.h"
 
 #include "CImgMgr.h"
@@ -17,7 +17,7 @@ CDummy::~CDummy()
 
 void CDummy::Initialize()
 {
-    // ±âÃÊ Á¤º¸ ÃÊ±âÈ­
+    // ê¸°ì´ˆ ì •ë³´ ì´ˆê¸°í™”
     m_tInfo = { 0.f, 0.f, 50.f, 50.f };
     m_eRender = RENDERID::GAMEOBJECT;
     m_iRenderLayer = 4;
@@ -27,8 +27,11 @@ void CDummy::Initialize()
 
     m_pFrameKey = L"Dummy";
 
-    // ½ºÅÈ ÃÊ±âÈ­
+    // ìŠ¤íƒ¯ ì´ˆê¸°í™”
     m_tStat = {0, 0, 0 };
+
+    m_iLeaf = 0;
+    m_iExp = 0;
 }
 
 int CDummy::Update()
@@ -53,7 +56,7 @@ void CDummy::Render(Graphics* pGraphics)
     VEC vScroll = CCameraMgr::GetInstance()->GetScroll();
 
 #ifdef _DEBUG
-    // ÇÇ°İ Ãæµ¹ ¹Ú½º ·»´õ¸µ
+    // í”¼ê²© ì¶©ëŒ ë°•ìŠ¤ ë Œë”ë§
     SolidBrush WhiteBrush(Color(255, 255, 255, 255));
 
     pGraphics->FillRectangle(
@@ -76,12 +79,8 @@ void CDummy::Render(Graphics* pGraphics)
 
     if (m_bHit && m_dIframeTime > 0.)
     {
-        // »ìÂ¦ À§·Î ±æ¾îÁ³´Ù°¡ µ¹¾Æ¿À±â
-        float fRatio = clamp(
-            static_cast<float>(m_dHitElapseTime / m_dIframeTime),
-            0.f, 1.f
-        );
-
+        // ì‚´ì§ ìœ„ë¡œ ê¸¸ì–´ì¡Œë‹¤ê°€ ëŒì•„ì˜¤ê¸°
+        float fRatio = clamp(static_cast<float>(m_dHitElapseTime / m_dIframeTime), 0.f, 1.f);
         float fAmplitude = vCellSize.fY * 0.5f * PIXEL_SCALE;
         float fDecay = (1.f - fRatio) * (1.f - fRatio);
 
@@ -96,7 +95,6 @@ void CDummy::Render(Graphics* pGraphics)
     };
 
     ImageAttributes* pImgAttr = m_bHit ? &m_imgAttrHit : nullptr;
-
     pGraphics->DrawImage(
         pImg, rcDest,
         vCellSize.fX * m_tFrame.iStart,
@@ -114,7 +112,7 @@ void CDummy::Release()
 
 void CDummy::UpdateTime()
 {
-    // ÇÇÇØ À¯È¿ ±Ù°Å¿ë ½Ã°£
+    // í”¼í•´ ìœ íš¨ ê·¼ê±°ìš© ì‹œê°„
     if (m_bHit)
     {
         m_dHitElapseTime += DT;
@@ -124,48 +122,5 @@ void CDummy::UpdateTime()
             m_bHit = false;
             m_dHitElapseTime = 0.;
         }
-    }
-}
-
-void CDummy::Move()
-{
-}
-
-void CDummy::Attack()
-{
-}
-
-void CDummy::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
-{
-    if (m_bDead)
-        return;
-
-    if (m_bHit && eHit != HIT_SOURCE::BULLET)
-        return;
-
-    m_bHit = true;
-    m_dHitElapseTime = 0.;
-
-    if (bCritical)
-        CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 210, 60 });
-    else
-        CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 255, 255 });
-
-    if (nullptr == pObj)
-        return;
-
-    VEC vDir = (pObj->GetInfo().vPoint - m_tInfo.vPoint).Normalize();
-    float fTargetAngle = atan2f(vDir.fY, vDir.fX);
-
-    switch (eHit)
-    {
-    case HIT_SOURCE::SLASH:
-        CEffectMgr::GetInstance()->CreateEffect(L"Attack_Slash", m_tInfo.vPoint, 0, fTargetAngle, 0.05);
-        break;
-    case HIT_SOURCE::BULLET:
-        CEffectMgr::GetInstance()->CreateEffect(L"Attack_Bullet", m_tInfo.vPoint - vDir * m_tInfo.vSize.fX * 0.5f, 0, fTargetAngle, 0.05);
-        break;
-    default:
-        break;
     }
 }

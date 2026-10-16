@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CMonster.h"
 #include "CState.h"
 
@@ -59,5 +59,8 @@ private:
     VEC m_vDir;
 
     Channel* m_pFootStep;
+
+    // CMonster을(를) 통해 상속됨
+    void Down() override;
 };
 

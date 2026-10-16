@@ -47,6 +47,9 @@ void CFluffy::Initialize()
 		10 
 	};
 
+	m_iExp = 10.f;
+	m_iLeaf = 70.f;
+
 	m_dStateTime = 0.;
 	m_dSummonTime = 2.;
 	m_dDownTime = 1.;
@@ -272,46 +275,15 @@ void CFluffy::Attack()
 {
 }
 
+void CFluffy::Down()
+{
+	m_eNextState = FLUFFY_STATE::DOWN;
+}
+
 void CFluffy::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-	if (m_bDead || m_tStat.iHp <= 0)
-		return;
-
-	if (m_bHit && eHit != HIT_SOURCE::BULLET)
-		return;
-
 	if (m_eCurState == FLUFFY_STATE::DOWN || m_eCurState == FLUFFY_STATE::SUMMON)
 		return;
 
-	m_bHit = true;		// m_bHit은 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
-
-	m_tStat.iHp -= iDamage;
-
-	if (m_tStat.iHp <= 0)
-	{
-		m_eNextState = FLUFFY_STATE::STUN;
-
-		float fExp = 10.f * pObj->GetStat().fExperienceDrop;
-		float fLeaf = 70.f * pObj->GetStat().fLeafDrop;
-
-		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX - m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::EXP, fExp));
-		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX + m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::LEAF, fLeaf));
-		static_cast<CPlayer*>(pObj)->AddKill(1);
-	}
-
-	if (bCritical)
-		CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 210, 60 });
-	else
-		CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 255, 255 });
-
-	// 사운드
-	switch (eHit)
-	{
-	case HIT_SOURCE::SLASH:
-		CSoundMgr::GetInstance()->PlaySound(L"HitSword02.wav", CHANNEL_GROUPID::SFX, 1.f);
-		break;
-	case HIT_SOURCE::BULLET:
-		CSoundMgr::GetInstance()->PlaySound(L"HitMagicFire02.wav", CHANNEL_GROUPID::SFX, 1.f);
-		break;
-	}
+	CMonster::HitDamage(iDamage, pObj, eHit, bCritical);
 }

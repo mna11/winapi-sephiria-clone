@@ -144,46 +144,11 @@ void CGolemCow::Release()
 
 void CGolemCow::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-	if (m_bDead || m_tStat.iHp <= 0)
-		return;
-
-	if (m_bHit && eHit != HIT_SOURCE::BULLET)
-		return;
-
+	// 공격 상태와 사망 상태에서는 데미지를 받지 않는다.
 	if (m_eCurState == GOLEM_COW_STATE::DOWN || m_eCurState == GOLEM_COW_STATE::SUMMON)
 		return;
 
-	m_bHit = true;		// m_bHit은 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
-
-	m_tStat.iHp -= iDamage;
-
-	if (m_tStat.iHp <= 0)
-	{
-		m_eNextState = GOLEM_COW_STATE::DOWN;
-
-		float fExp = 15.f * pObj->GetStat().fExperienceDrop;
-		float fLeaf = 100.f * pObj->GetStat().fLeafDrop;
-
-		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX - m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::EXP, fExp));
-		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX + m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::LEAF, fLeaf));
-		static_cast<CPlayer*>(pObj)->AddKill(1);
-	}
-
-	if (bCritical)
-		CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 210, 60 });
-	else
-		CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 255, 255 });
-
-	// 사운드
-	switch (eHit)
-	{
-	case HIT_SOURCE::SLASH:
-		CSoundMgr::GetInstance()->PlaySound(L"HitSword02.wav", CHANNEL_GROUPID::SFX, 1.f);
-		break;
-	case HIT_SOURCE::BULLET:
-		CSoundMgr::GetInstance()->PlaySound(L"HitMagicFire02.wav", CHANNEL_GROUPID::SFX, 1.f);
-		break;
-	}
+	CMonster::HitDamage(iDamage, pObj, eHit, bCritical);
 }
 
 void CGolemCow::OnWallCollision()
@@ -304,6 +269,11 @@ void CGolemCow::Attack()
 
 }
 
+void CGolemCow::Down()
+{
+	m_eNextState = GOLEM_COW_STATE::DOWN;
+}
+
 void CGolemCow::ApplyChange()
 {
 	if (m_eCurState != m_eNextState)
@@ -341,7 +311,8 @@ void CGolemCow::ApplyChange()
 			break;
 		case GOLEM_COW_STATE::DOWN:
 			SetFrame(0, 0, 6, m_dDownTime);
-
+			// 충돌 렉트 끄기
+			m_tInfo.vSize = { 0.f, 0.f };	
 			// 달리다가 죽을 수도 있으니깐 발소리 끄기
 			if (m_pFootStep != nullptr)
 			{

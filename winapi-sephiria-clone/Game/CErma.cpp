@@ -42,6 +42,9 @@ void CErma::Initialize()
     SetFrame(0, 5, 0, 0.2);
 
     m_tStat = { 100, 100, 0 };
+
+    m_iLeaf = 0;
+    m_iExp = 0;
 }
 
 int CErma::Update()
@@ -216,39 +219,14 @@ void CErma::UpdateFrame()
         }
     }
 }
+
 void CErma::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-    if (m_bDead)
-        return;
-
-    if (m_bHit && eHit != HIT_SOURCE::BULLET)
-        return;
-
     if (!m_bView || m_eCurState != ERMA_STATE::STUN)
         return;
-
-    m_bHit = true;
-    m_dHitElapseTime = 0.;
-
-    m_tStat.iHp = clamp(m_tStat.iHp - iDamage, 0, m_tStat.iMaxHp);
-
-    if (nullptr == pObj)
+    
+    if (!ApplyDamage(iDamage, eHit))
         return;
-
-    VEC vDir = (pObj->GetInfo().vPoint - m_tInfo.vPoint).Normalize();
-    float fTargetAngle = atan2f(vDir.fY, vDir.fX);
-
-    switch (eHit)
-    {
-    case HIT_SOURCE::SLASH:
-        CEffectMgr::GetInstance()->CreateEffect(L"Attack_Slash", m_tInfo.vPoint, 0, fTargetAngle, 0.05);
-        break;
-    case HIT_SOURCE::BULLET:
-        CEffectMgr::GetInstance()->CreateEffect(L"Attack_Bullet", m_tInfo.vPoint, 0, fTargetAngle, 0.05);
-        break;
-    default:
-        break;
-    }
 }
 
 void CErma::StartReturn()
@@ -345,4 +323,9 @@ void CErma::Move()
 
 void CErma::Attack()
 {
+}
+
+void CErma::Down()
+{
+    m_eNextState = ERMA_STATE::DOWN;
 }

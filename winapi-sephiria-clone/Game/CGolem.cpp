@@ -54,6 +54,9 @@ void CGolem::Initialize()
     m_dMissileInterval = 3.;
 
     m_dLaserInterval = 12.;
+
+    m_iLeaf = 0;
+    m_iExp = 0;
 }
 
 int CGolem::Update()
@@ -208,20 +211,19 @@ void CGolem::ApplyChange()
 
 void CGolem::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-    TryHitDamage(iDamage, pObj, eHit, bCritical);
+    if (!TryHitDamage(iDamage, pObj, eHit, bCritical))
+        return;
+
+    CreateHitEffect(iDamage, pObj, eHit, bCritical);
 }
 
 bool CGolem::TryHitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-    if (m_bDead || m_eCurState != GOLEM_STATE::COMBAT)
+    if (m_eCurState != GOLEM_STATE::COMBAT)
         return false;
 
-    if (m_bHit && eHit != HIT_SOURCE::BULLET)
+    if (!ApplyDamage(iDamage, eHit))
         return false;
-
-    m_bHit = true;
-    m_dHitElapseTime = 0.;
-    m_tStat.iHp = clamp(m_tStat.iHp - iDamage, 0, m_tStat.iMaxHp);
 
     if (m_tStat.iHp <= 0)
         RequestChange(GOLEM_STATE::EXPOSED);
@@ -357,6 +359,11 @@ void CGolem::Attack()
     }
     }
 }
+
+void CGolem::Down()
+{
+}
+
 
 void CGolem::InitializeParts()
 {

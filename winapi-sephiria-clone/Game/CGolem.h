@@ -40,6 +40,7 @@ private:
     void UpdateTime() override;
     void Move() override;
     void Attack() override;
+    void Down() override;
 
 public:
     void InitializeParts();

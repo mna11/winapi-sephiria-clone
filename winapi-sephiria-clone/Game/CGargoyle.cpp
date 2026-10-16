@@ -60,8 +60,12 @@ void CGargoyle::Initialize()
 	};
 
 	// 플레이어와의 공격 거리
-	m_fAtkDistance = 100.f; 
-	m_fFlyAtkDistance = 600.f; // 600보다 멀어지면 공중 공격 진행
+	m_fAtkDistance = 100.f;	   // 100보다 가까워지면 전방 공격
+	m_fFlyAtkDistance = 600.f; // 600보다 멀어지면 공중 공격 - 전방 공격 최소 1회 후 가능
+
+	// 드랍 아이템 초기화
+	m_iExp = 15.f;
+	m_iLeaf = 70.f;
 
 	// 시간 초기화
 	m_dStateTime = 0.;
@@ -97,11 +101,6 @@ int CGargoyle::Update()
 
 	__super::UpdateRect();
 	__super::UpdateFrame();
-
-#ifdef _DEBUG
-	PrintInfo();
-#endif // _DEBUG
-
 	return NOEVENT;
 }
 
@@ -173,53 +172,11 @@ void CGargoyle::Release()
 
 void CGargoyle::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 {
-	if (m_bDead || m_tStat.iHp <= 0)
-		return;
-
-	if (m_bHit && eHit != HIT_SOURCE::BULLET)
-		return;
-
+	// 소환 상태나 사망 상태에서는 데미지를 받지 않는다.
 	if (m_eCurState == GARGOYLE_STATE::DOWN || m_eCurState == GARGOYLE_STATE::SUMMON)
 		return;
 
-	m_bHit = true;		// m_bHit은 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
-
-	m_tStat.iHp -= iDamage;
-
-	if (m_tStat.iHp <= 0)
-	{
-		m_eNextState = GARGOYLE_STATE::DOWN;
-
-		float fExp = 10.f * pObj->GetStat().fExperienceDrop;
-		float fLeaf = 70.f * pObj->GetStat().fLeafDrop;
-
-		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX - m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::EXP, fExp));
-		CObjMgr::GetInstance()->AddObject(OBJID::DROP, CAbstractFactory<CDrop>::CreateDrop(m_tInfo.vPoint.fX + m_tInfo.vSize.fX * 0.3f, m_tInfo.vPoint.fY + 20, pObj, DROP_TYPE::LEAF, fLeaf));
-		static_cast<CPlayer*>(pObj)->AddKill(1);
-	}
-
-	if (bCritical)
-		CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 210, 60 });
-	else
-		CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{255, 255, 255, 255});
-	
-
-	if (nullptr == m_pTarget)
-		return; 
-
-	VEC vDir = (pObj->GetInfo().vPoint - m_tInfo.vPoint).Normalize();
-	float fTargetAngle = atan2f(vDir.fY, vDir.fX);
-
-	// 사운드
-	switch (eHit)
-	{
-	case HIT_SOURCE::SLASH:
-		CEffectMgr::GetInstance()->CreateEffect(L"Attack_Slash", m_tInfo.vPoint, 0, fTargetAngle, 0.05);
-		break;
-	case HIT_SOURCE::BULLET:
-		CEffectMgr::GetInstance()->CreateEffect(L"Attack_Bullet", m_tInfo.vPoint, 0, fTargetAngle, 0.05);
-		break;
-	}
+	CMonster::HitDamage(iDamage, pObj, eHit, bCritical);
 }
 
 void CGargoyle::ApplyChange()
@@ -273,7 +230,6 @@ void CGargoyle::UpdateTime()
 			m_dHitElapseTime -= m_dIframeTime;
 		}
 	}
-
 
 	if (m_eNextState == GARGOYLE_STATE::DOWN && m_eCurState != GARGOYLE_STATE::DOWN)
 		return;
@@ -472,14 +428,7 @@ void CGargoyle::Attack()
 	}
 }
 
-#ifdef _DEBUG
-void CGargoyle::PrintInfo()
+void CGargoyle::Down()
 {
-	m_dPrintInterval -= DT;
-	if (m_dPrintInterval <= 0)
-	{
-		cout << "가고일 상태 : " << toUType(m_eCurState) << endl;
-		m_dPrintInterval = 3.;
-	}
+	m_eCurState = GARGOYLE_STATE::DOWN;
 }
-#endif // _DEBUG

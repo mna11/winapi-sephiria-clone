@@ -181,28 +181,9 @@ void CGolemHead::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCriti
     if (!m_pOwner->TryHitDamage(iDamage, pObj, eHit, bCritical))
         return;
 
+    CreateHitEffect(iDamage, pObj, eHit, bCritical);
+
     // 피해가 적용된 부위만 피격 연출 시작
     m_bHit = true;
     m_dHitElapseTime = 0.;
-
-    Color damageColor = bCritical ? Color{ 255, 255, 210, 60 } : Color{ 255, 255, 255, 255 };
-    CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), damageColor);
-
-    if (nullptr == pObj)
-        return;
-
-    VEC vDir = (pObj->GetInfo().vPoint - m_tInfo.vPoint).Normalize();
-    float fTargetAngle = atan2f(vDir.fY, vDir.fX);
-
-    switch (eHit)
-    {
-    case HIT_SOURCE::SLASH:
-        CEffectMgr::GetInstance()->CreateEffect(L"Attack_Slash", m_tInfo.vPoint, 0, fTargetAngle, 0.05);
-        break;
-    case HIT_SOURCE::BULLET:
-        CEffectMgr::GetInstance()->CreateEffect(L"Attack_Bullet", m_tInfo.vPoint, 0, fTargetAngle, 0.05);
-        break;
-    default:
-        break;
-    }
 }

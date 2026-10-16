@@ -36,6 +36,9 @@ void CGolemMissile::Initialize()
     m_dExplosionTime = 1.5;
 
     m_dEndTime = 0.1;
+
+    m_iLeaf = 0;
+    m_iExp = 0;
 }
 
 int CGolemMissile::Update()

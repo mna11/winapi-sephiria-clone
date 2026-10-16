@@ -44,10 +44,10 @@ void CObj::HitDamage(int iDamage, CObj* pObj, HIT_SOURCE eHit, bool bCritical)
 	if (m_bHit)
 		return;
 
-	m_bHit = true;		// m_bHit은 final 객체의 Update에서 m_bHit이 된지 경과한 시간이 iframeTime을 넘으면 false가 된다.
-	m_tStat.iHp -= iDamage;
+	m_bHit = true;		
+	m_dHitElapseTime = 0;
 
-	CEffectMgr::GetInstance()->CreateEffect(L"", m_tInfo.vPoint, EFTMGR_STRING | EFTMGR_MOVE, 100.f, 0.5f, nullptr, VEC{ 1.f, -1.f }.Normalize(), to_wstring(iDamage), Color{ 255, 255, 255, 255 });
+	m_tStat.iHp -= iDamage;
 
 	if (m_tStat.iHp <= 0)
 		m_bDead = true;

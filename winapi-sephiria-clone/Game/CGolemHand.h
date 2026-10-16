@@ -44,6 +44,7 @@ private:
     void UpdateTime() override;
     void Move() override;
     void Attack() override;
+    void Down() override;
 
 private:
     void ApplyChange() override;
