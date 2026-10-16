@@ -359,7 +359,7 @@ void CShop::SellItem(int iInventoryIdx, ITEM_INFO tItemInfo)
 	if (nullptr == pPlayer)
 		return;
 
-	pPlayer->GetInventory()->EraseItem(iInventoryIdx);
+	pPlayer->GetInventory()->ReduceItem(iInventoryIdx);
 	static_cast<CInventoryUI*>(CUIMgr::GetInstance()->GetUI(UIID::INVENTORY))->SyncInventorySlot();
 	pPlayer->AddLeaf(tItemInfo.iLeaf * 0.5f);
 	// 사운드 

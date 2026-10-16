@@ -29,7 +29,8 @@ CInventory::~CInventory()
 
 void CInventory::Initialize()
 {
-	// 테스트용
+	// 플레이 처음부터 가지고 있는 아이템
+	// - 기능을 보여주기 위함
 	for (int i = 0; i < m_vecItems.size(); ++i)
 	{
 		if (i < 4)
@@ -143,6 +144,22 @@ bool CInventory::InsertItem(int iIdx, int iID, ITEM_TYPE eItemType)
 
 	// 인벤토리가 꽉 찬 경우
 	return false; 
+}
+
+void CInventory::ReduceItem(int iIdx)
+{
+	if (nullptr == m_vecItems[iIdx])
+		return;
+
+	if (m_vecItems[iIdx]->GetItemType() == ITEM_TYPE::POTION)
+	{
+		CPotion* pPotion = dynamic_cast<CPotion*>(m_vecItems[iIdx]);
+		pPotion->AddHave(-1);
+		if (pPotion->GetHave() > 0)
+			return;
+	}
+
+	EraseItem(iIdx);
 }
 
 void CInventory::EraseItem(int iIdx)

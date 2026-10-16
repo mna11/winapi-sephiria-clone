@@ -16,6 +16,7 @@ public:
 
 public:
 	bool InsertItem(int iIdx, int iID, ITEM_TYPE eItemType );
+	void ReduceItem(int iIdx);
 	void EraseItem(int iIdx);
 	void MoveItem(int iStartIdx, int iEndIdx);
 	int  FindItem(int iID, ITEM_TYPE eItemType);
